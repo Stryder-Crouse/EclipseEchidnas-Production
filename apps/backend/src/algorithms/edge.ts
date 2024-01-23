@@ -1,6 +1,5 @@
-
 type edge = {
-    iD : string;
-    startNode: node;
-    endNode: node;
-}
+  iD: string;
+  startNode: node;
+  endNode: node;
+};
