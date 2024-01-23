@@ -1,3 +1,4 @@
+/* TS struct to hold all the data for a node from the CSV */
 type node = {
   iD: string;
   coordinate: coordinate;
@@ -9,18 +10,15 @@ type node = {
   edges: Array<edge>;
 };
 
-type coordinate = {
-  x: number;
-  y: number;
-};
-
+/* Enum to hold the three possible buildings in the hospital */
 enum Buildings {
   B45Francis = "45 Francis",
   Tower = "Tower",
   Shapiro = "Shapiro",
-  UNDEFINED = "UNDEFIEND",
+  UNDEFINED = "UNDEFINED",
 }
 
+/* Enum to hold all of the possible node types */
 enum NodeType {
   CONF = "CONF",
   DEPT = "DEPT",
@@ -32,5 +30,5 @@ enum NodeType {
   ELEV = "ELEV",
   EXIT = "EXIT",
   STAI = "STAI",
-  UNDEFINED = "UNDEFIEND",
+  UNDEFINED = "UNDEFINED",
 }
