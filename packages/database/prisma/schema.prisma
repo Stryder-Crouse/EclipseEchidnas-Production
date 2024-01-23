@@ -18,3 +18,17 @@ model HighScore {
   time  DateTime
   score Int
 }
+
+model Node {
+  nodeID     String @id @db.VarChar(256)
+  startEdges Edge[] @relation("startingEdges")
+  endEdges   Edge[] @relation("endingEdges")
+}
+
+model Edge {
+  edgeID      String @id @db.VarChar(256)
+  startNode   Node   @relation("startingEdges", fields: [startNodeID], references: [nodeID])
+  startNodeID String @db.VarChar(256)
+  endNode     Node   @relation("endingEdges", fields: [endNodeID], references: [nodeID])
+  endNodeID   String @db.VarChar(256)
+}
