@@ -76,6 +76,9 @@ async function printConnectedNodes() {
   console.log(
     bfs(graph.idToNode("GEXIT001L1"), graph.idToNode("GHALL005L1"), graph),
   ); // average 4-len path
+  console.log(
+    bfs(graph.idToNode("GEXIT001L1"), graph.idToNode("CREST001L1"), graph),
+  ); // unconnected, separate buildings; null
 }
 
 //this is a basic counter component to show where components should be placed
