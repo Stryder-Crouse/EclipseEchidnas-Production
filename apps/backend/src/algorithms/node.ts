@@ -1,4 +1,5 @@
 import { edge } from "./edge.ts";
+import { coordinate } from "./coordinate.ts";
 
 export type node = {
   iD: string;
@@ -19,7 +20,7 @@ export enum Buildings {
   UNDEFINED = "UNDEFINED",
 }
 
-/* Enum to hold all of the possible node types */
+/* Enum to hold all the possible node types */
 export enum NodeType {
   CONF = "CONF",
   DEPT = "DEPT",

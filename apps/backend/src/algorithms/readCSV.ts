@@ -6,26 +6,24 @@ import {
   NodeType,
 } from "./node.ts";
 import { edge } from "./edge.ts";
-import {coordinate} from "./coordinate.ts";
+import { coordinate } from "./coordinate.ts";
+
+const ERROR_STRING: string = "NO VALUE";
 
 export function readNodeCSV(fileString: string): Array<node> {
   const nodes: Array<node> = [];
-
   const allNodesString = fileString;
-
   if (fileString == null) {
-    console.log("noCVSFile Found");
+    console.log(fileString + ": not found for readNodeCSV. Terminating.");
     return [];
   }
-
   const linesNodes = allNodesString.split("\r\n");
 
   linesNodes.forEach(function (line) {
-    console.log("loading");
+    // make sure all fields are there and do a non-comprehensive check to see if the entry is valid
     const nodeValues: string[] = line.split(",");
-    // make sure all feilds are there and do a non comprhive check to see if the entry is vaild
 
-    //?? replaces the thing before it with the thing afther if the thing before is null
+    //?? replaces the thing before it with the thing after if the thing before is null
     if (nodeValues.length == 8 && !isNaN(parseInt(nodeValues.at(1) ?? ""))) {
       const nodeCoordinate: coordinate = {
         x: parseInt(nodeValues.at(1) ?? "", 10),
@@ -33,13 +31,13 @@ export function readNodeCSV(fileString: string): Array<node> {
       };
 
       const newNode: node = {
-        iD: nodeValues.at(0) ?? "NO ID",
+        iD: nodeValues.at(0) ?? ERROR_STRING,
         coordinate: nodeCoordinate,
-        floor: nodeValues.at(3) ?? "UNDEFINED",
+        floor: nodeValues.at(3) ?? ERROR_STRING,
         building: stringToBuilding(nodeValues.at(4) ?? Buildings.UNDEFINED),
         nodeType: stringToNodeType(nodeValues.at(5) ?? NodeType.UNDEFINED),
-        longName: nodeValues.at(6) ?? "UNDEFINED",
-        shortName: nodeValues.at(7) ?? "UNDEFINED",
+        longName: nodeValues.at(6) ?? ERROR_STRING,
+        shortName: nodeValues.at(7) ?? ERROR_STRING,
         edges: [],
       };
       nodes.push(newNode);
@@ -52,20 +50,16 @@ export function readNodeCSV(fileString: string): Array<node> {
 //creates non linked edges
 export function readEdgeCSVNOLINK(fileString: string): Array<edge> {
   const edges: Array<edge> = [];
-
   const allEdgesString = fileString;
-
   if (fileString == null) {
-    console.log("noCVSFile Found");
+    console.log(fileString + ": not found for readEdgeCSV. Terminating.");
     return [];
   }
 
   const linesEdges = allEdgesString.split("\r\n");
-
   linesEdges.forEach(function (line) {
-    console.log("loading");
+    // make sure all fields are there and do a non-comprehensive check to see if the entry is valid
     const edgeValues: string[] = line.split(",");
-    // make sure all feilds are there and do a non comprhive check to see if the entry is vaild
 
     //?? replaces the thing before it with the thing afther if the thing before is null
     if (edgeValues.length == 3 && edgeValues[0] != "edgeID") {
@@ -84,6 +78,7 @@ export function readEdgeCSVNOLINK(fileString: string): Array<edge> {
         shortName: "",
         edges: [],
       };
+
       const end: node = {
         iD: edgeValues[2],
         coordinate: emptycoord,
@@ -96,7 +91,7 @@ export function readEdgeCSVNOLINK(fileString: string): Array<edge> {
       };
 
       const newEdge: edge = {
-        iD: edgeValues.at(0) ?? "NO ID",
+        iD: edgeValues.at(0) ?? ERROR_STRING,
         startNode: start,
         endNode: end,
       };
