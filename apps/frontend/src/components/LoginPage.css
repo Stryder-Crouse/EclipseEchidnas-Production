@@ -1,3 +1,7 @@
+.loginBackground {
+  background-image: url("../components/backgroundHospitalImage.jpg");
+}
+
 .loginPage {
   font-family: Roboto;
   color: #012d5a;
