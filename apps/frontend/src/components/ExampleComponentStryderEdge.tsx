@@ -7,6 +7,7 @@ import {
 import { edge } from "../../../backend/src/algorithms/edge.ts";
 import { node } from "../../../backend/src/algorithms/node.ts";
 import { Graph } from "../../../backend/src/algorithms/Graph.ts";
+import { bfs } from "../../../backend/src/algorithms/bfs/bfs.ts";
 
 async function makeEdgeTable() {
   const edges: Array<edge> = readEdgeCSVNOLINK(await getEdgeCSVString());
@@ -64,8 +65,17 @@ async function printConnectedNodes() {
   console.log("new");
   console.log(graph.getNodes());
   console.log(graph.getAdjList());
-  console.log(graph.idToNode("CHALL002L1"));
-  console.log(graph.idToNode(""));
+  console.log(graph.idToNode("CHALL002L1")); // three nodes
+  console.log(graph.idToNode("")); // null
+  console.log(
+    bfs(graph.idToNode("CHALL002L1"), graph.idToNode("CHALL002L1"), graph),
+  ); // singleton list
+  console.log(
+    bfs(graph.idToNode("CHALL002L1"), graph.idToNode("CHALL013L1"), graph),
+  ); // average 8-len path
+  console.log(
+    bfs(graph.idToNode("GEXIT001L1"), graph.idToNode("GHALL005L1"), graph),
+  ); // average 4-len path
 }
 
 //this is a basic counter component to show where components should be placed
