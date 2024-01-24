@@ -1,9 +1,12 @@
 import { IQueue } from "./IQueue.ts";
 
-/* Absolutely miserable queue implementation */
+/*
+ *  Absolutely miserable queue implementation
+ *  Source: https://basarat.gitbook.io/algorithms/datastructures/queue
+ */
 export class CrapQueue<T> implements IQueue<T> {
   /* fields */
-  private storage: T[];
+  private storage: Array<T>;
 
   /* constructor */
   public constructor() {
@@ -11,6 +14,7 @@ export class CrapQueue<T> implements IQueue<T> {
   }
 
   /* methods */
+
   // push onto the queue daddy :sob:
   public push(thing: T) {
     this.storage.push(thing);
@@ -20,5 +24,10 @@ export class CrapQueue<T> implements IQueue<T> {
   // pop from the queue 😠
   public pop(): T | undefined {
     return this.storage.shift();
+  }
+
+  // is the queue not empty
+  public hasItems(): boolean {
+    return this.storage.length > 0;
   }
 }
