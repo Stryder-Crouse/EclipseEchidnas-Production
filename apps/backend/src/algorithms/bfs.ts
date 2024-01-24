@@ -1,3 +1,6 @@
+import {coordinate} from "./coordinate.ts";
+import {Buildings, node, NodeType} from "./node.ts";
+
 const origin_real: coordinate = {
   x: 0,
   y: 0.0,
