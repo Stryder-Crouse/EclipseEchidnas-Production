@@ -2,6 +2,7 @@
 import React from "react";
 import "../components/welcomePage.css";
 import Logo from "../components/massGeneralBrighamLogo.png";
+//import StaffLogin from "./LoginPage.tsx";
 
 export default function WelcomePage() {
   return (
