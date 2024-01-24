@@ -1,0 +1,106 @@
+/** THIS IS THE ENTIRE PAGE SETUP **/
+.welcomeLogin {
+  font-family: Roboto;
+  color: #012d5a;
+
+  /** box creation **/
+  width: 50rem;
+  height: 30rem;
+  background-color: #f1f1f1;
+  border-radius: 4rem;
+
+  /** centering content in box **/
+  display: flex;
+  justify-content: center;
+
+  /** centering box in entire page **/
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /** box shadows **/
+  box-shadow:
+    0px -0px 101px 8px rgba(0, 0, 0, 0.45),
+    25px 0px 20px -20px rgba(0, 0, 0, 0.45),
+    0px 25px 20px -20px rgba(0, 0, 0, 0.45),
+    -25px 0px 20px -20px rgba(0, 0, 0, 0.45);
+}
+
+/** Logo Image Alterations **/
+.mgbLogo {
+  height: 50%;
+  width: 50%;
+  object-fit: contain;
+  position: absolute;
+  z-index: -1;
+  margin-top: -1rem;
+}
+
+/** Welcome to Text **/
+.welcomeTo {
+  margin-top: 2rem;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: -2rem;
+  color: #003a96;
+  z-index: 1;
+  font-weight: 200;
+}
+
+/** The button formations **/
+.buttonsContainer {
+  /** positioning **/
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  justify-content: center;
+  align-items: center;
+
+  /** display to column form **/
+  width: 100px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.button {
+  font-weight: 600;
+  transition: all 300ms ease;
+  padding: 1rem;
+  width: 8rem;
+  border-radius: 2rem;
+  color: #003a96;
+  border-color: transparent;
+}
+
+/** Guest Button **/
+.guestButton {
+  /** make box larger **/
+  margin-top: 7rem;
+  font-size: larger;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  width: 20rem;
+  padding: 1.5rem;
+
+  background-color: #012d5a;
+  color: #f1f1f1;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-33%, -50%);
+}
+
+/** Staff Login Button **/
+.staffLoginButton {
+  width: 10rem;
+  margin-top: 2rem;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-17%, -50%);
+
+  color: black;
+  background: #d9d9d9;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
