@@ -2,9 +2,11 @@
 import React, { useState } from "react";
 // import React from 'react';
 import "../components/MapPage.css";
+import { useNavigate } from "react-router-dom";
 //import Map from "../components/01_thefirstfloor.png";
 
 export default function MapPage() {
+  const navigate = useNavigate();
   const backgroundStyle = {
     backgroundImage: 'url("../components/01_thefirstfloor.png")',
     /* Add other background properties as needed */
@@ -69,9 +71,13 @@ export default function MapPage() {
       </div>
     );
   };
+
   return (
     <div style={backgroundStyle}>
       <Dropdown />
+      <button className={"xout"} onClick={() => navigate("/Welcome")}>
+        X
+      </button>
     </div>
   );
 }
