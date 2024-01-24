@@ -21,6 +21,13 @@ model HighScore {
 
 model Node {
   nodeID     String @id @db.VarChar(256)
+  floor      String @db.VarChar(256)
+  building   String @db.VarChar(256)
+  nodeType   String @db.VarChar(256)
+  longname   String @db.VarChar(256)
+  shortName  String @db.VarChar(256)
+  xcoord     Int
+  ycoord     Int
   startEdges Edge[] @relation("startingEdges")
   endEdges   Edge[] @relation("endingEdges")
 }
