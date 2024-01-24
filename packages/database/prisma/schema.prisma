@@ -24,7 +24,7 @@ model Node {
   floor      String @db.VarChar(256)
   building   String @db.VarChar(256)
   nodeType   String @db.VarChar(256)
-  longname   String @db.VarChar(256)
+  longName   String @db.VarChar(256)
   shortName  String @db.VarChar(256)
   xcoord     Int
   ycoord     Int
