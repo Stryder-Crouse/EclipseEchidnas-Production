@@ -6,7 +6,7 @@ import {
   NodeType,
 } from "./node.ts";
 import { edge } from "./edge.ts";
-import {coordinate} from "./coordinate.ts";
+import { coordinate } from "./coordinate.ts";
 
 export function readNodeCSV(fileString: string): Array<node> {
   const nodes: Array<node> = [];

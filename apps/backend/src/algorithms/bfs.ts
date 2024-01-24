@@ -1,12 +1,12 @@
-import {coordinate} from "./coordinate.ts";
-import {Buildings, node, NodeType} from "./node.ts";
+/*import { coordinate } from "./coordinate.ts";
+import { Buildings, node, NodeType } from "./node.ts";
 
 const origin_real: coordinate = {
   x: 0,
   y: 0.0,
-};
+};*/
 
-const coolio: node = {
+/*const coolio: node = {
   iD: "coolio",
   coordinate: origin_real,
   floor: "zzeerroo",
@@ -15,4 +15,4 @@ const coolio: node = {
   longName: "sussy",
   shortName: "baka",
   edges: [],
-};
+};*/
