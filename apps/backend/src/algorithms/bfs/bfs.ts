@@ -1,5 +1,6 @@
 /* Shitty BFS by Alex */
 import { node } from "../node.ts";
+import { Graph } from "../Graph.ts";
 import { CrapQueue } from "../queue/CrapQueue.ts";
 import { IQueue } from "../queue/IQueue.ts";
 
@@ -11,7 +12,7 @@ import { IQueue } from "../queue/IQueue.ts";
  * Returns a list of the path from source to target if it exists or null
  * if no such path exists.
  */
-export function bfs(source: node, target: node): Array<node> | null {
+export function bfs(source: node, target: node, graph: Graph): Array<node> | null {
   /* symbols */
   const frontier: IQueue<node> = new CrapQueue<node>(); // frontier for next nodes to visit
   const visited: Map<node, boolean> = new Map<node, boolean>(); // visited nodes to prevent cycles
