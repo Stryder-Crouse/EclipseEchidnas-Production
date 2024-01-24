@@ -3,15 +3,20 @@ import React from "react";
 import { useState } from "react";
 import "../components/LoginPage.css";
 import Logo from "../components/massGeneralBrighamLogo.png";
+import { useNavigate } from "react-router-dom";
 
 export default function WelcomePage() {
   //Create username and password variables to store inputs
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  const navigate = useNavigate();
   return (
     <body className={"loginBackground"}>
       {/* Button to reset and go back go welcomePage */}
+
+      <button className={"xout"} onClick={() => navigate("/Welcome")}>
+        X
+      </button>
 
       <div className={"welcomeLogin"}>
         <div className={"contentContainers"}>
