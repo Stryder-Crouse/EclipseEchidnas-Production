@@ -1,7 +1,12 @@
 import axios from "axios";
-import { readEdgeCSVNOLINK } from "../../../backend/src/algorithms/readCSV.ts";
+import {
+  readEdgeCSVNOLINK,
+  readNodeCSV,
+} from "../../../backend/src/algorithms/readCSV.ts";
 
 import { edge } from "../../../backend/src/algorithms/edge.ts";
+import { node } from "../../../backend/src/algorithms/node.ts";
+import { Graph } from "../../../backend/src/algorithms/Graph.ts";
 
 async function makeEdgeTable() {
   const edges: Array<edge> = readEdgeCSVNOLINK(await getEdgeCSVString());
@@ -42,6 +47,24 @@ async function getEdgeCSVString(): Promise<string> {
   return "";
 }
 
+async function getNodeCSVString(): Promise<string> {
+  const res = await axios.get("/api/loadCVSFile/CVSnode");
+  console.log("data");
+  console.log(res.data);
+  if (res.status == 200) {
+    return res.data as string;
+  }
+  return "";
+}
+
+async function printConnectedNodes() {
+  const edges: Array<edge> = readEdgeCSVNOLINK(await getEdgeCSVString());
+  const nodes: Array<node> = readNodeCSV(await getNodeCSVString());
+  const graph = new Graph(nodes, edges);
+  console.log("new");
+  console.log(graph.nodes);
+}
+
 //this is a basic counter component to show where components should be placed
 export function ExampleComponentStryderEdge() {
   //the html returned from the component
@@ -62,3 +85,4 @@ export function ExampleComponentStryderEdge() {
 
 //populate the table afther load
 makeEdgeTable().then();
+printConnectedNodes().then();
