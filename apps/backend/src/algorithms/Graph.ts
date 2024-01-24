@@ -1,17 +1,27 @@
 import {node} from "./node.ts";
 import {edge} from "./edge.ts";
 
+/*
+*
+*
+*
+*
+* */
 export class Graph {
     private readonly nodes: Array<node>;
     private readonly edges: Array<edge>;
     private readonly adjacent: Map<node, Array<node>>;
+    private readonly idLookup: Map<string, node>;
 
     constructor(unLinkedNodes: Array<node>, edges: Array<edge>) {
         //create map
         const nodeMap = new Map<string, node>();
 
+        const adj = new Map<node, Array<node>>();
+
         unLinkedNodes.forEach(function (node) {
             nodeMap.set(node.iD, node);
+            adj.set(node,new Array<node>());
         });
 
         edges.forEach(function (edge) {
@@ -41,10 +51,33 @@ export class Graph {
             };
 
             endNode.edges.push(backEdge);
+
+
+            //make adjlist
+            const startAdj =  adj.get(startNode) ?? null;
+            const endAdj =  adj.get(endNode) ?? null;
+
+            if(startAdj == null){
+                console.error("startAdj for node not found");
+                return;
+            }
+            if(endAdj == null){
+                console.error("endAdj for node not found");
+                return;
+            }
+            startAdj.push(endNode);
+
+            endAdj.push(startNode);
+
+
+
+
         });
 
         this.nodes = unLinkedNodes;
         this.edges = edges;
+        this.adjacent = adj;
+        this.idLookup=nodeMap;
     }
 
     public getNodes(): Array<node> {
@@ -55,10 +88,18 @@ export class Graph {
         return this.edges;
     }
 
-    /*
-    public adjacentTo(someNode: node) : Array<node> {
-        // let
-        // return this.adjacent.get(someNode);
+    public getAdjList(){
+        return this.adjacent;
     }
-     */
+
+    public idToNode(str:string){
+        return this.idLookup.get(str) ?? null;
+    }
+
+
+    public adjacentTo(someNode: node) : Array<node>|null {
+
+        return this.adjacent.get(someNode) ?? null;
+    }
+
 }

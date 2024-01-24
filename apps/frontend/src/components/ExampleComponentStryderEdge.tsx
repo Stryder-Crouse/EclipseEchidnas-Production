@@ -62,7 +62,10 @@ async function printConnectedNodes() {
   const nodes: Array<node> = readNodeCSV(await getNodeCSVString());
   const graph = new Graph(nodes, edges);
   console.log("new");
-  console.log(graph.nodes);
+  console.log(graph.getNodes());
+  console.log(graph.getAdjList());
+  console.log(graph.idToNode("CHALL002L1"));
+  console.log(graph.idToNode(""));
 }
 
 //this is a basic counter component to show where components should be placed
