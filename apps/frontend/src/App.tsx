@@ -1,6 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import ExampleRoute from "./routes/ExampleRoute.tsx";
+//import ExampleRoute from "./routes/ExampleRoute.tsx";
+import MapStart from "./routes/MapPage.tsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -10,7 +11,7 @@ function App() {
       children: [
         {
           path: "",
-          element: <ExampleRoute />,
+          element: <MapStart />,
         },
       ],
     },
@@ -18,12 +19,7 @@ function App() {
 
   return <RouterProvider router={router} />;
   function Root() {
-    return (
-      <div className="w-100 h-100 d-flex flex-column overflow-auto">
-        <h1>Welcome to your starter code.</h1>
-        <Outlet />
-      </div>
-    );
+    return <Outlet />;
   }
 }
 
