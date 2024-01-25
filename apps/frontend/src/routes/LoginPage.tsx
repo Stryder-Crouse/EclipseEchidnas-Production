@@ -1,5 +1,5 @@
 /** importations **/
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import "../components/LoginPage.css";
 import Logo from "../components/massGeneralBrighamLogo.png";
@@ -10,8 +10,15 @@ export default function WelcomePage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    //set background to hospital on component load
+    document.body.style.backgroundImage =
+      "url(/src/components/backgroundHospitalImage.jpg)";
+  }, []);
+
   return (
-    <body className={"loginBackground"}>
+    <div className={"loginBackground"}>
       {/* Button to reset and go back go welcomePage */}
 
       <button className={"xout"} onClick={() => navigate("/")}>
@@ -60,6 +67,6 @@ export default function WelcomePage() {
           </div>
         </div>
       </div>
-    </body>
+    </div>
   );
 }

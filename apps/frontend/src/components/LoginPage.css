@@ -1,5 +1,5 @@
 .loginBackground {
-  background-image: url("../components/backgroundHospitalImage.jpg");
+  background: url("../components/backgroundHospitalImage.jpg");
 }
 
 /** this is the entire ivory color box **/
