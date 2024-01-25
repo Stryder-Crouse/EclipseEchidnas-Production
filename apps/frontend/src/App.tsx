@@ -13,6 +13,7 @@ function App() {
           path: "",
           element: <ExampleRoute />,
         },
+        //stryder's test page
         {
           path: "/stryder",
           element: <Stryderstestroute />,

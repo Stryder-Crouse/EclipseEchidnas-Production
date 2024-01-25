@@ -1,16 +1,21 @@
-/* BASED BFS by Alex and Stryder */
 import { node } from "../node.ts";
 import { Graph } from "../Graph.ts";
 import { CrapQueue } from "../queue/CrapQueue.ts";
 import { IQueue } from "../queue/IQueue.ts";
 
-/*
- * bfs()
+/**
  *
- * Breadth-first search algorithm to find a path from source to target.
+ * Breadth-first search algorithm to find a path from source to target on the passed
+ * unweighted graph.
  *
- * Returns a list of the path from source to target if it exists or null
- * if no such path exists in graph.
+ * @param source - staring node obj for the search
+ * @param target - target node obj for the search
+ * @param graph - graph which contains both nodes
+ *
+ *
+ * @returns  an array of node that stores the path from source to target if it exists or null
+ *  if no such path exists in graph.
+ *
  */
 export function bfs(
   source: node | null,

@@ -1,6 +1,6 @@
 import axios from "axios";
 import {
-  readEdgeCSVNOLINK,
+  readEdgeCSV,
   readNodeCSV,
 } from "../../../backend/src/algorithms/readCSV.ts";
 
@@ -10,7 +10,7 @@ import { Graph } from "../../../backend/src/algorithms/Graph.ts";
 import { bfs } from "../../../backend/src/algorithms/bfs/bfs.ts";
 
 async function makeEdgeTable() {
-  const edges: Array<edge> = readEdgeCSVNOLINK(await getEdgeCSVString());
+  const edges: Array<edge> = readEdgeCSV(await getEdgeCSVString());
 
   console.log(edges);
 
@@ -59,7 +59,7 @@ async function getNodeCSVString(): Promise<string> {
 }
 
 async function printConnectedNodes() {
-  const edges: Array<edge> = readEdgeCSVNOLINK(await getEdgeCSVString());
+  const edges: Array<edge> = readEdgeCSV(await getEdgeCSVString());
   const nodes: Array<node> = readNodeCSV(await getNodeCSVString());
   const graph = new Graph(nodes, edges);
   console.log("new");

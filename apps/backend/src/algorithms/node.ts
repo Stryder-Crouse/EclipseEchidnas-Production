@@ -1,6 +1,6 @@
 import { edge } from "./edge.ts";
 import { coordinate } from "./coordinate.ts";
-
+/** Type to store inputted nodes.*/
 export type node = {
   iD: string;
   coordinate: coordinate;
@@ -12,7 +12,7 @@ export type node = {
   edges: Array<edge>;
 };
 
-/* Enum to hold the three possible buildings in the hospital */
+/** Enum to hold the three possible buildings in the hospital */
 export enum Buildings {
   B45Francis = "45 Francis",
   Tower = "Tower",
@@ -20,7 +20,7 @@ export enum Buildings {
   UNDEFINED = "UNDEFINED",
 }
 
-/* Enum to hold all the possible node types */
+/** Enum to hold all the possible node types */
 export enum NodeType {
   CONF = "CONF",
   DEPT = "DEPT",
@@ -35,9 +35,17 @@ export enum NodeType {
   UNDEFINED = "UNDEFINED",
 }
 
-export function stringToBuilding(str: string) {
-  str = str.toLowerCase();
-  switch (str) {
+/**
+ * @param buildingName - name of the building (string) as defined in the building enum.
+ *
+ *
+ * @returns a Building (enum) that corresponded to the inputted string
+ * or Buildings.UNDEFINED if the string does not match a building.
+ *
+ */
+export function stringToBuilding(buildingName: string) {
+  buildingName = buildingName.toLowerCase();
+  switch (buildingName) {
     case "45 francis":
       return Buildings.B45Francis;
     case "tower":
@@ -49,9 +57,17 @@ export function stringToBuilding(str: string) {
   }
 }
 
-export function stringToNodeType(str: string) {
-  str = str.toUpperCase();
-  switch (str) {
+/**
+ * @param nodeTypeName - name of the node type (string) as defined in the NodeType enum.
+ *
+ *
+ * @returns a NodeType (enum) that corresponded to the inputted string
+ * or NodeType.UNDEFINED if the string does not match a node type.
+ *
+ */
+export function stringToNodeType(nodeTypeName: string) {
+  nodeTypeName = nodeTypeName.toUpperCase();
+  switch (nodeTypeName) {
     case "CONF":
       return NodeType.CONF;
     case "DEPT":

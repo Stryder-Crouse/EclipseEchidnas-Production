@@ -2,6 +2,7 @@ import React from "react";
 import { ExampleComponentStryderNode } from "../components/ExampleComponentStryderNode.tsx";
 import { ExampleComponentStryderEdge } from "../components/ExampleComponentStryderEdge.tsx";
 
+//stryders test element
 export default function Stryderstestroute() {
   return (
     <div className="w-100 h-100 d-flex flex-column overflow-auto">
