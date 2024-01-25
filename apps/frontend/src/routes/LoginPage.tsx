@@ -38,7 +38,13 @@ export default function WelcomePage() {
             className={"avatarPic"}
           />
           <div className={"inputBox"}>
-            <form>
+            <form
+              onSubmit={() => {
+                //make sure locations can be loaded again once we comeback
+
+                navigate("/MapPage");
+              }}
+            >
               <input
                 className={"usernameButton"}
                 type="text"

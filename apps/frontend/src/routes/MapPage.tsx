@@ -13,7 +13,7 @@ let loadedLocations = false;
 export default function MapPage() {
   const navigate = useNavigate();
 
-  //this does not work I believe - Stryder
+  //this does not work I believe (at least to display the image- Stryder
   const backgroundStyle = {
     backgroundImage: 'url("../components/01_thefirstfloor.png")',
     /* Add other background properties as needed */
@@ -94,7 +94,7 @@ export default function MapPage() {
         className={"xout"}
         onClick={() => {
           //make sure locations can be loaded again once we comeback
-          loadedLocations = false;
+          loadedLocations = false; //CHANGE TO USESTATE effect (should reset on page load)
           navigate("/");
         }}
       >
