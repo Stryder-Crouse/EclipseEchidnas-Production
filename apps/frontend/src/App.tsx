@@ -1,6 +1,8 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import ExampleRoute from "./routes/ExampleRoute.tsx";
+import WelcomeStart from "./routes/WelcomePage.tsx";
+import LoginPage from "./routes/LoginPage.tsx";
+import MapPage from "./routes/MapPage.tsx";
 import Stryderstestroute from "./routes/exsampleSTRoute.tsx";
 function App() {
   const router = createBrowserRouter([
@@ -11,7 +13,15 @@ function App() {
       children: [
         {
           path: "",
-          element: <ExampleRoute />,
+          element: <WelcomeStart />,
+        },
+        {
+          path: "/StaffLogin",
+          element: <LoginPage />,
+        },
+        {
+          path: "/MapPage",
+          element: <MapPage />,
         },
         //stryder's test page
         {
@@ -24,12 +34,7 @@ function App() {
 
   return <RouterProvider router={router} />;
   function Root() {
-    return (
-      <div className="w-100 h-100 d-flex flex-column overflow-auto">
-        <h1>Welcome to your starter code.</h1>
-        <Outlet />
-      </div>
-    );
+    return <Outlet />;
   }
 }
 
