@@ -12,7 +12,8 @@ import fs from "fs";
 const router: Router = express.Router();
 
 router.post("/", async function (req: Request, res: Response) {
-  let allNodeString = "";
+  //this is the post function but idk when/where
+  let allNodeString = ""; // we will call this
   let allEdgeString = "";
 
   //NODES
@@ -27,16 +28,20 @@ router.post("/", async function (req: Request, res: Response) {
   const nodeArray: node[] = readNodeCSV(allNodeString);
 
   await Promise.all(
+    //waits until all 'promises' are created (all the nodes I think)
     nodeArray.map(async (nodeData) => {
+      //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
       try {
+        // above can be interpreted as a "for each" loop
         // Attempt to create in the database
         await PrismaClient.node.create({
+          // .node comes from the "Model node" we created in the schema.prisma file
           data: {
             nodeID: nodeData.iD,
             floor: nodeData.floor,
-            building: nodeData.building,
-            nodeType: nodeData.nodeType,
-            longName: nodeData.longName,
+            building: nodeData.building, //I believe the data for the table will be inserted already in node form
+            nodeType: nodeData.nodeType, // so this program will take the node (called nodeDate) and split it
+            longName: nodeData.longName, // into its individual parts
             shortName: nodeData.shortName,
             xcoord: nodeData.coordinate.x,
             ycoord: nodeData.coordinate.y,
@@ -77,6 +82,7 @@ router.post("/", async function (req: Request, res: Response) {
       try {
         // Attempt to create in the database
         await PrismaClient.edge.create({
+          // .edge comes from the "Model node" we created in the schema.prisma file
           data: {
             edgeID: edgeData.iD,
             startNode: { connect: { nodeID: edgeData.startNode.iD } },
