@@ -27,11 +27,28 @@ export default function MapPage() {
     alignItems: "center",
   };
 
+  async function submitNodes() {
+    const data = JSON.stringify({}); //making a JSON format file from input Nodes
+    console.log(data);
+    //sends a post request the /api/load-db     (server accessing this api)
+    const res = await axios.post("/api/load-db", data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (res.status == 200) {
+      console.log("added Nodes and Edges");
+    }
+  }
+
   useEffect(() => {
     //set background to floor on component load
     document.body.style.backgroundImage =
       "url(/src/components/01_thefirstfloor.png)";
-  }, []);
+
+    submitNodes();
+  }, []); //runs automatically bc dependencies is empty
+  //whenever var in dependency is changed, useEffect w/ dep is run
 
   const Dropdown = () => {
     const [showDropdown, setShowDropdown] = useState(false);
