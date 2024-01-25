@@ -75,7 +75,7 @@ export default function MapPage() {
   return (
     <div style={backgroundStyle}>
       <Dropdown />
-      <button className={"xout"} onClick={() => navigate("/Welcome")}>
+      <button className={"xout"} onClick={() => navigate("/")}>
         X
       </button>
     </div>

@@ -14,7 +14,7 @@ export default function WelcomePage() {
     <body className={"loginBackground"}>
       {/* Button to reset and go back go welcomePage */}
 
-      <button className={"xout"} onClick={() => navigate("/Welcome")}>
+      <button className={"xout"} onClick={() => navigate("/")}>
         X
       </button>
 

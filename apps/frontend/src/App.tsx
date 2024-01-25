@@ -12,7 +12,7 @@ function App() {
       element: <Root />,
       children: [
         {
-          path: "/Welcome",
+          path: "",
           element: <WelcomeStart />,
         },
         {
