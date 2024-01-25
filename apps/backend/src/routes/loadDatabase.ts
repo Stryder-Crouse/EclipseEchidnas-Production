@@ -4,7 +4,7 @@ import { node } from "../algorithms/node.ts";
 //import { coordinate } from "../algorithms/coordinate.ts";
 import { edge } from "../algorithms/edge.ts";
 import { readNodeCSV } from "../algorithms/readCSV.ts";
-import { readEdgeCSVNOLINK } from "../algorithms/readCSV.ts";
+import { readEdgeCSV } from "../algorithms/readCSV.ts";
 import PrismaClient from "../bin/database-connection.ts"; //may also be wrong
 import path from "path";
 import fs from "fs";
@@ -75,7 +75,7 @@ router.post("/", async function (req: Request, res: Response) {
     res.status(204); // and send 204
     return;
   }
-  const edgeArray: edge[] = readEdgeCSVNOLINK(allEdgeString);
+  const edgeArray: edge[] = readEdgeCSV(allEdgeString);
 
   await Promise.all(
     edgeArray.map(async (edgeData) => {
