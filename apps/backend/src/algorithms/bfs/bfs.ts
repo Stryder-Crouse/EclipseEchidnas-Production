@@ -1,6 +1,6 @@
 import { node } from "../node.ts";
 import { Graph } from "../Graph.ts";
-import { CrapQueue } from "../queue/CrapQueue.ts";
+import { SimpleQueue } from "../queue/SimpleQueue.ts";
 import { IQueue } from "../queue/IQueue.ts";
 
 /**
@@ -34,7 +34,7 @@ export function bfs(
 
   /* symbols */
   let path_found: boolean = false; // flag to construct a path
-  const frontier: IQueue<node> = new CrapQueue<node>(); // frontier for next nodes to visit
+  const frontier: IQueue<node> = new SimpleQueue<node>(); // frontier for next nodes to visit
   const predecessor: Map<node, node | null> = new Map<node, node | null>(); // visited nodes to prevent cycles
   const path: Array<node> = new Array<node>();
 

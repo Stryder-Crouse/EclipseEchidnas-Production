@@ -115,7 +115,7 @@ export class Graph {
   /**
    * @returns a map which maps a node (obj) to an array of its adjacent nodes
    */
-  public getAdjList() {
+  public getAdjList(): Map<node, Array<node>> {
     return this.adjacent;
   }
 
@@ -125,7 +125,7 @@ export class Graph {
    * @returns returns a node with the corresponding ID or null if node not found
    *
    */
-  public idToNode(nodeID: string) {
+  public idToNode(nodeID: string): node | null {
     return this.idLookup.get(nodeID) ?? null;
   }
 

@@ -4,7 +4,7 @@ import { IQueue } from "./IQueue.ts";
  *  Absolutely miserable queue implementation
  *  Source: https://basarat.gitbook.io/algorithms/datastructures/queue
  */
-export class CrapQueue<T> implements IQueue<T> {
+export class SimpleQueue<T> implements IQueue<T> {
   /* fields */
   private storage: Array<T>;
 
