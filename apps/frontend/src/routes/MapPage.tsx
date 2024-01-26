@@ -31,24 +31,40 @@ export default function MapPage() {
     const data = JSON.stringify({}); //making a JSON format file from input Nodes
     console.log(data);
     //sends a post request the /api/load-db     (server accessing this api)
-    const res = await axios.post("/api/load-db", data, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (res.status == 200) {
-      console.log("added Nodes and Edges");
+    try {
+      await axios.post("/api/load-nodes", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (err) {
+      throw new Error("Error with loading Nodes");
     }
   }
 
-  useEffect(() => {
-    //set background to floor on component load
-    document.body.style.backgroundImage =
-      "url(/src/components/01_thefirstfloor.png)";
+  async function submitEdges() {
+    const data = JSON.stringify({}); //making a JSON format file from input Nodes
+    console.log(data);
+    //sends a post request the /api/load-db     (server accessing this api)
+    try {
+      await axios.post("/api/load-edges", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (err) {
+      throw new Error("Error with loading Edges");
+    }
+  }
 
-    submitNodes();
+  /*useEffect(() => {
+
+
   }, []); //runs automatically bc dependencies is empty
   //whenever var in dependency is changed, useEffect w/ dep is run
+
+
+   */
 
   const Dropdown = () => {
     const [showDropdown, setShowDropdown] = useState(false);
@@ -101,6 +117,11 @@ export default function MapPage() {
     if (!loadedLocations) {
       populateLocationDropdown().then();
       loadedLocations = true;
+      submitNodes(); //populates the Node table
+      submitEdges(); //populates the Edge table
+      //set background to floor on component load
+      document.body.style.backgroundImage =
+        "url(/src/components/01_thefirstfloor.png)";
     }
   }, []);
 

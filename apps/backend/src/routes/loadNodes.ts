@@ -1,10 +1,6 @@
 import express, { Router, Request, Response } from "express";
-//import { Prisma } from "database"; //may be very wrong
 import { node } from "../algorithms/node.ts";
-//import { coordinate } from "../algorithms/coordinate.ts";
-import { edge } from "../algorithms/edge.ts";
 import { readNodeCSV } from "../algorithms/readCSV.ts";
-import { readEdgeCSV } from "../algorithms/readCSV.ts";
 import PrismaClient from "../bin/database-connection.ts"; //may also be wrong
 import path from "path";
 import fs from "fs";
@@ -14,7 +10,6 @@ const router: Router = express.Router();
 router.post("/", async function (req: Request, res: Response) {
   //this is the post function but idk when/where
   let allNodeString = ""; // we will call this
-  let allEdgeString = "";
 
   //NODES
   try {
@@ -26,6 +21,8 @@ router.post("/", async function (req: Request, res: Response) {
     return;
   }
   const nodeArray: node[] = readNodeCSV(allNodeString);
+
+  //console.info("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGot Here\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
   await Promise.all(
     //waits until all 'promises' are created (all the nodes I think)
@@ -62,44 +59,6 @@ router.post("/", async function (req: Request, res: Response) {
       }
     }),
   );
-
-  //EDGES
-  try {
-    const edgeCsvLocation = path.resolve(
-      __dirname,
-      "../../resources/L1Edges.csv",
-    );
-    allEdgeString = fs.readFileSync(edgeCsvLocation, "utf-8");
-  } catch (error) {
-    console.error("CVS edge file not found");
-    res.status(204); // and send 204
-    return;
-  }
-  const edgeArray: edge[] = readEdgeCSV(allEdgeString);
-
-  await Promise.all(
-    edgeArray.map(async (edgeData) => {
-      try {
-        // Attempt to create in the database
-        await PrismaClient.edge.create({
-          // .edge comes from the "Model node" we created in the schema.prisma file
-          data: {
-            edgeID: edgeData.iD,
-            startNode: { connect: { nodeID: edgeData.startNode.iD } },
-            endNode: { connect: { nodeID: edgeData.endNode.iD } },
-          },
-        }); //this line should be changed, also
-        console.info("Successfully saved edge"); // Log that it was successful
-      } catch (error) {
-        // Log any failures
-        console.error(`Unable to save edge ${edgeData.iD}: ${error}`);
-        res.sendStatus(400); // Send error
-        return; // Don't try to send duplicate statuses
-      }
-    }),
-  );
-  //res.sendStatus(200);
-  //return;
 });
 
 export default router;
