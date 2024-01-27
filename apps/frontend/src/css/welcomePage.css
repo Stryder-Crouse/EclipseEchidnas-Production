@@ -1,7 +1,7 @@
 /** THIS IS THE ENTIRE PAGE SETUP **/
 
 .welcome {
-  background-image: url("../components/backgroundHospitalImage.jpg");
+  background-image: url("../images/backgroundHospitalImage.jpg");
 }
 .welcomeLogin {
   font-family: Roboto;

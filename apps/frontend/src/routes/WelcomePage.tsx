@@ -1,7 +1,7 @@
 /** importations **/
 import React, { useEffect } from "react";
-import "../components/welcomePage.css";
-import Logo from "../components/massGeneralBrighamLogo.png";
+import "../css/welcomePage.css";
+import Logo from "../images/massGeneralBrighamLogo.png";
 import { useNavigate } from "react-router-dom";
 
 export default function WelcomePage() {

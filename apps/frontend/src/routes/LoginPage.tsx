@@ -1,8 +1,8 @@
 /** importations **/
 import React, { useEffect } from "react";
 import { useState } from "react";
-import "../components/LoginPage.css";
-import Logo from "../components/massGeneralBrighamLogo.png";
+import "../css/LoginPage.css";
+import Logo from "../images/massGeneralBrighamLogo.png";
 import { useNavigate } from "react-router-dom";
 
 export default function WelcomePage() {
@@ -66,7 +66,6 @@ export default function WelcomePage() {
 
               <br />
               <button type="submit" className={"loginButton"}>
-                {" "}
                 Login
               </button>
             </form>
