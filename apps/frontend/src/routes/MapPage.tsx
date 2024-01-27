@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { node } from "../../../backend/src/algorithms/node.ts";
 import { readNodeCSV } from "../../../backend/src/algorithms/readCSV.ts";
 import axios from "axios";
-//import Map from "../components/01_thefirstfloor.png";
 
 let loadedLocations = false;
 
@@ -30,7 +29,7 @@ export default function MapPage() {
   useEffect(() => {
     //set background to floor on component load
     document.body.style.backgroundImage =
-      "url(/src/components/01_thefirstfloor.png)";
+      "url(/src/images/01_thefirstfloor.png)";
   }, []);
 
   const Dropdown = () => {

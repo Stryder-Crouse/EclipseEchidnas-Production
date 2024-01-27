@@ -11,7 +11,7 @@ export default function WelcomePage() {
   useEffect(() => {
     //set background to first floor on component load
     document.body.style.backgroundImage =
-      "url(/src/components/backgroundHospitalImage.jpg)";
+      "url(/src/images/backgroundHospitalImage.jpg)";
   }, []);
 
   return (
