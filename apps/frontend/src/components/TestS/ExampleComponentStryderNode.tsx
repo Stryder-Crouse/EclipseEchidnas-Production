@@ -1,7 +1,7 @@
 import axios from "axios";
 import { readNodeCSV } from "../../../../backend/src/algorithms/readCSV.ts";
 
-import { node } from "../../../../backend/src/algorithms/node.ts";
+import { node } from "../../../../backend/src/algorithms/Graph/node.ts";
 
 async function makeNodeTable() {
   const nodes: Array<node> = readNodeCSV(await getNodeCSVString());

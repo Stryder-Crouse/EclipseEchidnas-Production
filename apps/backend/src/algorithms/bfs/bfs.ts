@@ -1,5 +1,5 @@
-import { node } from "../node.ts";
-import { Graph } from "../Graph.ts";
+import { node } from "../Graph/node.ts";
+import { Graph } from "../Graph/Graph.ts";
 import { SimpleQueue } from "../queue/SimpleQueue.ts";
 import { IQueue } from "../queue/IQueue.ts";
 

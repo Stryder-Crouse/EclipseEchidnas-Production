@@ -4,9 +4,9 @@ import {
   node,
   Buildings,
   NodeType,
-} from "./node.ts";
-import { edge } from "./edge.ts";
-import { coordinate } from "./coordinate.ts";
+} from "./Graph/node.ts";
+import { edge } from "./Graph/edge.ts";
+import { coordinate } from "./Graph/coordinate.ts";
 
 /** default value for a nodes fields if any values are not found*/
 const ERROR_STRING: string = "NO VALUE";

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 // import React from 'react';
 import "../components/MapPage.css";
 import { useNavigate } from "react-router-dom";
-import { node } from "../../../backend/src/algorithms/node.ts";
+import { node } from "../../../backend/src/algorithms/Graph/node.ts";
 import { readNodeCSV } from "../../../backend/src/algorithms/readCSV.ts";
 import axios from "axios";
 //import Map from "../components/01_thefirstfloor.png";

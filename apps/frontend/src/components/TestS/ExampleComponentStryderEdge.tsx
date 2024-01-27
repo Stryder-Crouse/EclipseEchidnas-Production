@@ -4,9 +4,9 @@ import {
   readNodeCSV,
 } from "../../../../backend/src/algorithms/readCSV.ts";
 
-import { edge } from "../../../../backend/src/algorithms/edge.ts";
-import { node } from "../../../../backend/src/algorithms/node.ts";
-import { Graph } from "../../../../backend/src/algorithms/Graph.ts";
+import { edge } from "../../../../backend/src/algorithms/Graph/edge.ts";
+import { node } from "../../../../backend/src/algorithms/Graph/node.ts";
+import { Graph } from "../../../../backend/src/algorithms/Graph/Graph.ts";
 import { bfs } from "../../../../backend/src/algorithms/bfs/bfs.ts";
 
 async function makeEdgeTable() {

@@ -1,8 +1,8 @@
 import express, { Router, Request, Response } from "express";
 //import { Prisma } from "database"; //may be very wrong
-import { node } from "../algorithms/node.ts";
+import { node } from "../algorithms/Graph/node.ts";
 //import { coordinate } from "../algorithms/coordinate.ts";
-import { edge } from "../algorithms/edge.ts";
+import { edge } from "../algorithms/Graph/edge.ts";
 import { readNodeCSV } from "../algorithms/readCSV.ts";
 import { readEdgeCSV } from "../algorithms/readCSV.ts";
 import PrismaClient from "../bin/database-connection.ts"; //may also be wrong
