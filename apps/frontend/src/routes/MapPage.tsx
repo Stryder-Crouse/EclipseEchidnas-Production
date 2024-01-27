@@ -58,7 +58,7 @@ export default function MapPage() {
     return (
       <div className="dropdown">
         <button onClick={toggleDropdown} className="dropbtn">
-          Dropdown
+          L1
         </button>
         <div
           id="myDropdown"
