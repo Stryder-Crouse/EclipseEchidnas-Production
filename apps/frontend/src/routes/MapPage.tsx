@@ -57,14 +57,24 @@ export default function MapPage() {
     }
   }
 
-  /*useEffect(() => {
+  //uncomment to use
+  async function getNodes() {
+    try {
+      const response = await axios.get("/api/load-nodes");
+      console.log(response);
+    } catch (err) {
+      throw new Error("Error getting Nodes");
+    }
+  }
 
-
-  }, []); //runs automatically bc dependencies is empty
-  //whenever var in dependency is changed, useEffect w/ dep is run
-
-
-   */
+  async function getEdges() {
+    try {
+      const response = await axios.get("/api/load-edges");
+      console.log(response);
+    } catch (err) {
+      throw new Error("Error getting Edges");
+    }
+  }
 
   const Dropdown = () => {
     const [showDropdown, setShowDropdown] = useState(false);
@@ -119,6 +129,8 @@ export default function MapPage() {
       loadedLocations = true;
       submitNodes(); //populates the Node table
       submitEdges(); //populates the Edge table
+      getNodes(); //send a get request to server and received info about all nodes (uncomment to use)
+      getEdges(); //send a get request to server and received info about all edges
       //set background to floor on component load
       document.body.style.backgroundImage =
         "url(/src/components/01_thefirstfloor.png)";
