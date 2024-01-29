@@ -16,6 +16,13 @@ export default function WelcomePage() {
   const [username, setUsername] = useState(""); //Variable for Username
   const [password, setPassword] = useState(""); //Variable for Password
   const [showPassword, setShowPassword] = useState(false); //Boolean for if password is shown or not
+  const [usernameErrorState, setUsernameErrorState] = useState({
+    content: "*Username",
+  });
+  const [passwordErrorState, setPasswordErrorState] = useState({
+    content: "*Password",
+  });
+  //const [incorrectLogin, setIncorrectLogin] = useState(false);
   const navigate = useNavigate();
 
   /**
@@ -63,25 +70,35 @@ export default function WelcomePage() {
             <form
               onSubmit={() => {
                 //make sure locations can be loaded again once we comeback
-
-                navigate("/MapPage");
+                if (username === "admin" && password === "admin")
+                  navigate("/MapPage");
+                else {
+                  if (username === "") {
+                    setUsernameErrorState({ content: "**Username Required**" });
+                  }
+                  if (password === "") {
+                    setPasswordErrorState({ content: "**Password Required**" });
+                  }
+                }
               }}
             >
               <input
                 className={"usernameButton"}
+                required
                 type="text"
                 id="username"
                 value={username}
-                placeholder="Username"
+                placeholder={usernameErrorState.content}
                 onChange={(e) => setUsername(e.target.value)}
               />
               <br />
               <input
                 className={"passwordButton"}
+                required
                 type={showPassword ? "text" : "password"}
                 id="password"
                 value={password}
-                placeholder="Password"
+                placeholder={passwordErrorState.content}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <div className={"showPassButton"}>
