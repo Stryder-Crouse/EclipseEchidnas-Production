@@ -124,3 +124,17 @@
   background-color: #009ca6;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
+
+.showPassButton {
+  margin-left: 150%;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  padding: 5px;
+  width: 140px;
+  border-radius: 40px;
+  color: #f1f1f1;
+  background-color: #009ca6;
+  accent-color: #009ca6;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
