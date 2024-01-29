@@ -8,8 +8,8 @@ import fs from "fs";
 const router: Router = express.Router();
 
 router.post("/", async function (req: Request, res: Response) {
-  //this is the post function but idk when/where
-  let allNodeString = ""; // we will call this
+  //this is the post function and it is called in MapPage.tsx as of 1/29/24
+  let allNodeString = "";
 
   //NODES
   try {
