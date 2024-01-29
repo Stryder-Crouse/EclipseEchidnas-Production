@@ -1,29 +1,29 @@
 import { expect, test } from "vitest";
-import { Buildings, node, NodeType } from "../src/algorithms/Graph/node.ts";
-import { edge } from "../src/algorithms/Graph/edge.ts";
+import { Buildings, Node, NodeType } from "../src/algorithms/Graph/Node.ts";
+import { Edge } from "../src/algorithms/Graph/Edge.ts";
 import { readEdgeCSV, readNodeCSV } from "../src/algorithms/readCSV.ts";
 import { Graph } from "../src/algorithms/Graph/Graph.ts";
-import { bfs } from "../src/algorithms/bfs/bfs.ts";
+import { BFS } from "../src/algorithms/Search/BFS.ts";
 
 //BFS test
 test("BFS test", () => {
-  const nodes: Array<node> = readNodes();
-  const edges: Array<edge> = readEdges();
+  const nodes: Array<Node> = readNodes();
+  const edges: Array<Edge> = readEdges();
   const graph: Graph = new Graph(nodes, edges);
 
   //path from node 1 to node 1 is itself // ? allow for object returned to be undifind
-  const test1 = bfs(graph.idToNode("1"), graph.idToNode("1"), graph);
-  expect(test1?.at(0)?.iD).toBe("1");
+  const test1 = BFS(graph.idToNode("1"), graph.idToNode("1"), graph);
+  expect(test1?.at(0)?.id).toBe("1");
   expect(test1?.length).toBe(1);
 
   //path from node 1 to node 2 is 1 -> 2
-  const test2 = bfs(graph.idToNode("1"), graph.idToNode("2"), graph);
+  const test2 = BFS(graph.idToNode("1"), graph.idToNode("2"), graph);
   //strictequal checks whole object [deep recursive check]
   expect(test2).toStrictEqual([graph.idToNode("1"), graph.idToNode("2")]);
   expect(test2?.length).toBe(2);
 
   //best path from node 1 to node 10 is 1 -> 3 -> 6 -> 9 -> 10
-  const test3 = bfs(graph.idToNode("1"), graph.idToNode("10"), graph);
+  const test3 = BFS(graph.idToNode("1"), graph.idToNode("10"), graph);
   expect(test3).toStrictEqual([
     graph.idToNode("1"),
     graph.idToNode("3"),
@@ -34,18 +34,18 @@ test("BFS test", () => {
   expect(test3?.length).toBe(5);
 
   //no path between two separate graphs
-  const test4 = bfs(graph.idToNode("1"), graph.idToNode("14"), graph);
+  const test4 = BFS(graph.idToNode("1"), graph.idToNode("14"), graph);
   expect(test4).toBe(null);
 
   //no path to node that does not exist
-  const test5 = bfs(
+  const test5 = BFS(
     graph.idToNode("1"),
     {
       building: Buildings.UNDEFINED,
       coordinate: { x: 1, y: 1 },
       edges: [],
       floor: "",
-      iD: "Does Not exist",
+      id: "Does Not exist",
       longName: "",
       nodeType: NodeType.UNDEFINED,
       shortName: "",
@@ -58,8 +58,8 @@ test("BFS test", () => {
 
 //readCSV/Graph creation test
 test("readCSV and Graph Creation", () => {
-  const edges: Array<edge> = readEdges();
-  const nodes: Array<node> = readNodes();
+  const edges: Array<Edge> = readEdges();
+  const nodes: Array<Node> = readNodes();
   const graph: Graph = new Graph(nodes, edges);
 
   //make sure we get the same node data back out
@@ -87,12 +87,12 @@ test("readCSV and Graph Creation", () => {
 
 function graphToString(g: Graph) {
   let str = "";
-  const failNode: node = {
+  const failNode: Node = {
     building: Buildings.UNDEFINED,
     coordinate: { x: 1, y: 1 },
     edges: [],
     floor: "",
-    iD: "FAIL",
+    id: "FAIL",
     longName: "",
     nodeType: NodeType.UNDEFINED,
     shortName: "",
@@ -106,9 +106,9 @@ function graphToString(g: Graph) {
   return str;
 }
 
-function nodeToString(n: node) {
+function nodeToString(n: Node) {
   return (
-    n.iD +
+    n.id +
     "," +
     n.coordinate.x.toString() +
     "," +

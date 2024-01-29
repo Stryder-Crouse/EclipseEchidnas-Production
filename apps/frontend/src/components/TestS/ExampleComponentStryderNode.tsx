@@ -1,10 +1,10 @@
 import axios from "axios";
 import { readNodeCSV } from "../../../../backend/src/algorithms/readCSV.ts";
 
-import { node } from "../../../../backend/src/algorithms/Graph/node.ts";
+import { Node } from "../../../../backend/src/algorithms/Graph/Node.ts";
 
 async function makeNodeTable() {
-  const nodes: Array<node> = readNodeCSV(await getNodeCSVString());
+  const nodes: Array<Node> = readNodeCSV(await getNodeCSVString());
 
   console.log(nodes);
 
@@ -12,10 +12,10 @@ async function makeNodeTable() {
 
   console.log(table);
 
-  nodes.forEach(function (newNode: node) {
+  nodes.forEach(function (newNode: Node) {
     const row = document.createElement("tr");
 
-    row.appendChild(textInElement(newNode.iD, "td"));
+    row.appendChild(textInElement(newNode.id, "td"));
     row.appendChild(textInElement(newNode.coordinate.x.toString(), "td"));
     row.appendChild(textInElement(newNode.coordinate.y.toString(), "td"));
     row.appendChild(textInElement(newNode.building, "td"));
