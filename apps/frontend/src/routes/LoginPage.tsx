@@ -5,6 +5,7 @@ import "../css/LoginPage.css";
 import Logo from "../images/massGeneralBrighamLogo.png";
 import { useNavigate } from "react-router-dom";
 import Avatar from "../images/avatarIcon.png";
+import Alert from "react-bootstrap/Alert";
 //import EyeOpen from "../images/UnobscuredPassword.png";
 //import EyeClosed from "../images/ObscuredPassword.png";
 
@@ -16,13 +17,7 @@ export default function WelcomePage() {
   const [username, setUsername] = useState(""); //Variable for Username
   const [password, setPassword] = useState(""); //Variable for Password
   const [showPassword, setShowPassword] = useState(false); //Boolean for if password is shown or not
-  const [usernameErrorState, setUsernameErrorState] = useState({
-    content: "*Username",
-  });
-  const [passwordErrorState, setPasswordErrorState] = useState({
-    content: "*Password",
-  });
-  //const [incorrectLogin, setIncorrectLogin] = useState(false);
+  const [incorrectError, setIncorrectError] = useState(false);
   const navigate = useNavigate();
 
   /**
@@ -44,6 +39,50 @@ export default function WelcomePage() {
       }
   }*/
 
+  /**
+   * Assigns input to the username variable, and if empty displays alert (alert currently not working)
+   * @param username Value entered into the username textbox
+   */
+  function handleUsername(username: string) {
+    setUsername(username);
+    if (username === "") {
+      return (
+        <Alert variant={"warning"} dismissible>
+          <Alert.Heading>Username Field Required</Alert.Heading>;
+          <p>Enter valid Username to continue</p>;
+        </Alert>
+      );
+    }
+  }
+
+  /**
+   * Assigns input to the password variable, and if empty displays alert (alert currently not working)
+   * @param password Value entered into the password textbox
+   */
+  function handlePassword(password: string) {
+    setPassword(password);
+    if (password === "") {
+      return (
+        <Alert variant={"warning"} dismissible>
+          <Alert.Heading>Password Field Required</Alert.Heading>;
+          <p>Enter valid Username to continue</p>;
+        </Alert>
+      );
+    }
+  }
+
+  /**
+   * When submit button pushed, determines if values entered are valid login credentials
+   * If so, navigates to the map page
+   * If not, returns with telling the error message to show
+   */
+  function handleSubmit() {
+    if (username === "admin" && password === "admin") navigate("/MapPage");
+    else if (username != "" && password != "") {
+      setIncorrectError(true);
+    }
+  }
+
   useEffect(() => {
     //set background to hospital on component load
     document.body.style.backgroundImage =
@@ -64,43 +103,39 @@ export default function WelcomePage() {
           <img src={Logo} alt="Logo" className={"hospLogo"} />
           <br />
           {/* Profile Logo */}
-          {/* Profile Logo */}
           <img src={Avatar} alt="AvatarPic" className={"avatarPic"} />
+
           <div className={"inputBox"}>
-            <form
-              onSubmit={() => {
-                //make sure locations can be loaded again once we comeback
-                if (username === "admin" && password === "admin")
-                  navigate("/MapPage");
-                else {
-                  if (username === "") {
-                    setUsernameErrorState({ content: "**Username Required**" });
-                  }
-                  if (password === "") {
-                    setPasswordErrorState({ content: "**Password Required**" });
-                  }
-                }
-              }}
-            >
-              <input
+            <form>
+              {incorrectError ? ( //If the entered username or password are incorrect, shows error message
+                <div className={"incorrect"}>
+                  Incorrect Username or Password
+                </div>
+              ) : null}
+
+              <input //Textbox to enter Username
                 className={"usernameButton"}
                 required
                 type="text"
                 id="username"
                 value={username}
-                placeholder={usernameErrorState.content}
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder={"*Username"}
+                onChange={(e) => handleUsername(e.target.value)}
               />
+
               <br />
-              <input
+
+              <input //Textbox to enter Password
                 className={"passwordButton"}
                 required
                 type={showPassword ? "text" : "password"}
                 id="password"
                 value={password}
-                placeholder={passwordErrorState.content}
-                onChange={(e) => setPassword(e.target.value)}
+                placeholder={"*Password"}
+                onChange={(e) => handlePassword(e.target.value)}
               />
+
+              {/*Button to toggle visbility of password on/off (defaults to off)*/}
               <div className={"showPassButton"}>
                 <input
                   id={"showPass"}
@@ -109,8 +144,10 @@ export default function WelcomePage() {
                 />
                 <label htmlFor={"showPass"}>Show Password</label>
               </div>
+
               <br />
-              <button type="submit" className={"loginButton"}>
+
+              <button className={"loginButton"} onClick={() => handleSubmit()}>
                 Login
               </button>
             </form>
