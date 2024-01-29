@@ -39,3 +39,21 @@ model Edge {
   endNode     Node   @relation("endingEdges", fields: [endNodeID], references: [nodeID])
   endNodeID   String @db.VarChar(256)
 }
+
+model Request {
+  reqID         Int    @id
+  reqType       String @db.VarChar(256)
+  //reqLocation Node @relation(fields: [reqLocationID], references: [nodeID])
+  reqLocationID Int
+  extraInfo     String @db.VarChar(256)
+
+  //medReq MedReq @relation(fields: [medReq], references: [medRedID])
+  medReqID Int
+}
+
+model MedReq {
+  medRedID   Int    @id
+  medType    String @db.VarChar(256)
+  dosage     String @db.VarChar(256)
+  numDosages Int
+}
