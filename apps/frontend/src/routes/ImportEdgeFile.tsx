@@ -25,7 +25,7 @@ function formatBytes(bytes: number, decimals = 2): string {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
 }
 
-export default function ImportFile() {
+export default function ExportNodeFile() {
   // setting background photo
   useEffect(() => {
     // set background to first floor on component load
@@ -57,8 +57,8 @@ export default function ImportFile() {
 
   return (
     <form className="dropzone-box">
-      <h2>Import .CSV File</h2>
-      <p>Attach files to this window</p>
+      <h2>Import Edge .CSV File</h2>
+      <p>Attach edge files to this window</p>
       <div className="dropzone-area">
         {/* This is an SVG file for the file icon */}
         <div className="file-upload-icon">

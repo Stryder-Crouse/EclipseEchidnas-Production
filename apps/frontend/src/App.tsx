@@ -3,7 +3,8 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import WelcomeStart from "./routes/WelcomePage.tsx";
 import LoginPage from "./routes/LoginPage.tsx";
 import MapPage from "./routes/MapPage.tsx";
-import FileImport from "./routes/ImportFile.tsx";
+import NodeFileImport from "./routes/ImportNodeFile.tsx";
+import EdgeFileImport from "./routes/ImportEdgeFile.tsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -24,8 +25,12 @@ function App() {
           element: <MapPage />,
         },
         {
-          path: "/ImportFile",
-          element: <FileImport />,
+          path: "/ImportNodeFile",
+          element: <NodeFileImport />,
+        },
+        {
+          path: "/ImportEdgeFile",
+          element: <EdgeFileImport />,
         },
       ],
     },
