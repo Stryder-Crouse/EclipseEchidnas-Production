@@ -4,7 +4,7 @@
 .yarn
 **/.turbo
 
-
+**/.prisma
 
 out
 
