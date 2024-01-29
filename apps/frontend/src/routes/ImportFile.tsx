@@ -47,7 +47,7 @@ export default function ImportFile() {
 
   //Event Changer to set the files
   // THIS NEEDS TO BE WORKED INTO DATABASE
-  const handleImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCSVFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setCSVFile([file]);
@@ -85,7 +85,7 @@ export default function ImportFile() {
           id="upload-file"
           name="uploaded-file"
           accept={".csv"}
-          onChange={handleImageFile}
+          onChange={handleCSVFile}
         />
         <p className="message">
           {selectedFile
@@ -100,6 +100,8 @@ export default function ImportFile() {
         <button id="submit-button" type="submit" onClick={handleClick}>
           Save
         </button>
+        {/* NEED THIS WORKING FOR DATABASE */}
+        <button className={"export"}>Export Current</button>
       </div>
     </form>
   );
