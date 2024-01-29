@@ -20,16 +20,17 @@ model HighScore {
 }
 
 model Node {
-  nodeID     String @id @db.VarChar(256)
-  floor      String @db.VarChar(256)
-  building   String @db.VarChar(256)
-  nodeType   String @db.VarChar(256)
-  longName   String @db.VarChar(256)
-  shortName  String @db.VarChar(256)
-  xcoord     Int
-  ycoord     Int
-  startEdges Edge[] @relation("startingEdges")
-  endEdges   Edge[] @relation("endingEdges")
+  nodeID      String    @id @db.VarChar(256)
+  floor       String    @db.VarChar(256)
+  building    String    @db.VarChar(256)
+  nodeType    String    @db.VarChar(256)
+  longName    String    @db.VarChar(256)
+  shortName   String    @db.VarChar(256)
+  xcoord      Int
+  ycoord      Int
+  startEdges  Edge[]    @relation("startingEdges")
+  endEdges    Edge[]    @relation("endingEdges")
+  reqLocation Request[] @relation("requestLocation")
 }
 
 model Edge {
@@ -43,17 +44,18 @@ model Edge {
 model Request {
   reqID         Int    @id
   reqType       String @db.VarChar(256)
-  //reqLocation Node @relation(fields: [reqLocationID], references: [nodeID])
-  reqLocationID Int
+  reqLocation   Node   @relation("requestLocation", fields: [reqLocationID], references: [nodeID])
+  reqLocationID String @db.VarChar(256)
   extraInfo     String @db.VarChar(256)
 
-  //medReq MedReq @relation(fields: [medReq], references: [medRedID])
-  medReqID Int
+  medReq       MedReq? @relation("medicineRequest", fields: [medRequestID], references: [medReqID])
+  medRequestID Int     @unique
 }
 
 model MedReq {
-  medRedID   Int    @id
-  medType    String @db.VarChar(256)
-  dosage     String @db.VarChar(256)
+  medReqID   Int      @id
+  medType    String   @db.VarChar(256)
+  dosage     String   @db.VarChar(256)
   numDosages Int
+  request    Request? @relation("medicineRequest")
 }
