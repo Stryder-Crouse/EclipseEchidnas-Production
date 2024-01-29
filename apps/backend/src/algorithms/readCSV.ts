@@ -1,12 +1,12 @@
 import {
   stringToBuilding,
   stringToNodeType,
-  node,
+  Node,
   Buildings,
   NodeType,
-} from "./Graph/node.ts";
-import { edge } from "./Graph/edge.ts";
-import { coordinate } from "./Graph/coordinate.ts";
+} from "./Graph/Node.ts";
+import { Edge } from "./Graph/Edge.ts";
+import { Coordinate } from "./Graph/Coordinate.ts";
 
 /** default value for a nodes fields if any values are not found*/
 const ERROR_STRING: string = "NO VALUE";
@@ -22,8 +22,8 @@ const ERROR_STRING: string = "NO VALUE";
  * @returns a list of UNLINKED nodes based on the contents of fileContent, or [] if fileContent is invalid
  *
  */
-export function readNodeCSV(fileContent: string): Array<node> {
-  const nodes: Array<node> = [];
+export function readNodeCSV(fileContent: string): Array<Node> {
+  const nodes: Array<Node> = [];
   const allNodesString = fileContent;
   if (fileContent == null) {
     console.log("no file content found for readNodeCSV. Terminating.");
@@ -42,13 +42,13 @@ export function readNodeCSV(fileContent: string): Array<node> {
     //?? replaces the thing before it with the thing after if the thing before is null
     if (nodeValues.length == 8 && !isNaN(parseInt(nodeValues.at(1) ?? ""))) {
       //create coordinate obj for newnode
-      const nodeCoordinate: coordinate = {
+      const nodeCoordinate: Coordinate = {
         x: parseInt(nodeValues.at(1) ?? "", 10),
         y: parseInt(nodeValues.at(2) ?? "", 10),
       };
       //create new node
-      const newNode: node = {
-        iD: nodeValues.at(0) ?? ERROR_STRING,
+      const newNode: Node = {
+        id: nodeValues.at(0) ?? ERROR_STRING,
         coordinate: nodeCoordinate,
         floor: nodeValues.at(3) ?? ERROR_STRING,
         building: stringToBuilding(nodeValues.at(4) ?? Buildings.UNDEFINED),
@@ -76,8 +76,8 @@ export function readNodeCSV(fileContent: string): Array<node> {
  *
  *
  */
-export function readEdgeCSV(fileContent: string): Array<edge> {
-  const edges: Array<edge> = [];
+export function readEdgeCSV(fileContent: string): Array<Edge> {
+  const edges: Array<Edge> = [];
   const allEdgesString = fileContent;
   if (fileContent == null) {
     console.log(" no file content found for readEdgeCSV. Terminating.");
@@ -97,13 +97,13 @@ export function readEdgeCSV(fileContent: string): Array<edge> {
     if (edgeValues.length == 3 && edgeValues[0] != "edgeID") {
       //make con complete node to add to edge
 
-      const emptyCoord: coordinate = {
+      const emptyCoord: Coordinate = {
         x: 1.23456789,
         y: -1.23456789,
       };
 
-      const start: node = {
-        iD: edgeValues[1],
+      const start: Node = {
+        id: edgeValues[1],
         coordinate: emptyCoord,
         floor: "",
         building: Buildings.UNDEFINED,
@@ -113,8 +113,8 @@ export function readEdgeCSV(fileContent: string): Array<edge> {
         edges: [],
       };
 
-      const end: node = {
-        iD: edgeValues[2],
+      const end: Node = {
+        id: edgeValues[2],
         coordinate: emptyCoord,
         floor: "",
         building: Buildings.UNDEFINED,
@@ -125,8 +125,8 @@ export function readEdgeCSV(fileContent: string): Array<edge> {
       };
 
       //create new edge
-      const newEdge: edge = {
-        iD: edgeValues.at(0) ?? ERROR_STRING,
+      const newEdge: Edge = {
+        id: edgeValues.at(0) ?? ERROR_STRING,
         startNode: start,
         endNode: end,
       };

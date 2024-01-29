@@ -1,15 +1,15 @@
-import { edge } from "./edge.ts";
-import { coordinate } from "./coordinate.ts";
+import { Edge } from "./Edge.ts";
+import { Coordinate } from "./Coordinate.ts";
 /** Type to store inputted nodes.*/
-export type node = {
-  iD: string;
-  coordinate: coordinate;
+export type Node = {
+  id: string;
+  coordinate: Coordinate;
   floor: string;
   building: Buildings;
   nodeType: NodeType;
   longName: string;
   shortName: string;
-  edges: Array<edge>;
+  edges: Array<Edge>;
 };
 
 /** Enum to hold the three possible buildings in the hospital */
