@@ -4,7 +4,7 @@
   background-image: url("../images/backgroundHospitalImage.jpg");
 }
 .welcomeLogin {
-  font-family: sans-serif;
+  font-family: "Work-Sans", sans-serif;
   color: #012d5a;
 
   /** box creation **/
@@ -25,10 +25,10 @@
 
   /** box shadows **/
   box-shadow:
-    0px -0px 101px 8px rgba(0, 0, 0, 0.45),
-    25px 0px 20px -20px rgba(0, 0, 0, 0.45),
-    0px 25px 20px -20px rgba(0, 0, 0, 0.45),
-    -25px 0px 20px -20px rgba(0, 0, 0, 0.45);
+    0 -0px 101px 8px rgba(0, 0, 0, 0.45),
+    25px 0 20px -20px rgba(0, 0, 0, 0.45),
+    0 25px 20px -20px rgba(0, 0, 0, 0.45),
+    -25px 0 20px -20px rgba(0, 0, 0, 0.45);
 }
 
 /** Logo Image Alterations **/
@@ -85,7 +85,7 @@
   /** make box larger **/
   margin-top: 7rem;
   font-size: larger;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   width: 20rem;
   padding: 1.5rem;
 
@@ -108,5 +108,5 @@
 
   color: black;
   background: #d9d9d9;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
