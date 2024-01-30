@@ -1,3 +1,8 @@
+/**
+ * Calculates the file size of an imported .csv file
+ * @param bytes : raw file byte amount to be converted to actual amount
+ * @param decimals : file string size to tenths place
+ */
 function fileSizeCalculator(bytes: number, decimals = 2): string {
   // Base case when the size is 0
   if (bytes === 0) return "0 Bytes";

@@ -1,15 +1,24 @@
 import React, { useEffect, useState } from "react";
 import "../css/ImportFile.css";
-import fileSizeCalculator from "./fileSizeCalculator.tsx";
-import ExitButton from "./ExitButton.tsx";
-import ExportCSVButton from "./importCSV/ExportCSV-Button.tsx";
+import fileSizeCalculator from "../components/fileSizeCalculator.tsx";
+import ExitButton from "../components/ExitButton.tsx";
+import ExportCSVButton from "../components/importCSV/ExportCSV-Button.tsx";
 
-export default function ImportNodeFile() {
+let loadedLocations = false;
+
+export default function ExportNodeFile() {
   // setting background photo
   useEffect(() => {
     // set background to first floor on component load
     document.body.style.backgroundImage =
       "url(/src/images/backgroundHospitalImage.jpg)";
+  }, []);
+
+  useEffect(() => {
+    //make sure it only runs once (useEffect is called twice in development)
+    if (!loadedLocations) {
+      loadedLocations = true;
+    }
   }, []);
 
   //Setting states in able to handle intake of file names (start and selected)
@@ -36,8 +45,8 @@ export default function ImportNodeFile() {
 
   return (
     <form className="dropzone-box">
-      <h2>Import Node .CSV File</h2>
-      <p>Attach node files to this window</p>
+      <h2>Import Edge .CSV File</h2>
+      <p>Attach edge files to this window</p>
       <div className="dropzone-area">
         {/* This is an SVG file for the file icon */}
         <div className="file-upload-icon">
