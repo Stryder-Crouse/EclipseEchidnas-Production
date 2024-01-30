@@ -1,11 +1,11 @@
 /** importations **/
 import React, { useEffect, useState } from "react";
-// import React from 'react';
 import "../css/MapPage.css";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import { node } from "../../../backend/src/algorithms/node.ts";
 import { readNodeCSV } from "../../../backend/src/algorithms/readCSV.ts";
 import axios from "axios";
+//import Map from "../components/01_thefirstfloor.png";
 
 let loadedLocations = false;
 
@@ -14,7 +14,7 @@ export default function MapPage() {
 
   //this does not work I believe (at least to display the image- Stryder
   const backgroundStyle = {
-    backgroundImage: 'url("../components/01_thefirstfloor.png")',
+
     /* Add other background properties as needed */
     backgroundSize: "cover" /* Adjust based on your preference */,
     backgroundRepeat: "no-repeat",
@@ -57,13 +57,19 @@ export default function MapPage() {
 
     return (
       <div className="dropdown">
-        <button onClick={toggleDropdown} className="dropbtn">
-          L1
-        </button>
-        <div
+          <button onClick={toggleDropdown} className="dropbtn">
+              Dropdown
+              <ul>
+                  <li><a href="#home">Home</a></li>
+                  <li><a href="#news">News</a></li>
+                  <li><a href="#contact">Contact</a></li>
+                  <li><a href="#about">About</a></li>
+          </ul>
+      </button>
+      <div
           id="myDropdown"
           className={`dropdown-content ${showDropdown ? "show" : ""}`}
-        >
+      >
           {/*<input*/}
           {/*    type="text"*/}
           {/*    placeholder="Search.."*/}
@@ -74,6 +80,20 @@ export default function MapPage() {
           {/*/>*/}
         </div>
       </div>
+
+      // <Router>
+      //     <div>
+      //         <nav>
+      //             <ul>
+      //                 <li><Link to="/">Home</Link></li>
+      //                 <li><Link to="/about">About</Link></li>
+      //             </ul>
+      //         </nav>
+      //
+      //         <Route path="/" exact component={Home}/>
+      //         <Route path="/about" component={About}/>
+      //     </div>
+      // </Router>
     );
   };
 
