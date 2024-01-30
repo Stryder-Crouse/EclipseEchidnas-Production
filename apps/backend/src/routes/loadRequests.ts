@@ -1,7 +1,7 @@
 import express, { Router, Request, Response } from "express";
 //import { MedReq, Request } from "../algorithms/node.ts";
 import PrismaClient from "../bin/database-connection.ts";
-import { GenericRequest, ReqTypes } from "../algorithms/Requests/Request.ts"; //may also be wrong
+import { ServiceRequest, ReqTypes } from "../algorithms/Requests/Request.ts"; //may also be wrong
 
 //import path from "path";
 //import fs from "fs";
@@ -13,10 +13,11 @@ const router: Router = express.Router();
 
 //posts one new request from the user to the database
 router.post("/post-one", async function (req: Request, res: Response) {
-  const oneRequest: GenericRequest = req.body;
+  const oneRequest: ServiceRequest = req.body;
   //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
   try {
     switch (oneRequest.reqType) {
+      // If this request is for medication...
       case ReqTypes.medReq:
         // Attempt to create in the database
         await PrismaClient.request.create({
@@ -36,6 +37,17 @@ router.post("/post-one", async function (req: Request, res: Response) {
         });
         console.info("Successfully saved node"); // Log that it was successful
         break;
+      /*
+        // If this is request is for sanitation...
+        * case ReqTypes.sanReq:
+            // Attempt to create in the database
+            ... etc.
+        *   break;
+        // If this is request is for flower delivery...
+        * case ReqTypes.floReq:
+            // Attempt to create in the database
+            ... etc.
+        *   break;*/
       default:
         console.error(`Unable to save node ${oneRequest.id}: no type given`); // Log that it failed
         res.sendStatus(400); // Send error
