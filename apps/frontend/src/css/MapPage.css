@@ -69,7 +69,7 @@
 }
 
 body {
-  background-image: url("../components/01_thefirstfloor.png");
+  background-image: url("../images/01_thefirstfloor.png");
   /* Add other body styles as needed */
   background-size: cover; /* Adjust based on your preference */
   background-repeat: no-repeat;

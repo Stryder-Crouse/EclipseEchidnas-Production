@@ -1,12 +1,11 @@
 /** importations **/
 import React, { useEffect, useState } from "react";
 // import React from 'react';
-import "../components/MapPage.css";
+import "../css/MapPage.css";
 import { useNavigate } from "react-router-dom";
 import { node } from "../../../backend/src/algorithms/node.ts";
 import { readNodeCSV } from "../../../backend/src/algorithms/readCSV.ts";
 import axios from "axios";
-//import Map from "../components/01_thefirstfloor.png";
 
 let loadedLocations = false;
 
@@ -102,7 +101,7 @@ export default function MapPage() {
     return (
       <div className="dropdown">
         <button onClick={toggleDropdown} className="dropbtn">
-          Dropdown
+          L1
         </button>
         <div
           id="myDropdown"
@@ -136,7 +135,7 @@ export default function MapPage() {
       getEdges().then(); //send a get request to server and received info about all edges
       //set background to floor on component load
       document.body.style.backgroundImage =
-        "url(/src/components/01_thefirstfloor.png)";
+        "url(/src/images/01_thefirstfloor.png)";
     }
   }, []);
 
