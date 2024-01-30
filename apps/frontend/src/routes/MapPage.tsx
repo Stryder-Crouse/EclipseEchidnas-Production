@@ -11,20 +11,6 @@ import ExitButton from "../components/ExitButton.tsx";
 let loadedLocations = false;
 
 export default function MapPage() {
-  //this does not work I believe (at least to display the image- Stryder
-  // const backgroundStyle = {
-  //
-  //   /* Add other background properties as needed */
-  //   backgroundSize: "cover" /* Adjust based on your preference */,
-  //   backgroundRepeat: "no-repeat",
-  //   backgroundPosition: "center",
-  //   height: "100vh", // Make sure the container takes up the full viewport height
-  //   margin: 0, // Remove default margin to cover the whole page
-  //   display: "flex", // Optional: If you want to center content vertically and horizontally
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  // };
-
   /**
    *
    * loads nodes into the database
@@ -133,12 +119,11 @@ export default function MapPage() {
 
   //populate the dropdown with locations on page load
   // useEffect(() => {
-  //   //make sure it only runs once (useEffect is called twice in development)
-  //   if (!loadedLocations) {
-  //     populateLocationDropdown().then();
-  //     loadedLocations = true;
-  //   }
+  //   //set background to floor on component load
+  //   document.body.style.backgroundImage =
+  //     "url(/src/images/01_thefirstfloor.png)";
   // }, []);
+
   useEffect(() => {
     //make sure it only runs once (useEffect is called twice in development)
     if (!loadedLocations) {

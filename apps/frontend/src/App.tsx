@@ -17,7 +17,7 @@ function App() {
           element: <WelcomeStart />,
         },
         {
-          path: "/StaffLogin",
+          path: "/LoginPage",
           element: <LoginPage />,
         },
         {
