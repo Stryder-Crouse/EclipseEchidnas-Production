@@ -1,31 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "../css/ImportFile.css";
+import fileSizeCalculator from "./fileSizeCalculator.tsx";
+import ExitButton from "./ExitButton.tsx";
+import ExportCSVButton from "./importCSV/ExportCSV-Button.tsx";
 
-/**
- * formatBytes()
- * @param bytes
- *  - amount of space the file has
- * @param decimals
- *  - we keep the space limited to 2 decimals
- */
-function formatBytes(bytes: number, decimals = 2): string {
-  // Base case when the size is 0
-  if (bytes === 0) return "0 Bytes";
+let loadedLocations = false;
 
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-
-  //Array of possible sizes (should be to bytes, kb, mb, worst case gb)
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-
-  // Calculate appropriate size unit index based on the file size
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-  // Calculate formatted size with the specified number of decimals
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
-}
-
-export default function ImportNodeFile() {
+export default function ExportNodeFile() {
   // setting background photo
   useEffect(() => {
     // set background to first floor on component load
@@ -33,12 +14,19 @@ export default function ImportNodeFile() {
       "url(/src/images/backgroundHospitalImage.jpg)";
   }, []);
 
+  useEffect(() => {
+    //make sure it only runs once (useEffect is called twice in development)
+    if (!loadedLocations) {
+      loadedLocations = true;
+    }
+  }, []);
+
   //Setting states in able to handle intake of file names (start and selected)
   const [getCVSFile, setCSVFile] = useState<File[]>([]);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   // When clicking save, console saves the file we took in
-  // THIS NEEDS TO BE WORKED INTO THE DATABASE
+  // NEEDS TO BE WORKED INTO THE DATABASE
   const handleClick = () => {
     console.log(getCVSFile);
     const file = new File(getCVSFile, "filename.jpeg");
@@ -57,8 +45,8 @@ export default function ImportNodeFile() {
 
   return (
     <form className="dropzone-box">
-      <h2>Import Node .CSV File</h2>
-      <p>Attach node files to this window</p>
+      <h2>Import Edge .CSV File</h2>
+      <p>Attach edge files to this window</p>
       <div className="dropzone-area">
         {/* This is an SVG file for the file icon */}
         <div className="file-upload-icon">
@@ -89,7 +77,7 @@ export default function ImportNodeFile() {
         />
         <p className="message">
           {selectedFile
-            ? `Selected File: ${selectedFile.name} (${formatBytes(
+            ? `Selected File: ${selectedFile.name} (${fileSizeCalculator(
                 selectedFile.size,
               )})`
             : "No Files Selected"}
@@ -101,8 +89,9 @@ export default function ImportNodeFile() {
           Save
         </button>
         {/* NEED THIS WORKING FOR DATABASE */}
-        <button className={"export"}>Export Current</button>
+        <ExportCSVButton />
       </div>
+      <ExitButton />
     </form>
   );
 }

@@ -2,17 +2,15 @@
 import React, { useEffect } from "react";
 // import React from 'react';
 import "../css/MapPage.css";
-import { useNavigate } from "react-router-dom";
 import { node } from "../../../backend/src/algorithms/node.ts";
 import axios from "axios";
 import NavBar from "../components/NavBar.tsx";
 import { edge } from "../../../backend/src/algorithms/edge.ts";
+import ExitButton from "../components/ExitButton.tsx";
 
 let loadedLocations = false;
 
 export default function MapPage() {
-  const navigate = useNavigate();
-
   //this does not work I believe (at least to display the image- Stryder
   // const backgroundStyle = {
   //
@@ -165,16 +163,7 @@ export default function MapPage() {
       </div>
 
       <div>
-        <button
-          className={"xout"}
-          onClick={() => {
-            //make sure locations can be loaded again once we comeback
-            // loadedLocations = false; //CHANGE TO USESTATE effect (should reset on page load)
-            navigate("/");
-          }}
-        >
-          X
-        </button>
+        <ExitButton />
       </div>
     </div>
   );

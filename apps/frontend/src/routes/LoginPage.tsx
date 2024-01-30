@@ -5,6 +5,7 @@ import "../css/LoginPage.css";
 import Logo from "../images/massGeneralBrighamLogo.png";
 import { useNavigate } from "react-router-dom";
 import Avatar from "../images/avatarIcon.png";
+import ExitButton from "../components/ExitButton.tsx";
 
 export default function WelcomePage() {
   //Create username and password variables to store inputs
@@ -21,10 +22,7 @@ export default function WelcomePage() {
   return (
     <div className={"loginBackground"}>
       {/* Button to reset and go back go welcomePage */}
-
-      <button className={"xout"} onClick={() => navigate("/")}>
-        X
-      </button>
+      <ExitButton />
 
       <div className={"welcomeLogin"}>
         <div className={"contentContainers"}>

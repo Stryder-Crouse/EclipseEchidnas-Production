@@ -2,12 +2,12 @@
 import React, { useEffect } from "react";
 import "../css/welcomePage.css";
 import Logo from "../images/massGeneralBrighamLogo.png";
-import { useNavigate } from "react-router-dom";
+import GuestButton from "../components/GuestButton.tsx";
+import AdminLoginButton from "../components/AdminLoginButton.tsx";
+import "../css/component-css/guest-button.css";
 
 export default function WelcomePage() {
-  /** NAVIGATION **/
-  const navigate = useNavigate();
-
+  //Setting backgroung Image
   useEffect(() => {
     //set background to first floor on component load
     document.body.style.backgroundImage =
@@ -22,18 +22,8 @@ export default function WelcomePage() {
 
       {/* Button Container */}
       <div className={"buttonsContainer"}>
-        <button
-          className={"button guestButton"}
-          onClick={() => navigate("/MapPage")}
-        >
-          Guest
-        </button>
-        <button
-          className={"button staffLoginButton"}
-          onClick={() => navigate("/StaffLogin")}
-        >
-          Staff Login
-        </button>
+        <GuestButton />
+        <AdminLoginButton />
       </div>
     </div>
   );

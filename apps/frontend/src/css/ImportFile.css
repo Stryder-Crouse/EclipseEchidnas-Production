@@ -1,3 +1,6 @@
+/**https://github.com/atherosai/ui/tree/main/dropzone-01 **/
+/** used from here and is commercial use **/
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -104,32 +107,4 @@ body {
   padding: 0.5rem 1rem;
   color: #111926;
   cursor: pointer;
-}
-
-.export {
-  background-color: transparent;
-  border: 1px solid #d3d3d3;
-  border-radius: 0.5rem;
-  padding: 0.5rem;
-  color: #111926;
-  cursor: pointer;
-}
-
-.xout {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #012d5a; /*You can change the background color*/
-  color: #ffffff; /*You can change the text color*/
-  font-size: 16px;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-  outline: none;
-  z-index: 2;
-  /* Add additional styling as needed */
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
