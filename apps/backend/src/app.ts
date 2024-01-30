@@ -5,6 +5,7 @@ import logger from "morgan";
 import loadNodes from "./routes/loadNodes.ts";
 import loadEdges from "./routes/loadEdges.ts";
 import fileLoading from "./routes/loadFromCSVFile.ts";
+import loadRequests from "./routes/loadRequests.ts";
 
 const app: Express = express(); // Setup the backend
 
@@ -27,6 +28,7 @@ app.use(cookieParser()); // Cookie parser
 app.use("/api/load-nodes", loadNodes); //axios goes here on its own (dont worry)
 app.use("/api/load-edges", loadEdges); //creates url for function of loading nodes
 app.use("/api/loadCSVFile", fileLoading);
+app.use("/api/load-requests", loadRequests);
 
 /**
  * Catch all 404 errors, and forward them to the error handler
