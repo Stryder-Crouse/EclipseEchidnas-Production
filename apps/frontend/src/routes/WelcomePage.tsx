@@ -30,7 +30,7 @@ export default function WelcomePage() {
         </button>
         <button
           className={"button staffLoginButton"}
-          onClick={() => navigate("/StaffLogin")}
+          onClick={() => navigate("/LoginPage")}
         >
           Staff Login
         </button>

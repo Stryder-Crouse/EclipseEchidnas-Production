@@ -6,9 +6,8 @@ import {useNavigate} from "react-router-dom";
 // import { readNodeCSV } from "../../../backend/src/algorithms/readCSV.ts";
 import NavBar from "../components/NavBar.tsx";
 // import axios from "axios";
-
-//import Map from "../components/01_thefirstfloor.png";
-
+//
+//
 // let loadedLocations = false;
 
 export default function MapPage() {
@@ -33,7 +32,7 @@ export default function MapPage() {
     document.body.style.backgroundImage =
       "url(/src/images/01_thefirstfloor.png)";
   }, []);
-  //
+
   // const Dropdown = () => {
   //   const [showDropdown, setShowDropdown] = useState(false);
   //   // const [filterValue, setFilterValue] = useState('');
@@ -56,52 +55,25 @@ export default function MapPage() {
     //         }
     //     }
     // };
-
-  //   return (
-  //     <div className="dropdown">
-  //         <button onClick={toggleDropdown} className="dropbtn">
-  //             Dropdown
-  //         {/*    <ul>*/}
-  //         {/*        <li><a href="#home">Home</a></li>*/}
-  //         {/*        <li><a href="#news">News</a></li>*/}
-  //         {/*        <li><a href="#contact">Contact</a></li>*/}
-  //         {/*        <li><a href="#about">About</a></li>*/}
-  //         {/*</ul>*/}
-  //     </button>
-  //     <div
-  //         id="myDropdown"
-  //         className={`dropdown-content ${showDropdown ? "show" : ""}`}
-  //     >
-  //         {/*<input*/}
-  //         {/*    type="text"*/}
-  //         {/*    placeholder="Search.."*/}
-  //         {/*    id="myInput"*/}
-  //         {/*    value={filterValue}*/}
-  //         {/*    onChange={(e) => setFilterValue(e.target.value)}*/}
-  //         {/*    onKeyUp={filterFunction}*/}
-  //         {/*/>*/}
-  //       </div>
-  //
-  //         <NavBar />
-  //     </div>
-  //
-  //     // <Router>
-  //     //     <div>
-  //     //         <nav>
-  //     //             <ul>
-  //     //                 <li><Link to="/">Home</Link></li>
-  //     //                 <li><Link to="/about">About</Link></li>
-  //     //             </ul>
-  //     //         </nav>
-  //     //
-  //     //         <Route path="/" exact component={Home}/>
-  //     //         <Route path="/about" component={About}/>
-  //     //     </div>
-  //     // </Router>
-  //   );
+    //
+    // return (
+    //   // <div className="dropdown">
+    //   //     <button onClick={toggleDropdown} className="dropbtn">
+    //   //         L1
+    //   // </button>
+    //   // <div
+    //   //     id="myDropdown"
+    //   //     className={`dropdown-content ${showDropdown ? "show" : ""}`}
+    //   // >
+    //   //
+    //   //   </div>
+    //   //
+    //   // </div>
+    //
+    // );
   // };
 
-  //populate the dropdown with locations on page load
+  // populate the dropdown with locations on page load
   // useEffect(() => {
   //   //make sure it only runs once (useEffect is called twice in development)
   //   if (!loadedLocations) {
@@ -114,6 +86,7 @@ export default function MapPage() {
       <div>
 
           <div>
+
               <NavBar/>
           </div>
 
@@ -133,7 +106,7 @@ export default function MapPage() {
       </div>
 
   );
-}
+};
 
 /**
  * This function populates the Dropdown div with the locations represented by nodes.
@@ -164,13 +137,13 @@ export default function MapPage() {
 //     myDropdown.appendChild(row);
 //   });
 // }
-
-/**
- * request the contents from the CSV node file from the backend as a string
- *
- * @returns a the CSV node files contents as a string
- *
- */
+//
+// /**
+//  * request the contents from the CSV node file from the backend as a string
+//  *
+//  * @returns a the CSV node files contents as a string
+//  *
+//  */
 // async function getNodeCSVString(): Promise<string> {
 //   const res = await axios.get("/api/loadCVSFile/CVSnode");
 //
