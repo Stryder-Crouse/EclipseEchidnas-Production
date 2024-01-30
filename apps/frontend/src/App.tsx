@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import WelcomeStart from "./routes/WelcomePage.tsx";
 import LoginPage from "./routes/LoginPage.tsx";
 import MapPage from "./routes/MapPage.tsx";
+import ServicePage from "./routes/ServicePage.tsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -15,12 +16,16 @@ function App() {
           element: <WelcomeStart />,
         },
         {
-          path: "/StaffLogin",
+          path: "StaffLogin/",
           element: <LoginPage />,
         },
         {
-          path: "/MapPage",
+          path: "MapPage/",
           element: <MapPage />,
+        },
+        {
+          path: "ServicePage/",
+          element: <ServicePage />,
         },
       ],
     },
