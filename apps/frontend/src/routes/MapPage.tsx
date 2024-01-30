@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 // import React from 'react';
 import "../components/MapPage.css";
 import { useNavigate } from "react-router-dom";
-
 import { Node } from "../../../backend/src/algorithms/Graph/Node.ts";
 import { readNodeCSV } from "../../../backend/src/algorithms/readCSV.ts";
 import axios from "axios";
@@ -27,6 +26,55 @@ export default function MapPage() {
     justifyContent: "center",
     alignItems: "center",
   };
+
+  async function submitNodes() {
+    const data = JSON.stringify({}); //making a JSON format file from input Nodes
+    console.log(data);
+    //sends a post request the /api/load-db     (server accessing this api)
+    try {
+      await axios.post("/api/load-nodes", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (err) {
+      throw new Error("Error with loading Nodes");
+    }
+  }
+
+  async function submitEdges() {
+    const data = JSON.stringify({}); //making a JSON format file from input Nodes
+    console.log(data);
+    //sends a post request the /api/load-db     (server accessing this api)
+    try {
+      await axios.post("/api/load-edges", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (err) {
+      throw new Error("Error with loading Edges");
+    }
+  }
+
+  //uncomment to use
+  async function getNodes() {
+    try {
+      const response = await axios.get("/api/load-nodes");
+      console.log(response);
+    } catch (err) {
+      throw new Error("Error getting Nodes");
+    }
+  }
+
+  async function getEdges() {
+    try {
+      const response = await axios.get("/api/load-edges");
+      console.log(response);
+    } catch (err) {
+      throw new Error("Error getting Edges");
+    }
+  }
 
   const Dropdown = () => {
     const [showDropdown, setShowDropdown] = useState(false);
@@ -73,12 +121,22 @@ export default function MapPage() {
     );
   };
 
-  // populate the dropdown with locations on page load
+  //populate the dropdown with locations on page load
   useEffect(() => {
-    // make sure it only runs once (useEffect is called twice in development)
+    //make sure it only runs once (useEffect is called twice in development)
     if (!loadedLocations) {
       populateLocationDropdown().then();
       loadedLocations = true;
+      submitNodes().then(() => {
+        submitEdges().then();
+      }); //populates the Node table
+      //submitEdges().then();
+      //submitEdges(); //populates the Edge table
+      getNodes().then(); //send a get request to server and received info about all nodes (uncomment to use)
+      getEdges().then(); //send a get request to server and received info about all edges
+      //set background to floor on component load
+      document.body.style.backgroundImage =
+        "url(/src/components/01_thefirstfloor.png)";
     }
 
     // fix the dropdown not showing up after browser back has been pressed

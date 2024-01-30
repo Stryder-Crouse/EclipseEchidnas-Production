@@ -2,7 +2,8 @@ import createError, { HttpError } from "http-errors";
 import express, { Express, NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-import exampleRouter from "./routes/example.ts";
+import loadNodes from "./routes/loadNodes.ts";
+import loadEdges from "./routes/loadEdges.ts";
 import fileLoading from "./routes/loadFromCSVFile.ts";
 
 const app: Express = express(); // Setup the backend
@@ -22,8 +23,11 @@ app.use(cookieParser()); // Cookie parser
 
 // Setup routers. ALL ROUTERS MUST use /api as a start point, or they
 // won't be reached by the default proxy and prod setup
-app.use("/api/high-score", exampleRouter);
+
+app.use("/api/load-nodes", loadNodes); //axios goes here on its own (dont worry)
+app.use("/api/load-edges", loadEdges); //creates url for function of loading nodes
 app.use("/api/loadCSVFile", fileLoading);
+
 /**
  * Catch all 404 errors, and forward them to the error handler
  */
