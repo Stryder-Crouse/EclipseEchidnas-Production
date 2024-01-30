@@ -127,10 +127,13 @@ export default function MapPage() {
     if (!loadedLocations) {
       populateLocationDropdown().then();
       loadedLocations = true;
-      submitNodes(); //populates the Node table
-      submitEdges(); //populates the Edge table
-      getNodes(); //send a get request to server and received info about all nodes (uncomment to use)
-      getEdges(); //send a get request to server and received info about all edges
+      submitNodes().then(() => {
+        submitEdges().then();
+      }); //populates the Node table
+      //submitEdges().then();
+      //submitEdges(); //populates the Edge table
+      getNodes().then(); //send a get request to server and received info about all nodes (uncomment to use)
+      getEdges().then(); //send a get request to server and received info about all edges
       //set background to floor on component load
       document.body.style.backgroundImage =
         "url(/src/components/01_thefirstfloor.png)";
