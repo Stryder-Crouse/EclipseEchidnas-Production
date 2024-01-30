@@ -41,6 +41,41 @@ async function makeNodesExsample() {
 }
 
 /**
+ * creates all edge path between nodes
+ *
+ */
+async function makeFullPath() {
+  //load edges from file and connect themCHANGE LAYER
+  const edges: Array<Edge> = readEdgeCSV(await getEdgeCSVString());
+  const nodes: Array<Node> = readNodeCSV(await getNodeCSVString());
+  const graph: Graph = new Graph(nodes, edges);
+
+  //find svg map
+  const map = document.getElementById("map");
+
+  //for each edge add a path between two nodes
+  graph.getEdges().forEach(function (newEdge: Edge) {
+    //newPath to show edge
+    const newPath = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "line",
+    );
+
+    newPath.setAttribute("stroke", "black");
+    newPath.setAttribute("x1", newEdge.startNode.coordinate.x.toString());
+    newPath.setAttribute("y1", newEdge.startNode.coordinate.y.toString());
+    newPath.setAttribute("x2", newEdge.endNode.coordinate.x.toString());
+    newPath.setAttribute("y2", newEdge.endNode.coordinate.y.toString());
+
+    if (map == null) {
+      return;
+    }
+    //add a path to map
+    map.appendChild(newPath);
+  });
+}
+
+/**
  * creates the node objects on the map though html DOM
  *
  */
@@ -161,5 +196,6 @@ export function MapExample() {
   );
 }
 makeNodes().then();
+makeFullPath().then();
 makeNodesExsample().then();
 printConnectedNodes().then();
