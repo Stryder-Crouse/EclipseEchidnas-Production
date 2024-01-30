@@ -125,7 +125,7 @@ export default function MapPage() {
   useEffect(() => {
     //make sure it only runs once (useEffect is called twice in development)
     if (!loadedLocations) {
-      populateLocationDropdown().then();
+      //populateLocationDropdown().then();
       loadedLocations = true;
       submitNodes().then(() => {
         submitEdges().then();
@@ -164,7 +164,9 @@ export default function MapPage() {
     </div>
   );
 }
-
+//populate the dropdown DONT NEED USE EFFECT just
+//make sure to navigate to this page using href
+populateLocationDropdown().then();
 /**
  * This function populates the Dropdown div with the locations represented by nodes.
  * SHOULD ONLY BE RUN ONCE.
