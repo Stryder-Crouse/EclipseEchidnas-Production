@@ -27,11 +27,54 @@ export default function MapPage() {
     alignItems: "center",
   };
 
-  useEffect(() => {
-    //set background to floor on component load
-    document.body.style.backgroundImage =
-      "url(/src/components/01_thefirstfloor.png)";
-  }, []);
+  async function submitNodes() {
+    const data = JSON.stringify({}); //making a JSON format file from input Nodes
+    console.log(data);
+    //sends a post request the /api/load-db     (server accessing this api)
+    try {
+      await axios.post("/api/load-nodes", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (err) {
+      throw new Error("Error with loading Nodes");
+    }
+  }
+
+  async function submitEdges() {
+    const data = JSON.stringify({}); //making a JSON format file from input Nodes
+    console.log(data);
+    //sends a post request the /api/load-db     (server accessing this api)
+    try {
+      await axios.post("/api/load-edges", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (err) {
+      throw new Error("Error with loading Edges");
+    }
+  }
+
+  //uncomment to use
+  async function getNodes() {
+    try {
+      const response = await axios.get("/api/load-nodes");
+      console.log(response);
+    } catch (err) {
+      throw new Error("Error getting Nodes");
+    }
+  }
+
+  async function getEdges() {
+    try {
+      const response = await axios.get("/api/load-edges");
+      console.log(response);
+    } catch (err) {
+      throw new Error("Error getting Edges");
+    }
+  }
 
   const Dropdown = () => {
     const [showDropdown, setShowDropdown] = useState(false);
@@ -84,6 +127,16 @@ export default function MapPage() {
     if (!loadedLocations) {
       populateLocationDropdown().then();
       loadedLocations = true;
+      submitNodes().then(() => {
+        submitEdges().then();
+      }); //populates the Node table
+      //submitEdges().then();
+      //submitEdges(); //populates the Edge table
+      getNodes().then(); //send a get request to server and received info about all nodes (uncomment to use)
+      getEdges().then(); //send a get request to server and received info about all edges
+      //set background to floor on component load
+      document.body.style.backgroundImage =
+        "url(/src/components/01_thefirstfloor.png)";
     }
   }, []);
 
