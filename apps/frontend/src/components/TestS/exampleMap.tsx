@@ -41,6 +41,73 @@ async function makeNodesExsample() {
 }
 
 /**
+ * @param startNodeID the ID of the starting node to path find from
+ * @param endNodeID the ID of the goal node
+ *
+ * Creates a path from startNode to endNode on the map if the path exists
+ *
+ */
+async function makePath(startNodeID: string, endNodeID: string) {
+  //load edges from file and connect them CHANGE LAYER
+  const edges: Array<Edge> = readEdgeCSV(await getEdgeCSVString());
+  const nodes: Array<Node> = readNodeCSV(await getNodeCSVString());
+  const graph: Graph = new Graph(nodes, edges);
+
+  //find path with bfs
+  const path: Array<Node> | null = BFS(
+    graph.idToNode(startNodeID),
+    graph.idToNode(endNodeID),
+    graph,
+  );
+
+  //error is no path could be found
+  if (path == null) {
+    console.error(
+      "no path could be found between " +
+        graph.idToNode(startNodeID)?.id +
+        " and " +
+        graph.idToNode(endNodeID)?.id,
+    );
+    return;
+  }
+
+  //find svg map element
+  const map = document.getElementById("map");
+
+  //draw path onto map
+  for (let i = 0; i < path.length - 1; i++) {
+    //create new svg line obj
+    const newLine = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "line",
+    );
+
+    //get node at start of line and end of line
+    const start = path.at(i) ?? null;
+    const end = path.at(i + 1) ?? null;
+
+    if (start == null || end == null) {
+      console.error("a node is the path in null ");
+      return;
+    }
+
+    //add node cordnates to the line obj
+    newLine.setAttribute("stroke", "black");
+    newLine.setAttribute("stroke-width", "5");
+    newLine.setAttribute("x1", start.coordinate.x.toString());
+    newLine.setAttribute("y1", start.coordinate.y.toString());
+    newLine.setAttribute("x2", end.coordinate.x.toString());
+    newLine.setAttribute("y2", end.coordinate.y.toString());
+    if (map == null) {
+      console.error("map html obj could not be fond");
+      return;
+    }
+    //add line onto map
+    map.appendChild(newLine);
+  }
+}
+
+/**
  * creates the node objects on the map though html DOM
  *
  */
@@ -160,6 +227,8 @@ export function MapExample() {
     </div>
   );
 }
+
 makeNodes().then();
+makePath("CCONF003L1", "CHALL014L1").then();
 makeNodesExsample().then();
 printConnectedNodes().then();

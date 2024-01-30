@@ -138,6 +138,14 @@ export default function MapPage() {
       document.body.style.backgroundImage =
         "url(/src/components/01_thefirstfloor.png)";
     }
+
+    // fix the dropdown not showing up after browser back has been pressed
+    window.onpopstate = () => {
+      loadedLocations = false;
+    };
+
+    document.body.style.backgroundImage =
+      "url(/src/components/01_thefirstfloor.png)";
   }, []);
 
   return (
