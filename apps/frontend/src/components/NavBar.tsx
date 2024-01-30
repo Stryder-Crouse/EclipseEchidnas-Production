@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import "../css/NavBar.css";
 import { node } from "../../../backend/src/algorithms/node.ts";
 import { readNodeCSV } from "../../../backend/src/algorithms/readCSV.ts";
@@ -8,7 +7,6 @@ import axios from "axios";
 let loadedLocations = false;
 
 export default function NavBar() {
-  const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
   // const [filterValue, setFilterValue] = useState('');
 
@@ -39,20 +37,20 @@ export default function NavBar() {
       <div className="dropdown">
         <button className="dropbtn">Service Request</button>
         <div className="dropdown-content">
-          <a onClick={() => navigate("/LoginPage")}>Medicine</a>
+          <a href={"/LoginPage"}>Medicine</a>
         </div>
       </div>
       <div className="dropdown">
         <button className="dropbtn">CSV</button>
         <div className="dropdown-content">
-          <a onClick={() => navigate("/ImportNodeFile")}>Nodes</a>
-          <a onClick={() => navigate("/ImportEdgeFile")}>Edges</a>
+          <a href={"/ImportNodeFile"}>Nodes</a>
+          <a href={"/ImportEdgeFile"}>Edges</a>
         </div>
       </div>
       <div className="dropdown">
-        <button onClick={() => navigate("/LoginPage")} className="dropbtn">
-          Admin Login
-        </button>
+        <a href={"/LoginPage"} className={"login-button-link"}>
+          <button className={"dropbtn"}>Admin Login</button>
+        </a>
       </div>
     </div>
   );
