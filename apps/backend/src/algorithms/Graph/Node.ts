@@ -1,15 +1,15 @@
-import { edge } from "./edge.ts";
-import { coordinate } from "./coordinate.ts";
+import { Edge } from "./Edge.ts";
+import { Coordinate } from "./Coordinate.ts";
 /** Type to store inputted nodes.*/
-export type node = {
-  iD: string;
-  coordinate: coordinate;
+export type Node = {
+  id: string;
+  coordinate: Coordinate;
   floor: string;
   building: Buildings;
   nodeType: NodeType;
   longName: string;
   shortName: string;
-  edges: Array<edge>;
+  edges: Array<Edge>;
 };
 
 /** Enum to hold the three possible buildings in the hospital */
@@ -40,7 +40,7 @@ export enum NodeType {
  *
  *
  * @returns a Building (enum) that corresponded to the inputted string
- * or Buildings.UNDEFINED if the string does not match a building.
+ * or Buildings. UNDEFINED if the string does not match a building.
  *
  */
 export function stringToBuilding(buildingName: string) {
@@ -62,7 +62,7 @@ export function stringToBuilding(buildingName: string) {
  *
  *
  * @returns a NodeType (enum) that corresponded to the inputted string
- * or NodeType.UNDEFINED if the string does not match a node type.
+ * or NodeType. UNDEFINED if the string does not match a node type.
  *
  */
 export function stringToNodeType(nodeTypeName: string) {
