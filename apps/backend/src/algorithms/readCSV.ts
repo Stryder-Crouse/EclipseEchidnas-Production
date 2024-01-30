@@ -41,7 +41,7 @@ export function readNodeCSV(fileContent: string): Array<Node> {
     //make sure all fields are there and do a non-comprehensive check to see if the entry is valid
     //?? replaces the thing before it with the thing after if the thing before is null
     if (nodeValues.length == 8 && !isNaN(parseInt(nodeValues.at(1) ?? ""))) {
-      //create coordinate obj for newnode
+      //create coordinate obj for new node
       const nodeCoordinate: Coordinate = {
         x: parseInt(nodeValues.at(1) ?? "", 10),
         y: parseInt(nodeValues.at(2) ?? "", 10),
@@ -57,7 +57,7 @@ export function readNodeCSV(fileContent: string): Array<Node> {
         shortName: nodeValues.at(7) ?? ERROR_STRING,
         edges: [],
       };
-      //add node to nodelist
+      //add node to node list
       nodes.push(newNode);
     }
   });
@@ -97,14 +97,14 @@ export function readEdgeCSV(fileContent: string): Array<Edge> {
     if (edgeValues.length == 3 && edgeValues[0] != "edgeID") {
       //make con complete node to add to edge
 
-      const emptyCoord: Coordinate = {
+      const emptyCoordinate: Coordinate = {
         x: 1.23456789,
         y: -1.23456789,
       };
 
       const start: Node = {
         id: edgeValues[1],
-        coordinate: emptyCoord,
+        coordinate: emptyCoordinate,
         floor: "",
         building: Buildings.UNDEFINED,
         nodeType: NodeType.UNDEFINED,
@@ -115,7 +115,7 @@ export function readEdgeCSV(fileContent: string): Array<Edge> {
 
       const end: Node = {
         id: edgeValues[2],
-        coordinate: emptyCoord,
+        coordinate: emptyCoordinate,
         floor: "",
         building: Buildings.UNDEFINED,
         nodeType: NodeType.UNDEFINED,
