@@ -181,7 +181,7 @@ CMD ["yarn", "turbo", "run", "dev", "--filter=frontend"]
 
 # No need for a healthcheck (this is dev, so why bother)
 
-# Test-runner
+# TestS-runner
 FROM installer as test-runner
 WORKDIR /$WORKDIR
 
