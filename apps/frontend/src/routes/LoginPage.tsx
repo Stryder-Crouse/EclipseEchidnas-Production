@@ -40,7 +40,7 @@ export default function WelcomePage() {
   }*/
 
   /**
-   * Assigns input to the username variable, and if empty displays alert (alert currently not working)
+   * Assigns input to the username variable, and if empty displays alert (alert currently not working, alternative implemented but hope to use in future)
    * @param username Value entered into the username textbox
    */
   function handleUsername(username: string) {
@@ -56,7 +56,7 @@ export default function WelcomePage() {
   }
 
   /**
-   * Assigns input to the password variable, and if empty displays alert (alert currently not working)
+   * Assigns input to the password variable, and if empty displays alert (alert currently not working, alternative implemented but hope to use in future)
    * @param password Value entered into the password textbox
    */
   function handlePassword(password: string) {
@@ -76,7 +76,8 @@ export default function WelcomePage() {
    * If so, navigates to the map page
    * If not, returns with telling the error message to show
    */
-  function handleSubmit() {
+  function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.preventDefault();
     if (username === "admin" && password === "admin") navigate("/MapPage");
     else if (username != "" && password != "") {
       setIncorrectError(true);
@@ -92,16 +93,18 @@ export default function WelcomePage() {
   return (
     <div className={"loginBackground"}>
       {/* Button to reset and go back go welcomePage */}
-
       <button className={"xout"} onClick={() => navigate("/")}>
         X
       </button>
 
       <div className={"welcomeLogin"}>
+        {" "}
+        {/*CSS for Overall Page*/}
         <div className={"contentContainers"}>
           {/* Hospital Logo */}
           <img src={Logo} alt="Logo" className={"hospLogo"} />
           <br />
+
           {/* Profile Logo */}
           <img src={Avatar} alt="AvatarPic" className={"avatarPic"} />
 
@@ -147,7 +150,10 @@ export default function WelcomePage() {
 
               <br />
 
-              <button className={"loginButton"} onClick={() => handleSubmit()}>
+              <button
+                className={"loginButton"}
+                onClick={(e) => handleSubmit(e)}
+              >
                 Login
               </button>
             </form>

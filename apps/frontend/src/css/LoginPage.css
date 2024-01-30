@@ -141,8 +141,8 @@
 }
 
 .incorrect {
-  margin-left: 0;
-  margin-top: -50px;
+  margin-left: -10px;
+  margin-top: -40px;
   margin-bottom: 10px;
   font-size: 13px;
   font-weight: bold;
@@ -151,7 +151,7 @@
   width: 237px;
   border-radius: 40px;
   color: black;
-  background-color: #db7b7c;
+  background-color: indianred;
   accent-color: #d4d4d4;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   margin-bottom: 10px;
