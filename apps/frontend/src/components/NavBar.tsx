@@ -1,39 +1,41 @@
 
-import React, { useEffect } from "react";
-import "../css/welcomePage.css";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { useNavigate } from 'react-router-dom';
+import '../css/NavBar.css';
 
-export default function NavBar() {
-    /** NAVIGATION **/
+export default function NavBar () {
+
+
     const navigate = useNavigate();
 
-    useEffect(() => {
-        //set background to first floor on component load
-        document.body.style.backgroundImage =
-            "url(/src/images/backgroundHospitalImage.jpg)";
-    }, []);
-
     return (
-        <div className={"welcomeLogin"}>
-            {/* Div Container for the Login surrounded by white space */}
-            <h1 className={"welcomeTo"}></h1>
-
-
-            {/* Button Container */}
-            <div className={"Navbar"}>
-                <button
-                    className={"Staff Login"}
-                    onClick={() => navigate("/routes/LoginPage")}
-                >
-                    Staff Login
-                </button>
-                <button
-                    className={"Service Request"}
-                    onClick={() => navigate("/ImportEdgeFile")}
-                >
-                    Service Request
-                </button>
+        <div className="navbar-container">
+            <div className="dropdown">
+                <button onClick={() => navigate("/LoginPage")} className="dropbtn">
+                    Staff Login</button>
+            </div>
+            <div className="dropdown">
+                <button className="dropbtn">Service Request</button>
+                <div className="dropdown-content">
+                    <a href="#" onClick={() => navigate("/LoginPage")}>
+                    Medicine
+                    </a>
+                </div>
+            </div>
+            <div className="dropdown">
+                <button className="dropbtn">CSV</button>
+                <div className="dropdown-content">
+                    <a href="#" onClick={() => navigate("/ImportNodeFile")}>
+                        Nodes
+                    </a>
+                    <a href="#" onClick={() => navigate("/ImportEdgeFile")}>
+                        Edges
+                    </a>
+                </div>
             </div>
         </div>
     );
-}
+};
+
+
+
