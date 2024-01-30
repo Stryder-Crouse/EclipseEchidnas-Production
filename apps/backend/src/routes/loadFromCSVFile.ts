@@ -4,8 +4,8 @@ import * as path from "path";
 
 const router: Router = express.Router();
 
-// Whenever a get request is made to /CVSnode, send back the data from the node file.
-router.get("/CVSnode", async function (req: Request, res: Response) {
+// Whenever a get request is made to /CSVnode, send back the data from the node file.
+router.get("/CSVnode", async function (req: Request, res: Response) {
   let allNodesString = null;
   try {
     //calculate file location
@@ -13,7 +13,7 @@ router.get("/CVSnode", async function (req: Request, res: Response) {
     //read file into string
     allNodesString = fs.readFileSync(csvLocation, "utf-8");
   } catch (error) {
-    console.error("CVS node file not found");
+    console.error("CSV node file not found");
     res.status(204); // and send 204
     return;
   }
@@ -21,8 +21,8 @@ router.get("/CVSnode", async function (req: Request, res: Response) {
   res.send(allNodesString);
 });
 
-// Whenever a get request is made to /CVSedge, send back the data from the edge file.
-router.get("/CVSedge", async function (req: Request, res: Response) {
+// Whenever a get request is made to /CSVedge, send back the data from the edge file.
+router.get("/CSVedge", async function (req: Request, res: Response) {
   let allEdgeString = null;
   try {
     //calculate file location
@@ -30,7 +30,7 @@ router.get("/CVSedge", async function (req: Request, res: Response) {
     //read file into string
     allEdgeString = fs.readFileSync(csvLocation, "utf-8");
   } catch (error) {
-    console.error("CVS edge file not found");
+    console.error("CSV edge file not found");
     res.status(204); // and send 204
     return;
   }

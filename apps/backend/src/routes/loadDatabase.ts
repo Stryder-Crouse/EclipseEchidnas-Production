@@ -21,7 +21,7 @@ router.post("/", async function (req: Request, res: Response) {
     const csvLocation = path.resolve(__dirname, "../../resources/L1Nodes.csv");
     allNodeString = fs.readFileSync(csvLocation, "utf-8");
   } catch (error) {
-    console.error("CVS node file not found");
+    console.error("CSV node file not found");
     res.status(204); // and send 204
     return;
   }
@@ -71,7 +71,7 @@ router.post("/", async function (req: Request, res: Response) {
     );
     allEdgeString = fs.readFileSync(edgeCsvLocation, "utf-8");
   } catch (error) {
-    console.error("CVS edge file not found");
+    console.error("CSV edge file not found");
     res.status(204); // and send 204
     return;
   }

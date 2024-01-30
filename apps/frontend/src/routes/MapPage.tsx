@@ -141,7 +141,7 @@ async function populateLocationDropdown() {
  *
  */
 async function getNodeCSVString(): Promise<string> {
-  const res = await axios.get("/api/loadCVSFile/CVSnode");
+  const res = await axios.get("/api/loadCSVFile/CSVnode");
 
   if (res.status == 200) {
     return res.data as string;
