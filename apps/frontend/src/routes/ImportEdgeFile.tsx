@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../css/ImportFile.css";
 
 /**
@@ -25,6 +26,8 @@ function formatBytes(bytes: number, decimals = 2): string {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
 }
 
+let loadedLocations = false;
+
 export default function ExportNodeFile() {
   // setting background photo
   useEffect(() => {
@@ -32,6 +35,15 @@ export default function ExportNodeFile() {
     document.body.style.backgroundImage =
       "url(/src/images/backgroundHospitalImage.jpg)";
   }, []);
+
+  useEffect(() => {
+    //make sure it only runs once (useEffect is called twice in development)
+    if (!loadedLocations) {
+      loadedLocations = true;
+    }
+  }, []);
+
+  const navigate = useNavigate();
 
   //Setting states in able to handle intake of file names (start and selected)
   const [getCVSFile, setCSVFile] = useState<File[]>([]);
@@ -103,6 +115,16 @@ export default function ExportNodeFile() {
         {/* NEED THIS WORKING FOR DATABASE */}
         <button className={"export"}>Export Current</button>
       </div>
+      <button
+        className={"xout"}
+        onClick={() => {
+          //make sure locations can be loaded again once we comeback
+          loadedLocations = false; //CHANGE TO USESTATE effect (should reset on page load)
+          navigate("/");
+        }}
+      >
+        X
+      </button>
     </form>
   );
 }

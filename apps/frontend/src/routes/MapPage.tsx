@@ -1,10 +1,11 @@
 /** importations **/
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 // import React from 'react';
 import "../css/MapPage.css";
 import { useNavigate } from "react-router-dom";
 import { node } from "../../../backend/src/algorithms/node.ts";
 import axios from "axios";
+import NavBar from "../components/NavBar.tsx";
 import { edge } from "../../../backend/src/algorithms/edge.ts";
 
 let loadedLocations = false;
@@ -13,18 +14,18 @@ export default function MapPage() {
   const navigate = useNavigate();
 
   //this does not work I believe (at least to display the image- Stryder
-  const backgroundStyle = {
-    backgroundImage: 'url("../components/01_thefirstfloor.png")',
-    /* Add other background properties as needed */
-    backgroundSize: "cover" /* Adjust based on your preference */,
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
-    height: "100vh", // Make sure the container takes up the full viewport height
-    margin: 0, // Remove default margin to cover the whole page
-    display: "flex", // Optional: If you want to center content vertically and horizontally
-    justifyContent: "center",
-    alignItems: "center",
-  };
+  // const backgroundStyle = {
+  //
+  //   /* Add other background properties as needed */
+  //   backgroundSize: "cover" /* Adjust based on your preference */,
+  //   backgroundRepeat: "no-repeat",
+  //   backgroundPosition: "center",
+  //   height: "100vh", // Make sure the container takes up the full viewport height
+  //   margin: 0, // Remove default margin to cover the whole page
+  //   display: "flex", // Optional: If you want to center content vertically and horizontally
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  // };
 
   /**
    *
@@ -65,52 +66,81 @@ export default function MapPage() {
     }
   }
 
-  const Dropdown = () => {
-    const [showDropdown, setShowDropdown] = useState(false);
-    // const [filterValue, setFilterValue] = useState('');
+  //  const Dropdown = () => {
+  //  const [showDropdown, setShowDropdown] = useState(false);
+  // const [filterValue, setFilterValue] = useState('');
 
-    const toggleDropdown = () => {
-      setShowDropdown(!showDropdown);
-    };
+  //const toggleDropdown = () => {
+  //setShowDropdown(!showDropdown);
+  //};
 
-    // const filterFunction = () => {
-    //     const input = filterValue.toUpperCase();
-    //     const dropdown = document.getElementById('myDropdown');
-    //     const links = dropdown.getElementsByTagName('a');
-    //
-    //     for (let i = 0; i < links.length; i++) {
-    //         const txtValue = links[i].textContent || links[i].innerText;
-    //         if (txtValue.toUpperCase().indexOf(input) > -1) {
-    //             links[i].style.display = '';
-    //         } else {
-    //             links[i].style.display = 'none';
-    //         }
-    //     }
-    // };
+  // const filterFunction = () => {
+  //     const input = filterValue.toUpperCase();
+  //     const dropdown = document.getElementById('myDropdown');
+  //     const links = dropdown.getElementsByTagName('a');
+  //
+  //     for (let i = 0; i < links.length; i++) {
+  //         const txtValue = links[i].textContent || links[i].innerText;
+  //         if (txtValue.toUpperCase().indexOf(input) > -1) {
+  //             links[i].style.display = '';
+  //         } else {
+  //             links[i].style.display = 'none';
+  //         }
+  //     }
+  // };
 
-    return (
-      <div className="dropdown">
-        <button onClick={toggleDropdown} className="dropbtn">
-          L1
-        </button>
-        <div
-          id="myDropdown"
-          className={`dropdown-content ${showDropdown ? "show" : ""}`}
-        >
-          {/*<input*/}
-          {/*    type="text"*/}
-          {/*    placeholder="Search.."*/}
-          {/*    id="myInput"*/}
-          {/*    value={filterValue}*/}
-          {/*    onChange={(e) => setFilterValue(e.target.value)}*/}
-          {/*    onKeyUp={filterFunction}*/}
-          {/*/>*/}
-        </div>
-      </div>
-    );
-  };
+  //   return (
+  //     <div className="dropdown">
+  //         <button onClick={toggleDropdown} className="dropbtn">
+  //             Dropdown
+  //         {/*    <ul>*/}
+  //         {/*        <li><a href="#home">Home</a></li>*/}
+  //         {/*        <li><a href="#news">News</a></li>*/}
+  //         {/*        <li><a href="#contact">Contact</a></li>*/}
+  //         {/*        <li><a href="#about">About</a></li>*/}
+  //         {/*</ul>*/}
+  //     </button>
+  //     <div
+  //         id="myDropdown"
+  //         className={`dropdown-content ${showDropdown ? "show" : ""}`}
+  //     >
+  //         {/*<input*/}
+  //         {/*    type="text"*/}
+  //         {/*    placeholder="Search.."*/}
+  //         {/*    id="myInput"*/}
+  //         {/*    value={filterValue}*/}
+  //         {/*    onChange={(e) => setFilterValue(e.target.value)}*/}
+  //         {/*    onKeyUp={filterFunction}*/}
+  //         {/*/>*/}
+  //       </div>
+  //
+  //         <NavBar />
+  //     </div>
+  //
+  //     // <Router>
+  //     //     <div>
+  //     //         <nav>
+  //     //             <ul>
+  //     //                 <li><Link to="/">Home</Link></li>
+  //     //                 <li><Link to="/about">About</Link></li>
+  //     //             </ul>
+  //     //         </nav>
+  //     //
+  //     //         <Route path="/" exact component={Home}/>
+  //     //         <Route path="/about" component={About}/>
+  //     //     </div>
+  //     // </Router>
+  //   );
+  // };
 
   //populate the dropdown with locations on page load
+  // useEffect(() => {
+  //   //make sure it only runs once (useEffect is called twice in development)
+  //   if (!loadedLocations) {
+  //     populateLocationDropdown().then();
+  //     loadedLocations = true;
+  //   }
+  // }, []);
   useEffect(() => {
     //make sure it only runs once (useEffect is called twice in development)
     if (!loadedLocations) {
@@ -128,23 +158,29 @@ export default function MapPage() {
         "url(/src/images/01_thefirstfloor.png)";
     }
   }, []);
-
   return (
-    <div style={backgroundStyle}>
-      <Dropdown />
-      <button
-        className={"xout"}
-        onClick={() => {
-          //make sure locations can be loaded again once we comeback
-          loadedLocations = false; //CHANGE TO USESTATE effect (should reset on page load)
-          navigate("/");
-        }}
-      >
-        X
-      </button>
+    <div>
+      <div>
+        <NavBar />
+      </div>
+
+      <div>
+        <button
+          className={"xout"}
+          onClick={() => {
+            //make sure locations can be loaded again once we comeback
+            // loadedLocations = false; //CHANGE TO USESTATE effect (should reset on page load)
+            navigate("/");
+          }}
+        >
+          X
+        </button>
+      </div>
     </div>
   );
 }
+
+//populate the dropdown with locations on page load
 
 /**
  * This function populates the Dropdown div with the locations represented by nodes.
