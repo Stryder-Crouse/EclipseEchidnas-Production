@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from "express";
-import { edge } from "../algorithms/edge.ts";
+import { Edge } from "../algorithms/Graph/Edge.ts";
 import { readEdgeCSV } from "../algorithms/readCSV.ts";
 import PrismaClient from "../bin/database-connection.ts"; //may also be wrong
 import path from "path";
@@ -24,7 +24,7 @@ router.post("/", async function (req: Request, res: Response) {
     res.status(204); // and send 204
     return;
   }
-  const edgeArray: edge[] = readEdgeCSV(allEdgeString);
+  const edgeArray: Edge[] = readEdgeCSV(allEdgeString);
 
   await Promise.all(
     edgeArray.map(async (edgeData) => {
@@ -33,19 +33,19 @@ router.post("/", async function (req: Request, res: Response) {
         await PrismaClient.edge.create({
           // .edge comes from the "Model node" we created in the schema.prisma file
           data: {
-            edgeID: edgeData.iD,
+            edgeID: edgeData.id,
             startNode: {
-              connect: { nodeID: edgeData.startNode.iD },
+              connect: { nodeID: edgeData.startNode.id },
             },
             endNode: {
-              connect: { nodeID: edgeData.endNode.iD },
+              connect: { nodeID: edgeData.endNode.id },
             },
           },
         }); //this line should be changed, also
         console.info("Successfully saved edge"); // Log that it was successful
       } catch (error) {
         // Log any failures
-        console.error(`Unable to save edge ${edgeData.iD}: ${error}`);
+        console.error(`Unable to save edge ${edgeData.id}: ${error}`);
         res.sendStatus(400); // Send error
         return; // Don't try to send duplicate statuses
       }
