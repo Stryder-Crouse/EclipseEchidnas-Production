@@ -11,14 +11,14 @@ test("BFS test", () => {
   const edges: Array<Edge> = readEdges();
   const graph: Graph = new Graph(nodes, edges);
 
-  //path from node 1 to node 1 is itself // ? allow for object returned to be undifind
+  //path from node 1 to node 1 is itself // ? allow for object returned to be undefined
   const test1 = BFS(graph.idToNode("1"), graph.idToNode("1"), graph);
   expect(test1?.at(0)?.id).toBe("1");
   expect(test1?.length).toBe(1);
 
   //path from node 1 to node 2 is 1 -> 2
   const test2 = BFS(graph.idToNode("1"), graph.idToNode("2"), graph);
-  //strictequal checks whole object [deep recursive check]
+  //toStrictEqual checks whole object [deep recursive check]
   expect(test2).toStrictEqual([graph.idToNode("1"), graph.idToNode("2")]);
   expect(test2?.length).toBe(2);
 
