@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import "../css/component-css/guest-button.css";
 
 /**
@@ -8,14 +7,10 @@ import "../css/component-css/guest-button.css";
  * Leads to /MapPage
  */
 function GuestButton() {
-  const navigate = useNavigate();
   return (
-    <button
-      className={"button guestButton"}
-      onClick={() => navigate("/MapPage")}
-    >
-      Guest
-    </button>
+    <a href={"/MapPage"} className={"linkstuff"}>
+      <button className={"button guestButton"}>Guest</button>
+    </a>
   );
 }
 

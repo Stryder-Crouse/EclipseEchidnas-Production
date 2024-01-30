@@ -51,7 +51,7 @@ export default function NavBar() {
       </div>
       <div className="dropdown">
         <button onClick={() => navigate("/LoginPage")} className="dropbtn">
-          Staff Login
+          Admin Login
         </button>
       </div>
     </div>
