@@ -1,5 +1,6 @@
 import { edge } from "./edge.ts";
 import { coordinate } from "./coordinate.ts";
+
 /** Type to store inputted nodes.*/
 export type node = {
   iD: string;

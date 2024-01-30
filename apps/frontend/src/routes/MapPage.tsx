@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import "../css/MapPage.css";
 import { useNavigate } from "react-router-dom";
 import { node } from "../../../backend/src/algorithms/node.ts";
-import { readNodeCSV } from "../../../backend/src/algorithms/readCSV.ts";
 import axios from "axios";
+import { edge } from "../../../backend/src/algorithms/edge.ts";
 
 let loadedLocations = false;
 
@@ -26,6 +26,11 @@ export default function MapPage() {
     alignItems: "center",
   };
 
+  /**
+   *
+   * loads nodes into the database
+   *
+   * */
   async function submitNodes() {
     const data = JSON.stringify({}); //making a JSON format file from input Nodes
     console.log(data);
@@ -40,7 +45,11 @@ export default function MapPage() {
       throw new Error("Error with loading Nodes");
     }
   }
-
+  /**
+   *
+   * loads edges into the database
+   *
+   * */
   async function submitEdges() {
     const data = JSON.stringify({}); //making a JSON format file from input Nodes
     console.log(data);
@@ -53,25 +62,6 @@ export default function MapPage() {
       });
     } catch (err) {
       throw new Error("Error with loading Edges");
-    }
-  }
-
-  //uncomment to use
-  async function getNodes() {
-    try {
-      const response = await axios.get("/api/load-nodes");
-      console.log(response);
-    } catch (err) {
-      throw new Error("Error getting Nodes");
-    }
-  }
-
-  async function getEdges() {
-    try {
-      const response = await axios.get("/api/load-edges");
-      console.log(response);
-    } catch (err) {
-      throw new Error("Error getting Edges");
     }
   }
 
@@ -124,11 +114,11 @@ export default function MapPage() {
   useEffect(() => {
     //make sure it only runs once (useEffect is called twice in development)
     if (!loadedLocations) {
-      populateLocationDropdown().then();
       loadedLocations = true;
       submitNodes().then(() => {
         submitEdges().then();
       }); //populates the Node table
+      populateLocationDropdown().then();
       //submitEdges().then();
       //submitEdges(); //populates the Edge table
       getNodes().then(); //send a get request to server and received info about all nodes (uncomment to use)
@@ -162,7 +152,10 @@ export default function MapPage() {
  */
 async function populateLocationDropdown() {
   //read node file and create the nodes
-  const nodes: Array<node> = readNodeCSV(await getNodeCSVString());
+  const nodes = await getNodes().then();
+
+  //MAKE ALPHABETICAL
+
   //console.log("nodes");
   //console.log(nodes);
   //fine dropdown div in the html on the page
@@ -187,16 +180,36 @@ async function populateLocationDropdown() {
 }
 
 /**
- * request the contents from the CSV node file from the backend as a string
  *
- * @returns a the CSV node files contents as a string
+ * @returns a node array of nodes in the database
  *
  */
-async function getNodeCSVString(): Promise<string> {
-  const res = await axios.get("/api/loadCVSFile/CVSnode");
-
-  if (res.status == 200) {
-    return res.data as string;
+async function getNodes() {
+  try {
+    //MAKE SURE TO PASS THE TYPE axios.get<TYPE> to get the data out correctly
+    //the node[] make the data a node array type (axios does the conversion for us)
+    const response = await axios.get<node[]>("/api/load-nodes");
+    console.log(response);
+    return response.data;
+  } catch (err) {
+    throw new Error("Error getting Nodes");
   }
-  return "";
+}
+
+/**
+ *
+ *
+ * @returns an edge array of nodes in the database
+ *
+ */
+async function getEdges() {
+  try {
+    const response = await axios.get<edge[]>("/api/load-edges");
+    console.log(response);
+    console.log(response.data);
+    //create node obj from responses
+    //response.data;
+  } catch (err) {
+    throw new Error("Error getting Edges");
+  }
 }
