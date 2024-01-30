@@ -3,7 +3,6 @@ import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import WelcomeStart from "./routes/WelcomePage.tsx";
 import LoginPage from "./routes/LoginPage.tsx";
 import MapPage from "./routes/MapPage.tsx";
-import Stryderstestroute from "./routes/TestS/exsampleSTRoute.tsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -23,11 +22,6 @@ function App() {
         {
           path: "/MapPage",
           element: <MapPage />,
-        },
-        //stryder's test page
-        {
-          path: "/stryder",
-          element: <Stryderstestroute />,
         },
       ],
     },
