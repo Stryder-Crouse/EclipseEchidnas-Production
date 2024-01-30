@@ -41,38 +41,70 @@ async function makeNodesExsample() {
 }
 
 /**
- * creates all edge path between nodes
+ * @param startNodeID the ID of the starting node to path find from
+ * @param endNodeID the ID of the goal node
+ *
+ * Creates a path from startNode to endNode on the map if the path exists
  *
  */
-async function makeFullPath() {
-  //load edges from file and connect themCHANGE LAYER
+async function makePath(startNodeID: string, endNodeID: string) {
+  //load edges from file and connect them CHANGE LAYER
   const edges: Array<Edge> = readEdgeCSV(await getEdgeCSVString());
   const nodes: Array<Node> = readNodeCSV(await getNodeCSVString());
   const graph: Graph = new Graph(nodes, edges);
 
-  //find svg map
+  //find path with bfs
+  const path: Array<Node> | null = BFS(
+    graph.idToNode(startNodeID),
+    graph.idToNode(endNodeID),
+    graph,
+  );
+
+  //error is no path could be found
+  if (path == null) {
+    console.error(
+      "no path could be found between " +
+        graph.idToNode(startNodeID)?.id +
+        " and " +
+        graph.idToNode(endNodeID)?.id,
+    );
+    return;
+  }
+
+  //find svg map element
   const map = document.getElementById("map");
 
-  //for each edge add a path between two nodes
-  graph.getEdges().forEach(function (newEdge: Edge) {
-    //newPath to show edge
-    const newPath = document.createElementNS(
+  //draw path onto map
+  for (let i = 0; i < path.length - 1; i++) {
+    //create new svg line obj
+    const newLine = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "line",
     );
 
-    newPath.setAttribute("stroke", "black");
-    newPath.setAttribute("x1", newEdge.startNode.coordinate.x.toString());
-    newPath.setAttribute("y1", newEdge.startNode.coordinate.y.toString());
-    newPath.setAttribute("x2", newEdge.endNode.coordinate.x.toString());
-    newPath.setAttribute("y2", newEdge.endNode.coordinate.y.toString());
+    //get node at start of line and end of line
+    const start = path.at(i) ?? null;
+    const end = path.at(i + 1) ?? null;
 
-    if (map == null) {
+    if (start == null || end == null) {
+      console.error("a node is the path in null ");
       return;
     }
-    //add a path to map
-    map.appendChild(newPath);
-  });
+
+    //add node cordnates to the line obj
+    newLine.setAttribute("stroke", "black");
+    newLine.setAttribute("stroke-width", "5");
+    newLine.setAttribute("x1", start.coordinate.x.toString());
+    newLine.setAttribute("y1", start.coordinate.y.toString());
+    newLine.setAttribute("x2", end.coordinate.x.toString());
+    newLine.setAttribute("y2", end.coordinate.y.toString());
+    if (map == null) {
+      console.error("map html obj could not be fond");
+      return;
+    }
+    //add line onto map
+    map.appendChild(newLine);
+  }
 }
 
 /**
@@ -195,7 +227,8 @@ export function MapExample() {
     </div>
   );
 }
+
 makeNodes().then();
-makeFullPath().then();
+makePath("CCONF003L1", "CHALL014L1").then();
 makeNodesExsample().then();
 printConnectedNodes().then();

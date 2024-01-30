@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 // import React from 'react';
 import "../components/MapPage.css";
 import { useNavigate } from "react-router-dom";
+
 import { Node } from "../../../backend/src/algorithms/Graph/Node.ts";
 import { readNodeCSV } from "../../../backend/src/algorithms/readCSV.ts";
 import axios from "axios";
@@ -26,12 +27,6 @@ export default function MapPage() {
     justifyContent: "center",
     alignItems: "center",
   };
-
-  useEffect(() => {
-    //set background to floor on component load
-    document.body.style.backgroundImage =
-      "url(/src/components/01_thefirstfloor.png)";
-  }, []);
 
   const Dropdown = () => {
     const [showDropdown, setShowDropdown] = useState(false);
@@ -78,13 +73,21 @@ export default function MapPage() {
     );
   };
 
-  //populate the dropdown with locations on page load
+  // populate the dropdown with locations on page load
   useEffect(() => {
-    //make sure it only runs once (useEffect is called twice in development)
+    // make sure it only runs once (useEffect is called twice in development)
     if (!loadedLocations) {
       populateLocationDropdown().then();
       loadedLocations = true;
     }
+
+    // fix the dropdown not showing up after browser back has been pressed
+    window.onpopstate = () => {
+      loadedLocations = false;
+    };
+
+    document.body.style.backgroundImage =
+      "url(/src/components/01_thefirstfloor.png)";
   }, []);
 
   return (
