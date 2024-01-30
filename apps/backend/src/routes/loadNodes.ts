@@ -2,7 +2,6 @@ import express, { Router, Request, Response } from "express";
 //import { Prisma } from "database"; //may be very wrong
 import { Node } from "../algorithms/Graph/Node.ts";
 //import { coordinate } from "../algorithms/coordinate.ts";
-import { Edge } from "../algorithms/Graph/Edge.ts";
 import { readNodeCSV } from "../algorithms/readCSV.ts";
 import PrismaClient from "../bin/database-connection.ts"; //may also be wrong
 import path from "path";
@@ -11,7 +10,7 @@ import fs from "fs";
 const router: Router = express.Router();
 
 router.post("/", async function (req: Request, res: Response) {
-  //this is the post function and it is called in MapPage.tsx as of 1/29/24
+  //this is the post function, and it is called in MapPage.tsx as of 1/29/24
   let allNodeString = "";
 
   //NODES
