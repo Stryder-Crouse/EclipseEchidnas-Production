@@ -37,7 +37,7 @@ function textInElement(text: string, element: string) {
 }
 
 async function getNodeCSVString(): Promise<string> {
-  const res = await axios.get("/api/loadCVSFile/CVSnode");
+  const res = await axios.get("/api/loadCSVFile/CSVnode");
   console.log("data");
   console.log(res.data);
   if (res.status == 200) {
