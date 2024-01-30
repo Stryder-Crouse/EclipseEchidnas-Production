@@ -1,6 +1,7 @@
 import { Node } from "../Graph/Node.ts";
 
-export type Request = {
+/** Type to store requests*/
+export type GenericRequest = {
   id: number;
   reqType: string;
   reqLocation: Node;
@@ -9,10 +10,18 @@ export type Request = {
   medReq: MedReq;
 };
 
+/** Type to store data specific to medication requests*/
 export type MedReq = {
   medReqID: number;
   medType: string;
   dosage: string;
   numDosages: number;
-  request: Request;
+  request: GenericRequest;
 };
+
+/** Enum to hold the possible request types staff members can make */
+export enum ReqTypes {
+  medReq = "medication" /*,
+    sanReq = "sanitation",
+    floReq = "flower delivery", ... etc.*/,
+}
