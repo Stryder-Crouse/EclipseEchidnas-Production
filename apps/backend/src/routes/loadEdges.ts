@@ -55,9 +55,13 @@ router.post("/", async function (req: Request, res: Response) {
 
 router.get("/", async function (req: Request, res: Response) {
   try {
+    //try to send all the edges to the client
     res.send(await PrismaClient.edge.findMany());
+    //This is just for debugging and sends a message to the console
     console.info("\n\n\n\n\n\nSuccessfully gave you the edges\n\n\n\n\n\n");
   } catch (err) {
+    //this sends an error message to the server's console, which is viewable
+    // by going to the 'inspect' tab on the website
     console.error("\n\n\n\n\n\nUnable to send Edges\n\n\n\n\n\n");
   }
 });
