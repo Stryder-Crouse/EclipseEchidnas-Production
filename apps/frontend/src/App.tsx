@@ -5,6 +5,7 @@ import LoginPage from "./routes/LoginPage.tsx";
 import MapPage from "./routes/MapPage.tsx";
 import NodeFileImport from "./routes/ImportNodeFile.tsx";
 import EdgeFileImport from "./routes/ImportEdgeFile.tsx";
+import ServiceRequest from "./routes/ServicePage.tsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -31,6 +32,10 @@ function App() {
         {
           path: "/ImportEdgeFile",
           element: <EdgeFileImport />,
+        },
+        {
+          path: "/ServiceRequest",
+          element: <ServiceRequest />,
         },
       ],
     },
