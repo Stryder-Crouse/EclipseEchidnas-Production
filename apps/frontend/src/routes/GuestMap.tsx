@@ -1,6 +1,5 @@
 /** importations **/
 import React, { useEffect } from "react";
-import "../css/MapPage.css";
 import { Node } from "../../../backend/src/algorithms/Graph/Node.ts";
 import axios from "axios";
 import GuestNavBar from "../components/GuestNavBar.tsx";
@@ -86,8 +85,6 @@ export default function GuestMap() {
       getNodes().then(); //send a get request to server and received info about all nodes (uncomment to use)
       getEdges().then(); //send a get request to server and received info about all edges
       //set background to floor on component load
-      document.body.style.backgroundImage =
-        "url(/src/images/01_thefirstfloor.png)";
     }
   }, []);
   return (
