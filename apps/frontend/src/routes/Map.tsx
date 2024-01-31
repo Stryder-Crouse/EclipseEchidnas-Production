@@ -3,7 +3,7 @@ import { readNodeCSV } from "../../../backend/src/algorithms/readCSV.ts";
 
 import { node } from "../../../backend/src/algorithms/node.ts";
 
-import "./exsampleMap.css";
+import "../css/Map.css";
 
 /**
  * creates the node objects on the map though html DOM
@@ -77,7 +77,7 @@ export function MapExample() {
         <image
           width="5000"
           height="3400"
-          href="/src/components/00_thelowerlevel1.png"
+          href="/src/images/00_thelowerlevel1.png"
         ></image>
         <a href="https://www.w3schools.com/tags/tag_img.asp">
           <rect
