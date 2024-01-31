@@ -1,5 +1,7 @@
 import express, { Router, Request, Response } from "express";
-import { node } from "../algorithms/node.ts";
+//import { Prisma } from "database"; //may be very wrong
+import { Node } from "../algorithms/Graph/Node.ts";
+//import { coordinate } from "../algorithms/coordinate.ts";
 import { readNodeCSV } from "../algorithms/readCSV.ts";
 import PrismaClient from "../bin/database-connection.ts"; //may also be wrong
 import path from "path";
@@ -16,11 +18,11 @@ router.post("/", async function (req: Request, res: Response) {
     const csvLocation = path.resolve(__dirname, "../../resources/L1Nodes.csv");
     allNodeString = fs.readFileSync(csvLocation, "utf-8");
   } catch (error) {
-    console.error("CVS node file not found");
+    console.error("CSV node file not found");
     res.status(204); // and send 204
     return;
   }
-  const nodeArray: node[] = readNodeCSV(allNodeString);
+  const nodeArray: Node[] = readNodeCSV(allNodeString);
 
   //console.info("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGot Here\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
@@ -34,7 +36,7 @@ router.post("/", async function (req: Request, res: Response) {
         await PrismaClient.node.create({
           // .node comes from the "Model node" we created in the schema.prisma file
           data: {
-            nodeID: nodeData.iD,
+            nodeID: nodeData.id,
             floor: nodeData.floor,
             building: nodeData.building, //I believe the data for the table will be inserted already in node form
             nodeType: nodeData.nodeType, // so this program will take the node (called nodeDate) and split it
@@ -43,17 +45,17 @@ router.post("/", async function (req: Request, res: Response) {
             xcoord: nodeData.coordinate.x,
             ycoord: nodeData.coordinate.y,
             startEdges: {
-              connect: nodeData.edges.map((edge) => ({ edgeID: edge.iD })),
+              connect: nodeData.edges.map((edge) => ({ edgeID: edge.id })),
             },
             endEdges: {
-              connect: nodeData.edges.map((edge) => ({ edgeID: edge.iD })),
+              connect: nodeData.edges.map((edge) => ({ edgeID: edge.id })),
             },
           },
         }); //this line should be changed, also
         console.info("Successfully saved node"); // Log that it was successful
       } catch (error) {
         // Log any failures
-        console.error(`Unable to save node ${nodeData.iD}: ${error}`);
+        console.error(`Unable to save node ${nodeData.id}: ${error}`);
         res.sendStatus(400); // Send error
         return; // Don't try to send duplicate statuses
       }
@@ -63,7 +65,15 @@ router.post("/", async function (req: Request, res: Response) {
 
 router.get("/", async function (req: Request, res: Response) {
   try {
-    res.send(await PrismaClient.node.findMany());
+    //try to send all the nodes to the client
+    //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
+    res.send(
+      await PrismaClient.node.findMany({
+        orderBy: {
+          longName: "asc", //specify here that we are ordering the 'longName' field in ascending order (A->Z)
+        },
+      }),
+    ); //end res.send (this is what will be sent to the client)
     console.info("\n\n\n\n\n\nSuccessfully gave you the nodes\n\n\n\n\n\n");
   } catch (err) {
     console.error("\n\n\n\n\n\nUnable to send Nodes\n\n\n\n\n\n");

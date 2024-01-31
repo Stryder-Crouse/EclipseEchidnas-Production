@@ -13,14 +13,14 @@ export default function ImportNodeFile() {
   }, []);
 
   //Setting states in able to handle intake of file names (start and selected)
-  const [getCVSFile, setCSVFile] = useState<File[]>([]);
+  const [getCSVFile, setCSVFile] = useState<File[]>([]);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   // When clicking save, console saves the file we took in
   // NEEDS TO BE WORKED INTO THE DATABASE
   const handleClick = () => {
-    console.log(getCVSFile);
-    const file = new File(getCVSFile, "filename.jpeg");
+    console.log(getCSVFile);
+    const file = new File(getCSVFile, "filename.jpeg");
     console.log(file);
   };
 

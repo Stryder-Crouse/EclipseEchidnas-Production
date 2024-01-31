@@ -1,7 +1,7 @@
 import axios from "axios";
 import { readNodeCSV } from "../../../backend/src/algorithms/readCSV.ts";
 
-import { node } from "../../../backend/src/algorithms/node.ts";
+import { Node } from "../../../backend/src/algorithms/Graph/Node.ts";
 
 import "../css/Map.css";
 
@@ -11,13 +11,13 @@ import "../css/Map.css";
  */
 async function makeNodes() {
   //load nodes from file CHANGE LAYER
-  const nodes: Array<node> = readNodeCSV(await getNodeCSVString());
+  const nodes: Array<Node> = readNodeCSV(await getNodeCSVString());
 
   //find svg map
   const map = document.getElementById("map");
 
   //for each node add it to the file
-  nodes.forEach(function (newNode: node) {
+  nodes.forEach(function (newNode: Node) {
     //atag to contain link / make it clickable also contatins the circle within it
     const aTag = document.createElementNS("http://www.w3.org/2000/svg", "a");
     //circle to show node
@@ -29,7 +29,7 @@ async function makeNodes() {
     newNodeCircle.setAttribute("cx", newNode.coordinate.x.toString());
     newNodeCircle.setAttribute("cy", newNode.coordinate.y.toString());
     //id is node id
-    newNodeCircle.setAttribute("id", newNode.iD);
+    newNodeCircle.setAttribute("id", newNode.id);
     //circle radius
     newNodeCircle.setAttribute("r", "10");
     //color
@@ -52,7 +52,7 @@ async function makeNodes() {
 
 //this is a dupilate from map page so REMOVE IT
 async function getNodeCSVString(): Promise<string> {
-  const res = await axios.get("/api/loadCVSFile/CVSnode");
+  const res = await axios.get("/api/loadCSVFile/CSVnode");
   console.log("data");
   console.log(res.data);
   if (res.status == 200) {
