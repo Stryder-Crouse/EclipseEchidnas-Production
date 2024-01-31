@@ -6,6 +6,7 @@ import axios from "axios";
 import NavBar from "../components/NavBar.tsx";
 import { Edge } from "../../../backend/src/algorithms/Graph/Edge.ts";
 import ExitButton from "../components/ExitButton.tsx";
+import { Map } from "./Map.tsx";
 
 let loadedLocations = false;
 
@@ -97,6 +98,9 @@ export default function AdminMapPage() {
 
       <div>
         <ExitButton />
+      </div>
+      <div>
+        <Map />
       </div>
     </div>
   );

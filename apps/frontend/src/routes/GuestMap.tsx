@@ -6,6 +6,7 @@ import axios from "axios";
 import GuestNavBar from "../components/GuestNavBar.tsx";
 import { Edge } from "../../../backend/src/algorithms/Graph/Edge.ts";
 import ExitButton from "../components/ExitButton.tsx";
+import { Map } from "./Map.tsx";
 
 let loadedLocations = false;
 
@@ -94,9 +95,11 @@ export default function GuestMap() {
       <div>
         <GuestNavBar />
       </div>
-
       <div>
         <ExitButton />
+      </div>
+      <div>
+        <Map />
       </div>
     </div>
   );
