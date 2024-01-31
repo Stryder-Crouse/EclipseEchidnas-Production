@@ -1,6 +1,5 @@
 /** importations **/
 import React, { useEffect } from "react";
-// import React from 'react';
 import "../css/MapPage.css";
 import { node } from "../../../backend/src/algorithms/node.ts";
 import axios from "axios";
@@ -10,7 +9,7 @@ import ExitButton from "../components/ExitButton.tsx";
 
 let loadedLocations = false;
 
-export default function MapPage() {
+export default function AdminMapPage() {
   /**
    *
    * loads nodes into the database
@@ -72,57 +71,6 @@ export default function MapPage() {
   //         }
   //     }
   // };
-
-  //   return (
-  //     <div className="dropdown">
-  //         <button onClick={toggleDropdown} className="dropbtn">
-  //             Dropdown
-  //         {/*    <ul>*/}
-  //         {/*        <li><a href="#home">Home</a></li>*/}
-  //         {/*        <li><a href="#news">News</a></li>*/}
-  //         {/*        <li><a href="#contact">Contact</a></li>*/}
-  //         {/*        <li><a href="#about">About</a></li>*/}
-  //         {/*</ul>*/}
-  //     </button>
-  //     <div
-  //         id="myDropdown"
-  //         className={`dropdown-content ${showDropdown ? "show" : ""}`}
-  //     >
-  //         {/*<input*/}
-  //         {/*    type="text"*/}
-  //         {/*    placeholder="Search.."*/}
-  //         {/*    id="myInput"*/}
-  //         {/*    value={filterValue}*/}
-  //         {/*    onChange={(e) => setFilterValue(e.target.value)}*/}
-  //         {/*    onKeyUp={filterFunction}*/}
-  //         {/*/>*/}
-  //       </div>
-  //
-  //         <NavBar />
-  //     </div>
-  //
-  //     // <Router>
-  //     //     <div>
-  //     //         <nav>
-  //     //             <ul>
-  //     //                 <li><Link to="/">Home</Link></li>
-  //     //                 <li><Link to="/about">About</Link></li>
-  //     //             </ul>
-  //     //         </nav>
-  //     //
-  //     //         <Route path="/" exact component={Home}/>
-  //     //         <Route path="/about" component={About}/>
-  //     //     </div>
-  //     // </Router>
-  //   );
-  // };
-
-  //populate the dropdown with locations on page load
-  // useEffect(() => {
-  //   //set background to floor on component load
-  //   document.body.style.backgroundImage =
-  //     "url(/src/images/01_thefirstfloor.png)";
-  // }, []);
 
   useEffect(() => {
     //make sure it only runs once (useEffect is called twice in development)

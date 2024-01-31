@@ -42,7 +42,7 @@ function LoginForm() {
    */
   function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
-    if (username === "admin" && password === "admin") navigate("/MapPage");
+    if (username === "admin" && password === "admin") navigate("/AdminMapPage");
     else if (username != "" && password != "") {
       setIncorrectError(true);
     }

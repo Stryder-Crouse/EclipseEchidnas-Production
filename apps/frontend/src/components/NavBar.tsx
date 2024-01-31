@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../css/NavBar.css";
+import "./component-css/NavBar.css";
 import { node } from "../../../backend/src/algorithms/node.ts";
 import { readNodeCSV } from "../../../backend/src/algorithms/readCSV.ts";
 import axios from "axios";
@@ -38,18 +38,15 @@ export default function NavBar() {
         <button className="dropbtn">Service Request</button>
         <div className="dropdown-content">
           <a href={"/MedicineRequest"}>Medicine</a>
-        </div>
+            <a href={"/MedicineRequest"}>List Of Requests </a>
       </div>
-      <div className="dropdown">
+    </div>
+    <div className="dropdown">
         <a href={"/FileTable"}>
           <button className="dropbtn">CSV</button>
         </a>
       </div>
-      <div className="dropdown">
-        <a href={"/LoginPage"} className={"login-button-link"}>
-          <button className={"dropbtn"}>Admin Login</button>
-        </a>
-      </div>
+
     </div>
   );
 }

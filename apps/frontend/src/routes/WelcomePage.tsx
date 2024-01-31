@@ -4,7 +4,7 @@ import "../css/welcomePage.css";
 import Logo from "../images/massGeneralBrighamLogo.png";
 import GuestButton from "../components/GuestButton.tsx";
 import AdminLoginButton from "../components/AdminLoginButton.tsx";
-import "../css/component-css/guest-button.css";
+import "../components/component-css/guest-button.css";
 
 export default function WelcomePage() {
   //Setting backgroung Image

@@ -2,11 +2,12 @@ import React from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import WelcomeStart from "./routes/WelcomePage.tsx";
 import LoginPage from "./routes/LoginPage.tsx";
-import MapPage from "./routes/MapPage.tsx";
+import AdminMapPage from "./routes/AdminMapPage.tsx";
 import NodeFileImport from "./routes/ImportNodeFile.tsx";
 import EdgeFileImport from "./routes/ImportEdgeFile.tsx";
 import MedicineRequest from "./routes/MedicineRequest.tsx";
 import FileTable from "./routes/FileTable.tsx";
+import GuestMap from "./routes/GuestMap.tsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -23,8 +24,8 @@ function App() {
           element: <LoginPage />,
         },
         {
-          path: "/MapPage",
-          element: <MapPage />,
+          path: "/AdminMapPage",
+          element: <AdminMapPage />,
         },
         {
           path: "/ImportNodeFile",
@@ -42,6 +43,12 @@ function App() {
           path: "/FileTable",
           element: <FileTable />,
         },
+          {
+              path: "/GuestMap",
+              element: <GuestMap />,
+        },
+
+
       ],
     },
   ]);

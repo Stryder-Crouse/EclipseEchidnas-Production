@@ -1,8 +1,10 @@
 /** importations **/
 import React, { ChangeEvent, useState } from "react";
 import "../css/medicineRequest.css";
+import AdminPageNavBar from "../components/AdminPageNavBar.tsx";
 import RequestButtons from "../components/RequestButtons.tsx";
 import ExitButton from "../components/ExitButton.tsx";
+// import GuestButton from "../components/GuestButton.tsx";
 
 export default function MedicineRequest() {
   const [medRequestLocale, setMedRequestLocale] = useState("");
@@ -38,6 +40,9 @@ export default function MedicineRequest() {
   }
 
   return (
+      <div>
+          <AdminPageNavBar />
+
     <div className={"servicePage grid"}>
       <form>
         <input
@@ -77,8 +82,10 @@ export default function MedicineRequest() {
         <br />
         <RequestButtons submit={submit} />
         <button onClick={sayHi}>test</button>
+          {/*// this should technically take you to list of service request*/}
       </form>
       <ExitButton />
     </div>
+      </div>
   );
 }
