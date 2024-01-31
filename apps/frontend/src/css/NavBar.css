@@ -1,14 +1,16 @@
 .navbar-container {
   display: flex;
   justify-content: center;
+  margin-top: 2rem;
   align-items: center;
-  padding: 4px;
-  background-color: #f0f0f0;
+  padding: 1rem;
+  background-color: #f1f1f1;
   position: fixed;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 1;
   border-radius: 50px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
 .dropdown {
@@ -17,7 +19,7 @@
 }
 
 .dropbtn {
-  background-color: #04aa6d;
+  background-color: #012d5a;
   color: white;
   padding: 1vh;
   font-size: 16px;
@@ -49,8 +51,4 @@
 
 .dropdown:hover .dropdown-content {
   display: block;
-}
-
-.dropdown:hover .dropbtn {
-  background-color: #3e8e41;
 }
