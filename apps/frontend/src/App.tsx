@@ -6,6 +6,7 @@ import AdminMapPage from "./routes/AdminMapPage.tsx";
 import NodeFileImport from "./routes/ImportNodeFile.tsx";
 import EdgeFileImport from "./routes/ImportEdgeFile.tsx";
 import MedicineRequest from "./routes/MedicineRequest.tsx";
+import RequestList from "./routes/RequestList.tsx";
 import FileTable from "./routes/FileTable.tsx";
 import GuestMap from "./routes/GuestMap.tsx";
 function App() {
@@ -46,6 +47,10 @@ function App() {
         {
           path: "/GuestMap",
           element: <GuestMap />,
+        },
+        {
+          path: "/RequestList",
+          element: <RequestList />,
         },
       ],
     },
