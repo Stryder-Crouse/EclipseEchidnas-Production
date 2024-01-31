@@ -40,52 +40,52 @@ export default function MedicineRequest() {
   }
 
   return (
-      <div>
-          <AdminPageNavBar />
+    <div>
+      <AdminPageNavBar />
 
-    <div className={"servicePage grid"}>
-      <form>
-        <input
-          type={"radio"}
-          id={"medRequest"}
-          name={"request"}
-          value={"Medicine Request"}
-        />
-        <label form={"medRequest"}>Medicine Request</label>
-        <br />
-        <input
-          type={"text"}
-          id={"medRequestLocal"}
-          name={"medRequestLocal"}
-          placeholder={"Location"}
-          value={medRequestLocale}
-          onChange={handleMedRequestLocaleInput}
-        />
-        <br />
-        <input
-          type={"text"}
-          id={"medRequestType"}
-          name={"medRequestType"}
-          placeholder={"Medicine Type"}
-          value={medRequestType}
-          onChange={handleMedRequestTypeInput}
-        />
-        <br />
-        <input
-          type={"text"}
-          id={"medRequestDose"}
-          name={"medRequestDoseage"}
-          placeholder={"Medicine Doseage"}
-          value={medRequestDoses}
-          onChange={handleMedRequestDoseInput}
-        />
-        <br />
-        <RequestButtons submit={submit} />
-        <button onClick={sayHi}>test</button>
+      <div className={"servicePage grid"}>
+        <form>
+          <input
+            type={"radio"}
+            id={"medRequest"}
+            name={"request"}
+            value={"Medicine Request"}
+          />
+          <label form={"medRequest"}>Medicine Request</label>
+          <br />
+          <input
+            type={"text"}
+            id={"medRequestLocal"}
+            name={"medRequestLocal"}
+            placeholder={"Location"}
+            value={medRequestLocale}
+            onChange={handleMedRequestLocaleInput}
+          />
+          <br />
+          <input
+            type={"text"}
+            id={"medRequestType"}
+            name={"medRequestType"}
+            placeholder={"Medicine Type"}
+            value={medRequestType}
+            onChange={handleMedRequestTypeInput}
+          />
+          <br />
+          <input
+            type={"text"}
+            id={"medRequestDose"}
+            name={"medRequestDoseage"}
+            placeholder={"Medicine Doseage"}
+            value={medRequestDoses}
+            onChange={handleMedRequestDoseInput}
+          />
+          <br />
+          <RequestButtons submit={submit} />
+          <button onClick={sayHi}>test</button>
           {/*// this should technically take you to list of service request*/}
-      </form>
-      <ExitButton />
-    </div>
+        </form>
+        <ExitButton />
       </div>
+    </div>
   );
 }

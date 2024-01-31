@@ -1,21 +1,19 @@
-import React, {  useEffect } from "react";
+import React, { useEffect } from "react";
 import "./component-css/NavBar.css";
-import { node } from "../../../backend/src/algorithms/node.ts";
+import { Node } from "../../../backend/src/algorithms/Graph/Node.ts";
 import { readNodeCSV } from "../../../backend/src/algorithms/readCSV.ts";
 import axios from "axios";
 
 let loadedLocations = false;
 
 export default function NavBar() {
-
-
-    useEffect(() => {
-        //make sure it only runs once (useEffect is called twice in development)
-        if (!loadedLocations) {
-            populateLocationDropdown().then();
-            loadedLocations = true;
-        }
-    }, []);
+  useEffect(() => {
+    //make sure it only runs once (useEffect is called twice in development)
+    if (!loadedLocations) {
+      populateLocationDropdown().then();
+      loadedLocations = true;
+    }
+  }, []);
 
     return (
         <div className="navbar-container">
@@ -46,29 +44,29 @@ export default function NavBar() {
 }
 
 async function populateLocationDropdown() {
-    //read node file and create the nodes
-    const nodes: Array<node> = readNodeCSV(await getNodeCSVString());
-    //console.log("nodes");
-    //console.log(nodes);
-    //fine dropdown div in the html on the page
-    const myDropdown = document.getElementById("myDropdown");
-    //console.log("myDropdown");
-    //console.log(myDropdown);
-    //for each node
-    nodes.forEach(function (newNode: node) {
-        //create a element
-        const row = document.createElement("a");
+  //read node file and create the nodes
+  const nodes: Array<Node> = readNodeCSV(await getNodeCSVString());
+  //console.log("nodes");
+  //console.log(nodes);
+  //fine dropdown div in the html on the page
+  const myDropdown = document.getElementById("myDropdown");
+  //console.log("myDropdown");
+  //console.log(myDropdown);
+  //for each node
+  nodes.forEach(function (newNode: Node) {
+    //create a element
+    const row = document.createElement("a");
 
-        //use longName of node as the text content for new a tag
-        row.textContent = newNode.longName;
+    //use longName of node as the text content for new a tag
+    row.textContent = newNode.longName;
 
-        if (myDropdown == null) {
-            return;
-        }
+    if (myDropdown == null) {
+      return;
+    }
 
-        //add new a element to dropdown
-        myDropdown.appendChild(row);
-    });
+    //add new a element to dropdown
+    myDropdown.appendChild(row);
+  });
 }
 
 /**
@@ -78,10 +76,10 @@ async function populateLocationDropdown() {
  *
  */
 async function getNodeCSVString(): Promise<string> {
-    const res = await axios.get("/api/loadCVSFile/CVSnode");
+  const res = await axios.get("/api/loadCSVFile/CSVnode");
 
-    if (res.status == 200) {
-        return res.data as string;
-    }
-    return "";
+  if (res.status == 200) {
+    return res.data as string;
+  }
+  return "";
 }

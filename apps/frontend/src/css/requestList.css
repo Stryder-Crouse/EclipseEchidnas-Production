@@ -1,0 +1,22 @@
+.table-container {
+  border-radius: 2rem;
+  background-color: #fcfcfd;
+  padding: 1.5rem;
+  width: 50%;
+  margin: 1rem;
+  max-width: 47.5rem;
+  border: 2px solid #edeef1;
+  box-shadow: 0 4px 16px 0 rgba(148, 156, 169, 0.15);
+  text-align: left;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  overflow: auto;
+}
+
+td:nth-child(2) {
+  color: black;
+  width: 5rem;
+}

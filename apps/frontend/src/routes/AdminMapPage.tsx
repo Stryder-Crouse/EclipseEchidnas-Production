@@ -1,11 +1,12 @@
 /** importations **/
 import React, { useEffect } from "react";
 import "../css/MapPage.css";
-import { node } from "../../../backend/src/algorithms/node.ts";
+import { Node } from "../../../backend/src/algorithms/Graph/Node.ts";
 import axios from "axios";
 import NavBar from "../components/NavBar.tsx";
-import { edge } from "../../../backend/src/algorithms/edge.ts";
+import { Edge } from "../../../backend/src/algorithms/Graph/Edge.ts";
 import ExitButton from "../components/ExitButton.tsx";
+import { Map } from "./Map.tsx";
 
 let loadedLocations = false;
 
@@ -98,6 +99,9 @@ export default function AdminMapPage() {
       <div>
         <ExitButton />
       </div>
+      <div>
+        <Map />
+      </div>
     </div>
   );
 }
@@ -121,7 +125,7 @@ async function populateLocationDropdown() {
   //console.log("myDropdown");
   //console.log(myDropdown);
   //for each node
-  nodes.forEach(function (newNode: node) {
+  nodes.forEach(function (newNode: Node) {
     //create a element
     const row = document.createElement("a");
 
@@ -146,7 +150,7 @@ async function getNodes() {
   try {
     //MAKE SURE TO PASS THE TYPE axios.get<TYPE> to get the data out correctly
     //the node[] make the data a node array type (axios does the conversion for us)
-    const response = await axios.get<node[]>("/api/load-nodes");
+    const response = await axios.get<Node[]>("/api/load-nodes");
     console.log(response);
     return response.data;
   } catch (err) {
@@ -162,7 +166,7 @@ async function getNodes() {
  */
 async function getEdges() {
   try {
-    const response = await axios.get<edge[]>("/api/load-edges");
+    const response = await axios.get<Edge[]>("/api/load-edges");
     console.log(response);
     console.log(response.data);
     //create node obj from responses

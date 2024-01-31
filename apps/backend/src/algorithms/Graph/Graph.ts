@@ -1,20 +1,20 @@
-import { node } from "./node.ts";
-import { edge } from "./edge.ts";
+import { Node } from "./Node.ts";
+import { Edge } from "./Edge.ts";
 
 /**
  * Class that represents an undirected graph
  */
 export class Graph {
   /** Stores all nodes in the graph*/
-  private readonly nodes: Array<node>;
+  private readonly nodes: Array<Node>;
   /** Stores all edges in the graph*/
-  private readonly edges: Array<edge>;
+  private readonly edges: Array<Edge>;
   /** Stores a map that maps a node obj to at list of node obj
    * adjacent to it in the graph*/
-  private readonly adjacent: Map<node, Array<node>>;
+  private readonly adjacent: Map<Node, Array<Node>>;
   /** Stores a map that maps a node id (string) to its
    * corresponding node*/
-  private readonly idLookup: Map<string, node>;
+  private readonly idLookup: Map<string, Node>;
 
   /**
    * Constructs a graph based on the pass nodes and edges
@@ -23,25 +23,25 @@ export class Graph {
    * @param edges - edges to be added to the list of nodes to create the graph
    *
    */
-  constructor(unLinkedNodes: Array<node>, edges: Array<edge>) {
+  constructor(unLinkedNodes: Array<Node>, edges: Array<Edge>) {
     //create map to relate node id strings to their corresponding node obj
-    const nodeMap = new Map<string, node>();
+    const nodeMap = new Map<string, Node>();
     //create map relate a node obj to the list of nodes it is adjacent to
-    const adj = new Map<node, Array<node>>();
+    const adj = new Map<Node, Array<Node>>();
 
     //for each inputted node
     unLinkedNodes.forEach(function (node) {
       //map node id to its node
-      nodeMap.set(node.iD, node);
+      nodeMap.set(node.id, node);
       //map node to and empty node array to be filled later
-      adj.set(node, new Array<node>());
+      adj.set(node, new Array<Node>());
     });
 
     //for each inputted edge
     edges.forEach(function (edge) {
       //find start and end node objs in the inputted node list
-      const startNode = nodeMap.get(edge.startNode.iD) ?? null;
-      const endNode = nodeMap.get(edge.endNode.iD) ?? null;
+      const startNode = nodeMap.get(edge.startNode.id) ?? null;
+      const endNode = nodeMap.get(edge.endNode.id) ?? null;
 
       //make sure both nodes exist if not exit
       if (startNode == null) {
@@ -63,8 +63,8 @@ export class Graph {
       startNode.edges.push(edge);
 
       // create reverse edge for other node
-      const backEdge: edge = {
-        iD: edge.endNode.iD + "_" + edge.startNode.iD,
+      const backEdge: Edge = {
+        id: edge.endNode.id + "_" + edge.startNode.id,
         startNode: edge.endNode,
         endNode: edge.startNode,
       };
@@ -101,21 +101,21 @@ export class Graph {
   /**
    * @returns a array of nodes present in the graph
    */
-  public getNodes(): Array<node> {
+  public getNodes(): Array<Node> {
     return this.nodes;
   }
 
   /**
    * @returns a array of edges present in the graph
    */
-  public getEdges(): Array<edge> {
+  public getEdges(): Array<Edge> {
     return this.edges;
   }
 
   /**
    * @returns a map which maps a node (obj) to an array of its adjacent nodes
    */
-  public getAdjList(): Map<node, Array<node>> {
+  public getAdjList(): Map<Node, Array<Node>> {
     return this.adjacent;
   }
 
@@ -125,7 +125,7 @@ export class Graph {
    * @returns returns a node with the corresponding ID or null if node not found
    *
    */
-  public idToNode(nodeID: string): node | null {
+  public idToNode(nodeID: string): Node | null {
     return this.idLookup.get(nodeID) ?? null;
   }
 
@@ -135,7 +135,7 @@ export class Graph {
    * @returns an array of nodes that are adjacent to the passed node or null if node not found
    *
    */
-  public adjacentTo(someNode: node): Array<node> | null {
+  public adjacentTo(someNode: Node): Array<Node> | null {
     return this.adjacent.get(someNode) ?? null;
   }
 }

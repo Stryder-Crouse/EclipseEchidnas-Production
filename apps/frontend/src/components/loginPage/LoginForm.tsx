@@ -42,8 +42,11 @@ function LoginForm() {
    */
   function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
-    if (username === "admin" && password === "admin") navigate("/AdminMapPage");
-    else if (username != "" && password != "") {
+    if (username === "admin" && password === "admin") {
+      navigate("/AdminMapPage");
+      //to get map to load properly on adminMapPage
+      window.location.reload();
+    } else if (username != "" && password != "") {
       setIncorrectError(true);
     }
   }
