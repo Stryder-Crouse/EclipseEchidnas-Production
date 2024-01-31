@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import "./component-css/NavBar.css";
 import { Node } from "../../../backend/src/algorithms/Graph/Node.ts";
 import { readNodeCSV } from "../../../backend/src/algorithms/readCSV.ts";
@@ -7,13 +7,6 @@ import axios from "axios";
 let loadedLocations = false;
 
 export default function NavBar() {
-  const [showDropdown, setShowDropdown] = useState(false);
-  // const [filterValue, setFilterValue] = useState('');
-
-  const toggleDropdown = () => {
-    setShowDropdown(!showDropdown);
-  };
-
   useEffect(() => {
     //make sure it only runs once (useEffect is called twice in development)
     if (!loadedLocations) {
@@ -25,13 +18,9 @@ export default function NavBar() {
   return (
     <div className="navbar-container">
       <div className="dropdown">
-        <button onClick={toggleDropdown} className="dropbtn">
-          L1
-        </button>
-        <div
-          id="myDropdown"
-          className={`dropdown-content ${showDropdown ? "show" : ""}`}
-        ></div>
+        <a href={"/AdminMapPage"}>
+          <button className="dropbtn">Home Page</button>
+        </a>
       </div>
 
       <div className="dropdown">

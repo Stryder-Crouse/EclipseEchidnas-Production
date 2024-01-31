@@ -33,22 +33,6 @@ export default function NavBar() {
           className={`dropdown-content ${showDropdown ? "show" : ""}`}
         ></div>
       </div>
-
-      <div className="dropdown">
-        <a href={"/medicineRequest"}>
-          <button className="dropbtn">Service Request</button>
-        </a>
-      </div>
-      <div className="dropdown">
-        <a href={"/medicineRequest"}>
-          <button className="dropbtn">Request List</button>
-        </a>
-      </div>
-      <div className="dropdown">
-        <a href={"/FileTable"}>
-          <button className="dropbtn">CSV</button>
-        </a>
-      </div>
     </div>
   );
 }

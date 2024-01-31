@@ -3,8 +3,8 @@
   color: #012d5a;
 
   /** box creation **/
-  width: 50rem;
-  height: 30rem;
+  width: 60vw;
+  height: 80vh;
   background-color: #f1f1f1;
   border-radius: 4rem;
 
@@ -14,7 +14,7 @@
 
   /** centering box in entire page **/
   position: absolute;
-  top: 50%;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
 

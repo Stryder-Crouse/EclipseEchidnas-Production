@@ -18,7 +18,7 @@
   text-align: left;
 
   position: absolute;
-  top: 50%;
+  top: 56%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -117,12 +117,12 @@
 
 /** Styling on columns **/
 td:nth-child(2) {
-  color: #2ecc71;
+  color: #0097a0;
   font-weight: bold;
 }
 
 td:nth-child(3) {
-  color: #e3452f;
+  color: #0097a0;
   font-weight: bold;
 }
 
