@@ -43,12 +43,10 @@ function App() {
           path: "/FileTable",
           element: <FileTable />,
         },
-          {
-              path: "/GuestMap",
-              element: <GuestMap />,
+        {
+          path: "/GuestMap",
+          element: <GuestMap />,
         },
-
-
       ],
     },
   ]);

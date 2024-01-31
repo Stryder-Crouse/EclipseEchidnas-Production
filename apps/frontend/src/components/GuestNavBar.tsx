@@ -1,67 +1,66 @@
 import React, { useState, useEffect } from "react";
 import "./component-css/NavBar.css";
-import { node } from "../../../backend/src/algorithms/node.ts";
+import { Node } from "../../../backend/src/algorithms/Graph/Node.ts";
 import { readNodeCSV } from "../../../backend/src/algorithms/readCSV.ts";
 import axios from "axios";
 
 let loadedLocations = false;
 
 export default function NavBar() {
-    const [showDropdown, setShowDropdown] = useState(false);
-    // const [filterValue, setFilterValue] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+  // const [filterValue, setFilterValue] = useState('');
 
-    const toggleDropdown = () => {
-        setShowDropdown(!showDropdown);
-    };
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
 
-    useEffect(() => {
-        //make sure it only runs once (useEffect is called twice in development)
-        if (!loadedLocations) {
-            populateLocationDropdown().then();
-            loadedLocations = true;
-        }
-    }, []);
+  useEffect(() => {
+    //make sure it only runs once (useEffect is called twice in development)
+    if (!loadedLocations) {
+      populateLocationDropdown().then();
+      loadedLocations = true;
+    }
+  }, []);
 
-    return (
-        <div className="navbar-container">
-            <div className="dropdown">
-                <button onClick={toggleDropdown} className="dropbtn">
-                    L1
-                </button>
-                <div
-                    id="myDropdown"
-                    className={`dropdown-content ${showDropdown ? "show" : ""}`}
-                ></div>
-            </div>
-
-        </div>
-    );
+  return (
+    <div className="navbar-container">
+      <div className="dropdown">
+        <button onClick={toggleDropdown} className="dropbtn">
+          L1
+        </button>
+        <div
+          id="myDropdown"
+          className={`dropdown-content ${showDropdown ? "show" : ""}`}
+        ></div>
+      </div>
+    </div>
+  );
 }
 
 async function populateLocationDropdown() {
-    //read node file and create the nodes
-    const nodes: Array<node> = readNodeCSV(await getNodeCSVString());
-    //console.log("nodes");
-    //console.log(nodes);
-    //fine dropdown div in the html on the page
-    const myDropdown = document.getElementById("myDropdown");
-    //console.log("myDropdown");
-    //console.log(myDropdown);
-    //for each node
-    nodes.forEach(function (newNode: node) {
-        //create a element
-        const row = document.createElement("a");
+  //read node file and create the nodes
+  const nodes: Array<Node> = readNodeCSV(await getNodeCSVString());
+  //console.log("nodes");
+  //console.log(nodes);
+  //fine dropdown div in the html on the page
+  const myDropdown = document.getElementById("myDropdown");
+  //console.log("myDropdown");
+  //console.log(myDropdown);
+  //for each node
+  nodes.forEach(function (newNode: Node) {
+    //create a element
+    const row = document.createElement("a");
 
-        //use longName of node as the text content for new a tag
-        row.textContent = newNode.longName;
+    //use longName of node as the text content for new a tag
+    row.textContent = newNode.longName;
 
-        if (myDropdown == null) {
-            return;
-        }
+    if (myDropdown == null) {
+      return;
+    }
 
-        //add new a element to dropdown
-        myDropdown.appendChild(row);
-    });
+    //add new a element to dropdown
+    myDropdown.appendChild(row);
+  });
 }
 
 /**
@@ -71,10 +70,10 @@ async function populateLocationDropdown() {
  *
  */
 async function getNodeCSVString(): Promise<string> {
-    const res = await axios.get("/api/loadCVSFile/CVSnode");
+  const res = await axios.get("/api/loadCSVFile/CSVnode");
 
-    if (res.status == 200) {
-        return res.data as string;
-    }
-    return "";
+  if (res.status == 200) {
+    return res.data as string;
+  }
+  return "";
 }

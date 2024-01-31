@@ -8,10 +8,10 @@ import "../components/component-css/guest-button.css";
  */
 function GuestButton() {
   return (
-      <a href={"/GuestMap"} className={"linkstuff"}>
-          <button className={"button guestButton"}>Guest</button>
-          <div className="tooltip">You are a looser</div>
-      </a>
+    <a href={"/GuestMap"} className={"linkstuff"}>
+      <button className={"button guestButton"}>Guest</button>
+      <div className="tooltip">You are a looser</div>
+    </a>
   );
 }
 

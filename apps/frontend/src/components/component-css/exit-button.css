@@ -5,7 +5,7 @@
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background-color: #FF0000; /*You can change the background color*/
+  background-color: #ff0000; /*You can change the background color*/
   color: #ffffff; /*You can change the text color*/
   font-size: 16px;
   font-weight: bold;
@@ -18,7 +18,7 @@
 }
 
 .xout-container {
-    position: relative;
+  position: relative;
 }
 
 .linkstuff {
@@ -27,26 +27,28 @@
 }
 
 .xout:hover {
-    background-color: #FFFFFF; /* White background color on hover */
-    color: #FF0000; /* Red text color on hover */
+  background-color: #ffffff; /* White background color on hover */
+  color: #ff0000; /* Red text color on hover */
 }
 
 .hover-content {
-    visibility: hidden;
-    opacity: 0;
-    position: absolute;
-    top: 100%; /* Position the tooltip below the button */
-    right: 1%;
-    transform: translateX(-50%);
-    background-color: #FFFFFF; /* White background color for the tooltip */
-    color: #000000; /* Black text color for the tooltip */
-    padding: 10px;
-    border-radius: 5px;
-    transition: visibility 0.3s, opacity 0.3s;
-    z-index: 3; /* Ensure the hover content is above the button */
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 100%; /* Position the tooltip below the button */
+  right: 1%;
+  transform: translateX(-50%);
+  background-color: #ffffff; /* White background color for the tooltip */
+  color: #000000; /* Black text color for the tooltip */
+  padding: 10px;
+  border-radius: 5px;
+  transition:
+    visibility 0.3s,
+    opacity 0.3s;
+  z-index: 3; /* Ensure the hover content is above the button */
 }
 
 .xout-container:hover .hover-content {
-    visibility: visible;
-    opacity: 1;
+  visibility: visible;
+  opacity: 1;
 }

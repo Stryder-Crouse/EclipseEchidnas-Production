@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./component-css/NavBar.css";
-import { node } from "../../../backend/src/algorithms/node.ts";
+import { Node } from "../../../backend/src/algorithms/Graph/Node.ts";
 import { readNodeCSV } from "../../../backend/src/algorithms/readCSV.ts";
 import axios from "axios";
 
@@ -38,22 +38,21 @@ export default function NavBar() {
         <button className="dropbtn">Service Request</button>
         <div className="dropdown-content">
           <a href={"/MedicineRequest"}>Medicine</a>
-            <a href={"/MedicineRequest"}>List Of Requests </a>
+          <a href={"/MedicineRequest"}>List Of Requests </a>
+        </div>
       </div>
-    </div>
-    <div className="dropdown">
+      <div className="dropdown">
         <a href={"/FileTable"}>
           <button className="dropbtn">CSV</button>
         </a>
       </div>
-
     </div>
   );
 }
 
 async function populateLocationDropdown() {
   //read node file and create the nodes
-  const nodes: Array<node> = readNodeCSV(await getNodeCSVString());
+  const nodes: Array<Node> = readNodeCSV(await getNodeCSVString());
   //console.log("nodes");
   //console.log(nodes);
   //fine dropdown div in the html on the page
@@ -61,7 +60,7 @@ async function populateLocationDropdown() {
   //console.log("myDropdown");
   //console.log(myDropdown);
   //for each node
-  nodes.forEach(function (newNode: node) {
+  nodes.forEach(function (newNode: Node) {
     //create a element
     const row = document.createElement("a");
 
@@ -84,7 +83,7 @@ async function populateLocationDropdown() {
  *
  */
 async function getNodeCSVString(): Promise<string> {
-  const res = await axios.get("/api/loadCVSFile/CVSnode");
+  const res = await axios.get("/api/loadCSVFile/CSVnode");
 
   if (res.status == 200) {
     return res.data as string;
