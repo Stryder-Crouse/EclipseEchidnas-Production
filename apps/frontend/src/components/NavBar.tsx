@@ -38,15 +38,14 @@ export default function NavBar() {
         <button className="dropbtn">Service Request</button>
         <div className="dropdown-content">
           <a href={"/MedicineRequest"}>Medicine</a>
-            <a href={"/MedicineRequest"}>List Of Requests </a>
+          <a href={"/MedicineRequest"}>List Of Requests </a>
+        </div>
       </div>
-    </div>
-    <div className="dropdown">
+      <div className="dropdown">
         <a href={"/FileTable"}>
           <button className="dropbtn">CSV</button>
         </a>
       </div>
-
     </div>
   );
 }
