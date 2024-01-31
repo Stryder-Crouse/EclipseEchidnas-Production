@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import ExitButton from "../components/ExitButton.tsx";
+import AdminPageNavBar from "../components/AdminPageNavBar.tsx";
 import "../css/requestList.css";
 function RequestList() {
   useEffect(() => {
@@ -9,6 +10,9 @@ function RequestList() {
   }, []);
 
   return (
+      <div>
+      <AdminPageNavBar/>
+
     <div className={"table-container"}>
       <span className={"caption-container"}>
         <span className={"table-title"}>Request Log</span>
@@ -52,6 +56,7 @@ function RequestList() {
         </table>
       </div>
       <ExitButton />
+    </div>
     </div>
   );
 }
