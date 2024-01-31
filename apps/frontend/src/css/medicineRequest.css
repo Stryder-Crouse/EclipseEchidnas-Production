@@ -1,0 +1,31 @@
+.servicePage {
+  font-family: "Work-Sans", sans-serif;
+  color: #012d5a;
+
+  /** box creation **/
+  width: 50rem;
+  height: 30rem;
+  background-color: #f1f1f1;
+  border-radius: 4rem;
+
+  /** centering content in box **/
+  display: flex;
+  justify-content: center;
+
+  /** centering box in entire page **/
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /** box shadows **/
+  box-shadow:
+    0 -0px 101px 8px rgba(0, 0, 0, 0.45),
+    25px 0 20px -20px rgba(0, 0, 0, 0.45),
+    0 25px 20px -20px rgba(0, 0, 0, 0.45),
+    -25px 0 20px -20px rgba(0, 0, 0, 0.45);
+}
+
+.grid {
+  display: grid;
+}

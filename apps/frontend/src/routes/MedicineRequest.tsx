@@ -1,9 +1,10 @@
 /** importations **/
 import React, { ChangeEvent, useState } from "react";
-import "../components/servicePage.css";
+import "../css/medicineRequest.css";
 import RequestButtons from "../components/RequestButtons.tsx";
+import ExitButton from "../components/ExitButton.tsx";
 
-export default function ServicePage() {
+export default function MedicineRequest() {
   const [medRequestLocale, setMedRequestLocale] = useState("");
   const [medRequestDoses, setMedRequestDose] = useState("");
   const [medRequestType, setMedRequestType] = useState("");
@@ -77,6 +78,7 @@ export default function ServicePage() {
         <RequestButtons submit={submit} />
         <button onClick={sayHi}>test</button>
       </form>
+      <ExitButton />
     </div>
   );
 }

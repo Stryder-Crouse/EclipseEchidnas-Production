@@ -37,15 +37,13 @@ export default function NavBar() {
       <div className="dropdown">
         <button className="dropbtn">Service Request</button>
         <div className="dropdown-content">
-          <a href={"/LoginPage"}>Medicine</a>
+          <a href={"/MedicineRequest"}>Medicine</a>
         </div>
       </div>
       <div className="dropdown">
-        <button className="dropbtn">CSV</button>
-        <div className="dropdown-content">
-          <a href={"/ImportNodeFile"}>Nodes</a>
-          <a href={"/ImportEdgeFile"}>Edges</a>
-        </div>
+        <a href={"/FileTable"}>
+          <button className="dropbtn">CSV</button>
+        </a>
       </div>
       <div className="dropdown">
         <a href={"/LoginPage"} className={"login-button-link"}>
