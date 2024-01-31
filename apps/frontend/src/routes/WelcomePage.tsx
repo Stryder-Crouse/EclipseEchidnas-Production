@@ -24,13 +24,13 @@ export default function WelcomePage() {
       <div className={"buttonsContainer"}>
         <button
           className={"button guestButton"}
-          onClick={() => navigate("/MapPage")}
+          onClick={() => navigate("MapPage")}
         >
           Guest
         </button>
         <button
           className={"button staffLoginButton"}
-          onClick={() => navigate("/StaffLogin")}
+          onClick={() => navigate("StaffLogin")}
         >
           Staff Login
         </button>

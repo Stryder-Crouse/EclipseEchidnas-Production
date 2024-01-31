@@ -1,7 +1,8 @@
 /** importations **/
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import "../components/servicePage.css";
 import RequestButtons from "../components/RequestButtons";
+import { MedicineRequest } from "../components/MedicineRequest.ts";
 //import {HTMLInputElement} from "happy-dom";
 
 export default function ServicePage() {
@@ -9,15 +10,24 @@ export default function ServicePage() {
   const [medRequestDoses, setMedRequestDose] = useState("");
   const [medRequestType, setMedRequestType] = useState("");
 
-  /*    useEffect(() => {
-        //set background to first floor on component load
-        document.body.style.backgroundImage =
-            "url(/src/components/backgroundHospitalImage.jpg)";
-    }, []);*/
+  useEffect(() => {
+    //set background to first floor on component load
+    document.body.style.backgroundImage =
+      "url(/src/components/backgroundHospitalImage.jpg)";
+  }, []);
 
   function submit() {
-    if (medRequestLocale !== "") {
-      console.log(medRequestLocale);
+    if (
+      medRequestLocale !== "" &&
+      medRequestType !== "" &&
+      medRequestDoses !== ""
+    ) {
+      const medRequest: MedicineRequest = {
+        medRequestLocale: medRequestLocale,
+        medRequestType: medRequestType,
+        medRequestDoses: medRequestDoses,
+      };
+      console.log(medRequest);
     }
   }
 
@@ -31,10 +41,6 @@ export default function ServicePage() {
 
   function handleMedRequestTypeInput(e: ChangeEvent<HTMLInputElement>) {
     setMedRequestType(e.target.value);
-  }
-
-  function sayHi() {
-    console.log("hi");
   }
 
   return (
@@ -76,7 +82,6 @@ export default function ServicePage() {
         />
         <br />
         <RequestButtons submit={submit} />
-        <button onClick={sayHi}>test</button>
       </form>
     </div>
   );
