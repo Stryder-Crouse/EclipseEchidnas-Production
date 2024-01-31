@@ -1,6 +1,7 @@
 import "../css/file-table.css";
 import React, { useEffect } from "react";
 import ExitButton from "../components/ExitButton.tsx";
+import AdminPageNavBar from "../components/AdminPageNavBar.tsx";
 
 function FileTable() {
   useEffect(() => {
@@ -10,6 +11,8 @@ function FileTable() {
   }, []);
 
   return (
+      <div>
+          <AdminPageNavBar/>
     <div className={"table-container"}>
       <span className={"caption-container"}>
         <span className={"table-title"}>Current .CSV File</span>
@@ -78,7 +81,10 @@ function FileTable() {
         <button className={"export"}>Import .csv</button>
       </div>
       <ExitButton />
+
     </div>
+
+      </div>
   );
 }
 

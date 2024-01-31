@@ -23,44 +23,47 @@ export default function NavBar() {
   }, []);
 
   return (
-    <div className="navbar-container">
-      <div className="dropdown">
-        <button onClick={toggleDropdown} className="dropbtn">
-          L1
-        </button>
-        <div
-          id="myDropdown"
-          className={`dropdown-content ${showDropdown ? "show" : ""}`}
-        ></div>
-      </div>
+      <div className="navbar-container">
+          <div className="dropdown">
+              <button onClick={toggleDropdown} className="dropbtn">
+                  L1
+              </button>
+              <div
+                  id="myDropdown"
+                  className={`dropdown-content ${showDropdown ? "show" : ""}`}
+              ></div>
+          </div>
 
-      <div className="dropdown">
-        <button className="dropbtn">Service Request</button>
-        <div className="dropdown-content">
-          <a href={"/MedicineRequest"}>Medicine</a>
-            <a href={"/MedicineRequest"}>List Of Requests </a>
-      </div>
-    </div>
-    <div className="dropdown">
-        <a href={"/FileTable"}>
-          <button className="dropbtn">CSV</button>
-        </a>
-      </div>
+          <div className="dropdown">
+              <a href={"/medicineRequest"}>
+                  <button className="dropbtn">Service Request</button>
+              </a>
+          </div>
+          <div className="dropdown">
+              <a href={"/medicineRequest"}>
+                  <button className="dropbtn">Request List</button>
+              </a>
+          </div>
+          <div className="dropdown">
+              <a href={"/FileTable"}>
+                  <button className="dropbtn">CSV</button>
+              </a>
+          </div>
 
-    </div>
+      </div>
   );
 }
 
 async function populateLocationDropdown() {
-  //read node file and create the nodes
-  const nodes: Array<node> = readNodeCSV(await getNodeCSVString());
-  //console.log("nodes");
-  //console.log(nodes);
-  //fine dropdown div in the html on the page
-  const myDropdown = document.getElementById("myDropdown");
-  //console.log("myDropdown");
-  //console.log(myDropdown);
-  //for each node
+    //read node file and create the nodes
+    const nodes: Array<node> = readNodeCSV(await getNodeCSVString());
+    //console.log("nodes");
+    //console.log(nodes);
+    //fine dropdown div in the html on the page
+    const myDropdown = document.getElementById("myDropdown");
+    //console.log("myDropdown");
+    //console.log(myDropdown);
+    //for each node
   nodes.forEach(function (newNode: node) {
     //create a element
     const row = document.createElement("a");
