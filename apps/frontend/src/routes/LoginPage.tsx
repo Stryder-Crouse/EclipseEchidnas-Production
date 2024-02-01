@@ -5,7 +5,6 @@ import "../css/LoginPage.css";
 import Logo from "../images/massGeneralBrighamLogo.png";
 import { useNavigate } from "react-router-dom";
 import Avatar from "../images/avatarIcon.png";
-import Alert from "react-bootstrap/Alert";
 //import EyeOpen from "../images/UnobscuredPassword.png";
 //import EyeClosed from "../images/ObscuredPassword.png";
 
@@ -17,6 +16,8 @@ export default function WelcomePage() {
   const [username, setUsername] = useState(""); //Variable for Username
   const [password, setPassword] = useState(""); //Variable for Password
   const [showPassword, setShowPassword] = useState(false); //Boolean for if password is shown or not
+  const [noUsername, setNoUsername] = useState(false);
+  const [noPassword, setNoPassword] = useState(false);
   const [incorrectError, setIncorrectError] = useState(false);
   const navigate = useNavigate();
 
@@ -45,30 +46,14 @@ export default function WelcomePage() {
    */
   function handleUsername(username: string) {
     setUsername(username);
-    if (username === "") {
-      return (
-        <Alert variant={"warning"} dismissible>
-          <Alert.Heading>Username Field Required</Alert.Heading>;
-          <p>Enter valid Username to continue</p>;
-        </Alert>
-      );
-    }
   }
 
   /**
    * Assigns input to the password variable, and if empty displays alert (alert currently not working, alternative implemented but hope to use in future)
    * @param password Value entered into the password textbox
    */
-  function handlePassword(password: string) {
-    setPassword(password);
-    if (password === "") {
-      return (
-        <Alert variant={"warning"} dismissible>
-          <Alert.Heading>Password Field Required</Alert.Heading>;
-          <p>Enter valid Username to continue</p>;
-        </Alert>
-      );
-    }
+  function handlePassword(username: string) {
+    setPassword(username);
   }
 
   /**
@@ -78,8 +63,20 @@ export default function WelcomePage() {
    */
   function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
-    if (username === "admin" && password === "admin") navigate("/MapPage");
-    else if (username != "" && password != "") {
+
+    if (username === "" && !noPassword) {
+      setNoUsername(true);
+    } else {
+      setNoUsername(false);
+
+      if (password === "" && !noUsername) {
+        setNoPassword(true);
+      } else setNoPassword(false);
+    }
+
+    if (username === "admin" && password === "admin") {
+      navigate("/MapPage");
+    } else if (username != "" && password != "") {
       setIncorrectError(true);
     }
   }
@@ -110,6 +107,14 @@ export default function WelcomePage() {
 
           <div className={"inputBox"}>
             <form>
+              {noUsername ? (
+                <div className={"incorrect"}>Username Required</div>
+              ) : null}
+
+              {noPassword ? (
+                <div className={"incorrect"}>Password Required</div>
+              ) : null}
+
               {incorrectError ? ( //If the entered username or password are incorrect, shows error message
                 <div className={"incorrect"}>
                   Incorrect Username or Password
