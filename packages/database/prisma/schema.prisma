@@ -48,8 +48,7 @@ model Request {
   reqLocationID String @db.VarChar(256)
   extraInfo     String @db.VarChar(256)
 
-  medReq       MedReq? @relation("medicineRequest", fields: [medRequestID], references: [medReqID])
-  medRequestID Int     @unique
+  medReq MedReq? @relation("medicineRequest")
 }
 
 model MedReq {
@@ -57,5 +56,6 @@ model MedReq {
   medType    String   @db.VarChar(256)
   dosage     String   @db.VarChar(256)
   numDosages Int
-  request    Request? @relation("medicineRequest")
+  request    Request? @relation("medicineRequest", fields: [requestID], references: [reqID])
+  requestID  Int      @unique
 }
