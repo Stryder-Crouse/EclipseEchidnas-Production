@@ -4,18 +4,12 @@ import "../css/medicineRequest.css";
 import AdminPageNavBar from "../components/AdminPageNavBar.tsx";
 import RequestButtons from "../components/RequestButtons.tsx";
 import ExitButton from "../components/ExitButton.tsx";
-// import GuestButton from "../components/GuestButton.tsx";
 
 export default function MedicineRequest() {
   const [medRequestLocale, setMedRequestLocale] = useState("");
   const [medRequestDoses, setMedRequestDose] = useState("");
   const [medRequestType, setMedRequestType] = useState("");
-
-  /*    useEffect(() => {
-          //set background to first floor on component load
-          document.body.style.backgroundImage =
-              "url(/src/components/backgroundHospitalImage.jpg)";
-      }, []);*/
+  const [medRequestDosage, setMedRequestDosage] = useState("");
 
   function submit() {
     if (medRequestLocale !== "") {
@@ -31,57 +25,73 @@ export default function MedicineRequest() {
     setMedRequestDose(e.target.value);
   }
 
-  function handleMedRequestTypeInput(e: ChangeEvent<HTMLInputElement>) {
-    setMedRequestType(e.target.value);
+  function handleMedRequestDosageInput(e: ChangeEvent<HTMLInputElement>) {
+    setMedRequestDosage(e.target.value);
   }
 
-  function sayHi() {
-    console.log("hi");
+  function handleMedRequestTypeInput(e: ChangeEvent<HTMLInputElement>) {
+    setMedRequestType(e.target.value);
   }
 
   return (
     <div>
       <AdminPageNavBar />
-
       <div className={"servicePage grid"}>
-        <form>
-          <input
-            type={"radio"}
-            id={"medRequest"}
-            name={"request"}
-            value={"Medicine Request"}
-          />
-          <label form={"medRequest"}>Medicine Request</label>
-          <br />
-          <input
-            type={"text"}
-            id={"medRequestLocal"}
-            name={"medRequestLocal"}
-            placeholder={"Location"}
-            value={medRequestLocale}
-            onChange={handleMedRequestLocaleInput}
-          />
-          <br />
-          <input
-            type={"text"}
-            id={"medRequestType"}
-            name={"medRequestType"}
-            placeholder={"Medicine Type"}
-            value={medRequestType}
-            onChange={handleMedRequestTypeInput}
-          />
-          <br />
-          <input
-            type={"text"}
-            id={"medRequestDose"}
-            name={"medRequestDoseage"}
-            placeholder={"Medicine Doseage"}
-            value={medRequestDoses}
-            onChange={handleMedRequestDoseInput}
-          />
-          <br />
+        <form className={"medicine-form"}>
+          <div className={"medicine-radio"}>
+            <input
+              type={"radio"}
+              id={"medRequest"}
+              name={"request"}
+              value={"Medicine Request"}
+            />
+            <label form={"medRequest"}>Medicine Request</label>
+          </div>
+          <div className={"text-field"}>
+            <input
+              className={"input-fields"}
+              type={"text"}
+              id={"medRequestLocal"}
+              name={"medRequestLocal"}
+              placeholder={"Location"}
+              value={medRequestLocale}
+              onChange={handleMedRequestLocaleInput}
+            />
+          </div>
+          <div className={"text-field"}>
+            <input
+              className={"input-fields"}
+              type={"text"}
+              id={"medRequestType"}
+              name={"medRequestType"}
+              placeholder={"Medicine Type"}
+              value={medRequestType}
+              onChange={handleMedRequestTypeInput}
+            />
+          </div>
+          <div className={"text-field"}>
+            <input
+              className={"input-fields"}
+              type={"text"}
+              id={"medRequestDose"}
+              name={"medRequestDoses"}
+              placeholder={"Medicine Doses"}
+              value={medRequestDoses}
+              onChange={handleMedRequestDoseInput}
+            />
+          </div>
+          <div className={"text-field"}>
+            <input
+              className={"input-fields"}
+              type={"text"}
+              id={"medRequestDose"}
+              name={"medRequestDoses"}
+              placeholder={"Medicine Dosage"}
+              value={medRequestDosage}
+              onChange={handleMedRequestDosageInput}
+            />
+          </div>
           <RequestButtons submit={submit} />
-          <button onClick={sayHi}>test</button>
           {/*// this should technically take you to list of service request*/}
         </form>
         <ExitButton />

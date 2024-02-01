@@ -77,8 +77,8 @@ function FileTable() {
         </div>
 
         <div className={"import-and-export"}>
-          <button className={"export"}>Export Current</button>
           <button className={"export"}>Import .csv</button>
+          <button className={"export"}>Export Current</button>
         </div>
         <ExitButton />
       </div>

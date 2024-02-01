@@ -1,4 +1,5 @@
 import { RequestButtonsInterface } from "./RequestButtonsInterface.ts";
+import "./component-css/requestButton.css";
 
 function RequestButtons({ submit }: RequestButtonsInterface) {
   function handleSubmit() {
@@ -7,7 +8,9 @@ function RequestButtons({ submit }: RequestButtonsInterface) {
 
   return (
     <div className={"requestButtonsDiv"}>
-      <button onClick={handleSubmit}>Submit</button>
+      <button onClick={handleSubmit} className={"requestButton"}>
+        Submit
+      </button>
     </div>
   );
 }

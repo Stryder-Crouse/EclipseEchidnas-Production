@@ -6,7 +6,7 @@ import axios from "axios";
 
 let loadedLocations = false;
 
-export default function NavBar() {
+export default function AdminMapNavBar() {
   const [showDropdown, setShowDropdown] = useState(false);
   // const [filterValue, setFilterValue] = useState('');
 
@@ -33,17 +33,17 @@ export default function NavBar() {
           className={`dropdown-content ${showDropdown ? "show" : ""}`}
         ></div>
       </div>
-
       <div className="dropdown">
         <a href={"/medicineRequest"}>
           <button className="dropbtn">Service Request</button>
         </a>
       </div>
       <div className="dropdown">
-        <a href={"/medicineRequest"}>
+        <a href={"/RequestList"}>
           <button className="dropbtn">Request List</button>
         </a>
       </div>
+
       <div className="dropdown">
         <a href={"/FileTable"}>
           <button className="dropbtn">CSV</button>
@@ -56,17 +56,12 @@ export default function NavBar() {
 async function populateLocationDropdown() {
   //read node file and create the nodes
   const nodes: Array<Node> = readNodeCSV(await getNodeCSVString());
-  //console.log("nodes");
-  //console.log(nodes);
   //fine dropdown div in the html on the page
   const myDropdown = document.getElementById("myDropdown");
-  //console.log("myDropdown");
-  //console.log(myDropdown);
   //for each node
   nodes.forEach(function (newNode: Node) {
-    //create a element
+    //create an element
     const row = document.createElement("a");
-
     //use longName of node as the text content for new a tag
     row.textContent = newNode.longName;
 
