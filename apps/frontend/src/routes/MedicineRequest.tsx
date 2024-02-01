@@ -11,24 +11,66 @@ export default function MedicineRequest() {
   const [medRequestType, setMedRequestType] = useState("");
   const [medRequestDosage, setMedRequestDosage] = useState("");
 
+  //CHanged for database
   function submit() {
     if (medRequestLocale !== "") {
       console.log(medRequestLocale);
     }
+    //      const data = JSON.stringify({}); //making a JSON format file from input Nodes
+    //   console.log(data);
+    //   //sends a post request the /api/load-db     (server accessing this api)
+    //   try {
+    //     await axios.post("/api/load-edges", data, {
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //     });
+    //   } catch (err) {
+    //     throw new Error("Error with loading Edges");
+    //   }
   }
 
+  /**
+   *
+   * Getting Request Location in String
+   */
   function handleMedRequestLocaleInput(e: ChangeEvent<HTMLInputElement>) {
     setMedRequestLocale(e.target.value);
   }
 
+  /**
+   * @param par1 -
+   * @param par2 -
+   * @param par3 -
+   * @param par4 -
+   * @param par5 -
+   *
+   * @returns
+   *
+   * @param e
+   */
   function handleMedRequestDoseInput(e: ChangeEvent<HTMLInputElement>) {
     setMedRequestDose(e.target.value);
   }
 
+  /**
+   * @param par1 -
+   * @param par2 -
+   * @param par3 -
+   * @param par4 -
+   * @param par5 -
+   *
+   * @returns
+   * @param e
+   */
   function handleMedRequestDosageInput(e: ChangeEvent<HTMLInputElement>) {
     setMedRequestDosage(e.target.value);
   }
 
+  /**
+   *
+   * @param e
+   */
   function handleMedRequestTypeInput(e: ChangeEvent<HTMLInputElement>) {
     setMedRequestType(e.target.value);
   }
