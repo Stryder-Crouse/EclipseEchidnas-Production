@@ -2,6 +2,8 @@ import React from "react";
 import ExitButton from "../components/ExitButton.tsx";
 import AdminPageNavBar from "../components/AdminPageNavBar.tsx";
 import "../css/requestList.css";
+import axios from "axios";
+import { MedReq } from "../../../backend/src/algorithms/Requests/Request.ts";
 
 function RequestList() {
   return (
@@ -17,9 +19,10 @@ function RequestList() {
             <thead>
               <tr>
                 <th>Request Type</th>
-                <th>From</th>
                 <th>Going To</th>
-                <th>Placeholder</th>
+                <th>Medicine type</th>
+                <th>Dosage</th>
+                <th>Amount</th>
               </tr>
             </thead>
             {/* populating here */}
@@ -50,39 +53,7 @@ export type request = {
 async function populateRequests() {
   console.log("RAN");
 
-  //tests data REMOVE ONCE DONE
-  const r1: request = {
-    requestType: "Medicine Delivery",
-    startLocation: "CDEPT002L1",
-    endLocation: "CDEPT002L1",
-  };
-  const r2: request = {
-    requestType: "Medicine Delivery",
-    startLocation: "hi",
-    endLocation: "me",
-  };
-  const r3: request = {
-    requestType: "Medicine Delivery",
-    startLocation: "chris",
-    endLocation: "sir",
-  };
-  const r4: request = {
-    requestType: "Medicine Delivery",
-    startLocation: "XD",
-    endLocation: "ww",
-  };
-  const r5: request = {
-    requestType: "Medicine Delivery",
-    startLocation: "pog",
-    endLocation: "wong",
-  };
-
-  const requests: request[] = [];
-  requests.push(r1);
-  requests.push(r2);
-  requests.push(r3);
-  requests.push(r4);
-  requests.push(r5);
+  const medReqs = await axios.get<MedReq[]>("/api/serviceRequests/medReq");
 
   //fine dropdown div in the html on the page
   const table = document.getElementById("request-table");
@@ -90,24 +61,32 @@ async function populateRequests() {
   console.log(table);
 
   //for each node
-  requests.forEach(function (newRequest: request) {
+  medReqs.data.forEach(function (newRequest: MedReq) {
     //create tr element to store the record
     const tableRow = document.createElement("tr");
     //create td tags for data from record
     const reqType = document.createElement("td");
-    reqType.textContent = newRequest.requestType;
+    reqType.textContent = "Medicine request";
     reqType.setAttribute("class", "node-id");
 
     const reqStartLoc = document.createElement("td");
-    reqStartLoc.textContent = newRequest.startLocation;
+    reqStartLoc.textContent = newRequest.reqLocationID;
 
-    const reqEndLoc = document.createElement("td");
-    reqEndLoc.textContent = newRequest.endLocation;
+    const reqMedType = document.createElement("td");
+    reqMedType.textContent = newRequest.medType;
+
+    const reqDosage = document.createElement("td");
+    reqDosage.textContent = newRequest.dosage;
+
+    const reqAmount = document.createElement("td");
+    reqAmount.textContent = newRequest.numDosages.toString();
 
     //append data elements together to one row
     tableRow.appendChild(reqType);
     tableRow.appendChild(reqStartLoc);
-    tableRow.appendChild(reqEndLoc);
+    tableRow.appendChild(reqMedType);
+    tableRow.appendChild(reqDosage);
+    tableRow.appendChild(reqAmount);
 
     if (table == null) {
       return;

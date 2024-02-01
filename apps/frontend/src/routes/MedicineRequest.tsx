@@ -5,6 +5,9 @@ import AdminPageNavBar from "../components/AdminPageNavBar.tsx";
 import RequestButtons from "../components/RequestButtons.tsx";
 import ExitButton from "../components/ExitButton.tsx";
 
+import axios from "axios";
+import { MedReq } from "../../../backend/src/algorithms/Requests/Request.ts";
+
 export default function MedicineRequest() {
   const [medRequestLocale, setMedRequestLocale] = useState("");
   const [medRequestDoses, setMedRequestDose] = useState("");
@@ -12,22 +15,30 @@ export default function MedicineRequest() {
   const [medRequestDosage, setMedRequestDosage] = useState("");
 
   //CHanged for database
-  function submit() {
+  async function submit() {
     if (medRequestLocale !== "") {
       console.log(medRequestLocale);
     }
-    //      const data = JSON.stringify({}); //making a JSON format file from input Nodes
-    //   console.log(data);
-    //   //sends a post request the /api/load-db     (server accessing this api)
-    //   try {
-    //     await axios.post("/api/load-edges", data, {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //     });
-    //   } catch (err) {
-    //     throw new Error("Error with loading Edges");
-    //   }
+
+    const medRequestequest: MedReq = {
+      dosage: medRequestDosage,
+      medReqID: -1,
+      medType: medRequestType,
+      numDosages: parseInt(medRequestDoses),
+      reqLocationID: medRequestLocale,
+    };
+
+    console.log(medRequestequest);
+
+    try {
+      await axios.post("/api/serviceRequests/medReq", medRequestequest, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (err) {
+      throw new Error("Error with loading Nodes");
+    }
   }
 
   /**
@@ -79,7 +90,15 @@ export default function MedicineRequest() {
     <div>
       <AdminPageNavBar />
       <div className={"servicePage grid"}>
-        <th>Medicine Request</th>
+        <table>
+          {/*th need to be in a table please change it later to a a tag or b tag*/}
+          <tbody>
+            <tr>
+              <th>Medicine Request</th>
+            </tr>
+          </tbody>
+        </table>
+
         <form className={"medicine-form"}>
           <div className={"text-field"}>
             <input

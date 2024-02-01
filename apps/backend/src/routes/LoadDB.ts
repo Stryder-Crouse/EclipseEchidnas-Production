@@ -49,8 +49,11 @@ nodeArray.forEach((node) => {
 export default async function dbInit() {
   try {
     //empty out the Database
-    await PrismaClient.nodeDB.deleteMany();
-    await PrismaClient.edgeDB.deleteMany();
+    await PrismaClient.$transaction([
+      PrismaClient.edgeDB.deleteMany(),
+      PrismaClient.medReq.deleteMany(),
+      PrismaClient.nodeDB.deleteMany(),
+    ]);
     //add in all the Nodes and Edges that are in the above CSV file
     await PrismaClient.nodeDB.createMany({ data: nodeDBArray });
     await PrismaClient.edgeDB.createMany({ data: edgeDBArray });

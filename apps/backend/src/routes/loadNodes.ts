@@ -1,14 +1,28 @@
-// import express, { Router, Request, Response } from "express";
-// //import { Prisma } from "database"; //may be very wrong
-// import { Node } from "../algorithms/Graph/Node.ts";
-// //import { coordinate } from "../algorithms/coordinate.ts";
-// import { readNodeCSV } from "../algorithms/readCSV.ts";
-// import PrismaClient from "../bin/database-connection.ts"; //may also be wrong
-// import path from "path";
-// import fs from "fs";
-//
-// const router: Router = express.Router();
-//
+import express, { Router, Request, Response } from "express";
+//import { Prisma } from "database"; //may be very wrong
+import PrismaClient from "../bin/database-connection.ts"; //may also be wrong
+
+const router: Router = express.Router();
+
+router.get("/", async function (req: Request, res: Response) {
+  try {
+    //try to send all the nodes to the client
+    //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
+    res.send(
+      await PrismaClient.nodeDB.findMany({
+        orderBy: {
+          longName: "asc", //specify here that we are ordering the 'longName' field in ascending order (A->Z)
+        },
+      }),
+    ); //end res.send (this is what will be sent to the client)
+    console.info("\n\n\n\n\n\nSuccessfully gave you the nodes\n\n\n\n\n\n");
+  } catch (err) {
+    console.error("\n\n\n\n\n\nUnable to send Nodes\n\n\n\n\n\n");
+  }
+});
+
+export default router;
+
 // router.post("/", async function (req: Request, res: Response) {
 //   //this is the post function, and it is called in MapPage.tsx as of 1/29/24
 //   let allNodeString = "";
@@ -24,8 +38,6 @@
 //   }
 //   const nodeArray: Node[] = readNodeCSV(allNodeString);
 //
-//   //console.info("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nGot Here\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-//
 //   await Promise.all(
 //     //waits until all 'promises' are created (all the nodes I think)
 //     nodeArray.map(async (nodeData) => {
@@ -33,7 +45,7 @@
 //       try {
 //         // above can be interpreted as a "for each" loop
 //         // Attempt to create in the database
-//         await PrismaClient.node.create({
+//         await PrismaClient.nodeDB.create({
 //           // .node comes from the "Model node" we created in the schema.prisma file
 //           data: {
 //             nodeID: nodeData.id,
@@ -62,22 +74,3 @@
 //     }),
 //   );
 // });
-//
-// router.get("/", async function (req: Request, res: Response) {
-//   try {
-//     //try to send all the nodes to the client
-//     //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
-//     res.send(
-//       await PrismaClient.node.findMany({
-//         orderBy: {
-//           longName: "asc", //specify here that we are ordering the 'longName' field in ascending order (A->Z)
-//         },
-//       }),
-//     ); //end res.send (this is what will be sent to the client)
-//     console.info("\n\n\n\n\n\nSuccessfully gave you the nodes\n\n\n\n\n\n");
-//   } catch (err) {
-//     console.error("\n\n\n\n\n\nUnable to send Nodes\n\n\n\n\n\n");
-//   }
-// });
-//
-// export default router;

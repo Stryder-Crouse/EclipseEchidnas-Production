@@ -2,7 +2,7 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import "../components/servicePage.css";
 import RequestButtons from "../components/RequestButtons";
-import { MedicineRequest } from "../components/MedicineRequest.ts";
+
 //import {HTMLInputElement} from "happy-dom";
 
 export default function ServicePage() {
@@ -16,18 +16,13 @@ export default function ServicePage() {
       "url(/src/components/backgroundHospitalImage.jpg)";
   }, []);
 
-  function submit() {
+  async function submit() {
     if (
       medRequestLocale !== "" &&
       medRequestType !== "" &&
       medRequestDoses !== ""
     ) {
-      const medRequest: MedicineRequest = {
-        medRequestLocale: medRequestLocale,
-        medRequestType: medRequestType,
-        medRequestDoses: medRequestDoses,
-      };
-      console.log(medRequest);
+      console.log("k");
     }
   }
 
