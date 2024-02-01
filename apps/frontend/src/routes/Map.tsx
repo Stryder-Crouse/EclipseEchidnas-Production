@@ -1,8 +1,4 @@
 import axios from "axios";
-import {
-  readEdgeCSV,
-  readNodeCSV,
-} from "../../../backend/src/algorithms/readCSV.ts";
 
 import { Node } from "../../../backend/src/algorithms/Graph/Node.ts";
 
@@ -14,6 +10,14 @@ import {
   onNodeHover,
   onNodeLeave,
 } from "../event-logic/circleNodeEventHandlers.ts";
+import {
+  NodeDataBase,
+  nodeDataBaseToNode,
+} from "../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import {
+  EdgeDataBase,
+  edgeDataBasetoEdge,
+} from "../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
 
 /**
  * @param startNodeID the ID of the starting node to path find from
@@ -41,10 +45,22 @@ function resetSelectedNodes() {
 /**
  * gets the nodes and edges for the map and creates the graph for searching.
  * */
-async function updateDatabase() {
-  //load edges from file and connect them CHANGE LAYER
-  const edges: Array<Edge> = readEdgeCSV(await getEdgeCSVString());
-  const nodes: Array<Node> = readNodeCSV(await getNodeCSVString());
+async function updateGraph() {
+  //load edges and node from database
+  const edgesDB = await axios.get<EdgeDataBase[]>("/api/load-edges");
+  const nodesDB = await axios.get<NodeDataBase[]>("/api/load-nodes");
+
+  const edges: Array<Edge> = [];
+  const nodes: Array<Node> = [];
+
+  edgesDB.data.forEach((edgeDB) => {
+    edges.push(edgeDataBasetoEdge(edgeDB));
+  });
+
+  nodesDB.data.forEach((nodeDB) => {
+    nodes.push(nodeDataBaseToNode(nodeDB));
+  });
+
   graph = new Graph(nodes, edges);
 }
 
@@ -275,7 +291,7 @@ async function makeNodes() {
 }
 
 //this is a dupilate from map page so REMOVE IT
-async function getNodeCSVString(): Promise<string> {
+/*async function getNodeCSVString(): Promise<string> {
   const res = await axios.get("/api/loadCSVFile/CSVnode");
   console.log("data");
   console.log(res.data);
@@ -293,7 +309,7 @@ async function getEdgeCSVString(): Promise<string> {
     return res.data as string;
   }
   return "";
-}
+}*/
 
 export function Map() {
   //the html returned from the component
@@ -328,7 +344,7 @@ export function Map() {
 }
 
 //code below runs on page load
-updateDatabase().then(() => {
+updateGraph().then(() => {
   makeNodes().then();
   //makePath("CCONF003L1", "CHALL014L1").then();
   resetSelectedNodes();

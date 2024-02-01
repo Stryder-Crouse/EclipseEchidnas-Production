@@ -1,14 +1,11 @@
-import { Node } from "../Graph/Node.ts";
-
-/** Type to store requests*/
-export type ServiceRequest = {
-  id: number;
-  reqType: string;
-  reqLocation: Node;
-  extraInfo: string;
-
-  medReq: MedReq;
-};
+// /** Type to store requests*/
+// export type ServiceRequest = {
+//   reqID: number;
+//   reqType: ReqTypes;
+//   reqLocationID: string;
+//   extraInfo: string;
+//
+// };
 
 /** Type to store data specific to medication requests*/
 export type MedReq = {
@@ -16,7 +13,8 @@ export type MedReq = {
   medType: string;
   dosage: string;
   numDosages: number;
-  request: ServiceRequest;
+  reqLocationID: string;
+  //requestID: number;
 };
 
 /** Enum to hold the possible request types staff members can make */

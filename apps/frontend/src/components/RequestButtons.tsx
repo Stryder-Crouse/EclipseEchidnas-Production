@@ -8,7 +8,11 @@ function RequestButtons({ submit }: RequestButtonsInterface) {
 
   return (
     <div className={"requestButtonsDiv"}>
-      <button onClick={handleSubmit} className={"requestButton"}>
+      <button
+        type={"button"}
+        onClick={handleSubmit}
+        className={"requestButton"}
+      >
         Submit
       </button>
     </div>
