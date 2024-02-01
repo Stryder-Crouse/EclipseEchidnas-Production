@@ -245,17 +245,17 @@
   border-radius: 2rem;
   background-color: #fcfcfd;
   padding: 1.5rem;
-  width: 90%;
-  margin: 1rem;
+  width: 110%;
+  margin-top: 2rem;
   max-width: 47.5rem;
   border: 2px solid #edeef1;
   box-shadow: 0 4px 16px 0 rgba(148, 156, 169, 0.15);
   text-align: left;
 
-  position: absolute;
-  top: 56%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  /** Flexbox centering Div **/
+  display: grid;
+  justify-content: center;
+  align-items: center;
 }
 
 .table-wrapper {
@@ -372,12 +372,16 @@ td:nth-child(7) {
   display: flex;
   gap: 1rem;
 }
+
 .export {
   background-color: #0097a0;
-  border: 1px solid #d3d3d3;
   border-radius: 0.5rem;
   padding: 0.75rem;
   color: #f1f1f1;
   cursor: pointer;
   font-weight: bold;
+}
+
+.nodeEdge-container {
+  margin-top: 20rem;
 }

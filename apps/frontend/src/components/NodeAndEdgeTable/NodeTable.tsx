@@ -4,7 +4,7 @@ function NodeTable() {
   return (
     <div className={"table-container"}>
       <span className={"caption-container"}>
-        <span className={"table-title"}>Current .CSV File</span>
+        <span className={"table-title"}>Current Node .CSV File</span>
       </span>
       <div className={"table-wrapper"}>
         <table>
@@ -63,10 +63,6 @@ function NodeTable() {
             </tr>
           </tbody>
         </table>
-      </div>
-      <div className={"import-and-export"}>
-        <button className={"export"}>Import .csv</button>
-        <button className={"export"}>Export Current</button>
       </div>
     </div>
   );
