@@ -19,6 +19,7 @@ function RequestList() {
                 <th>Request Type</th>
                 <th>From</th>
                 <th>Going To</th>
+                <th>Placeholder</th>
               </tr>
             </thead>
             {/* populating here */}

@@ -79,16 +79,8 @@ export default function MedicineRequest() {
     <div>
       <AdminPageNavBar />
       <div className={"servicePage grid"}>
+        <th>Medicine Request</th>
         <form className={"medicine-form"}>
-          <div className={"medicine-radio"}>
-            <input
-              type={"radio"}
-              id={"medRequest"}
-              name={"request"}
-              value={"Medicine Request"}
-            />
-            <label form={"medRequest"}>Medicine Request</label>
-          </div>
           <div className={"text-field"}>
             <input
               className={"input-fields"}

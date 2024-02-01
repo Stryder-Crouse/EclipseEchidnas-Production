@@ -1,4 +1,4 @@
-.table-container {
+.table-container-list {
   border-radius: 2rem;
   background-color: #fcfcfd;
   padding: 1.5rem;
@@ -7,8 +7,7 @@
   max-width: 47.5rem;
   border: 2px solid #edeef1;
   box-shadow: 0 4px 16px 0 rgba(148, 156, 169, 0.15);
-  text-align: left;
-
+  text-align: center;
   position: absolute;
   top: 50%;
   left: 50%;
