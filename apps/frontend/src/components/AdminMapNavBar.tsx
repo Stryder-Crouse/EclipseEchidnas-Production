@@ -4,8 +4,11 @@ import LocationsDropDown from "./LocationsDropDown.tsx";
 
 export default function AdminMapNavBar() {
   return (
+      <div>
+          <div className= "left-navbar-container">
+          <LocationsDropDown></LocationsDropDown>
+          </div>
     <div className="navbar-container">
-      <LocationsDropDown></LocationsDropDown>
       <div className="dropdown">
         <a href={"/medicineRequest"}>
           <button className="dropbtn">Service Request</button>
@@ -23,5 +26,6 @@ export default function AdminMapNavBar() {
         </a>
       </div>
     </div>
+      </div>
   );
 }

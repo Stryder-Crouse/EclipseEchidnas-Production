@@ -1,13 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ExitButton from "../components/ExitButton.tsx";
 import AdminPageNavBar from "../components/AdminPageNavBar.tsx";
 import "../css/requestList.css";
 function RequestList() {
-  useEffect(() => {
-    //set background to first floor on component load
-    document.body.style.backgroundColor =
-      "url(/src/images/backgroundHospitalImage.jpg)";
-  }, []);
 
   return (
     <div>
