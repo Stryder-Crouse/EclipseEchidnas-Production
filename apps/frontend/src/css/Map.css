@@ -29,7 +29,17 @@
   r: 10; /* radius of node */
 }
 
+.startSelectedHovered {
+  fill: green;
+  r: 15; /* radius of node */
+}
+
 .endSelected {
   fill: red;
   r: 10; /* radius of node */
+}
+
+.endSelectedHovered {
+  fill: red;
+  r: 15; /* radius of node */
 }

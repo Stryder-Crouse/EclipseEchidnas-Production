@@ -10,6 +10,10 @@ import "../css/Map.css";
 import { Edge } from "../../../backend/src/algorithms/Graph/Edge.ts";
 import { Graph } from "../../../backend/src/algorithms/Graph/Graph.ts";
 import { BFS } from "../../../backend/src/algorithms/Search/BFS.ts";
+import {
+  onNodeHover,
+  onNodeLeave,
+} from "../event-logic/circleNodeEventHandlers.ts";
 
 /**
  * @param startNodeID the ID of the starting node to path find from
@@ -251,6 +255,13 @@ async function makeNodes() {
     //set an event listener to call the onNodeClick on click (CHECK IF THERE IS A BETTER WAY TO DO THIS)
     aTag.addEventListener("click", () => {
       onNodeClick(newNode.id);
+    });
+    //add event listeners for hover
+    aTag.addEventListener("mouseover", () => {
+      onNodeHover(newNode.id);
+    });
+    aTag.addEventListener("mouseleave", () => {
+      onNodeLeave(newNode.id);
     });
 
     //add circle to a tag
