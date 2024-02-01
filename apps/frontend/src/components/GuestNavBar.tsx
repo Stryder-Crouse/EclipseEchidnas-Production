@@ -4,7 +4,7 @@ import LocationsDropDown from "./LocationsDropDown.tsx";
 
 export default function NavBar() {
   return (
-    <div className="navbar-container">
+    <div className="left-navbar-container">
       <LocationsDropDown></LocationsDropDown>
     </div>
   );

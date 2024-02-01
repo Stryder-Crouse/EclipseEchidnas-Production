@@ -1,8 +1,10 @@
 .map-test {
   align-items: center;
   display: flex;
-  width: 90vw;
+  width: 70vw;
+    max-height: 80vh;
   border-radius: 2rem;
+    margin-top:4rem;
 }
 
 .clickableAtag {
