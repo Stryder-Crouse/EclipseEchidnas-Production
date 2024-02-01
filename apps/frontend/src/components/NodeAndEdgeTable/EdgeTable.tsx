@@ -1,6 +1,6 @@
 import React from "react";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
+
+// @ts-expect-error //for some reason it cant find happy-dom even though it works fine
 import { HTMLInputElement } from "happy-dom";
 
 function EdgeTable() {
