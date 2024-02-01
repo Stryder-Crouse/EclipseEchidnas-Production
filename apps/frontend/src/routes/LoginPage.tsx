@@ -74,7 +74,7 @@ export default function WelcomePage() {
     }
 
     if (username === "admin" && password === "admin") {
-      navigate("/MapPage");
+      navigate("/AdminMapPage");
     } else if (username != "" && password != "") {
       setIncorrectError(true);
     }
