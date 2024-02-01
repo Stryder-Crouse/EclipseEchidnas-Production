@@ -19,32 +19,37 @@ model HighScore {
   score Int
 }
 
-model Node {
-  nodeID      String    @id @db.VarChar(256)
-  floor       String    @db.VarChar(256)
-  building    String    @db.VarChar(256)
-  nodeType    String    @db.VarChar(256)
-  longName    String    @db.VarChar(256)
-  shortName   String    @db.VarChar(256)
-  xcoord      Int
-  ycoord      Int
-  startEdges  Edge[]    @relation("startingEdges")
-  endEdges    Edge[]    @relation("endingEdges")
+model NodeDB {
+  nodeID    String @id @db.VarChar(256)
+  floor     String @db.VarChar(256)
+  building  String @db.VarChar(256)
+  nodeType  String @db.VarChar(256)
+  longName  String @db.VarChar(256)
+  shortName String @db.VarChar(256)
+  xcoord    Int
+  ycoord    Int
+
+  //These do not exist @relation tells prisma to now make an attribute and instead
+  // relate the other table to this table through the specified key
+  startEdges  EdgeDB[]  @relation("startingEdges")
+  endEdges    EdgeDB[]  @relation("endingEdges")
   reqLocation Request[] @relation("requestLocation")
 }
 
-model Edge {
+model EdgeDB {
   edgeID      String @id @db.VarChar(256)
-  startNode   Node   @relation("startingEdges", fields: [startNodeID], references: [nodeID])
   startNodeID String @db.VarChar(256)
-  endNode     Node   @relation("endingEdges", fields: [endNodeID], references: [nodeID])
   endNodeID   String @db.VarChar(256)
+
+  //Do not exist (but necessary for tables)
+  startNode NodeDB @relation("startingEdges", fields: [startNodeID], references: [nodeID])
+  endNode   NodeDB @relation("endingEdges", fields: [endNodeID], references: [nodeID])
 }
 
 model Request {
   reqID         Int    @id
   reqType       String @db.VarChar(256)
-  reqLocation   Node   @relation("requestLocation", fields: [reqLocationID], references: [nodeID])
+  reqLocation   NodeDB @relation("requestLocation", fields: [reqLocationID], references: [nodeID])
   reqLocationID String @db.VarChar(256)
   extraInfo     String @db.VarChar(256)
 
