@@ -20,7 +20,7 @@ router.post("/", async function (req: Request, res: Response) {
     );
     allEdgeString = fs.readFileSync(edgeCsvLocation, "utf-8");
   } catch (error) {
-    console.error("CVS edge file not found");
+    console.error("CSV edge file not found");
     res.status(204); // and send 204
     return;
   }

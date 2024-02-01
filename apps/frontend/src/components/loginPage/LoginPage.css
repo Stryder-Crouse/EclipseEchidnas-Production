@@ -1,11 +1,11 @@
 .loginBackground {
-  background: url("../components/backgroundHospitalImage.jpg");
+  background: url("../../images/backgroundHospitalImage.jpg");
 }
 
 /** this is the entire ivory color box **/
 .loginPage {
-  font-family: Roboto;
-  color: #012d5a;
+  font-family: "Work-Sans", sans-serif;
+  color: #003a96;
 
   /** box creation **/
   width: 50rem;
@@ -76,20 +76,21 @@
   margin-bottom: 1rem;
   font-weight: 600;
   transition: all 300ms ease;
-  padding: 1rem;
+  padding: 0.5rem;
   width: 10rem;
   border-radius: 2rem;
   color: #003a96;
   cursor: pointer;
   border-color: transparent;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  margin-top: 1rem;
 }
 
 .passwordButton {
   margin-bottom: 1rem;
   font-weight: 600;
   transition: all 300ms ease;
-  padding: 1rem;
+  padding: 0.5rem;
   width: 10rem;
   border-radius: 2rem;
   color: #003a96;
@@ -111,8 +112,6 @@
 }
 
 .loginButton {
-  margin-left: 75%;
-
   font-weight: 600;
   transition: all 300ms ease;
   padding: 1rem;
@@ -121,6 +120,41 @@
   color: #f1f1f1;
   cursor: pointer;
   border-color: transparent;
-  background-color: #04aa6d;
+  background-color: #009ca6;
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.showPassButton {
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.5rem;
+  width: 10rem;
+  border-radius: 40px;
+  color: black;
+  background-color: #d4d4d4;
+  accent-color: #d4d4d4;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  margin-bottom: -0.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.incorrect {
+  margin-top: 2rem;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 0.3rem;
+  width: 10rem;
+  border-radius: 40px;
+  color: black;
+  background-color: indianred;
+  accent-color: #d4d4d4;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.linkstuff {
+  text-decoration: none;
+  color: #f1f1f1;
 }

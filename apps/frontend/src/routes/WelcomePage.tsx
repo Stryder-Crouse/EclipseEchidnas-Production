@@ -1,17 +1,17 @@
 /** importations **/
 import React, { useEffect } from "react";
-import "../components/welcomePage.css";
-import Logo from "../components/massGeneralBrighamLogo.png";
-import { useNavigate } from "react-router-dom";
+import "../css/welcomePage.css";
+import Logo from "../images/massGeneralBrighamLogo.png";
+import GuestButton from "../components/GuestButton.tsx";
+import AdminLoginButton from "../components/AdminLoginButton.tsx";
+import "../components/component-css/guest-button.css";
 
 export default function WelcomePage() {
-  /** NAVIGATION **/
-  const navigate = useNavigate();
-
+  //Setting backgroung Image
   useEffect(() => {
     //set background to first floor on component load
     document.body.style.backgroundImage =
-      "url(/src/components/backgroundHospitalImage.jpg)";
+      "url(/src/images/backgroundHospitalImage.jpg)";
   }, []);
 
   return (
@@ -22,18 +22,8 @@ export default function WelcomePage() {
 
       {/* Button Container */}
       <div className={"buttonsContainer"}>
-        <button
-          className={"button guestButton"}
-          onClick={() => navigate("/MapPage")}
-        >
-          Guest
-        </button>
-        <button
-          className={"button staffLoginButton"}
-          onClick={() => navigate("/StaffLogin")}
-        >
-          Staff Login
-        </button>
+        <GuestButton />
+        <AdminLoginButton />
       </div>
     </div>
   );
