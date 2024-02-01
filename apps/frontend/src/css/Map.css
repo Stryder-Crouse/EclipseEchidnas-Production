@@ -3,3 +3,24 @@
   display: flex;
   width: 90vw;
 }
+
+.clickableAtag {
+  cursor: pointer;
+}
+
+.pathLine {
+  stroke: black;
+  stroke-width: 5;
+}
+
+.normalNode {
+  fill: blue;
+}
+
+.startSelected {
+  fill: green;
+}
+
+.endSelected {
+  fill: red;
+}

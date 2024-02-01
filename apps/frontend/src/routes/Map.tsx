@@ -18,26 +18,161 @@ import { BFS } from "../../../backend/src/algorithms/Search/BFS.ts";
  * Creates a path from startNode to endNode on the map if the path exists
  *
  */
-async function makePath(startNodeID: string, endNodeID: string) {
+
+//stores
+let startNode: Node | null = null;
+let endNode: Node | null = null;
+
+//get graph from database
+let graph: Graph | null = null;
+
+/**
+ * reset the selected nodes on page load to clean previous selection (e.g if the user used the back button)
+ * */
+function resetSelectedNodes() {
+  startNode = null;
+  endNode = null;
+}
+
+/**
+ * gets the nodes and edges for the map and creates the graph for searching.
+ * */
+async function updateDatabase() {
   //load edges from file and connect them CHANGE LAYER
   const edges: Array<Edge> = readEdgeCSV(await getEdgeCSVString());
   const nodes: Array<Node> = readNodeCSV(await getNodeCSVString());
-  const graph: Graph = new Graph(nodes, edges);
+  graph = new Graph(nodes, edges);
+}
+
+/**
+ * @param nodeClickedID - the id of the node clicked on the screen
+ *
+ * This function fires when a node is clicked on the map.
+ * if only one node is selected it turns that node green and notes the node as the starting node
+ * if two nodes are selected it turn the newly selected node red (end node) and attempts to draw a path
+ * between them
+ * if another node is selected while a path is draw it clears the path then sets the newly selected node
+ * as the start node.
+ *
+ */
+function onNodeClick(nodeClickedID: string) {
+  //find node obj in graph
+  const nodeClicked = graph?.idToNode(nodeClickedID);
+
+  if (nodeClicked == null) {
+    console.error("Graph has not been created yet");
+    return;
+  }
+
+  //if no nodes selected
+  if (startNode == null && endNode == null) {
+    //set start node
+    startNode = nodeClicked;
+    //debug
+    console.log("start selected");
+    console.log(startNode);
+
+    //change to start node css
+    console.log(document.getElementById(nodeClickedID)?.children.item(0));
+    document
+      .getElementById(nodeClickedID)
+      ?.children.item(0)
+      ?.setAttribute("class", "startSelected");
+  }
+  //if start node has been selected
+  else if (endNode == null) {
+    //set end node
+    endNode = nodeClicked;
+    //debug
+    console.log("end selected");
+    console.log(endNode);
+    //change node color to red
+    console.log(document.getElementById(nodeClickedID)?.children.item(0));
+    document
+      .getElementById(nodeClickedID)
+      ?.children.item(0)
+      ?.setAttribute("class", "endSelected");
+
+    //attempt to draw path (! asserts that start node is not null)
+    makePath(startNode!, endNode);
+  }
+  //if both nodes were selected
+  else {
+    //change color of old nodes back to default
+    document
+      .getElementById(startNode?.id as string)
+      ?.children.item(0)
+      ?.setAttribute("class", "normalNode");
+    document
+      .getElementById(endNode?.id as string)
+      ?.children.item(0)
+      ?.setAttribute("class", "normalNode");
+
+    //delete old path
+    deletePath();
+
+    //set new start node and clear end node
+    startNode = nodeClicked;
+    endNode = null;
+
+    //change to start node css
+    console.log(document.getElementById(nodeClickedID)?.children.item(0));
+    document
+      .getElementById(nodeClickedID)
+      ?.children.item(0)
+      ?.setAttribute("class", "startSelected");
+
+    //debug
+    console.log("new path requested");
+    console.log(startNode);
+    console.log(endNode);
+  }
+}
+
+/**
+ * helper function to delete the current path on the screen
+ * */
+function deletePath() {
+  //get map element
+  const map = document.getElementById("map");
+  //get maps children
+  const childrenOfMap = map?.children;
+  if (childrenOfMap == undefined) {
+    console.error("map has no children");
+    return;
+  }
+
+  //for each child check if it is a line element if it is delete it
+  for (let i = 0; i < childrenOfMap?.length; i++) {
+    if (childrenOfMap.item(i)?.tagName == "line") {
+      map?.removeChild(childrenOfMap.item(i)!);
+      i--; // dont iterate to not miss elements
+    }
+  }
+}
+
+/**
+ *
+ * @param startNode - starting node obj of the path
+ * @param endNode - end node / target node for the search
+ *
+ * helper function that does the bfs search to find a path between startNode and endNode.
+ * once a path is found it draws lines between all the nodes in the path to show it to the user.
+ *
+ */
+function makePath(startNode: Node, endNode: Node) {
+  if (graph == null) {
+    console.error("Graph has not been created yet - makepath");
+    return;
+  }
 
   //find path with bfs
-  const path: Array<Node> | null = BFS(
-    graph.idToNode(startNodeID),
-    graph.idToNode(endNodeID),
-    graph,
-  );
+  const path: Array<Node> | null = BFS(startNode, endNode, graph);
 
   //error is no path could be found
   if (path == null) {
     console.error(
-      "no path could be found between " +
-        graph.idToNode(startNodeID)?.id +
-        " and " +
-        graph.idToNode(endNodeID)?.id,
+      "no path could be found between " + startNode?.id + " and " + endNode?.id,
     );
     return;
   }
@@ -45,7 +180,7 @@ async function makePath(startNodeID: string, endNodeID: string) {
   //find svg map element
   const map = document.getElementById("map");
 
-  //draw path onto map
+  //for each node in the path draw a line to the next node
   for (let i = 0; i < path.length - 1; i++) {
     //create new svg line obj
     const newLine = document.createElementNS(
@@ -63,10 +198,11 @@ async function makePath(startNodeID: string, endNodeID: string) {
     }
 
     //add node cordnates to the line obj
-    newLine.setAttribute("stroke", "black");
-    newLine.setAttribute("stroke-width", "5");
+    newLine.setAttribute("class", "pathLine");
+    //start node cordnates
     newLine.setAttribute("x1", start.coordinate.x.toString());
     newLine.setAttribute("y1", start.coordinate.y.toString());
+    //end node cordnates
     newLine.setAttribute("x2", end.coordinate.x.toString());
     newLine.setAttribute("y2", end.coordinate.y.toString());
     if (map == null) {
@@ -84,14 +220,18 @@ async function makePath(startNodeID: string, endNodeID: string) {
  */
 async function makeNodes() {
   //load nodes from file CHANGE LAYER
-  const nodes: Array<Node> = readNodeCSV(await getNodeCSVString());
+
+  if (graph == null) {
+    console.error("Graph has not been created yet");
+    return;
+  }
 
   //find svg map
   const map = document.getElementById("map");
 
   //for each node add it to the file
-  nodes.forEach(function (newNode: Node) {
-    //atag to contain link / make it clickable also contatins the circle within it
+  graph.getNodes().forEach(function (newNode: Node) {
+    //atag to contain the event lisener / make it clickable also contatins the circle within it
     const aTag = document.createElementNS("http://www.w3.org/2000/svg", "a");
     //circle to show node
     const newNodeCircle = document.createElementNS(
@@ -101,18 +241,19 @@ async function makeNodes() {
     //middle coordnate from circle
     newNodeCircle.setAttribute("cx", newNode.coordinate.x.toString());
     newNodeCircle.setAttribute("cy", newNode.coordinate.y.toString());
-    //id is node id
-    newNodeCircle.setAttribute("id", newNode.id);
     //circle radius
     newNodeCircle.setAttribute("r", "10");
-    //color
-    newNodeCircle.setAttribute("fill", "blue");
+    //set css class
+    newNodeCircle.setAttribute("class", "normalNode");
 
-    //give a link to the a tag
-    aTag.setAttribute(
-      "href",
-      "https://www.youtube.com/watch?v=uRlmjiwgbXY&ab_channel=BrosFOURRSpeed",
-    );
+    //give a tag the node id it stores
+    aTag.setAttribute("id", newNode.id);
+    aTag.setAttribute("class", "clickableAtag");
+    //set an event listener to call the onNodeClick on click (CHECK IF THERE IS A BETTER WAY TO DO THIS)
+    aTag.addEventListener("click", () => {
+      onNodeClick(newNode.id);
+    });
+
     //add circle to a tag
     aTag.appendChild(newNodeCircle);
     if (map == null) {
@@ -144,7 +285,6 @@ async function getEdgeCSVString(): Promise<string> {
   return "";
 }
 
-//this is a basic counter component to show where components should be placed
 export function Map() {
   //the html returned from the component
   return (
@@ -154,7 +294,7 @@ export function Map() {
         className={"map-test"}
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 5000 3400"
+        viewBox="940 490 2160 1900"
       >
         <use xmlnsXlink="http://www.w3.org/1999/xlink"></use>
         <image
@@ -176,5 +316,10 @@ export function Map() {
     </div>
   );
 }
-makeNodes().then();
-makePath("CCONF003L1", "CHALL014L1").then();
+
+//code below runs on page load
+updateDatabase().then(() => {
+  makeNodes().then();
+  //makePath("CCONF003L1", "CHALL014L1").then();
+  resetSelectedNodes();
+});
