@@ -18,11 +18,20 @@ export default function NavBar() {
   return (
     <div className="navbar-container">
       <div className="dropdown">
-        <button className="dropbtn">Service Request</button>
-        <div className="dropdown-content">
-          <a href={"/MedicineRequest"}>Medicine</a>
-          <a href={"/MedicineRequest"}>List Of Requests </a>
-        </div>
+        <a href={"/AdminMapPage"}>
+          <button className="dropbtn">Home Page</button>
+        </a>
+      </div>
+
+      <div className="dropdown">
+        <a href={"/medicineRequest"}>
+          <button className="dropbtn">Service Request</button>
+        </a>
+      </div>
+      <div className="dropdown">
+        <a href={"/RequestList"}>
+          <button className="dropbtn">Request List</button>
+        </a>
       </div>
       <div className="dropdown">
         <a href={"/FileTable"}>

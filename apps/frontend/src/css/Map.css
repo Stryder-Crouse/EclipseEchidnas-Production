@@ -2,6 +2,7 @@
   align-items: center;
   display: flex;
   width: 90vw;
+  border-radius: 2rem;
 }
 
 .clickableAtag {

@@ -1,9 +1,8 @@
 /** importations **/
 import React, { useEffect } from "react";
-import "../css/MapPage.css";
 import { Node } from "../../../backend/src/algorithms/Graph/Node.ts";
 import axios from "axios";
-import NavBar from "../components/NavBar.tsx";
+import AdminMapNavBar from "../components/AdminMapNavBar.tsx";
 import { Edge } from "../../../backend/src/algorithms/Graph/Edge.ts";
 import ExitButton from "../components/ExitButton.tsx";
 import { Map } from "./Map.tsx";
@@ -85,15 +84,12 @@ export default function AdminMapPage() {
       //submitEdges(); //populates the Edge table
       getNodes().then(); //send a get request to server and received info about all nodes (uncomment to use)
       getEdges().then(); //send a get request to server and received info about all edges
-      //set background to floor on component load
-      document.body.style.backgroundImage =
-        "url(/src/images/01_thefirstfloor.png)";
     }
   }, []);
   return (
     <div>
       <div>
-        <NavBar />
+        <AdminMapNavBar />
       </div>
 
       <div>
