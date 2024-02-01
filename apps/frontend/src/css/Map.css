@@ -4,3 +4,42 @@
   width: 90vw;
   border-radius: 2rem;
 }
+
+.clickableAtag {
+  cursor: pointer;
+}
+
+.pathLine {
+  stroke: black;
+  stroke-width: 5;
+}
+
+.normalNode {
+  fill: blue;
+  r: 10; /* radius of node */
+}
+
+.normalNodeHovered {
+  fill: blue;
+  r: 15; /* radius of node */
+}
+
+.startSelected {
+  fill: green;
+  r: 10; /* radius of node */
+}
+
+.startSelectedHovered {
+  fill: green;
+  r: 15; /* radius of node */
+}
+
+.endSelected {
+  fill: red;
+  r: 10; /* radius of node */
+}
+
+.endSelectedHovered {
+  fill: red;
+  r: 15; /* radius of node */
+}
