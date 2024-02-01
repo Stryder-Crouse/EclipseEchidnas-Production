@@ -31,9 +31,9 @@ model NodeDB {
 
   //These do not exist @relation tells prisma to now make an attribute and instead
   // relate the other table to this table through the specified key
-  startEdges  EdgeDB[]  @relation("startingEdges")
-  endEdges    EdgeDB[]  @relation("endingEdges")
-  reqLocation Request[] @relation("requestLocation")
+  startEdges  EdgeDB[] @relation("startingEdges")
+  endEdges    EdgeDB[] @relation("endingEdges")
+  reqLocation MedReq[] @relation("requestLocation") //must change to Request later
 }
 
 model EdgeDB {
@@ -46,21 +46,32 @@ model EdgeDB {
   endNode   NodeDB @relation("endingEdges", fields: [endNodeID], references: [nodeID])
 }
 
-model Request {
-  reqID         Int    @id
-  reqType       String @db.VarChar(256)
-  reqLocation   NodeDB @relation("requestLocation", fields: [reqLocationID], references: [nodeID])
-  reqLocationID String @db.VarChar(256)
-  extraInfo     String @db.VarChar(256)
-
-  medReq MedReq? @relation("medicineRequest")
-}
-
 model MedReq {
-  medReqID   Int     @id
-  medType    String  @db.VarChar(256)
-  dosage     String  @db.VarChar(256)
-  numDosages Int
-  request    Request @relation("medicineRequest", fields: [requestID], references: [reqID])
-  requestID  Int     @unique
+  medReqID      Int    @id @default(autoincrement())
+  reqLocationID String @db.VarChar(256)
+  medType       String @db.VarChar(256)
+  dosage        String @db.VarChar(256)
+  numDosages    Int
+
+  reqLocation NodeDB @relation("requestLocation", fields: [reqLocationID], references: [nodeID])
 }
+
+// model Request {
+//   reqID         Int    @id @default(autoincrement())
+//   reqType       String @db.VarChar(256)
+//   reqLocationID String @db.VarChar(256)
+//   extraInfo     String @db.VarChar(256)
+//
+//   medReq MedReq? @relation(fields: [reqID], references: [request.medReqID])
+//   reqLocation   NodeDB @relation("requestLocation", fields: [reqLocationID], references: [nodeID])
+// }
+//
+// model MedReq {
+//   medReqID   Int     @id @default(autoincrement())
+//   medType    String  @db.VarChar(256)
+//   dosage     String  @db.VarChar(256)
+//   numDosages Int
+//   request  Request     //@unique
+//
+//   //request    Request @relation("medicineRequest", fields: [requestID], references: [reqID])
+// }
