@@ -16,12 +16,20 @@
 
 .normalNode {
   fill: blue;
+  r: 10; /* radius of node */
+}
+
+.normalNodeHovered {
+  fill: blue;
+  r: 15; /* radius of node */
 }
 
 .startSelected {
   fill: green;
+  r: 10; /* radius of node */
 }
 
 .endSelected {
   fill: red;
+  r: 10; /* radius of node */
 }

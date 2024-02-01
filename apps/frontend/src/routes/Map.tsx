@@ -241,8 +241,7 @@ async function makeNodes() {
     //middle coordnate from circle
     newNodeCircle.setAttribute("cx", newNode.coordinate.x.toString());
     newNodeCircle.setAttribute("cy", newNode.coordinate.y.toString());
-    //circle radius
-    newNodeCircle.setAttribute("r", "10");
+
     //set css class
     newNodeCircle.setAttribute("class", "normalNode");
 
