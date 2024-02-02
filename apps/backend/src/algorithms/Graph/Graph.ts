@@ -1,5 +1,5 @@
-import { Node } from "./Node.ts";
-import { Edge } from "./Edge.ts";
+import { Buildings, Node, nodeToString, NodeType } from "./Node.ts";
+import { Edge, edgeToString } from "./Edge.ts";
 
 /**
  * Class that represents an undirected graph
@@ -96,6 +96,55 @@ export class Graph {
     this.edges = edges;
     this.adjacent = adj;
     this.idLookup = nodeMap;
+  }
+
+  //todo clean up - stryder
+  public nodesToString() {
+    let str = "";
+    const failNode: Node = {
+      building: Buildings.UNDEFINED,
+      coordinate: { x: 1, y: 1 },
+      edges: [],
+      floor: "",
+      id: "FAIL",
+      longName: "",
+      nodeType: NodeType.UNDEFINED,
+      shortName: "",
+    };
+
+    for (let i = 0; i < this.getNodes().length; i++) {
+      if (this.getNodes().at(i) != null || undefined) {
+        str += nodeToString(this.getNodes().at(i) ?? failNode);
+      }
+    }
+    return str;
+  }
+
+  //todo clean up - stryder
+  public edgesToString() {
+    let str = "";
+    const failNode: Node = {
+      building: Buildings.UNDEFINED,
+      coordinate: { x: 1, y: 1 },
+      edges: [],
+      floor: "",
+      id: "FAIL",
+      longName: "",
+      nodeType: NodeType.UNDEFINED,
+      shortName: "",
+    };
+    const failEdge: Edge = {
+      endNode: failNode,
+      id: "FAIL",
+      startNode: failNode,
+    };
+
+    for (let i = 0; i < this.getEdges().length; i++) {
+      if (this.getEdges().at(i) != null || undefined) {
+        str += edgeToString(this.getEdges().at(i) ?? failEdge);
+      }
+    }
+    return str;
   }
 
   /**

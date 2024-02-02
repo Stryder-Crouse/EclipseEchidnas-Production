@@ -1,4 +1,6 @@
 import React from "react";
+import { EdgeDataBase } from "../../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
+import axios from "axios";
 
 function EdgeTable() {
   return (
@@ -15,32 +17,51 @@ function EdgeTable() {
               <th>endNode</th>
             </tr>
           </thead>
-          <tbody id={"table-rows"}>
-            <tr>
-              <td className={"node-id"}>CHALL008</td>
-              <td>2255</td>
-              <td>849</td>
-            </tr>
-            <tr>
-              <td className={"node-id"}>CCONF002L1</td>
-              <td>2665</td>
-              <td>1043</td>
-            </tr>
-            <tr>
-              <td className={"node-id"}>CCONF003L1</td>
-              <td>2445</td>
-              <td>1245</td>
-            </tr>
-            <tr>
-              <td className={"node-id"}>CDEPT002L1</td>
-              <td>1980</td>
-              <td>844</td>
-            </tr>
-          </tbody>
+          <tbody id={"table-rows-edges"}></tbody>
         </table>
       </div>
     </div>
   );
+}
+onload = () => {
+  populateEdges().then();
+};
+
+//todo clean up -stryder
+async function populateEdges() {
+  const edgeData = await axios.get<EdgeDataBase[]>("/api/load-edges");
+
+  //fine dropdown div in the html on the page
+  const table = document.getElementById("table-rows-edges");
+
+  console.log(table);
+
+  //for each node
+  edgeData.data.forEach(function (newEdge: EdgeDataBase) {
+    //create tr element to store the record
+    const tableRow = document.createElement("tr");
+    //create td tags for data from record
+    const edgeID = document.createElement("td");
+    edgeID.textContent = newEdge.edgeID;
+    edgeID.setAttribute("class", "node-id");
+
+    const edgeStart = document.createElement("td");
+    edgeStart.textContent = newEdge.startNodeID;
+
+    const edgeEnd = document.createElement("td");
+    edgeEnd.textContent = newEdge.endNodeID;
+
+    //append data elements together to one row
+    tableRow.appendChild(edgeID);
+    tableRow.appendChild(edgeStart);
+    tableRow.appendChild(edgeEnd);
+    if (table == null) {
+      return;
+    }
+
+    //add new row element to table
+    table.appendChild(tableRow);
+  });
 }
 
 export default EdgeTable;

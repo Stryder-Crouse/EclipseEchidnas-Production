@@ -3,11 +3,14 @@ import "./component-css/NavBar.css";
 import "../css/Map.css";
 import axios from "axios";
 import { Node } from "../../../backend/src/algorithms/Graph/Node.ts";
-import { readNodeCSV } from "../../../backend/src/algorithms/readCSV.ts";
 import {
   onNodeHover,
   onNodeLeave,
 } from "../event-logic/circleNodeEventHandlers.ts";
+import {
+  NodeDataBase,
+  nodeDataBaseToNode,
+} from "../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 
 export default function LocationsDropDown() {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -49,9 +52,14 @@ populateLocationDropdown().then();
  */
 async function populateLocationDropdown() {
   //read node file and create the nodes
-  const nodes = readNodeCSV(await getNodeCSVString());
+  //load edges and node from database
+  const nodesDB = await axios.get<NodeDataBase[]>("/api/load-nodes");
 
-  //MAKE ALPHABETICAL
+  const nodes: Array<Node> = [];
+
+  nodesDB.data.forEach((nodeDB) => {
+    nodes.push(nodeDataBaseToNode(nodeDB));
+  });
 
   //console.log("nodes");
   //console.log(nodes);
@@ -86,7 +94,7 @@ async function populateLocationDropdown() {
   });
 }
 
-async function getNodeCSVString(): Promise<string> {
+/*async function getNodeCSVString(): Promise<string> {
   const res = await axios.get("/api/loadCSVFile/CSVnode");
   console.log("data");
   console.log(res.data);
@@ -94,7 +102,7 @@ async function getNodeCSVString(): Promise<string> {
     return res.data as string;
   }
   return "";
-}
+}*/
 
 //dont delete - stryder
 // /**
