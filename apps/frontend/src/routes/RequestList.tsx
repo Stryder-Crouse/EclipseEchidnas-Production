@@ -35,9 +35,8 @@ function RequestList() {
 }
 
 //may need onload for other ones as well
-onload = () => {
-  populateRequests().then();
-};
+
+populateRequests().then();
 
 //test type REMOVE LATER
 export type request = {
