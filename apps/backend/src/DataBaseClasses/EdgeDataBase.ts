@@ -48,7 +48,7 @@ export function edgeDataBasetoEdge(eDB: EdgeDataBase) {
 
   const edge: Edge = {
     endNode: end,
-    id: "",
+    id: eDB.edgeID,
     startNode: start,
   };
   return edge;

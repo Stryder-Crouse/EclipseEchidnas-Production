@@ -1,257 +1,24 @@
-/*!*.caption-container {*!*/
-/*!*  font-size: 1.12rem;*!*/
-/*!*  font-weight: 700;*!*/
-/*!*  text-align: left;*!*/
-/*!*  padding-bottom: 1rem;*!*/
-/*!*  border-bottom: 0.125rem solid #edeef1;*!*/
-/*!*}*!*/
-
-/*!*.table-container {*!*/
-/*!*  border-radius: 2rem;*!*/
-/*!*  background-color: #fcfcfd;*!*/
-/*!*  padding: 1.5rem;*!*/
-/*!*  width: 100%;*!*/
-/*!*  margin: 1rem;*!*/
-/*!*  max-width: 47.5rem;*!*/
-/*!*  border: 2px solid #edeef1;*!*/
-/*!*  box-shadow: 0 4px 16px 0 rgba(148, 156, 169, 0.15);*!*/
-/*!*  text-align: left;*!*/
-
-/*!*  position: absolute;*!*/
-/*!*  top: 56%;*!*/
-/*!*  left: 50%;*!*/
-/*!*  transform: translate(-50%, -50%);*!*/
-/*!*}*!*/
-
-/*.table-wrapper {*/
-/*  overflow: auto;*/
-/*  padding-bottom: 0.5rem;*/
-/*  margin-bottom: 1rem;*/
-/*}*/
-
-/*!*.table-container table {*!*/
-/*!*  max-width: 37.5rem;*!*/
-/*!*  border-collapse: collapse;*!*/
-/*!*  table-layout: fixed;*!*/
-/*!*}*!*/
-
-/*.table-container thead {*/
-/*  position: sticky;*/
-/*}*/
-
-/*.table-container th {*/
-/*  padding: 0.75rem 0.75rem 0.75rem 0.5rem;*/
-/*  font-size: 0.875rem;*/
-/*  color: #a0a7b1;*/
-/*  width: fit-content;*/
-/*  white-space: nowrap;*/
-/*  background-color: #f4f5fc;*/
-/*}*/
-
-/*!*.table-container tfoot {*!*/
-/*!*  margin-top: 1rem;*!*/
-/*!*  border-top: 0.125rem solid #edeef1;*!*/
-/*!*}*!*/
-
-/*!*.table-container td {*!*/
-/*!*  padding: 0.75rem 0.75rem 0.75rem 0.5rem;*!*/
-/*!*  vertical-align: middle;*!*/
-/*!*  white-space: nowrap;*!*/
-/*!*  border-bottom: 2px solid #edeef1;*!*/
-/*!*}*!*/
-
-/*.caption-container {*/
-/*    display: flex;*/
-/*    align-items: center;*/
-/*    justify-content: center;*/
-/*    font-size: 1.12rem;*/
-/*    font-weight: 700;*/
-/*    text-align: left;*/
-/*    padding-bottom: 1rem;*/
-/*    border-bottom: 0.125rem solid #edeef1;*/
-/*}*/
-
-/*.table-title {*/
-/*    display: flex;*/
-/*    gap: 0.75rem;*/
-/*    align-items: center;*/
-/*    justify-content: center;*/
-/*}*/
-
-/*.table-row-count {*/
-/*  font-size: 0.8rem;*/
-/*  font-weight: 700;*/
-/*  background-color: #f1f2f6;*/
-/*  padding: 0.5rem;*/
-/*  display: inline-flex;*/
-/*  align-items: center;*/
-/*  margin-left: 1rem;*/
-/*  border-radius: 0.5rem;*/
-/*}*/
-
-/*.table-title {*/
-/*  display: flex;*/
-/*  gap: 0.75rem;*/
-/*}*/
-
-/*.caption-container {*/
-/*  display: flex;*/
-/*  align-items: center;*/
-/*}*/
-
-/*.table-container {*/
-/*  min-height: 5rem;*/
-/*}*/
-
-/*!** Leftmost row (Row 1) **!*/
-/*.node-id {*/
-/*  z-index: 1;*/
-/*  top: 0;*/
-/*  left: 0;*/
-/*  background-color: #fcfcfd;*/
-/*  font-weight: bold;*/
-/*}*/
-
-/*!** Horizontal Scroll **!*/
-/*.table-wrapper::-webkit-scrollbar {*/
-/*  height: 0.75rem;*/
-/*}*/
-
-/*.table-wrapper::-webkit-scrollbar-track {*/
-/*  background: #f1f2f6;*/
-/*  border-radius: 6px;*/
-/*}*/
-
-/*.table-wrapper::-webkit-scrollbar-thumb {*/
-/*  background: #a0a7b1;*/
-/*  border-radius: 5px;*/
-/*}*/
-
-/*!** Styling on columns **!*/
-/*td:nth-child(2) {*/
-/*  color: #0097a0;*/
-/*  font-weight: bold;*/
-/*}*/
-
-/*td:nth-child(3) {*/
-/*  color: #0097a0;*/
-/*  font-weight: bold;*/
-/*}*/
-
-/*td:nth-child(7) {*/
-/*  font-weight: bold;*/
-/*}*/
-
-/*!** Importation and Exportation buttons **!*/
-/*.import-and-export {*/
-/*  justify-content: center;*/
-/*  align-items: center;*/
-/*  display: flex;*/
-/*  gap: 1rem;*/
-/*}*/
-/*.export {*/
-
-/*        display: flex;*/
-/*        align-items: center;*/
-/*        justify-content: center;*/
-/*        background-color: #0097a0;*/
-/*        border: 1px solid #d3d3d3;*/
-/*        border-radius: 0.5rem;*/
-/*        padding: 0.75rem;*/
-/*        color: #f1f1f1;*/
-/*        cursor: pointer;*/
-/*        font-weight: bold;*/
-
-/*}*/
-
-/*.table-container {*/
-/*    border-radius: 2rem;*/
-/*    background-color: #fcfcfd;*/
-/*    padding: 1.5rem;*/
-/*    margin: 1rem;*/
-/*    max-width: 80vw;*/
-/*    border: 2px solid #edeef1;*/
-/*    box-shadow: 0 4px 16px 0 rgba(148, 156, 169, 0.15);*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    align-items: center;*/
-/*    justify-content: center;*/
-/*    height: 50vh; !* Set the height to 100% of the viewport height *!*/
-
-/*    position: absolute;*/
-/*    top: 50%;*/
-/*    left: 50%;*/
-/*    transform: translate(-50%, -50%);*/
-/*    overflow: auto;*/
-/*}*/
-
-/*td:nth-child(2) {*/
-/*    color: black;*/
-/*    width: 5rem;*/
-/*}*/
-
-/*.table-title {*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    align-items: center;*/
-/*    justify-content: center;*/
-/*    text-align: center;*/
-/*    font-size: 24px;*/
-/*    font-weight: bold;*/
-/*    margin-bottom: 10px; !* Adjust the margin as needed *!*/
-/*}*/
-
-/*.table-container {*/
-/*    display: flex;*/
-/*    flex-direction: column;*/
-/*    align-items: center;*/
-/*    justify-content: center;*/
-/*    height: 100vh; !* Set the height to 100% of the viewport height *!*/
-/*}*/
-
-/*.caption-container {*/
-/*    text-align: center;*/
-/*    margin-bottom: 20px; !* Adjust the margin as needed *!*/
-/*}*/
-
-/*.table-wrapper {*/
-/*    overflow-x: auto;*/
-/*    margin: 20px; !* Add some margin for better aesthetics *!*/
-/*}*/
-
-/*table {*/
-/*    width: 100%;*/
-/*    border-collapse: collapse;*/
-/*}*/
-
-/*thead, tbody {*/
-/*    text-align: center;*/
-/*}*/
-
-/*th, td {*/
-/*    padding: 10px;*/
-/*    border: 1px solid #ddd;*/
-/*}*/
-
 .caption-container {
   font-size: 1.12rem;
   font-weight: 700;
-  text-align: left;
+  text-align: center;
   padding-bottom: 1rem;
   border-bottom: 0.125rem solid #edeef1;
+  justify-content: center; /* Center horizontally */
+  align-items: center;
 }
 
 .table-container {
   border-radius: 2rem;
   background-color: #fcfcfd;
   padding: 1.5rem;
-  width: 110%;
+  width: 100%;
   margin-top: 2rem;
-  max-width: 47.5rem;
+
   border: 2px solid #edeef1;
   box-shadow: 0 4px 16px 0 rgba(148, 156, 169, 0.15);
-  text-align: left;
-
+  text-align: center;
+  max-height: 30vh;
   /** Flexbox centering Div **/
   display: grid;
   justify-content: center;
@@ -262,6 +29,8 @@
   overflow: auto;
   padding-bottom: 0.5rem;
   margin-bottom: 1rem;
+  max-height: 20vh;
+  align-items: center;
 }
 
 .table-container table {
@@ -393,5 +162,7 @@ td:nth-child(7) {
 }
 
 .nodeEdge-container {
-  margin-top: 20rem;
+  margin-top: 10rem;
+  margin-left: auto;
+  margin-right: auto;
 }
