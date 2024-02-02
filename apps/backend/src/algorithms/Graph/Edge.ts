@@ -5,3 +5,7 @@ export type Edge = {
   startNode: Node;
   endNode: Node;
 };
+
+export function edgeToString(edge: Edge) {
+  return edge.id + "," + edge.startNode.id + "," + edge.endNode.id + "\r\n";
+}
