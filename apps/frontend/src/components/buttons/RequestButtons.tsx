@@ -1,5 +1,5 @@
 import { RequestButtonsInterface } from "./RequestButtonsInterface.ts";
-import "./component-css/requestButton.css";
+import "../../css/component-css/buttons/requestButton.css";
 
 function RequestButtons({ submit }: RequestButtonsInterface) {
   function handleSubmit() {

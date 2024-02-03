@@ -1,5 +1,5 @@
 import React from "react";
-import "../component-css/export-button.css";
+import "../../css/component-css/buttons/export-button.css";
 
 function ExportCSVButton() {
   return <button className={"export"}>Export Current</button>;

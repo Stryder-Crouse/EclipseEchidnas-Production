@@ -1,14 +1,14 @@
 /** importations **/
 import React, { ChangeEvent, useState } from "react";
-import "../css/medicineRequest.css";
-import AdminPageNavBar from "../components/AdminPageNavBar.tsx";
-import RequestButtons from "../components/RequestButtons.tsx";
-import ExitButton from "../components/ExitButton.tsx";
+import "../css/route-css/medicineRequest.css";
+import AdminPageNavBar from "../components/navigation-bar/AdminPageNavBar.tsx";
+import RequestButtons from "../components/buttons/RequestButtons.tsx";
+import ExitButton from "../components/buttons/ExitButton.tsx";
 
 import axios from "axios";
 import { MedReq } from "../../../backend/src/algorithms/Requests/Request.ts";
 
-export default function MedicineRequest() {
+export default function ServiceRequestPage() {
   const [medRequestLocale, setMedRequestLocale] = useState("");
   const [medRequestDoses, setMedRequestDose] = useState("");
   const [medRequestType, setMedRequestType] = useState("");

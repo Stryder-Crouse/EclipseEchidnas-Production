@@ -1,9 +1,9 @@
 import React from "react";
-import ExitButton from "../components/ExitButton.tsx";
-import AdminPageNavBar from "../components/AdminPageNavBar.tsx";
-import "../css/requestList.css";
+import ExitButton from "../../components/buttons/ExitButton.tsx";
+import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx";
+import "../../css/route-css/requestList.css";
 import axios from "axios";
-import { MedReq } from "../../../backend/src/algorithms/Requests/Request.ts";
+import { MedReq } from "../../../../backend/src/algorithms/Requests/Request.ts";
 
 function RequestList() {
   return (

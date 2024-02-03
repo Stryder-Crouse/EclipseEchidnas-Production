@@ -1,5 +1,5 @@
 import React from "react";
-import "../components/component-css/admin-login-button.css";
+import "../../css/component-css/buttons/admin-login-button.css";
 
 /**
  * Button Component on the Welcome Page

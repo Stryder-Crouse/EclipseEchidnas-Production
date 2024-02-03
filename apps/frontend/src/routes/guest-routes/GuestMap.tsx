@@ -1,10 +1,12 @@
 /** importations **/
 import React from "react";
-import AdminMapNavBar from "../components/AdminMapNavBar.tsx";
-import ExitButton from "../components/ExitButton.tsx";
-import { Map } from "./Map.tsx";
 
-export default function AdminMapPage() {
+import GuestNavBar from "../../components/navigation-bar/GuestNavBar.tsx";
+
+import ExitButton from "../../components/buttons/ExitButton.tsx";
+import { Map } from "../../components/map/Map.tsx";
+
+export default function GuestMap() {
   //  const Dropdown = () => {
   //  const [showDropdown, setShowDropdown] = useState(false);
   // const [filterValue, setFilterValue] = useState('');
@@ -31,9 +33,8 @@ export default function AdminMapPage() {
   return (
     <div>
       <div>
-        <AdminMapNavBar />
+        <GuestNavBar />
       </div>
-
       <div>
         <ExitButton />
       </div>
