@@ -1,10 +1,10 @@
 /** THIS IS THE ENTIRE PAGE SETUP **/
 
 .welcome {
-  background-image: url("../components/backgroundHospitalImage.jpg");
+  background-image: url("../../images/backgroundHospitalImage.jpg");
 }
 .welcomeLogin {
-  font-family: Roboto;
+  font-family: "Work-Sans", sans-serif;
   color: #012d5a;
 
   /** box creation **/
@@ -25,10 +25,10 @@
 
   /** box shadows **/
   box-shadow:
-    0px -0px 101px 8px rgba(0, 0, 0, 0.45),
-    25px 0px 20px -20px rgba(0, 0, 0, 0.45),
-    0px 25px 20px -20px rgba(0, 0, 0, 0.45),
-    -25px 0px 20px -20px rgba(0, 0, 0, 0.45);
+    0 -0px 101px 8px rgba(0, 0, 0, 0.45),
+    25px 0 20px -20px rgba(0, 0, 0, 0.45),
+    0 25px 20px -20px rgba(0, 0, 0, 0.45),
+    -25px 0 20px -20px rgba(0, 0, 0, 0.45);
 }
 
 /** Logo Image Alterations **/
@@ -69,44 +69,12 @@
   z-index: 2;
 }
 
-.button {
-  font-weight: 600;
-  transition: all 300ms ease;
-  padding: 1rem;
-  width: 8rem;
-  border-radius: 2rem;
-  color: #003a96;
-  border-color: transparent;
-  cursor: pointer;
-}
-
-/** Guest Button **/
-.guestButton {
-  /** make box larger **/
-  margin-top: 7rem;
-  font-size: larger;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  width: 20rem;
-  padding: 1.5rem;
-
-  background-color: #012d5a;
+.linkstuff {
+  text-decoration: none;
   color: #f1f1f1;
-
-  top: 50%;
-  left: 50%;
-  transform: translate(-33%, -50%);
 }
 
-/** Staff Login Button **/
-.staffLoginButton {
-  width: 10rem;
-  margin-top: 2rem;
-
-  top: 50%;
-  left: 50%;
-  transform: translate(-17%, -50%);
-
-  color: black;
-  background: #d9d9d9;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+.linkstuff {
+  text-decoration: none;
+  color: #f1f1f1;
 }

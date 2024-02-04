@@ -2,9 +2,11 @@ import React from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import WelcomeStart from "./routes/WelcomePage.tsx";
 import LoginPage from "./routes/LoginPage.tsx";
-import MapPage from "./routes/MapPage.tsx";
-import Stryderstestroute from "./routes/TestS/exsampleSTRoute.tsx";
-
+import AdminMapPage from "./routes/admin-routes/AdminMapPage.tsx";
+import ServiceRequestPage from "./routes/ServiceRequestPage.tsx";
+import RequestList from "./routes/admin-routes/RequestList.tsx";
+import NodeEdgeTablePage from "./routes/admin-routes/NodeEdgeTablePage.tsx";
+import GuestMap from "./routes/guest-routes/GuestMap.tsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -17,24 +19,34 @@ function App() {
           element: <WelcomeStart />,
         },
         {
-          path: "/StaffLogin",
+          path: "/LoginPage",
           element: <LoginPage />,
         },
         {
-          path: "/MapPage",
-          element: <MapPage />,
+          path: "/AdminMapPage",
+          element: <AdminMapPage />,
         },
-        //stryder's test page
         {
-          path: "/stryder",
-          element: <Stryderstestroute />,
+          path: "/ServiceRequestPage",
+          element: <ServiceRequestPage />,
+        },
+        {
+          path: "/NodeEdgeTablePage",
+          element: <NodeEdgeTablePage />,
+        },
+        {
+          path: "/GuestMap",
+          element: <GuestMap />,
+        },
+        {
+          path: "/RequestList",
+          element: <RequestList />,
         },
       ],
     },
   ]);
 
   return <RouterProvider router={router} />;
-
   function Root() {
     return <Outlet />;
   }

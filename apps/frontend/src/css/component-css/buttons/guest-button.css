@@ -1,0 +1,19 @@
+/** Guest Button **/
+.guestButton {
+  /** make box larger **/
+  margin-top: 7rem;
+  font-size: larger;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  width: 20rem;
+  padding: 1rem;
+  background-color: #012d5a;
+  color: #f1f1f1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-33%, -50%);
+}
+
+.linkstuff {
+  text-decoration: none;
+  color: #f1f1f1;
+}

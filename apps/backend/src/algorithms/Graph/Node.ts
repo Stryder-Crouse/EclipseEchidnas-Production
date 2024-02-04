@@ -12,6 +12,28 @@ export type Node = {
   edges: Array<Edge>;
 };
 
+//todo clean up - stryder
+export function nodeToString(n: Node) {
+  return (
+    n.id +
+    "," +
+    n.coordinate.x.toString() +
+    "," +
+    n.coordinate.y.toString() +
+    "," +
+    n.floor +
+    "," +
+    n.building +
+    "," +
+    n.nodeType +
+    "," +
+    n.longName +
+    "," +
+    n.shortName +
+    "\r\n"
+  );
+}
+
 /** Enum to hold the three possible buildings in the hospital */
 export enum Buildings {
   B45Francis = "45 Francis",
