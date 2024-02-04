@@ -1,5 +1,6 @@
 import React from "react";
 import "../components/component-css/admin-login-button.css";
+import { useAuth0 } from "@auth0/auth0-react";
 
 /**
  * Button Component on the Welcome Page
@@ -7,10 +8,12 @@ import "../components/component-css/admin-login-button.css";
  * Leads to /StaffLogin
  */
 function AdminLoginButton() {
+  const { loginWithRedirect } = useAuth0();
+
   return (
-    <a href={"/LoginPage"} className={"linkStuff"}>
-      <button className={"button adminLoginButton"}>Admin Login</button>
-    </a>
+    <button className={"adminLoginButton"} onClick={() => loginWithRedirect()}>
+      Staff Log In
+    </button>
   );
 }
 
