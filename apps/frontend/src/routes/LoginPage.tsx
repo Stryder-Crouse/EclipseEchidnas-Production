@@ -1,11 +1,11 @@
 /** importations **/
 import React, { useState, useEffect } from "react";
-import "../components/loginPage/LoginPage.css";
+import "../css/route-css/LoginPage.css";
 import Logo from "../images/massGeneralBrighamLogo.png";
 import Avatar from "../images/avatarIcon.png";
 //import EyeOpen from "../images/UnobscuredPassword.png";
 //import EyeClosed from "../images/ObscuredPassword.png";
-import ExitButton from "../components/ExitButton.tsx";
+import ExitButton from "../components/buttons/ExitButton.tsx";
 import { useNavigate } from "react-router-dom";
 /**
  * Create login page for staff/admin

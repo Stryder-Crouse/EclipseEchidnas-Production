@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import "./component-css/NavBar.css";
-import "../css/Map.css";
+import "../../css/component-css/NavBar.css";
+import "../../css/component-css/Map.css";
 import axios from "axios";
-import { Node } from "../../../backend/src/algorithms/Graph/Node.ts";
+import { Node } from "../../../../backend/src/algorithms/Graph/Node.ts";
 import {
   onNodeHover,
   onNodeLeave,
-} from "../event-logic/circleNodeEventHandlers.ts";
+} from "../../event-logic/circleNodeEventHandlers.ts";
 import {
   NodeDataBase,
   nodeDataBaseToNode,
-} from "../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+} from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 
 export default function LocationsDropDown() {
   const [showDropdown, setShowDropdown] = useState(false);

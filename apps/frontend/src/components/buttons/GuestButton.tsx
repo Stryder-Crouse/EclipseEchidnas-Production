@@ -1,5 +1,5 @@
 import React from "react";
-import "../components/component-css/guest-button.css";
+import "../../css/component-css/buttons/guest-button.css";
 
 /**
  * Button Component on the Welcome Page

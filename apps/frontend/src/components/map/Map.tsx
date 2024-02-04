@@ -1,23 +1,23 @@
 import axios from "axios";
 
-import { Node } from "../../../backend/src/algorithms/Graph/Node.ts";
+import { Node } from "../../../../backend/src/algorithms/Graph/Node.ts";
 
-import "../css/Map.css";
-import { Edge } from "../../../backend/src/algorithms/Graph/Edge.ts";
-import { Graph } from "../../../backend/src/algorithms/Graph/Graph.ts";
-import { BFS } from "../../../backend/src/algorithms/Search/BFS.ts";
+import "../../css/component-css/Map.css";
+import { Edge } from "../../../../backend/src/algorithms/Graph/Edge.ts";
+import { Graph } from "../../../../backend/src/algorithms/Graph/Graph.ts";
+import { BFS } from "../../../../backend/src/algorithms/Search/BFS.ts";
 import {
-    onNodeHover,
-    onNodeLeave,
-} from "../event-logic/circleNodeEventHandlers.ts";
+  onNodeHover,
+  onNodeLeave,
+} from "../../event-logic/circleNodeEventHandlers.ts";
 import {
-    NodeDataBase,
-    nodeDataBaseToNode,
-} from "../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+  NodeDataBase,
+  nodeDataBaseToNode,
+} from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import {
-    EdgeDataBase,
-    edgeDataBasetoEdge,
-} from "../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
+  EdgeDataBase,
+  edgeDataBasetoEdge,
+} from "../../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
 
 /**
  * @param startNodeID the ID of the starting node to path find from

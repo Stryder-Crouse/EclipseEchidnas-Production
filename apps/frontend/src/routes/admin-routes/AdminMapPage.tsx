@@ -1,8 +1,8 @@
 /** importations **/
 import React from "react";
-import AdminMapNavBar from "../components/AdminMapNavBar.tsx";
-import ExitButton from "../components/ExitButton.tsx";
-import { Map } from "./Map.tsx";
+import AdminMapNavBar from "../../components/navigation-bar/AdminMapNavBar.tsx";
+import ExitButton from "../../components/buttons/ExitButton.tsx";
+import { Map } from "../../components/map/Map.tsx";
 
 export default function AdminMapPage() {
   //  const Dropdown = () => {

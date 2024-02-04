@@ -1,5 +1,5 @@
 import React from "react";
-import "./component-css/NavBar.css";
+import "../../css/component-css/NavBar.css";
 import LocationsDropDown from "./LocationsDropDown.tsx";
 
 export default function NavBar() {
@@ -7,5 +7,6 @@ export default function NavBar() {
     <div className="left-navbar-container">
       <LocationsDropDown></LocationsDropDown>
     </div>
+
   );
 }

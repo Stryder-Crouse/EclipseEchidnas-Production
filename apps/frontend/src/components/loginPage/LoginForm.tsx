@@ -3,7 +3,7 @@ import React from "react";
 import { useState } from "react";
 import UsernameAlert from "./UsernameAlert.tsx";
 import PasswordAlert from "./PasswordAlert.tsx";
-import "./LoginPage.css";
+import "../../css/route-css/LoginPage.css";
 
 function LoginForm() {
   //Create username and password variables to store inputs

@@ -1,6 +1,6 @@
 import React from "react";
 
-import "../components/component-css/exit-button.css";
+import "../../css/component-css/buttons/exit-button.css";
 
 /**
  * Button Component
