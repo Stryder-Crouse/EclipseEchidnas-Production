@@ -10,26 +10,28 @@ function RequestList() {
     <div>
       <AdminPageNavBar />
 
-      <div className={"table-container"}>
-        <span className={"caption-container"}>
-          <span className={"table-title"}>Request Log</span>
-        </span>
-        <div className={"table-wrapper"}>
-          <table className={"requestTable"} id={"request-table"}>
-            <thead>
-              <tr>
-                <th>Request Type</th>
-                <th>Going To</th>
-                <th>Medicine type</th>
-                <th>Dosage</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            {/* populating here */}
-          </table>
+        <div className={"request-table-container"}>
+          <div className={"table-container"}>
+            <span className={"caption-container"}>
+              <span className={"table-title"}>Request Log</span>
+            </span>
+            <div className={"table-wrapper"}>
+              <table className={"requestTable"} id={"request-table"}>
+                <thead>
+                  <tr>
+                    <th>Request Type</th>
+                    <th>Going To</th>
+                    <th>Medicine type</th>
+                    <th>Dosage</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                {/* populating here */}
+              </table>
+            </div>
+            <ExitButton />
+          </div>
         </div>
-        <ExitButton />
-      </div>
     </div>
   );
 }

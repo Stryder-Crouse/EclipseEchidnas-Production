@@ -38,7 +38,7 @@ export default function GuestMap() {
       <div>
         <ExitButton />
       </div>
-      <div>
+      <div className={"mapDiv"}>
         <Map />
       </div>
     </div>
