@@ -1,43 +1,44 @@
 import React from "react";
-import ExitButton from "../components/ExitButton.tsx";
-import AdminPageNavBar from "../components/AdminPageNavBar.tsx";
-import "../css/requestList.css";
+import ExitButton from "../../components/buttons/ExitButton.tsx";
+import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx";
+import "../../css/route-css/requestList.css";
 import axios from "axios";
-import { MedReq } from "../../../backend/src/algorithms/Requests/Request.ts";
+import { MedReq } from "../../../../backend/src/algorithms/Requests/Request.ts";
 
 function RequestList() {
   return (
     <div>
       <AdminPageNavBar />
 
-      <div className={"table-container"}>
-        <span className={"caption-container"}>
-          <span className={"table-title"}>Request Log</span>
-        </span>
-        <div className={"table-wrapper"}>
-          <table className={"requestTable"} id={"request-table"}>
-            <thead>
-              <tr>
-                <th>Request Type</th>
-                <th>Going To</th>
-                <th>Medicine type</th>
-                <th>Dosage</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            {/* populating here */}
-          </table>
+        <div className={"request-table-container"}>
+          <div className={"table-container"}>
+            <span className={"caption-container"}>
+              <span className={"table-title"}>Request Log</span>
+            </span>
+            <div className={"table-wrapper"}>
+              <table className={"requestTable"} id={"request-table"}>
+                <thead>
+                  <tr>
+                    <th>Request Type</th>
+                    <th>Going To</th>
+                    <th>Medicine type</th>
+                    <th>Dosage</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                {/* populating here */}
+              </table>
+            </div>
+            <ExitButton />
+          </div>
         </div>
-        <ExitButton />
-      </div>
     </div>
   );
 }
 
 //may need onload for other ones as well
-onload = () => {
-  populateRequests().then();
-};
+
+populateRequests().then();
 
 //test type REMOVE LATER
 export type request = {

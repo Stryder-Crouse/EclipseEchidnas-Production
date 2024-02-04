@@ -2,13 +2,11 @@ import React from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import WelcomeStart from "./routes/WelcomePage.tsx";
 import LoginPage from "./routes/LoginPage.tsx";
-import AdminMapPage from "./routes/AdminMapPage.tsx";
-import NodeFileImport from "./routes/ImportNodeFile.tsx";
-import EdgeFileImport from "./routes/ImportEdgeFile.tsx";
-import MedicineRequest from "./routes/MedicineRequest.tsx";
-import RequestList from "./routes/RequestList.tsx";
-import FileTable from "./routes/FileTable.tsx";
-import GuestMap from "./routes/GuestMap.tsx";
+import AdminMapPage from "./routes/admin-routes/AdminMapPage.tsx";
+import ServiceRequestPage from "./routes/ServiceRequestPage.tsx";
+import RequestList from "./routes/admin-routes/RequestList.tsx";
+import NodeEdgeTablePage from "./routes/admin-routes/NodeEdgeTablePage.tsx";
+import GuestMap from "./routes/guest-routes/GuestMap.tsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -29,20 +27,12 @@ function App() {
           element: <AdminMapPage />,
         },
         {
-          path: "/ImportNodeFile",
-          element: <NodeFileImport />,
+          path: "/ServiceRequestPage",
+          element: <ServiceRequestPage />,
         },
         {
-          path: "/ImportEdgeFile",
-          element: <EdgeFileImport />,
-        },
-        {
-          path: "/MedicineRequest",
-          element: <MedicineRequest />,
-        },
-        {
-          path: "/FileTable",
-          element: <FileTable />,
+          path: "/NodeEdgeTablePage",
+          element: <NodeEdgeTablePage />,
         },
         {
           path: "/GuestMap",

@@ -1,4 +1,4 @@
-import "../../css/file-table.css";
+import "../../css/route-css/nodeEdgeTablePage.css";
 import axios from "axios";
 import { NodeDataBase } from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 

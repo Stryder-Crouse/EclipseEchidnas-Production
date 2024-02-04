@@ -1,5 +1,5 @@
 import React from "react";
-import "./component-css/NavBar.css";
+import "../../css/component-css/NavBar.css";
 import LocationsDropDown from "./LocationsDropDown.tsx";
 
 export default function AdminMapNavBar() {
@@ -10,7 +10,7 @@ export default function AdminMapNavBar() {
       </div>
       <div className="navbar-container">
         <div className="dropdown">
-          <a href={"/medicineRequest"}>
+          <a href={"/ServiceRequestPage"}>
             <button className="dropbtn">Service Request</button>
           </a>
         </div>
@@ -21,7 +21,7 @@ export default function AdminMapNavBar() {
         </div>
 
         <div className="dropdown">
-          <a href={"/FileTable"}>
+          <a href={"/NodeEdgeTablePage"}>
             <button className="dropbtn">CSV</button>
           </a>
         </div>
