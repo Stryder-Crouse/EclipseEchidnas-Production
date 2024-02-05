@@ -1,6 +1,6 @@
-import { Map } from "../components/map/Map.tsx";
+import {Map} from "../components/map/Map.tsx";
 import "../css/route-css/newMapPage.css";
-import AdminPageNavBar from "../components/navigation-bar/AdminPageNavBar.tsx";
+//import AdminPageNavBar from "../components/navigation-bar/AdminPageNavBar.tsx";
 import axios from "axios";
 import {NodeDataBase} from "../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import ExitButton from "../components/buttons/ExitButton.tsx";
@@ -11,37 +11,37 @@ function NewMapPage() {
         //located in div "sidenav" , id for each is under each select
 
         //TODO BNBN implement toggle function to reset selected node
+        <body className={"newMapPage"} id={"newMapPage"}>
+            <div className={"newMapPage-container"}>
+                {/* where navbar needs to be */}
+                <div className={"wholeNewMapPageBody"}>
+                    <div className={"sidenav"}>
+                        <div className={"sidenav-elements"}>
+                            <div className={"populatingNodes"} id={"populating-nodes"}>
+                                {/* THIS IS BEING POPULATED BY DATABASE */}
+                            </div>
+                        </div>
+                    </div>
+                    <div className={"mapSide"}>
+                        <Map/>
+                        <div className={"start-end-typing-navigation"}>
+                            <label className={"mapSide-label"}>
+                                START AT: <input type={"text"} className={"newMapPage-input-fields"}/>
+                            </label>
+                            <label className={"mapSide-label"}>
+                                END AT: <input type={"text"} className={"newMapPage-input-fields"}/>
+                            </label>
 
-        <div className={"newMapPage-container"}>
-            <AdminPageNavBar/>
-            <div className={"wholeNewMapPageBody"}>
-                <div className={"sidenav"}>
-                    <div className={"sidenav-elements"}>
-                        <div className={"populatingNodes"} id={"populating-nodes"}>
-                            {/* THIS IS BEING POPULATED BY DATABASE */}
+                            <button className={"reset-location-button"}>Reset Locations</button>
+                            <button className={"go-button"}>GO!</button>
+                            {/* implement go button */}
+                            {/* BNBN NEED TO CONNECT THIS TO NODES */}
                         </div>
                     </div>
                 </div>
-                <div className={"mapSide"}>
-                <Map/>
-                    <div className={"start-end-typing-navigation"}>
-                        <label className={"mapSide-label"}>
-                            START AT: <input type={"text"} className={"newMapPage-input-fields"}/>
-                        </label>
-                        <label className={"mapSide-label"}>
-                            END AT: <input type={"text"} className={"newMapPage-input-fields"}/>
-                        </label>
-
-                        <button className={"reset-location-button"}>Reset Locations</button>
-                        <button className={"go-button"}>GO!</button>
-                        {/* implement go button */}
-                        {/* BNBN NEED TO CONNECT THIS TO NODES */}
-
-                    </div>
-                </div>
+                <ExitButton/>
             </div>
-            <ExitButton/>
-        </div>
+        </body>
 
     );
 }
@@ -75,4 +75,5 @@ async function populateNodes() {
         divCollection.appendChild(nodeDiv);
     });
 }
+
 export default NewMapPage;
