@@ -3,6 +3,7 @@ import "../css/route-css/newMapPage.css";
 import AdminPageNavBar from "../components/navigation-bar/AdminPageNavBar.tsx";
 import axios from "axios";
 import {NodeDataBase} from "../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import ExitButton from "../components/buttons/ExitButton.tsx";
 
 function NewMapPage() {
     return (
@@ -17,31 +18,29 @@ function NewMapPage() {
                 <div className={"sidenav"}>
                     <div className={"sidenav-elements"}>
                         <div className={"populatingNodes"} id={"populating-nodes"}>
-                               <div className={"level-location"} id={"levelLocation"}>CCFONL1</div>
+                            {/* THIS IS BEING POPULATED BY DATABASE */}
                         </div>
-
-                        <button className={"reset-location-button"}>Reset Current Location</button>
                     </div>
-
-
                 </div>
                 <div className={"mapSide"}>
-                    <Map/>
+                <Map/>
                     <div className={"start-end-typing-navigation"}>
                         <label className={"mapSide-label"}>
-                        START AT: <input type={"text"} className={"newMapPage-input-fields"}/>
+                            START AT: <input type={"text"} className={"newMapPage-input-fields"}/>
                         </label>
                         <label className={"mapSide-label"}>
                             END AT: <input type={"text"} className={"newMapPage-input-fields"}/>
                         </label>
 
+                        <button className={"reset-location-button"}>Reset Locations</button>
+                        <button className={"go-button"}>GO!</button>
+                        {/* implement go button */}
                         {/* BNBN NEED TO CONNECT THIS TO NODES */}
-                        <div className={"button-div"}>
-                            <button className={"go-button"}>GO!</button>
-                        </div>
+
                     </div>
                 </div>
             </div>
+            <ExitButton/>
         </div>
 
     );
@@ -67,10 +66,12 @@ async function populateNodes() {
         nodeDiv.setAttribute("class", "level-location");
 
 
+        //base case
         if (divCollection == null) {
             return;
         }
 
+        //adding to main div of all locations combined
         divCollection.appendChild(nodeDiv);
     });
 }
