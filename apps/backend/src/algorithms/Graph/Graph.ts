@@ -1,5 +1,6 @@
 import {Buildings, floorToNumber, Node, nodeToString, NodeType} from "./Node.ts";
 import {Edge, edgeToString} from "./Edge.ts";
+import { euclideanDistance} from "./Coordinate.ts";
 
 /**
  * Class that represents an undirected graph
@@ -15,6 +16,10 @@ export class Graph {
   /** Stores a map that maps a node id (string) to its
    * corresponding node*/
   private readonly idLookup: Map<string, Node>;
+
+  //these should probe be the same to avoid over estimation by a*
+  private readonly floorPenalty: number = 5000;
+  private readonly elevatorAndStairsEdgeWeight: number = 5000;
 
   /**
    * Stores, by every floor, what nodes are stairs and elevators
@@ -144,27 +149,27 @@ export class Graph {
   private generateWeights(){
 
       //for each edge
-      this.edges.forEach(function (edge: Edge) {
 
-          //if the edge starts and ends at elevator nodes or stair nodes then make its weight 1
-          if(
-              (edge.startNode.nodeType == NodeType.ELEV && edge.endNode.nodeType == NodeType.ELEV)
-              ||
-              (edge.startNode.nodeType == NodeType.STAI && edge.endNode.nodeType == NodeType.STAI)
+        for (let i=0; i<this.edges.length;i++){
+            if(
+                (this.edges[i].startNode.nodeType == NodeType.ELEV &&
+                    this.edges[i].endNode.nodeType == NodeType.ELEV)
+                ||
+                (this.edges[i].startNode.nodeType == NodeType.STAI
+                    && this.edges[i].endNode.nodeType == NodeType.STAI)
 
-          ){
-              edge.weight = 1;
-          }
-          // else find Euclidean distance of the edge and set it as the weight
-          else {
+            ){
+                this.edges[i].weight = this.elevatorAndStairsEdgeWeight;
+            }
+            // else find Euclidean distance of the edge and set it as the weight
+            else {
 
-              const xDistance = edge.endNode.coordinate.x - edge.startNode.coordinate.x;
-              const yDistance = edge.endNode.coordinate.y - edge.startNode.coordinate.y;
 
-              edge.weight = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
-          }
+                this.edges[i].weight = euclideanDistance(this.edges[i].endNode.coordinate
+                    ,this.edges[i].startNode.coordinate);
+            }
 
-      });
+        }
 
   }
 
@@ -199,15 +204,66 @@ export class Graph {
      *
      */
     //todo need tests
-  public generateNodeHeuristic(startNode:Node , goalNode:Node){
+  public generateNodeHeuristic( goalNode:Node){
 
       const goalFloor = floorToNumber(goalNode.floor);
         console.log(goalFloor);
 
-        /*this.nodes.forEach(function (node:Node) {
+        //for each node
+        for (let i=0; i<this.nodes.length;i++){
+            const node:Node = this.nodes[i];
+            const nodeFloor = floorToNumber(node.floor);
+
+            //if the node is on the same floor as the goalNode
+            if(goalFloor == floorToNumber(node.floor)){
+                node.heuristic = euclideanDistance(goalNode.coordinate,node.coordinate);
+            }
+            //if the node is on a different floor to the goalNode
+            else{
+                const floorDiffrence = Math.abs(goalFloor - nodeFloor);
+                let cloestTransitionDistance = Number.MAX_VALUE;
+                let tranistionDistanceNoneVaild = Number.MAX_VALUE;
+
+                //find the closest elevator or stairs that lets the path get to a closer floor to the goal
+                // and consider that elevator or stairs the goal node for the current node
+                for(let j = 0; j < this.transitionNodesByFloor[nodeFloor].length;j++ ){
+                    const tranistionNode = this.transitionNodesByFloor[nodeFloor][i];
+                    const tranistionDistance = euclideanDistance(tranistionNode.coordinate,node.coordinate);
 
 
-        });*/
+                    //check that the translation node allows you to get closer to the goal nodes floor
+                    if(this.doesTransitionGetYouCloser(goalNode,tranistionNode)){
+                        //is the current transition closer than the current closest tranision
+                        if(cloestTransitionDistance > tranistionDistance){
+                            cloestTransitionDistance = tranistionDistance;
+
+                        }
+                    }
+                    //if not store a backup distance incase all transtion nodes do not get you closer
+                    else{
+                        if(tranistionDistanceNoneVaild > tranistionDistance){
+                            tranistionDistanceNoneVaild = tranistionDistance;
+                        }
+                    }
+
+
+                }
+
+                if(cloestTransitionDistance == Number.MAX_VALUE){
+                    console.log("no vaild tranistion nodes found for node "+node+ "assigning the closest tranistion node");
+                    node.heuristic = tranistionDistanceNoneVaild + floorDiffrence * this.floorPenalty;
+                    continue;
+                }
+
+                // Heuristic is the penalty for being on a different floor + its distance to the closest valid elevator or stairs
+                node.heuristic = cloestTransitionDistance + floorDiffrence * this.floorPenalty;
+
+
+            }
+
+        }
+
+
         //for each node
             // if it is one the same floor
                 // Heuristic is its distance to the goal node
@@ -217,6 +273,40 @@ export class Graph {
                 // Heuristic is the penalty for being on a different floor + its distance to the closest valid elevator or stairs
 
   }
+
+    /**
+     *
+     * @param goalNode - goal node
+     * @param tranisionNode - node that transitions between floors
+     * @private
+     *
+     * @returns true if tranisionNode has an edge that get you to a floor that is closer to goalNode, false if not
+     */
+  private doesTransitionGetYouCloser(goalNode:Node,tranisionNode:Node){
+
+      //set abs floor distance between trans node and goal node
+      const floorDiffrence = Math.abs(floorToNumber(goalNode.floor) - floorToNumber(tranisionNode.floor));
+
+      //for each edge from tran node check the ending node
+        //if the ending node is on a closer floor return true
+        //if all edges do not allow the goal to get closer return false
+      tranisionNode.edges.forEach(function(edge:Edge){
+          const floorDiffrenceEndNode = Math.abs(floorToNumber(edge.endNode.floor) - floorToNumber(tranisionNode.floor));
+
+          if(floorDiffrenceEndNode < floorDiffrence){
+              return true;
+          }
+
+
+      });
+
+      return false;
+
+
+
+  }
+
+
 
   /**
    * @returns outputs a string in csv formats of all the nodes in the graph

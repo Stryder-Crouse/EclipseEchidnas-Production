@@ -19,25 +19,25 @@ export type Node = {
  * @returns a number representing the floor of the node
  *
  * mapping
- * "1" = 1
- * "2" = 2
- * "3" = 3
- * "G" = 0
- * "L1" = -1
- * "L2" = -2
+ * "1" = 3
+ * "2" = 4
+ * "3" = 5
+ * "G" = 2
+ * "L1" = 1
+ * "L2" = 0
  *
  * */
 export function floorToNumber(floor:string){
 
     switch (floor) {
-        case "3": return 5;
-        case "2": return 4;
-        case "1": return 3;
-        case "G": return 2; //no nodes with G floor exist right now (i have asked wong about it)
-        case "L1": return 1;
-        case "L2": return 0;
+        case "3": return FloorToIndex.Level3;
+        case "2": return FloorToIndex.Level2;
+        case "1": return FloorToIndex.Level1;
+        case "G": return FloorToIndex.Ground; //no nodes with G floor exist right now (i have asked wong about it)
+        case "L1": return FloorToIndex.LowerLevel1;
+        case "L2": return FloorToIndex.LowerLevel2;
 
-        default: return -99;
+        default: return FloorToIndex.UNDEFINED;
     }
 
 
@@ -93,6 +93,18 @@ export enum NodeType {
   EXIT = "EXIT",
   STAI = "STAI",
   UNDEFINED = "UNDEFINED",
+}
+
+/** Enum to hold the floors internal index numbers in the graph class */
+export enum FloorToIndex {
+    Level3 = 5,
+    Level2 =4,
+    Level1=3,
+    Ground=2,
+    LowerLevel1 =1,
+    LowerLevel2 =0,
+    UNDEFINED = -99
+
 }
 
 /**
