@@ -16,6 +16,36 @@ export type Node = {
 
 /**
  *
+ * @returns a number representing the floor of the node
+ *
+ * mapping
+ * "1" = 1
+ * "2" = 2
+ * "3" = 3
+ * "G" = 0
+ * "L1" = -1
+ * "L2" = -2
+ *
+ * */
+export function floorToNumber(floor:string){
+
+    switch (floor) {
+        case "3": return 5;
+        case "2": return 4;
+        case "1": return 3;
+        case "G": return 2; //no nodes with G floor exist right now (i have asked wong about it)
+        case "L1": return 1;
+        case "L2": return 0;
+
+        default: return -99;
+    }
+
+
+}
+
+
+/**
+ *
  * @param n - node to be converted to string
  *
  *
