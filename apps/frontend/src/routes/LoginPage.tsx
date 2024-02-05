@@ -51,7 +51,7 @@ export default function WelcomePage() {
 
   /**
    * Assigns input to the password variable, and if empty displays alert (alert currently not working, alternative implemented but hope to use in future)
-   * @param password Value entered into the password textbox
+   * @param username Value entered into the username textbox
    */
   function handlePassword(username: string) {
     setPassword(username);
