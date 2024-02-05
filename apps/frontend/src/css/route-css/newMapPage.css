@@ -62,7 +62,7 @@
 }
 
 .go-button {
-    background-color: var(--primary-color);
+    background-color: #0097a0;
     border: 1px solid transparent;
     border-radius: 0.5rem;
     color: var(--background-color);
@@ -94,7 +94,7 @@
 }
 
 .reset-location-button {
-    background-color: var(--primary-color);
+    background-color: #0097a0;
     border: 1px solid transparent;
 
     color: var(--background-color);
@@ -109,5 +109,5 @@
 }
 
 .sidenav-elements {
-    margin-top: -7.5%;
+    margin-top: -25%;
 }
