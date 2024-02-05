@@ -9,6 +9,8 @@ import MedicineRequest from "./routes/MedicineRequest.tsx";
 import RequestList from "./routes/RequestList.tsx";
 import FileTable from "./routes/FileTable.tsx";
 import GuestMap from "./routes/GuestMap.tsx";
+//import RequireAuth from "./components/RequireAuth.tsx";
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -45,18 +47,19 @@ function App() {
           element: <FileTable />,
         },
         {
-          path: "/GuestMap",
-          element: <GuestMap />,
-        },
-        {
           path: "/RequestList",
           element: <RequestList />,
+        },
+        {
+          path: "/GuestMap",
+          element: <GuestMap />,
         },
       ],
     },
   ]);
 
   return <RouterProvider router={router} />;
+
   function Root() {
     return <Outlet />;
   }
