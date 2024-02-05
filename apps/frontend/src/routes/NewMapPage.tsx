@@ -1,7 +1,8 @@
 import { Map } from "../components/map/Map.tsx";
 import "../css/route-css/newMapPage.css";
 import AdminPageNavBar from "../components/navigation-bar/AdminPageNavBar.tsx";
-import LocationsDropDown from "../components/navigation-bar/LocationsDropDown.tsx";
+import axios from "axios";
+import {NodeDataBase} from "../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 
 function NewMapPage() {
     return (
@@ -10,24 +11,15 @@ function NewMapPage() {
 
         //TODO BNBN implement toggle function to reset selected node
 
-
         <div className={"newMapPage-container"}>
             <AdminPageNavBar/>
             <div className={"wholeNewMapPageBody"}>
                 <div className={"sidenav"}>
                     <div className={"sidenav-elements"}>
-                        {/* Level 1
-                             <select name={"floor-selection"} className={"selection-buttons"} id={"floor-selection"}>
-                            <option value={""} disabled selected>Floor Selection</option>
-                            <option value={""}>Level One</option>
-                            <option value={""}>Level One</option>
-                            </select>
+                        <div className={"populatingNodes"} id={"populating-nodes"}>
+                               <div className={"level-location"} id={"levelLocation"}>CCFONL1</div>
+                        </div>
 
-
-                        */}
-                       <LocationsDropDown/>
-
-                        {/* THIS BUTTON NEEDS TO BNBN RESET */}
                         <button className={"reset-location-button"}>Reset Current Location</button>
                     </div>
 
@@ -52,8 +44,34 @@ function NewMapPage() {
             </div>
         </div>
 
-
     );
 }
 
+populateNodes().then();
+
+async function populateNodes() {
+
+    //Loading database
+    const nodeData = await axios.get<NodeDataBase[]>("/api/load-nodes");
+
+    //This is the div collection of div's
+    const divCollection = document.getElementById("populating-nodes");
+    console.log(divCollection);
+
+    //for each loop to go through each node
+    nodeData.data.forEach(function (newNode: NodeDataBase) {
+
+        //taking full name of floor location
+        const nodeDiv = document.createElement("div");
+        nodeDiv.textContent = newNode.nodeID;
+        nodeDiv.setAttribute("class", "level-location");
+
+
+        if (divCollection == null) {
+            return;
+        }
+
+        divCollection.appendChild(nodeDiv);
+    });
+}
 export default NewMapPage;
