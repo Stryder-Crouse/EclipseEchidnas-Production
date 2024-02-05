@@ -9,10 +9,18 @@ export type Node = {
   nodeType: NodeType;
   longName: string;
   shortName: string;
+  heuristic:number;
+
   edges: Array<Edge>;
 };
 
-//todo clean up - stryder
+/**
+ *
+ * @param n - node to be converted to string
+ *
+ *
+ * @returns a csv representation of the passed node with a \r\n at the end
+ */
 export function nodeToString(n: Node) {
   return (
     n.id +

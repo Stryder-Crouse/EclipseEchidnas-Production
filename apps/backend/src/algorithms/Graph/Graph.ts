@@ -67,6 +67,7 @@ export class Graph {
         id: edge.endNode.id + "_" + edge.startNode.id,
         startNode: edge.endNode,
         endNode: edge.startNode,
+          weight:-1
       };
       //add backEdge to endNode
       endNode.edges.push(backEdge);
@@ -96,11 +97,36 @@ export class Graph {
     this.edges = edges;
     this.adjacent = adj;
     this.idLookup = nodeMap;
+
+    //generate weights for edges
+      this.generateWeights();
   }
 
-  //todo clean up - stryder
+
+    /**
+     * Generates the weights (Euclidean distance in pixels)  for the edges in the graph
+     */
+  private generateWeights(){
+
+      //for each edge
+      this.edges.forEach(function (edge: Edge) {
+          const xDistance = edge.endNode.coordinate.x - edge.startNode.coordinate.x;
+          const yDistance = edge.endNode.coordinate.y - edge.startNode.coordinate.y;
+
+          edge.weight = Math.sqrt(Math.pow(xDistance,2)+Math.pow(yDistance,2));
+
+      });
+
+  }
+
+  /**
+   * @returns outputs a string in csv formats of all the nodes in the graph
+   *
+   * */
   public nodesToString() {
     let str = "";
+
+    //if an undefined node is found then uses this error node in place
     const failNode: Node = {
       building: Buildings.UNDEFINED,
       coordinate: { x: 1, y: 1 },
@@ -110,8 +136,10 @@ export class Graph {
       longName: "",
       nodeType: NodeType.UNDEFINED,
       shortName: "",
+        heuristic:-1
     };
 
+    //for each node convert it into a csv representation and add it to the string output
     for (let i = 0; i < this.getNodes().length; i++) {
       if (this.getNodes().at(i) != null || undefined) {
         str += nodeToString(this.getNodes().at(i) ?? failNode);
@@ -120,9 +148,14 @@ export class Graph {
     return str;
   }
 
-  //todo clean up - stryder
+/**
+ * @returns outputs a string in csv formats of all the edges in the graph
+ *
+ * */
   public edgesToString() {
     let str = "";
+
+    //if an undefined node is found then uses this error node in place
     const failNode: Node = {
       building: Buildings.UNDEFINED,
       coordinate: { x: 1, y: 1 },
@@ -132,13 +165,17 @@ export class Graph {
       longName: "",
       nodeType: NodeType.UNDEFINED,
       shortName: "",
+        heuristic:-1
     };
+    //if an undefined edge  is found then uses this error edge in place
     const failEdge: Edge = {
       endNode: failNode,
       id: "FAIL",
       startNode: failNode,
+        weight:-1
     };
 
+    //for each edge convert it into a csv representation and add it to the string output
     for (let i = 0; i < this.getEdges().length; i++) {
       if (this.getEdges().at(i) != null || undefined) {
         str += edgeToString(this.getEdges().at(i) ?? failEdge);
