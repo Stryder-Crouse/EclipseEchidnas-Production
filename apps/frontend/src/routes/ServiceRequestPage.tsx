@@ -24,7 +24,7 @@ export default function ServiceRequestPage() {
       dosage: medRequestDosage,
       medReqID: -1,
       medType: medRequestType,
-      numDosages: parseInt(medRequestDoses),
+        numDoses: parseInt(medRequestDoses),
       reqLocationID: medRequestLocale,
     };
 

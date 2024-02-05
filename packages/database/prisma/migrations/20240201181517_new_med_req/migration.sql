@@ -22,7 +22,7 @@ CREATE TABLE "MedReq" (
     "medReqID" INTEGER NOT NULL,
     "medType" VARCHAR(256) NOT NULL,
     "dosage" VARCHAR(256) NOT NULL,
-    "numDosages" INTEGER NOT NULL,
+    "numDoses" INTEGER NOT NULL,
     "requestID" INTEGER NOT NULL,
 
     CONSTRAINT "MedReq_pkey" PRIMARY KEY ("medReqID")

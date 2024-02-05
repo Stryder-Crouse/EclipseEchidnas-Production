@@ -1,4 +1,3 @@
-
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
@@ -53,12 +52,12 @@ model MedReq {
   dosage   String @db.VarChar(256)
   numDoses Int
 
-  genReq   ServiceRequest @relation("genericRequest",fields: [genReqID], references: [reqID])
-  genReqID Int @unique
+  genReq   ServiceRequest @relation("genericRequest", fields: [genReqID], references: [reqID])
+  genReqID Int            @unique
 }
 
 model ServiceRequest {
-  reqID         Int      @id @default(autoincrement()) @unique
+  reqID         Int      @id @unique @default(autoincrement())
   reqType       String   @db.VarChar(256)
   // start "nodeID" foreign key
   reqLocation   NodeDB   @relation("requestLocation", fields: [reqLocationID], references: [nodeID])

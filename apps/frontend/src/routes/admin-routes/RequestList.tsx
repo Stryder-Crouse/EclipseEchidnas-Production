@@ -3,7 +3,7 @@ import ExitButton from "../../components/buttons/ExitButton.tsx";
 import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx";
 import "../../css/route-css/requestList.css";
 import axios from "axios";
-import { MedReq } from "../../../../backend/src/algorithms/Requests/Request.ts";
+import {MedReq, ServiceRequest} from "../../../../backend/src/algorithms/Requests/Request.ts";
 
 function RequestList() {
   return (
@@ -54,7 +54,7 @@ export type request = {
 async function populateRequests() {
   console.log("RAN");
 
-  const medReqs = await axios.get<MedReq[]>("/api/serviceRequests/medReq");
+  const requests = await axios.get<ServiceRequest[]>("/api/serviceRequests/medReq");
 
   //fine dropdown div in the html on the page
   const table = document.getElementById("request-table");
@@ -80,7 +80,7 @@ async function populateRequests() {
     reqDosage.textContent = newRequest.dosage;
 
     const reqAmount = document.createElement("td");
-    reqAmount.textContent = newRequest.numDosages.toString();
+    reqAmount.textContent = newRequest.numDoses.toString();
 
     //append data elements together to one row
     tableRow.appendChild(reqType);
