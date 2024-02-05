@@ -4,10 +4,10 @@ export interface IPriorityQueue<T> {
     push(thing: T, priority: number): void;
 
     /* Check the highest priority item without removing it */
-    peek(): T;
+    peek(): T | null;
 
     /* Check and remove the highest priority item */
-    pop(): T;
+    pop(): T | null;
 
     /* Length of the priority queue */
     size(): number;
