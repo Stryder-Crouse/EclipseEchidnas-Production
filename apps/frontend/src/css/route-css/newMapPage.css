@@ -1,0 +1,113 @@
+:root {
+    --background-color: #F1F1F1;
+    --primary-color: #012d5a;
+}
+
+.wholeNewMapPageBody {
+    justify-content: center;
+    display: flex;
+    margin: auto;
+}
+.sidenav {
+    height: 61.75%;
+    width: 12.5%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: var(--background-color);
+
+    border-radius: 2rem;
+    margin-top: 10%;
+    border-color: grey;
+    margin-left: 6.5%;
+    padding: 5%;
+    overflow: hidden;
+
+}
+
+.sidenav select {
+    display: block;
+    justify-content: center;
+    margin: 1rem -25% auto;
+
+}
+
+.mapSide {
+    position: fixed;
+    margin-left: 25%;
+    transform: scale(87.5%);
+    margin-top: -0.5%;
+}
+.start-end-typing-navigation {
+    font-family: 'Work Sans', sans-serif;
+    background-color: var(--background-color);
+    border-radius: 2rem;
+    padding: 1.5rem;
+    justify-content: space-evenly;
+    margin: 0.5rem auto auto ;
+    display: flex;
+}
+
+/* Sidebar Buttons */
+.newMapPage-input-fields {
+
+    color: black;
+    border: 1px solid black;
+    height: 1.5rem;
+    letter-spacing: 0.03rem;
+    background-color: transparent;
+    border-radius: 0.5rem;
+
+}
+
+.go-button {
+    background-color: var(--primary-color);
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    color: var(--background-color);
+    cursor: pointer;
+    font-weight: bold;
+    width: 5rem;
+}
+
+.mapSide-label {
+    font-weight: bolder;
+    font-size: 125%;
+}
+
+.button-div {
+    margin-top: 0.5%;
+    transform: scale(2);
+}
+
+.selection-buttons {
+    background-color: #d9d9d9;
+    color: black;
+    padding: 1rem;
+    border-radius: 2rem;
+    width: 150%;
+    text-align: center;
+    font-weight: bold;
+    border-color: transparent;
+
+}
+
+.reset-location-button {
+    background-color: var(--primary-color);
+    border: 1px solid transparent;
+
+    color: var(--background-color);
+    cursor: pointer;
+    font-weight: bold;
+    width: 150%;
+
+    padding:1rem;
+    border-radius: 2rem;
+    margin: 1rem -25%;
+    justify-content: center;
+}
+
+.sidenav-elements {
+    margin-top: -7.5%;
+}

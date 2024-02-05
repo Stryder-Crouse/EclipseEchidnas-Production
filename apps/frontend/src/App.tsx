@@ -7,6 +7,7 @@ import ServiceRequestPage from "./routes/ServiceRequestPage.tsx";
 import RequestList from "./routes/admin-routes/RequestList.tsx";
 import NodeEdgeTablePage from "./routes/admin-routes/NodeEdgeTablePage.tsx";
 import GuestMap from "./routes/guest-routes/GuestMap.tsx";
+import NewMapPage from "./routes/NewMapPage.tsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -42,6 +43,10 @@ function App() {
           path: "/RequestList",
           element: <RequestList />,
         },
+          {
+              path:"NewMapPage",
+              element: <NewMapPage/>,
+          },
       ],
     },
   ]);
