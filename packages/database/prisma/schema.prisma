@@ -75,12 +75,13 @@ model ServiceRequest {
 }
 
 model Employee {
-  userName    String @id @db.VarChar(256)
-  firstName   String @db.VarChar(256)
-  lastName    String @db.VarChar(256)
-  designation String @db.VarChar(256)
+  userName    String  @id @db.VarChar(256)
+  firstName   String  @db.VarChar(256)
+  lastName    String  @db.VarChar(256)
+  designation String  @db.VarChar(256)
+  isAdmin     Boolean
 
-  // This does not exist @relation tells prisma to now make an attribute and instead
+  //This does not exist @relation tells prisma to now make an attribute and instead
   // relate the other table to this table through the specified key
-  assignedTasks ServiceRequest[] @relation("assignedEmployee")
+  assignedTasks  ServiceRequest[] @relation("serviceRequest")
 }

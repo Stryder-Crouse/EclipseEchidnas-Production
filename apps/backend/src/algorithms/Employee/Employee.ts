@@ -3,7 +3,8 @@ export type Employee = {
     userName: string,
     firstName: string,
     lastName: string,
-    designation: string
+    designation: string,
+    isAdmin: boolean
 };
 
 /** Enum to hold the possible roles staff members can have */

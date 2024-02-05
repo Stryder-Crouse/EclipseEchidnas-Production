@@ -1,4 +1,4 @@
-import {Employee} from "./Employee.ts";
+import {Employee} from "../Employee/Employee.ts";
 import {Node} from "../Graph/Node.ts";
 
 /** Type to store requests*/
