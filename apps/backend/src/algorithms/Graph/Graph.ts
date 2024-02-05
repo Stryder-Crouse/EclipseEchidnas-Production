@@ -1,5 +1,5 @@
-import { Buildings, Node, nodeToString, NodeType } from "./Node.ts";
-import { Edge, edgeToString } from "./Edge.ts";
+import {Buildings, Node, nodeToString, NodeType} from "./Node.ts";
+import {Edge, edgeToString} from "./Edge.ts";
 
 /**
  * Class that represents an undirected graph
@@ -110,10 +110,19 @@ export class Graph {
 
       //for each edge
       this.edges.forEach(function (edge: Edge) {
-          const xDistance = edge.endNode.coordinate.x - edge.startNode.coordinate.x;
-          const yDistance = edge.endNode.coordinate.y - edge.startNode.coordinate.y;
 
-          edge.weight = Math.sqrt(Math.pow(xDistance,2)+Math.pow(yDistance,2));
+          //if the edge starts and ends at elevator nodes then make its weight 1
+          if(edge.startNode.nodeType == NodeType.ELEV && edge.endNode.nodeType == NodeType.ELEV){
+              edge.weight = 1;
+          }
+          // else find Euclidean distance of the edge and set it as the weight
+          else {
+
+              const xDistance = edge.endNode.coordinate.x - edge.startNode.coordinate.x;
+              const yDistance = edge.endNode.coordinate.y - edge.startNode.coordinate.y;
+
+              edge.weight = Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+          }
 
       });
 
