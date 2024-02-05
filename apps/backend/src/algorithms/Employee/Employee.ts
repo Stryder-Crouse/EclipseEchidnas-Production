@@ -1,3 +1,5 @@
+import { ServiceRequest } from "../Requests/Request.ts";
+
 /** Type to store employees*/
 export type Employee = {
     userName: string,
@@ -5,6 +7,8 @@ export type Employee = {
     lastName: string,
     designation: string,
     isAdmin: boolean
+
+    assignedTasks: Array<ServiceRequest>;
 };
 
 /** Enum to hold the possible roles staff members can have */
