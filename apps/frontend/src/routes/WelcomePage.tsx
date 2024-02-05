@@ -1,10 +1,10 @@
 /** importations **/
 import React, { useEffect } from "react";
-import "../css/welcomePage.css";
+import "../css/route-css/welcomePage.css";
 import Logo from "../images/massGeneralBrighamLogo.png";
-import GuestButton from "../components/GuestButton.tsx";
-import AdminLoginButton from "../components/AdminLoginButton.tsx";
-import "../components/component-css/guest-button.css";
+import GuestButton from "../components/buttons/GuestButton.tsx";
+import AdminLoginButton from "../components/buttons/AdminLoginButton.tsx";
+import "../css/component-css/buttons/guest-button.css";
 
 export default function WelcomePage() {
   //Setting backgroung Image
