@@ -6,6 +6,7 @@ import ProtectedServiceRequest from "./components/protected-pages/ProtectedServi
 import ProtectedRequestList from "./components/protected-pages/ProtectedRequestList.tsx";
 import ProtectedNodeEdgeTable from "./components/protected-pages/ProtectedNodeEdgeTable.tsx";
 import GuestMap from "./routes/guest-routes/GuestMap.tsx";
+import NewMapPage from "./routes/NewMapPage.tsx";
 
 function App() {
     const router = createBrowserRouter([
@@ -37,6 +38,10 @@ function App() {
                 {
                     path: "/GuestMap",
                     element: <GuestMap/>,
+                },
+                {
+                    path:"NewMapPage",
+                    element: <NewMapPage/>,
                 },
             ],
         },
