@@ -26,6 +26,9 @@ router.post("/medReq", async function (req: Request, res: Response) {
 
         //create a service request in the database
         const service = await PrismaClient.serviceRequest.create({
+            //data passed into post is array of 2 data types
+            // first data type is a service request, so all the data we want to create a service req in the table
+            // will be stored in the first spot of array (passed as a json through prisma client)
             data: {
                 //ID is auto created
                 reqType: sentData[0].reqType,
