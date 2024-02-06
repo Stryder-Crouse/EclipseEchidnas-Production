@@ -1,5 +1,6 @@
-import { Buildings, Node, nodeToString, NodeType } from "./Node.ts";
-import { Edge, edgeToString } from "./Edge.ts";
+import {Buildings, floorToNumber, Node, nodeToString, NodeType} from "./Node.ts";
+import {Edge, edgeToString} from "./Edge.ts";
+import { euclideanDistance} from "./Coordinate.ts";
 
 /**
  * Class that represents an undirected graph
@@ -16,6 +17,23 @@ export class Graph {
    * corresponding node*/
   private readonly idLookup: Map<string, Node>;
 
+  //these should probe be the same to avoid over estimation by a*
+  private readonly floorPenalty: number = 5000;
+  private readonly elevatorAndStairsEdgeWeight: number = 5000;
+
+  /**
+   * Stores, by every floor, what nodes are stairs and elevators
+   * this will be used in computation of the heuristic so by storing it we save re-computation every time a path is requested.
+   * index will be as follows
+   * 0 = Lower level 2
+   * 1 = Lower level 1
+   * 2 = ground floor
+   * 3 = level 1
+   * 4 = level 2
+   * 5 = level 3
+   * */
+  private readonly transitionNodesByFloor: Array<Array<Node>>;
+
   /**
    * Constructs a graph based on the pass nodes and edges
    *
@@ -29,13 +47,32 @@ export class Graph {
     //create map relate a node obj to the list of nodes it is adjacent to
     const adj = new Map<Node, Array<Node>>();
 
+    //set up empty arrays for to be filled to set transitionNodesByFloor
+    const transitionNodesByFloor: Array<Array<Node>> =[[],[],[],[],[],[]];
+
     //for each inputted node
     unLinkedNodes.forEach(function (node) {
       //map node id to its node
       nodeMap.set(node.id, node);
       //map node to and empty node array to be filled later
       adj.set(node, new Array<Node>());
+
+      //set up transitionNodesByFloor array
+        // if a node is a stair or an elevator then add it to is corresponding floor array
+        if(node.nodeType==NodeType.STAI || node.nodeType==NodeType.ELEV){
+            //if floor data corrupted dont add the node
+            if(floorToNumber(node.floor) == -99){
+                return;
+            }
+            //add node to correct floor array
+            transitionNodesByFloor[floorToNumber(node.floor)].push(node);
+        }
+
     });
+
+    //set transitionNodesByFloor
+      this.transitionNodesByFloor =transitionNodesByFloor;
+      console.log(this.transitionNodesByFloor);
 
     //for each inputted edge
     edges.forEach(function (edge) {
@@ -67,6 +104,7 @@ export class Graph {
         id: edge.endNode.id + "_" + edge.startNode.id,
         startNode: edge.endNode,
         endNode: edge.startNode,
+          weight:-1
       };
       //add backEdge to endNode
       endNode.edges.push(backEdge);
@@ -96,11 +134,189 @@ export class Graph {
     this.edges = edges;
     this.adjacent = adj;
     this.idLookup = nodeMap;
+
+    //generate weights for edges
+      this.generateWeights();
   }
 
-  //todo clean up - stryder
+
+    /**
+     * Generates the weights (Euclidean distance in pixels)  for the edges in the graph
+     *
+     * note that if an edge in the graph start and ends with elevator nodes the edge's weight is set to 1
+     */
+    //todo need tests
+  private generateWeights(){
+
+      //for each edge
+
+        for (let i=0; i<this.edges.length;i++){
+            if(
+                (this.edges[i].startNode.nodeType == NodeType.ELEV &&
+                    this.edges[i].endNode.nodeType == NodeType.ELEV)
+                ||
+                (this.edges[i].startNode.nodeType == NodeType.STAI
+                    && this.edges[i].endNode.nodeType == NodeType.STAI)
+
+            ){
+                this.edges[i].weight = this.elevatorAndStairsEdgeWeight;
+            }
+            // else find Euclidean distance of the edge and set it as the weight
+            else {
+
+
+                this.edges[i].weight = euclideanDistance(this.edges[i].endNode.coordinate
+                    ,this.edges[i].startNode.coordinate);
+            }
+
+        }
+
+  }
+
+    /**
+     *
+     *
+     * @param goalNode - goal node to calculate the Heuristic from.
+     *
+     *  calculates the heuristic (Euclidean distance to goal node) for each node in the graph
+     *
+     *  if the goal node is on a different floor compared to the starting node::
+     *
+     *  then the algorithm will weight the edges
+     *  on the interim floors depending on that's floors distance from the goal floor.
+     *
+     *  for example if start node is on level 1 and goal is on level 3
+     *
+     *  the heuristic for all nodes on level 1 will have +10000 added to them
+     *  the heuristic for all nodes on level 2 will have +5000 added to them
+     *  the heuristic for all nodes on level 3 will not be changed
+     *
+     *  effectively for each floor of difference between the current node and the goal node +5000 of arbitrary weight is added.
+     *
+     *  this additional weight is needed to prevent the algorithms from going up and down between floors it has already
+     *  visited. (unless it absolutely has to)
+     *
+     *
+     *  the goal node for the interim floors will instead be the closest stairs or elevator that allows the path to
+     *  move to a closer floor to the goal node.
+     *
+     *
+     *
+     */
+    //todo need tests
+  public generateNodeHeuristic( goalNode:Node){
+
+      const goalFloor = floorToNumber(goalNode.floor);
+        console.log(goalFloor);
+
+        //for each node
+        for (let i=0; i<this.nodes.length;i++){
+            const node:Node = this.nodes[i];
+            const nodeFloor = floorToNumber(node.floor);
+
+            //if the node is on the same floor as the goalNode
+            if(goalFloor == floorToNumber(node.floor)){
+                node.heuristic = euclideanDistance(goalNode.coordinate,node.coordinate);
+            }
+            //if the node is on a different floor to the goalNode
+            else{
+                const floorDiffrence = Math.abs(goalFloor - nodeFloor);
+                let cloestTransitionDistance = Number.MAX_VALUE;
+                let tranistionDistanceNoneVaild = Number.MAX_VALUE;
+
+                //find the closest elevator or stairs that lets the path get to a closer floor to the goal
+                // and consider that elevator or stairs the goal node for the current node
+                for(let j = 0; j < this.transitionNodesByFloor[nodeFloor].length;j++ ){
+                    const tranistionNode = this.transitionNodesByFloor[nodeFloor][j];
+                    const tranistionDistance = euclideanDistance(tranistionNode.coordinate,node.coordinate);
+
+
+                    //check that the translation node allows you to get closer to the goal nodes floor
+                    if(this.doesTransitionGetYouCloser(goalNode,tranistionNode)){
+                        //is the current transition closer than the current closest tranision
+                        if(cloestTransitionDistance > tranistionDistance){
+                            cloestTransitionDistance = tranistionDistance;
+
+                        }
+                    }
+                    //if not store a backup distance incase all transtion nodes do not get you closer
+                    else{
+                        if(tranistionDistanceNoneVaild > tranistionDistance){
+                            tranistionDistanceNoneVaild = tranistionDistance;
+                        }
+                    }
+
+
+                }
+
+                if(cloestTransitionDistance == Number.MAX_VALUE){
+                    console.log("no vaild tranistion nodes found for node "+node.id+ "assigning the closest tranistion node");
+                    node.heuristic = tranistionDistanceNoneVaild + floorDiffrence * this.floorPenalty;
+                    continue;
+                }
+
+                // Heuristic is the penalty for being on a different floor + its distance to the closest valid elevator or stairs
+                node.heuristic = cloestTransitionDistance + floorDiffrence * this.floorPenalty;
+
+
+            }
+
+        }
+
+
+        //for each node
+            // if it is one the same floor
+                // Heuristic is its distance to the goal node
+            //if it is not on the same floor
+                //find the closest elevator or stairs that allows the path to get to a closer floor
+                // and consider that elevator or stairs the goal node
+                // Heuristic is the penalty for being on a different floor + its distance to the closest valid elevator or stairs
+
+  }
+
+    /**
+     *
+     * @param goalNode - goal node
+     * @param tranisionNode - node that transitions between floors
+     * @private
+     *
+     * @returns true if tranisionNode has an edge that get you to a floor that is closer to goalNode, false if not
+     */
+  private doesTransitionGetYouCloser(goalNode:Node,tranisionNode:Node){
+
+      //set abs floor distance between trans node and goal node
+      const floorDiffrence = Math.abs(floorToNumber(goalNode.floor) - floorToNumber(tranisionNode.floor));
+
+      //for each edge from tran node check the ending node
+        //if the ending node is on a closer floor to the goal node return true
+        //if all edges do not allow the goal to get closer return false
+        for(let i = 0; i < tranisionNode.edges.length;i++ ){
+            const edge = tranisionNode.edges[i];
+            const floorDiffrenceEndNode = Math.abs(floorToNumber(goalNode.floor) - floorToNumber(edge.endNode.floor));
+
+            if(floorDiffrenceEndNode < floorDiffrence){
+                return true;
+            }
+
+        }
+
+
+      return false;
+
+
+
+  }
+
+
+
+  /**
+   * @returns outputs a string in csv formats of all the nodes in the graph
+   *
+   * */
   public nodesToString() {
     let str = "";
+
+    //if an undefined node is found then uses this error node in place
     const failNode: Node = {
       building: Buildings.UNDEFINED,
       coordinate: { x: 1, y: 1 },
@@ -110,8 +326,10 @@ export class Graph {
       longName: "",
       nodeType: NodeType.UNDEFINED,
       shortName: "",
+        heuristic:-1
     };
 
+    //for each node convert it into a csv representation and add it to the string output
     for (let i = 0; i < this.getNodes().length; i++) {
       if (this.getNodes().at(i) != null || undefined) {
         str += nodeToString(this.getNodes().at(i) ?? failNode);
@@ -120,9 +338,14 @@ export class Graph {
     return str;
   }
 
-  //todo clean up - stryder
+/**
+ * @returns outputs a string in csv formats of all the edges in the graph
+ *
+ * */
   public edgesToString() {
     let str = "";
+
+    //if an undefined node is found then uses this error node in place
     const failNode: Node = {
       building: Buildings.UNDEFINED,
       coordinate: { x: 1, y: 1 },
@@ -132,13 +355,17 @@ export class Graph {
       longName: "",
       nodeType: NodeType.UNDEFINED,
       shortName: "",
+        heuristic:-1
     };
+    //if an undefined edge  is found then uses this error edge in place
     const failEdge: Edge = {
       endNode: failNode,
       id: "FAIL",
       startNode: failNode,
+        weight:-1
     };
 
+    //for each edge convert it into a csv representation and add it to the string output
     for (let i = 0; i < this.getEdges().length; i++) {
       if (this.getEdges().at(i) != null || undefined) {
         str += edgeToString(this.getEdges().at(i) ?? failEdge);

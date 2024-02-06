@@ -9,10 +9,48 @@ export type Node = {
   nodeType: NodeType;
   longName: string;
   shortName: string;
+  heuristic:number;
+
   edges: Array<Edge>;
 };
 
-//todo clean up - stryder
+/**
+ *
+ * @returns a number representing the floor of the node
+ *
+ * mapping
+ * "1" = 3
+ * "2" = 4
+ * "3" = 5
+ * "G" = 2
+ * "L1" = 1
+ * "L2" = 0
+ *
+ * */
+export function floorToNumber(floor:string){
+
+    switch (floor) {
+        case "3": return FloorToIndex.Level3;
+        case "2": return FloorToIndex.Level2;
+        case "1": return FloorToIndex.Level1;
+        case "G": return FloorToIndex.Ground; //no nodes with G floor exist right now (i have asked wong about it)
+        case "L1": return FloorToIndex.LowerLevel1;
+        case "L2": return FloorToIndex.LowerLevel2;
+
+        default: return FloorToIndex.UNDEFINED;
+    }
+
+
+}
+
+
+/**
+ *
+ * @param n - node to be converted to string
+ *
+ *
+ * @returns a csv representation of the passed node with a \r\n at the end
+ */
 export function nodeToString(n: Node) {
   return (
     n.id +
@@ -55,6 +93,18 @@ export enum NodeType {
   EXIT = "EXIT",
   STAI = "STAI",
   UNDEFINED = "UNDEFINED",
+}
+
+/** Enum to hold the floors internal index numbers in the graph class */
+export enum FloorToIndex {
+    Level3 = 5,
+    Level2 =4,
+    Level1=3,
+    Ground=2,
+    LowerLevel1 =1,
+    LowerLevel2 =0,
+    UNDEFINED = -99
+
 }
 
 /**

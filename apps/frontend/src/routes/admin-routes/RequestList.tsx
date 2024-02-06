@@ -6,34 +6,34 @@ import axios from "axios";
 import {MedReq} from "../../../../backend/src/algorithms/Requests/Request.ts";
 
 function RequestList() {
-  return (
-    <div>
-      <AdminPageNavBar />
+    return (
+        <div>
+            <AdminPageNavBar />
 
-        <div className={"request-table-container"}>
-          <div className={"table-container"}>
+            <div className={"request-table-container"}>
+                <div className={"table-container"}>
             <span className={"caption-container"}>
               <span className={"table-title"}>Request Log</span>
             </span>
-            <div className={"table-wrapper"}>
-              <table className={"requestTable"} id={"request-table"}>
-                <thead>
-                  <tr>
-                    <th>Request Type</th>
-                    <th>Going To</th>
-                    <th>Medicine type</th>
-                    <th>Dosage</th>
-                    <th>Amount</th>
-                  </tr>
-                </thead>
-                {/* populating here */}
-              </table>
+                    <div className={"table-wrapper"}>
+                        <table className={"requestTable"} id={"request-table"}>
+                            <thead>
+                            <tr>
+                                <th>Request Type</th>
+                                <th>Going To</th>
+                                <th>Medicine type</th>
+                                <th>Dosage</th>
+                                <th>Amount</th>
+                            </tr>
+                            </thead>
+                            {/* populating here */}
+                        </table>
+                    </div>
+                    <ExitButton />
+                </div>
             </div>
-            <ExitButton />
-          </div>
         </div>
-    </div>
-  );
+    );
 }
 
 //may need onload for other ones as well
@@ -42,9 +42,9 @@ populateRequests().then();
 
 //test type REMOVE LATER
 export type request = {
-  startLocation: string;
-  endLocation: string;
-  requestType: string;
+    startLocation: string;
+    endLocation: string;
+    requestType: string;
 };
 
 /**
@@ -52,14 +52,15 @@ export type request = {
  * SHOULD ONLY BE RUN ONCE.
  */
 async function populateRequests() {
-  console.log("RAN");
+    console.log("RAN");
 
   const requests = await axios.get<MedReq[]>("/api/serviceRequests/medReq");
 
-  //fine dropdown div in the html on the page
-  const table = document.getElementById("request-table");
+    //fine dropdown div in the html on the page
+    const table = document.getElementById("request-table");
 
-  console.log(table);
+    console.log(table);
+    console.log(requests.data + "hi");
 
   //for each node
   requests.data.forEach( function a (newRequest: MedReq) {
@@ -73,29 +74,29 @@ async function populateRequests() {
     const reqStartLoc = document.createElement("td");
     reqStartLoc.textContent = newRequest.genReqID.toString();   //idk if the to string works
 
-    const reqMedType = document.createElement("td");
-    reqMedType.textContent = newRequest.medType;
+        const reqMedType = document.createElement("td");
+        reqMedType.textContent = newRequest.medType;
 
-    const reqDosage = document.createElement("td");
-    reqDosage.textContent = newRequest.dosage;
+        const reqDosage = document.createElement("td");
+        reqDosage.textContent = newRequest.dosage;
 
-    const reqAmount = document.createElement("td");
-    reqAmount.textContent = newRequest.numDoses.toString();
+        const reqAmount = document.createElement("td");
+        reqAmount.textContent = newRequest.numDoses.toString();
 
-    //append data elements together to one row
-    tableRow.appendChild(reqType);
-    tableRow.appendChild(reqStartLoc);
-    tableRow.appendChild(reqMedType);
-    tableRow.appendChild(reqDosage);
-    tableRow.appendChild(reqAmount);
+        //append data elements together to one row
+        tableRow.appendChild(reqType);
+        tableRow.appendChild(reqStartLoc);
+        tableRow.appendChild(reqMedType);
+        tableRow.appendChild(reqDosage);
+        tableRow.appendChild(reqAmount);
 
-    if (table == null) {
-      return;
-    }
+        if (table == null) {
+            return;
+        }
 
-    //add new row element to table
-    table.appendChild(tableRow);
-  });
+        //add new row element to table
+        table.appendChild(tableRow);
+    });
 }
 
 // async function getRequests() {
@@ -111,3 +112,4 @@ async function populateRequests() {
 // }
 
 export default RequestList;
+

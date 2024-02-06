@@ -1,4 +1,4 @@
-# Softeng Starter Code Repo
+# Hood Text
 This document contains an outline of 
 the entire repo, the tooling in the 
 repo, and explanations of the provided
@@ -9,7 +9,7 @@ readme, providing further details on its tooling,
 and the reasoning for the tooling it has.
 
 <!-- TOC -->
-* [Softeng Starter Code Repo](#softeng-starter-code-repo)
+* [Hood Text](#softeng-starter-code-repo)
   * [WebStorm Run Configurations](#webstorm-run-configurations)
   * [Installation and Useful Scripts](#installation-and-useful-scripts)
   * [Design Pattern](#design-pattern)

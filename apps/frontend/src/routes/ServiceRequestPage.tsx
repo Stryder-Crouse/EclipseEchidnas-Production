@@ -81,10 +81,6 @@ export default function ServiceRequestPage() {
     setMedRequestDosage(e.target.value);
   }
 
-  /**
-   *
-   * @param e
-   */
   function handleMedRequestTypeInput(e: ChangeEvent<HTMLInputElement>) {
     setMedRequestType(e.target.value);
   }
