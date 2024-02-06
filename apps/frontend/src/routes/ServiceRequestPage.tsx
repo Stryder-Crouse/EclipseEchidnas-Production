@@ -71,31 +71,12 @@ export default function ServiceRequestPage() {
     setMedRequestLocale(e.target.value);
   }
 
-  /**
-   * @param par1 -
-   * @param par2 -
-   * @param par3 -
-   * @param par4 -
-   * @param par5 -
-   *
-   * @returns
-   *
-   * @param e
-   */
+
   function handleMedRequestDoseInput(e: ChangeEvent<HTMLInputElement>) {
     setMedRequestDose(e.target.value);
   }
 
-  /**
-   * @param par1 -
-   * @param par2 -
-   * @param par3 -
-   * @param par4 -
-   * @param par5 -
-   *
-   * @returns
-   * @param e
-   */
+
   function handleMedRequestDosageInput(e: ChangeEvent<HTMLInputElement>) {
     setMedRequestDosage(e.target.value);
   }
