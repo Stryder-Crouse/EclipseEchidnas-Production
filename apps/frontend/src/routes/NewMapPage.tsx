@@ -4,6 +4,7 @@ import "../css/route-css/newMapPage.css";
 import axios from "axios";
 import {NodeDataBase} from "../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import ExitButton from "../components/buttons/ExitButton.tsx";
+import AdminMapNavBar from "../components/navigation-bar/AdminMapNavBar.tsx";
 
 function NewMapPage() {
     return (
@@ -12,35 +13,38 @@ function NewMapPage() {
 
         //TODO BNBN implement toggle function to reset selected node
         <body className={"newMapPage"} id={"newMapPage"}>
-            <div className={"newMapPage-container"}>
-                {/* where navbar needs to be */}
-                <div className={"wholeNewMapPageBody"}>
-                    <div className={"sidenav"}>
-                        <div className={"sidenav-elements"}>
-                            <div className={"populatingNodes"} id={"populating-nodes"}>
-                                {/* THIS IS BEING POPULATED BY DATABASE */}
-                            </div>
-                        </div>
-                    </div>
-                    <div className={"mapSide"}>
-                        <Map/>
-                        <div className={"start-end-typing-navigation"}>
-                            <label className={"mapSide-label"}>
-                                START AT: <input type={"text"} className={"newMapPage-input-fields"}/>
-                            </label>
-                            <label className={"mapSide-label"}>
-                                END AT: <input type={"text"} className={"newMapPage-input-fields"}/>
-                            </label>
-
-                            <button className={"reset-location-button"}>Reset Locations</button>
-                            <button className={"go-button"}>GO!</button>
-                            {/* implement go button */}
-                            {/* BNBN NEED TO CONNECT THIS TO NODES */}
+        <div className={"newMapPage-container"}>
+            {/* where navbar needs to be */}
+            <div>
+                <AdminMapNavBar/>
+            </div>
+            <div className={"wholeNewMapPageBody"}>
+                <div className={"sidenav"}>
+                    <div className={"sidenav-elements"}>
+                        <div className={"populatingNodes"} id={"populating-nodes"}>
+                            {/* THIS IS BEING POPULATED BY DATABASE */}
                         </div>
                     </div>
                 </div>
-                <ExitButton/>
+                <div className={"mapSide"}>
+                    <Map/>
+                    <div className={"start-end-typing-navigation"}>
+                        <label className={"mapSide-label"}>
+                            START AT: <input type={"text"} className={"newMapPage-input-fields"}/>
+                        </label>
+                        <label className={"mapSide-label"}>
+                            END AT: <input type={"text"} className={"newMapPage-input-fields"}/>
+                        </label>
+
+                        <button className={"reset-location-button"}>Reset Locations</button>
+                        <button className={"go-button"}>GO!</button>
+                        {/* implement go button */}
+                        {/* BNBN NEED TO CONNECT THIS TO NODES */}
+                    </div>
+                </div>
             </div>
+            <ExitButton/>
+        </div>
         </body>
 
     );
