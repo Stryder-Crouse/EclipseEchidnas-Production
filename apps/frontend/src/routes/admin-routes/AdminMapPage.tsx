@@ -1,7 +1,7 @@
 /** importations **/
 import React from "react";
 import AdminMapNavBar from "../../components/navigation-bar/AdminMapNavBar.tsx";
-import ExitButton from "../../components/buttons/ExitButton.tsx";
+// import ExitButton from "../../components/buttons/ExitButton.tsx";
 import { Map } from "../../components/map/Map.tsx";
 
 export default function AdminMapPage() {
@@ -32,10 +32,6 @@ export default function AdminMapPage() {
     <div>
       <div>
         <AdminMapNavBar />
-      </div>
-
-      <div>
-        <ExitButton />
       </div>
       <div>
         <Map />

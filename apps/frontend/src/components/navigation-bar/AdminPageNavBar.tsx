@@ -16,29 +16,40 @@ export default function NavBar() {
   // }, []);
 
   return (
-    <div className="navbar-container">
-      <div className="dropdown">
-        <a href={"/AdminMapPage"}>
-          <button className="dropbtn">Home Page</button>
-        </a>
-      </div>
+      <div className="navbar-container">
+          <div className="dropdown">
+              <a href={"/AdminMapPage"}>
+                  <button className="dropbtn">Home Page</button>
+              </a>
+          </div>
 
-      <div className="dropdown">
-        <a href={"/ServiceRequestPage"}>
-          <button className="dropbtn">Service Request</button>
-        </a>
+          <div className="dropdown">
+              <a href={"/ServiceRequestPage"}>
+                  <button className="dropbtn">Service Request</button>
+              </a>
+          </div>
+          <div className="dropdown">
+              <a href={"/RequestList"}>
+                  <button className="dropbtn">Request List</button>
+              </a>
+          </div>
+          <div className="dropdown">
+              <a href={"/EmployeeTable"}>
+                  <button className="dropbtn">Employee Table</button>
+              </a>
+          </div>
+          <div className="dropdown">
+              <a href={"/NodeEdgeTablePage"}>
+                  <button className="dropbtn">CSV</button>
+              </a>
+          </div>
+          <div className="dropdown">
+              <a href="http://localhost:3000">
+                  <button className="dropbtn">End Session</button>
+              </a>
+          </div>
+
       </div>
-      <div className="dropdown">
-        <a href={"/RequestList"}>
-          <button className="dropbtn">Request List</button>
-        </a>
-      </div>
-      <div className="dropdown">
-        <a href={"/NodeEdgeTablePage"}>
-          <button className="dropbtn">CSV</button>
-        </a>
-      </div>
-    </div>
   );
 }
 //
