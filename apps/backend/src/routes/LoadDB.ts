@@ -52,6 +52,7 @@ export default async function dbInit() {
     await PrismaClient.$transaction([
       PrismaClient.edgeDB.deleteMany(),
       PrismaClient.medReq.deleteMany(),
+      PrismaClient.serviceRequest.deleteMany(),
       PrismaClient.nodeDB.deleteMany(),
     ]);
     //add in all the Nodes and Edges that are in the above CSV file
@@ -59,7 +60,7 @@ export default async function dbInit() {
     await PrismaClient.edgeDB.createMany({ data: edgeDBArray });
   } catch (err) {
     console.log(
-      "\n\nSo sad bc initially populating the nodes and edges didn't work\n\n",
+      "\n\nWiping DB on Boot Error\n\n",
     );
   }
 }

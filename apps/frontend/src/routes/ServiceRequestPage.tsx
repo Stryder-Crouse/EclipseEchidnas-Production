@@ -7,12 +7,6 @@ import ExitButton from "../components/buttons/ExitButton.tsx";
 
 import axios from "axios";
 import {MedReq, ReqTypes, ServiceRequest} from "../../../backend/src/algorithms/Requests/Request.ts";
-// import ServiceRequests from "../../../backend/src/routes/serviceRequests.ts";
-// import {Buildings, Node, NodeType} from "../../../backend/src/algorithms/Graph/Node.ts";
-// import {Coordinate} from "../../../backend/src/algorithms/Graph/Coordinate.ts";
-// import {Edge} from "../../../backend/src/algorithms/Graph/Edge.ts";
-// import {Employee} from "../../../backend/src/algorithms/Employee/Employee.ts";
-
 
 export default function ServiceRequestPage() {
   const [medRequestLocale, setMedRequestLocale] = useState("");
@@ -20,7 +14,7 @@ export default function ServiceRequestPage() {
   const [medRequestType, setMedRequestType] = useState("");
   const [medRequestDosage, setMedRequestDosage] = useState("");
 
-  //CHanged for database
+  //Changed for database
   async function submit() {
     if (medRequestLocale !== "") {
       console.log(medRequestLocale);
@@ -36,14 +30,17 @@ export default function ServiceRequestPage() {
             status: "Not Assigned",
         };
 
+        console.log("EEEEEEpic");
+
         try {
-            await axios.post("/api/serviceRequests/serviceReq", servReq, {
+            //Post Req to DB (also store it so I can get the id for the med req)
+            const reqid = await axios.post("/api/serviceRequests/serviceReq", servReq, {
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
 
-            console.log(reqid);
+            // console.log(reqid);
 
             const medReqData: MedReq = {
                 dosage: medRequestDosage,
@@ -52,21 +49,21 @@ export default function ServiceRequestPage() {
                 genReqID: reqid.data.genReqID,
             };
 
-            console.log("\n\nIMPORTANT STUFF\n\n");
-            console.log(medReqData);
+            // console.log("\n\nIMPORTANT STUFF\n\n");
+            // console.log(medReqData);
 
 
             //post Med Req to DB
             await axios.post("/api/serviceRequests/medReq", medReqData, {
                 headers: {
                     "Content-Type": "application/json",
-                }
+                },
             });
 
-            console.log(medReqData);
+            // console.log(medReqData);
 
         } catch (err) {
-            throw new Error("Error with loading Nodes");
+            throw new Error("Error with loading Reqs/Med Reqs");
         }
     } catch {
         console.error("HUUUUUUUUUUUUUUUUGE issue with getting one node");

@@ -1,21 +1,22 @@
 import express, {Router, Request, Response} from "express";
 //import { MedReq, Request } from "../algorithms/node.ts";
 import PrismaClient from "../bin/database-connection.ts";
-import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
+// import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
 
 //import path from "path";
 //import fs from "fs";
 
 const router: Router = express.Router();
 
-//posts all requests from ____ (a csv?) to the database
+//posts all medication requests in the body of the function to the database
+// each request gets its own auto-generated ID
 //router.post("/post-all", async function (req: Request, res: Response) {});
 
 //posts one new medication request from the user to the database
 //the new medReq and the new serviceRequest both get their own auto-generated ID
 router.post("/medReq", async function (req: Request, res: Response) {
-    console.log("Nodes Below");
     console.log(req.body);
+    console.log("Med Req Above");
     //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
     try {
         await PrismaClient.medReq.create({
