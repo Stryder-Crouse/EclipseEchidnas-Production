@@ -14,42 +14,41 @@ export default function ServiceRequestPage() {
   const [medRequestType, setMedRequestType] = useState("");
   const [medRequestDosage, setMedRequestDosage] = useState("");
 
+  //use state keeps info in boxes between renders (rerenders every now and then like a videogame)
+  // in html, "value" is the variable being changed by the user's action
+  // and onChange is the function specifier, so for example: value={medRequestLocale} and onChange={setMedRequestLocale}
+    //reference html is at bottom of this file
+
   //Changed for database
   async function submit() {
-    /*if (medRequestLocale !== "") {
-      console.log(medRequestLocale);
-    }*/
 
-
-    //What I learned:
-    //  Only 1 axios.post() can be put in a try{}catch{} block (idk why but just
-    //  make sure to not put them in the same one)
 
     try {
-        //const tempNode = await axios.get<Node>("/api/load-nodes/one-node" + medRequestLocale);
+        //Make a Service Request Data Type and then a Med Request Data Type
+        // this is bc Front End will beconfused if we pass it a bunch of data so use data structures
         const servReq : ServiceRequest = {
-            reqType: ReqTypes.medReq,
-            reqLocationID: medRequestLocale,
-            extraInfo: "",
-            assignedUName: "No one",
-            status: "Not Assigned",
+            reqType: ReqTypes.medReq,           //Set req type to med req automatically bc we only make med reqs
+            reqLocationID: medRequestLocale,    //Need to know location of where the service request needs to be
+            extraInfo: "",                      //no extra info is asked for a med req so just ignore (empty string)
+            assignedUName: "No one",            //upon creation, no employee is assigned
+            status: "Not Assigned",             //upon creation, nobody is assigned, so set status to unassigned
         };
 
+        //Make a Med Req after the service req (Med req needs service req's id, so med req cannot be made before)
         const medReqData: MedReq = {
-            dosage: medRequestDosage,
-            medType: medRequestType,
-            numDoses: parseInt(medRequestDoses),
+            dosage: medRequestDosage,               //
+            medType: medRequestType,                //etc etc etc
+            numDoses: parseInt(medRequestDoses),    //
             genReqID: -1,    // default is 0, but is always changed to the value of the newly created Service Req
         };
 
-        //Post Req to DB (also store it so I can get the id for the med req)
+        //Post Med Req to DB (pass in objects of MedReq and ServiceRequest as an array)
         await axios.post("/api/serviceRequests/medReq",
             [servReq,medReqData], {
             headers: {
                 "Content-Type": "application/json",
             },
         });
-        console.log("posted serv");
 
 
     } catch {

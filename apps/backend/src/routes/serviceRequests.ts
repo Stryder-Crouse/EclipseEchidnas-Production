@@ -24,6 +24,7 @@ router.post("/medReq", async function (req: Request, res: Response) {
     //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
     try {
 
+        //create a service request in the database
         const service = await PrismaClient.serviceRequest.create({
             data: {
                 //ID is auto created
@@ -37,8 +38,12 @@ router.post("/medReq", async function (req: Request, res: Response) {
                 extraInfo: sentData[0].extraInfo,
                 status: sentData[0].status,
                 //connect the Employee field using the username as a foreign key
+                //assigned is the relation, so itt does not actually exist as data (data that
+                // will exist and connect is data you specify below)
                 assigned: {
                     connectOrCreate: {
+                        //connectOrCreate makes you specify what data you will create with and also what you
+                        // want to connect to (needs to know both potential outcomes)
                         create : {
                             userName: "No one",
                             firstName: "N/A",
@@ -55,8 +60,8 @@ router.post("/medReq", async function (req: Request, res: Response) {
         });
         console.info("Successfully saved Req"); // Log that it was successful
 
-
-        const record =await PrismaClient.medReq.create({
+        //create a Med Req (use data from the second element since we always put med req data type in second)
+        await PrismaClient.medReq.create({
             data: {
                 dosage: sentData[1].dosage,
                 medType: sentData[1].medType,
@@ -66,8 +71,8 @@ router.post("/medReq", async function (req: Request, res: Response) {
         });
         console.info("Successfully saved Med Req"); // Log that it was successful
         //sendback the id of the request
-        console.info("HHH " +record.genReqID);
-        res.send(record.genReqID);
+        //console.info("HHH " +record.genReqID);
+        res.send(200);
     } catch (error) {
         // Log any failures
         console.error(`Unable to save Med Req`);
