@@ -2,11 +2,11 @@ import { ServiceRequest } from "../Requests/Request.ts";
 
 /** Type to store employees*/
 export type Employee = {
-    userName: string,
-    firstName: string,
-    lastName: string,
-    designation: string,
-    isAdmin: boolean
+    userName: string;
+    firstName: string;
+    lastName: string;
+    designation: string;
+    isAdmin: boolean;
 
     assignedTasks: Array<ServiceRequest>;
 };

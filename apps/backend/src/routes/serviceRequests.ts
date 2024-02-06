@@ -85,7 +85,7 @@ router.get("/medReq", async function (req: Request, res: Response) {
         //try to send all the nodes to the client
         //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
         res.send(await PrismaClient.medReq.findMany()); //end res.send (this is what will be sent to the client)
-        console.info("\nSuccessfully gave you the the requests\n");
+        console.info("\nSuccessfully gave you the requests\n");
     } catch (err) {
         console.error("\nUnable to send requests\n");
     }
@@ -95,7 +95,7 @@ router.get("/serviceReq", async function (req: Request, res: Response) {
         //try to send all the nodes to the client
         //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
         res.send(await PrismaClient.serviceRequest.findMany()); //end res.send (this is what will be sent to the client)
-        console.info("\nSuccessfully gave you the the requests\n");
+        console.info("\nSuccessfully gave you the requests\n");
     } catch (err) {
         console.error("\nUnable to send requests\n");
     }
