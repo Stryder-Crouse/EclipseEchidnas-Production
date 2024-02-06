@@ -8,6 +8,7 @@ import { FloorToIndex, NULLNODE} from "../../../backend/src/algorithms/Graph/Nod
 
 import {Node} from "../../../backend/src/algorithms/Graph/Node.ts";
 import AdminMapNavBar from "../components/navigation-bar/AdminMapNavBar.tsx";
+import {HTMLInputElement} from "happy-dom";
 
 
 
@@ -37,6 +38,19 @@ const defaultFloor = FloorToIndex.LowerLevel1;
 
     }, [selectedFloorIndex]);
 
+    function updateInputSelection() {
+        const handleNodeClick = (selectedNode : Node) => {
+            setStartNode(selectedNode);
+            updateText(selectedNode);
+        }
+
+        const updateText = (selectedNode : Node) => {
+            const startInput = document.getElementById("startingNodeInput") as HTMLInputElement;
+            const endInput = document.getElementById("startingNodeInput") as HTMLInputElement;
+        }
+
+    }
+
 
     return (
         //TODO BNBN implement backend feature to populate SELECTS for each floor node/edge
@@ -55,9 +69,10 @@ const defaultFloor = FloorToIndex.LowerLevel1;
                         <div className={"populatingNodes"} id={"populating-nodes"}>
                             {/* THIS IS BEING POPULATED BY DATABASE */}
                             {
+                                //id's are startingNodeInput and endingNodeInput
                                 locations.map((node) => {
                                     return (
-                                            <div className={"level-location"}>{node.longName}</div>
+                                            <div className={"level-location"} >{node.longName}</div>
 
                                     );
                                 })
@@ -72,10 +87,10 @@ const defaultFloor = FloorToIndex.LowerLevel1;
                     />
                     <div className={"start-end-typing-navigation"}>
                         <label className={"mapSide-label"}>
-                            START AT: <input type={"text"} className={"newMapPage-input-fields"}/>
+                            START AT: <input type={"text"} id={"startingNodeInput"} className={"newMapPage-input-fields"}/>
                         </label>
                         <label className={"mapSide-label"}>
-                            END AT: <input type={"text"} className={"newMapPage-input-fields"}/>
+                            END AT: <input type={"text"} id={"endingNodeInput"} className={"newMapPage-input-fields"}/>
                         </label>
 
                         <button className={"reset-location-button"}>Reset Locations</button>
@@ -143,8 +158,4 @@ const defaultFloor = FloorToIndex.LowerLevel1;
 
 
 }
-
-
-
-
 export default NewMapPage;
