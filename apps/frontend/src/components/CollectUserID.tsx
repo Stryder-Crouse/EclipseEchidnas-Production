@@ -9,7 +9,7 @@ async function CollectUserName() {
 
     if (isAuthenticated && user != null) {
         return (userName); //remove upon post implementation
-        //todo BNBN post const userName to employee database
+        //todo BNBN post const userName to employee database :)
     }
 }
 
