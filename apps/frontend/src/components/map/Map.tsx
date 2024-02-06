@@ -1,23 +1,15 @@
 import axios from "axios";
 
-import { Node } from "../../../../backend/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, Node} from "../../../../backend/src/algorithms/Graph/Node.ts";
 
 import "../../css/component-css/Map.css";
-import { Edge } from "../../../../backend/src/algorithms/Graph/Edge.ts";
-import { Graph } from "../../../../backend/src/algorithms/Graph/Graph.ts";
-import { BFS } from "../../../../backend/src/algorithms/Search/BFS.ts";
-import {
-  onNodeHover,
-  onNodeLeave,
-} from "../../event-logic/circleNodeEventHandlers.ts";
-import {
-  NodeDataBase,
-  nodeDataBaseToNode,
-} from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
-import {
-  EdgeDataBase,
-  edgeDataBasetoEdge,
-} from "../../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
+import {Edge} from "../../../../backend/src/algorithms/Graph/Edge.ts";
+import {Graph} from "../../../../backend/src/algorithms/Graph/Graph.ts";
+import {BFS} from "../../../../backend/src/algorithms/Search/BFS.ts";
+import {onNodeHover, onNodeLeave,} from "../../event-logic/circleNodeEventHandlers.ts";
+import {NodeDataBase, nodeDataBaseToNode,} from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import {EdgeDataBase, edgeDataBasetoEdge,} from "../../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
+import {Dispatch, SetStateAction} from "react";
 
 /**
  * @param startNodeID the ID of the starting node to path find from
@@ -33,14 +25,9 @@ let endNode: Node | null = null;
 
 //get graph from database
 let graph: Graph | null = null;
+//let path:Array<Node> = [];
 
-/**
- * reset the selected nodes on page load to clean previous selection (e.g if the user used the back button)
- * */
-function resetSelectedNodes() {
-    startNode = null;
-    endNode = null;
-}
+
 
 /**
  * gets the nodes and edges for the map and creates the graph for searching.
@@ -235,84 +222,36 @@ function makePath(startNode: Node, endNode: Node) {
     }
 }
 
-/**
- * creates the node objects on the map though html DOM
- *
- */
-async function makeNodes() {
 
 
-    if (graph == null) {
-        console.error("Graph has not been created yet");
-        return;
+
+//todo move this to a new file -stryder
+export interface MapStates{
+    startNode:Node;
+    setStartNode: Dispatch<SetStateAction<Node>>;
+    endNode:Node;
+    setEndNode: Dispatch<SetStateAction<Node>>;
+    selectedFloorIndex:FloorToIndex;
+    setSelectedFloorIndex: Dispatch<SetStateAction<FloorToIndex>>;
+    drawPath:boolean;
+    setDrawPath: Dispatch<SetStateAction<boolean>>;
+    locations:Node[];
+    setLocations:Dispatch<SetStateAction<Node[]>>;
+}
+
+export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNode,setEndNode:setEndNode
+                        ,selectedFloorIndex:selectedFloorIndex,setSelectedFloorIndex:setSelectedFloorIndex,
+                        drawPath:drawPath,setDrawPath:setDrawPath,
+                        locations:locations, setLocations:setLocations}:MapStates) {
+
+    //todo remove these
+    console.log(startNode,setStartNode,endNode,setEndNode,selectedFloorIndex,setSelectedFloorIndex,drawPath,setDrawPath,setLocations);
+
+    if(drawPath){
+
     }
 
-    //find svg map
-    const map = document.getElementById("map");
 
-    //for each node add it to the file
-    graph.getNodes().forEach(function (newNode: Node) {
-        //atag to contain the event lisener / make it clickable also contatins the circle within it
-        const aTag = document.createElementNS("http://www.w3.org/2000/svg", "a");
-        //circle to show node
-        const newNodeCircle = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "circle",
-        );
-        //middle coordnate from circle
-        newNodeCircle.setAttribute("cx", newNode.coordinate.x.toString());
-        newNodeCircle.setAttribute("cy", newNode.coordinate.y.toString());
-
-        //set css class
-        newNodeCircle.setAttribute("class", "normalNode");
-
-        //give a tag the node id it stores
-        aTag.setAttribute("id", newNode.id);
-        aTag.setAttribute("class", "clickableAtag");
-        //set an event listener to call the onNodeClick on click (CHECK IF THERE IS A BETTER WAY TO DO THIS)
-        aTag.addEventListener("click", () => {
-            onNodeClick(newNode.id);
-        });
-        //add event listeners for hover
-        aTag.addEventListener("mouseover", () => {
-            onNodeHover(newNode.id);
-        });
-        aTag.addEventListener("mouseleave", () => {
-            onNodeLeave(newNode.id);
-        });
-
-        //add circle to a tag
-        aTag.appendChild(newNodeCircle);
-        if (map == null) {
-            return;
-        }
-        //add a tag to map
-        map.appendChild(aTag);
-    });
-}
-
-//this is a dupilate from map page so REMOVE IT
-/*async function getNodeCSVString(): Promise<string> {
-  const res = await axios.get("/api/loadCSVFile/CSVnode");
-  console.log("data");
-  console.log(res.data);
-  if (res.status == 200) {
-    return res.data as string;
-  }
-  return "";
-}
-
-async function getEdgeCSVString(): Promise<string> {
-  const res = await axios.get("/api/loadCSVFile/CSVedge");
-  console.log("data");
-  console.log(res.data);
-  if (res.status == 200) {
-    return res.data as string;
-  }
-  return "";
-}*/
-
-export function Map() {
     //the html returned from the component
     return (
         <div id={"map-test"}>
@@ -321,32 +260,110 @@ export function Map() {
                 className={"map-test"}
                 version="1.1"
                 xmlns="http://www.w3.org/2000/svg"
-                viewBox="940 490 2160 1900"
+                viewBox={setMapViewBox()}
             >
                 <use xmlnsXlink="http://www.w3.org/1999/xlink"></use>
                 <image
                     width="5000"
                     height="3400"
-                    href="/src/images/00_thelowerlevel1.png"
+                    href={setMapImage()}
                 ></image>
-                <a href="https://www.w3schools.com/tags/tag_img.asp">
-                    <rect
-                        x="0"
-                        y="0"
-                        fill="#fff"
-                        opacity="0"
-                        width="378"
-                        height="214"
-                    ></rect>
-                </a>
+                {
+                    /**
+                     * creates the node objects on the map
+                     * */
+                    locations.map((node)=>{
+                        return (
+                            <a id={node.id} className={"clickableAtag"}
+                               onClick={()=>onNodeClick(node.id)}
+                               onMouseOver={()=> onNodeHover(node.id)}
+                               onMouseLeave={()=> onNodeLeave(node.id)}
+                            >
+                                <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"normalNode"}></circle>
+                            </a>
+                        );
+                    })
+
+
+                }
+                {
+                    /**
+                     * draws the path on the current floor
+                     * */
+
+
+                }
             </svg>
         </div>
     );
+
+
+    /**
+     * sets the maps image based on selectedFloorIndex
+     * */
+    function setMapImage():string{
+
+        switch (selectedFloorIndex) {
+            case FloorToIndex.LowerLevel2: return "/src/images/00_thelowerlevel2.png";
+            case FloorToIndex.LowerLevel1: return "/src/images/00_thelowerlevel1.png";
+            case FloorToIndex.Ground: return "/src/images/00_thegroundfloor.png";
+            case FloorToIndex.Level1: return "/src/images/01_thefirstfloor.png";
+            case FloorToIndex.Level2: return "/src/images/02_thesecondfloor.png";
+            case FloorToIndex.Level3: return "/src/images/03_thethirdfloor.png";
+            default: return "/src/images/00_thelowerlevel1.png";
+        }
+
+    }
+
+    /**
+     * sets the maps view box based on selectedFloorIndex
+     * */
+    function setMapViewBox():string{
+
+        switch (selectedFloorIndex) {
+            case FloorToIndex.LowerLevel2: return "940 490 3000 2700";
+            case FloorToIndex.LowerLevel1: return "940 490 2160 1900";
+            case FloorToIndex.Ground: return "500 0 5000 3400";
+            case FloorToIndex.Level1: return "940 490 3000 2900";
+            case FloorToIndex.Level2: return "940 290 3500 2900";
+            case FloorToIndex.Level3: return "940 490 3000 2700";
+            default: return "940 490 2160 1900";
+        }
+
+    }
+
+    // /**
+    //  * sets the maps view box based on selectedFloorIndex
+    //  * */
+    // function updatePath(){
+    //     if (graph == null) {
+    //         console.error("Graph has not been created yet - makepath");
+    //         return;
+    //     }
+    //
+    //     //find path with bfs
+    //     const path: Array<Node> | null = BFS(startNode, endNode, graph);
+    //
+    //     //error is no path could be found
+    //     if (path == null) {
+    //         console.error(
+    //             "no path could be found between " + startNode?.id + " and " + endNode?.id,
+    //         );
+    //         return;
+    //     }
+    //
+    //     //todo only put nodes on the current floor into the path
+    //
+    //
+    // }
+
+
+
 }
 
 //code below runs on page load
 updateGraph().then(() => {
-    makeNodes().then();
+    //makeNodes().then();
     //makePath("CCONF003L1", "CHALL014L1").then();
-    resetSelectedNodes();
+    //resetSelectedNodes();
 });

@@ -14,6 +14,9 @@ export type Node = {
   edges: Array<Edge>;
 };
 
+
+
+
 /**
  *
  * @returns a number representing the floor of the node
@@ -38,6 +41,22 @@ export function floorToNumber(floor:string){
         case "L2": return FloorToIndex.LowerLevel2;
 
         default: return FloorToIndex.UNDEFINED;
+    }
+
+
+}
+
+export function floorToString(floor:number){
+
+    switch (floor) {
+        case 0: return "L2";
+        case 1: return "L1";
+        case 2: return "G";
+        case 3: return "1";
+        case 4: return "2";
+        case 5: return "3";
+
+        default: return "FAIL";
     }
 
 
@@ -164,3 +183,16 @@ export function stringToNodeType(nodeTypeName: string) {
       return NodeType.UNDEFINED;
   }
 }
+
+export const NULLNODE:Node = {
+    building: Buildings.UNDEFINED,
+    coordinate: {x:-100,y:-100},
+    edges: [],
+    floor: "",
+    id: "NULL",
+    longName: "",
+    nodeType: NodeType.UNDEFINED,
+    shortName: "",
+    heuristic:-1
+
+};
