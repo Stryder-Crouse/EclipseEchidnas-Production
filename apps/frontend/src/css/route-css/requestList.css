@@ -22,3 +22,7 @@ td:nth-child(2) {
 .request-table-container {
     margin: 10% auto auto;
 }
+
+td {
+    font-family: 'Work Sans', sans-serif;
+}
