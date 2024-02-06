@@ -62,6 +62,7 @@ async function updateGraph() {
     });
 
     graph = new Graph(nodes, edges);
+    console.log(graph.getEdges());
 }
 
 /**
@@ -239,7 +240,7 @@ function makePath(startNode: Node, endNode: Node) {
  *
  */
 async function makeNodes() {
-    //load nodes from file CHANGE LAYER
+
 
     if (graph == null) {
         console.error("Graph has not been created yet");
