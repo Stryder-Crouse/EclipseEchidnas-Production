@@ -3,7 +3,6 @@ import "../css/route-css/newMapPage.css";
 //import AdminPageNavBar from "../components/navigation-bar/AdminPageNavBar.tsx";
 import axios from "axios";
 import {NodeDataBase} from "../../../backend/src/DataBaseClasses/NodeDataBase.ts";
-import ExitButton from "../components/buttons/ExitButton.tsx";
 import AdminMapNavBar from "../components/navigation-bar/AdminMapNavBar.tsx";
 
 function NewMapPage() {
@@ -43,7 +42,7 @@ function NewMapPage() {
                     </div>
                 </div>
             </div>
-            <ExitButton/>
+
         </div>
         </body>
 

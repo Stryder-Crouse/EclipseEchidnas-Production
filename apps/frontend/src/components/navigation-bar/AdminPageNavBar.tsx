@@ -35,7 +35,7 @@ export default function NavBar() {
           </div>
           <div className="dropdown">
               <a href={"/EmployeeTable"}>
-                  <button className="dropbtn">Employee Table</button>
+                  <button className="dropbtn">Employee List</button>
               </a>
           </div>
           <div className="dropdown">
