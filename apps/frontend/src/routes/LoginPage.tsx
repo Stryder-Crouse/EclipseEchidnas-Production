@@ -7,6 +7,7 @@ import Avatar from "../images/avatarIcon.png";
 //import EyeClosed from "../images/ObscuredPassword.png";
 import ExitButton from "../components/buttons/ExitButton.tsx";
 import { useNavigate } from "react-router-dom";
+
 /**
  * Create login page for staff/admin
  */
@@ -24,20 +25,21 @@ export default function WelcomePage() {
    * Toggle to show or hide password with button push
    * Currently not in use, difficulty implementing but hope to use in future
    */
+
   /*
-  function passToggle() {
-      if(showPassword) { //If password is set to show when button pushed
-          setShowPassword(false); //hide password
-          return(
-              <img src={EyeClosed} alt={"HidePass"}/> //Change image shown to the closed eye
-          );
-      } else { //if password is set to hide when button pushed
-          setShowPassword(true); //show password
-          return(
-              <img src={EyeOpen} alt={"ShowPass"}/> //Change image shown to the open eye
-          );
-      }
-  }*/
+    function passToggle() {
+        if(showPassword) { //If password is set to show when button pushed
+            setShowPassword(false); //hide password
+            return(
+                <img src={EyeClosed} alt={"HidePass"}/> //Change image shown to the closed eye
+            );
+        } else { //if password is set to hide when button pushed
+            setShowPassword(true); //show password
+            return(
+                <img src={EyeOpen} alt={"ShowPass"}/> //Change image shown to the open eye
+            );
+        }
+    }*/
 
   /**
    * Assigns input to the username variable, and if empty displays alert (alert currently not working, alternative implemented but hope to use in future)
@@ -49,7 +51,7 @@ export default function WelcomePage() {
 
   /**
    * Assigns input to the password variable, and if empty displays alert (alert currently not working, alternative implemented but hope to use in future)
-   * @param password Value entered into the password textbox
+   * @param username Value entered into the username textbox
    */
   function handlePassword(username: string) {
     setPassword(username);
