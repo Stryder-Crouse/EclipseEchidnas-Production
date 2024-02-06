@@ -3,7 +3,7 @@ import ExitButton from "../../components/buttons/ExitButton.tsx";
 import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx";
 import "../../css/route-css/requestList.css";
 import axios from "axios";
-import {MedReq, ServiceRequest} from "../../../../backend/src/algorithms/Requests/Request.ts";
+import {MedReq} from "../../../../backend/src/algorithms/Requests/Request.ts";
 
 function RequestList() {
   return (
@@ -54,7 +54,7 @@ export type request = {
 async function populateRequests() {
   console.log("RAN");
 
-  const requests = await axios.get<ServiceRequest[]>("/api/serviceRequests/medReq");
+  const requests = await axios.get<MedReq[]>("/api/serviceRequests/medReq");
 
   //fine dropdown div in the html on the page
   const table = document.getElementById("request-table");
@@ -62,7 +62,7 @@ async function populateRequests() {
   console.log(table);
 
   //for each node
-  medReqs.data.forEach(function (newRequest: MedReq) {
+  requests.data.forEach( function a (newRequest: MedReq) {
     //create tr element to store the record
     const tableRow = document.createElement("tr");
     //create td tags for data from record
@@ -71,7 +71,7 @@ async function populateRequests() {
     reqType.setAttribute("class", "node-id");
 
     const reqStartLoc = document.createElement("td");
-    reqStartLoc.textContent = newRequest.reqLocationID;
+    reqStartLoc.textContent = newRequest.genReq.reqLocation;
 
     const reqMedType = document.createElement("td");
     reqMedType.textContent = newRequest.medType;

@@ -18,27 +18,27 @@ router.post("/medReq", async function (req: Request, res: Response) {
     console.log(req.body);
     //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
     try {
+        const newReq = await PrismaClient.serviceRequest.create({
+            data: {
+                // reqID: data.genReq.reqID,
+                reqType: data.genReq.reqType,
+                reqLocationID: data.genReq.reqLocation,
+                extraInfo: data.genReq.extraInfo,
+                assignedUName: "Nobody",
+                status: "Not Assigned",
+            }
+        });
         await PrismaClient.medReq.create({
             data: {
                 medReqID: data.medReqID,
                 medType: data.medType,
                 dosage: data.dosage,
                 numDoses: data.numDoses,
-
-                genReq:{
-                    connectOrCreate:{
-                        where: {
-                            reqID: data.genReq.reqID
-                        },
-                        create: {
-
-                        }
-                    }
-                }
+                genReqID: newReq.reqID,
             },
         });
 
-        console.info("Successfully saved node"); // Log that it was successful
+        console.info("Successfully saved Med Request"); // Log that it was successful
     } catch (error) {
         // Log any failures
         console.error(`Unable to save requests`);
@@ -46,27 +46,32 @@ router.post("/medReq", async function (req: Request, res: Response) {
     }
 });
 router.post("/serviceReq", async function (req: Request, res: Response) {
-    const data: ServiceRequest = req.body;
 
     console.log(req.body);
+
+    let assignedUName : string = "No one";
+    if(req.body.assignedUName != null && !req.body.assignedUName.equals("") && !req.body.assignedUName.equals("No one")){
+        assignedUName = req.body.assignedUName;
+    }
+
     //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
     try {
         await PrismaClient.serviceRequest.create({
             data: {
-                reqID: data.reqID,
-                reqType: data.reqType,
+                //ID is auto created
+                reqType: req.body.reqType,
                 //connect the Node field using the node id as a foreign key
                 reqLocation: {
-                    connect: {
-                        nodeID: data.reqLocation.id,
+                    connect : {
+                        nodeID: req.body.reqLocationID
                     }
                 },
-                extraInfo: data.extraInfo,
-                status: data.status,
+                extraInfo: req.body.extraInfo,
+                status: req.body.status,
                 //connect the Employee field using the username as a foreign key
                 assigned: {
                     connect: {
-                        userName: data.assigned.userName,
+                        userName: assignedUName,
                     }
                 }
             },

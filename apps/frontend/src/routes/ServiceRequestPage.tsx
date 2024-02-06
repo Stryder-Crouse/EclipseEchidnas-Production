@@ -6,7 +6,13 @@ import RequestButtons from "../components/buttons/RequestButtons.tsx";
 import ExitButton from "../components/buttons/ExitButton.tsx";
 
 import axios from "axios";
-import { MedReq } from "../../../backend/src/algorithms/Requests/Request.ts";
+import {MedReq, ReqTypes, ServiceRequest} from "../../../backend/src/algorithms/Requests/Request.ts";
+// import ServiceRequests from "../../../backend/src/routes/serviceRequests.ts";
+// import {Buildings, Node, NodeType} from "../../../backend/src/algorithms/Graph/Node.ts";
+// import {Coordinate} from "../../../backend/src/algorithms/Graph/Coordinate.ts";
+// import {Edge} from "../../../backend/src/algorithms/Graph/Edge.ts";
+// import {Employee} from "../../../backend/src/algorithms/Employee/Employee.ts";
+
 
 export default function ServiceRequestPage() {
   const [medRequestLocale, setMedRequestLocale] = useState("");
@@ -20,25 +26,41 @@ export default function ServiceRequestPage() {
       console.log(medRequestLocale);
     }
 
-    const medRequestequest: MedReq = {
-      dosage: medRequestDosage,
-      medReqID: -1,
-      medType: medRequestType,
-        numDoses: parseInt(medRequestDoses),
-      reqLocationID: medRequestLocale,
-    };
-
-    console.log(medRequestequest);
-
     try {
-      await axios.post("/api/serviceRequests/medReq", medRequestequest, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    } catch (err) {
-      throw new Error("Error with loading Nodes");
+        //const tempNode = await axios.get<Node>("/api/load-nodes/one-node" + medRequestLocale);
+        const servReq : ServiceRequest = {
+            reqType: ReqTypes.medReq,
+            reqLocationID: medRequestLocale,
+            extraInfo: "",
+            assignedUName: "No one",
+            status: "Not Assigned",
+        };
+
+        const medReqData: MedReq = {
+            dosage: medRequestDosage,
+            medType: medRequestType,
+            numDoses: parseInt(medRequestDoses),
+            genReqID: servReq,
+        };
+
+        console.log(medReqData);
+        try {
+            await axios.post("/api/serviceRequests/serviceReq", servReq, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+        } catch (err) {
+            throw new Error("Error with loading Nodes");
+        }
+    } catch {
+        console.error("HUUUUUUUUUUUUUUUUGE issue with getting one node");
     }
+
+
+
+
+
   }
 
   /**
