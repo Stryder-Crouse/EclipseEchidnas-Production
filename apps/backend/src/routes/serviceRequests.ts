@@ -15,19 +15,23 @@ const router: Router = express.Router();
 //posts one new medication request from the user to the database
 //the new medReq and the new serviceRequest both get their own auto-generated ID
 router.post("/medReq", async function (req: Request, res: Response) {
-    console.log(req.body);
-    console.log("Med Req Above");
+    //console.log(req.body);
+    //console.log("Med Req Above");
+    const medReq1 = req.body;
+    console.info(medReq1);
+    console.info(req.body.genReqID);
+    console.info("This is the Med Req");
     //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
     try {
         await PrismaClient.medReq.create({
             data: {
-                medType: req.body.medType,
                 dosage: req.body.dosage,
+                medType: req.body.medType,
                 numDoses: req.body.numDoses,
-                genReqID: req.body.genReqID,
+                genReqID: 0,
                 }
         });
-        console.info("Successfully saved Med Request"); // Log that it was successful
+        console.info("Successfully saved Med Req"); // Log that it was successful
     } catch (error) {
         // Log any failures
         console.error(`Unable to save Med Req`);
@@ -74,8 +78,10 @@ router.post("/serviceReq", async function (req: Request, res: Response) {
                 }
             },
         });
-
         console.info("Successfully saved Req"); // Log that it was successful
+        res.sendStatus(200);
+
+
     } catch (error) {
         // Log any failures
         console.error(`Unable to save Req`);
@@ -88,7 +94,7 @@ router.get("/medReq", async function (req: Request, res: Response) {
         //try to send all the nodes to the client
         //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
         res.send(await PrismaClient.medReq.findMany()); //end res.send (this is what will be sent to the client)
-        console.info("\nSuccessfully gave you the the requests\n");
+        console.info("\nSuccessfully gave you all of the medical requests\n");
     } catch (err) {
         console.error("\nUnable to send requests\n");
     }
@@ -98,7 +104,7 @@ router.get("/serviceReq", async function (req: Request, res: Response) {
         //try to send all the nodes to the client
         //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
         res.send(await PrismaClient.serviceRequest.findMany()); //end res.send (this is what will be sent to the client)
-        console.info("\nSuccessfully gave you the the requests\n");
+        console.info("\nSuccessfully gave you all of the requests\n");
     } catch (err) {
         console.error("\nUnable to send requests\n");
     }

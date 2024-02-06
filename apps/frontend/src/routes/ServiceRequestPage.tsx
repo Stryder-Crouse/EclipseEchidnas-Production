@@ -16,10 +16,15 @@ export default function ServiceRequestPage() {
 
   //Changed for database
   async function submit() {
-    if (medRequestLocale !== "") {
+    /*if (medRequestLocale !== "") {
       console.log(medRequestLocale);
-    }
+    }*/
+    let reqid: number = 0;
 
+
+    //What I learned:
+    //  Only 1 axios.post() can be put in a try{}catch{} block (idk why but just
+    //  make sure to not put them in the same one)
     try {
         //const tempNode = await axios.get<Node>("/api/load-nodes/one-node" + medRequestLocale);
         const servReq : ServiceRequest = {
@@ -30,44 +35,40 @@ export default function ServiceRequestPage() {
             status: "Not Assigned",
         };
 
-        console.log("EEEEEEpic");
+        //Post Req to DB (also store it so I can get the id for the med req)
+        const axiosReturn = await axios.post("/api/serviceRequests/serviceReq", servReq, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
 
-        try {
-            //Post Req to DB (also store it so I can get the id for the med req)
-            const reqid = await axios.post("/api/serviceRequests/serviceReq", servReq, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
+        reqid = axiosReturn.data.genReqID;
 
-            // console.log(reqid);
-
-            const medReqData: MedReq = {
-                dosage: medRequestDosage,
-                medType: medRequestType,
-                numDoses: parseInt(medRequestDoses),
-                genReqID: reqid.data.genReqID,
-            };
-
-            // console.log("\n\nIMPORTANT STUFF\n\n");
-            // console.log(medReqData);
-
-
-            //post Med Req to DB
-            await axios.post("/api/serviceRequests/medReq", medReqData, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-
-            // console.log(medReqData);
-
-        } catch (err) {
-            throw new Error("Error with loading Reqs/Med Reqs");
-        }
     } catch {
-        console.error("HUUUUUUUUUUUUUUUUGE issue with getting one node");
+        console.error("Error with trying to save Service Req in ServiceRequestPage.tsx");
     }
+
+  try {
+      // console.log(reqid);
+
+      const medReqData: MedReq = {
+          dosage: medRequestDosage,
+          medType: medRequestType,
+          numDoses: parseInt(medRequestDoses),
+          genReqID: reqid,    // default is 0, but is always changed to the value of the newly created Service Req
+      };
+
+
+      //post Med Req to DB (Service Req is before so Med Req can reference it)
+      await axios.post("/api/serviceRequests/medReq", medReqData, {
+          headers: {
+              "Content-Type": "application/json",
+          },
+      });
+
+  } catch (err) {
+      throw new Error("Error with trying to save Med Req in ServiceRequestPage.tsx");
+  }
 
 
 
