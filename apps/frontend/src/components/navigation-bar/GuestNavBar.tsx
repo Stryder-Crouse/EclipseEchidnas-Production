@@ -10,9 +10,9 @@ export default function NavBar() {
           {/*</div>*/}
           <div className="navbar-container">
               <div className="dropdown">
-                  <button className="dropbtn">
-                      Levels
-                  </button>
+                  <a href={"/GuestMap"}>
+                      <button className="dropbtn">Map Page</button>
+                  </a>
                   <div className={"dropdown-content"}>
                       <a href={"/AdminMapPage"}>L2</a>
                       <a href={"/AdminMapPage"}>L1</a>

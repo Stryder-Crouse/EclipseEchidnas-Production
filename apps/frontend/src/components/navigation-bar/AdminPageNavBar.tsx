@@ -18,18 +18,11 @@ export default function NavBar() {
   return (
       <div className="navbar-container">
           <div className="dropdown">
-              <button className="dropbtn">
-                  Levels
-              </button>
-              <div className={"dropdown-content"}>
-                  <a href={"/AdminMapPage"}>L2</a>
-                  <a href={"/AdminMapPage"}>L1</a>
-                  <a href={"/AdminMapPage"}>G</a>
-                  <a href={"/AdminMapPage"}>1</a>
-                  <a href={"/AdminMapPage"}>2</a>
-                  <a href={"/AdminMapPage"}>3</a>
-              </div>
+              <a href={"/AdminMapPage"}>
+                  <button className="dropbtn">Map Page</button>
+              </a>
           </div>
+
           <div className="dropdown">
               <a href={"/ServiceRequest"}>
                   <button className="dropbtn">Service Request</button>
@@ -42,7 +35,7 @@ export default function NavBar() {
           </div>
           <div className="dropdown">
               <a href={"/EmployeeTable"}>
-                  <button className="dropbtn">Employee Table</button>
+                  <button className="dropbtn">Employee List</button>
               </a>
           </div>
           <div className="dropdown">

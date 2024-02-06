@@ -56,6 +56,7 @@ export function readNodeCSV(fileContent: string): Array<Node> {
         longName: nodeValues.at(6) ?? ERROR_STRING,
         shortName: nodeValues.at(7) ?? ERROR_STRING,
         edges: [],
+          heuristic:-1,
       };
       //add node to node list
       nodes.push(newNode);
@@ -111,6 +112,7 @@ export function readEdgeCSV(fileContent: string): Array<Edge> {
         longName: "",
         shortName: "",
         edges: [],
+          heuristic:-1,
       };
 
       const end: Node = {
@@ -122,6 +124,7 @@ export function readEdgeCSV(fileContent: string): Array<Edge> {
         longName: "",
         shortName: "",
         edges: [],
+          heuristic:-1,
       };
 
       //create new edge
@@ -129,6 +132,7 @@ export function readEdgeCSV(fileContent: string): Array<Edge> {
         id: edgeValues.at(0) ?? ERROR_STRING,
         startNode: start,
         endNode: end,
+          weight:-1
       };
       //add new edge to list
       edges.push(newEdge);
