@@ -25,7 +25,7 @@ let endNode: Node | null = null;
 
 //get graph from database
 let graph: Graph | null = null;
-let path:Array<Node> = [];
+const path:Array<Node> = [];
 
 
 
