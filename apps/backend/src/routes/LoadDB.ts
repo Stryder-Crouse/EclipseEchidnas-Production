@@ -1,6 +1,7 @@
 import { Node } from "../algorithms/Graph/Node.ts";
 import { Edge } from "../algorithms/Graph/Edge.ts";
 import { readEdgeCSV, readNodeCSV } from "../algorithms/readCSV.ts";
+import { Employee, Roles } from "../algorithms/Employee/Employee.ts";
 import PrismaClient from "../bin/database-connection.ts"; //may also be wrong
 import path from "path";
 import fs from "fs";
@@ -34,6 +35,20 @@ const nodeArray: Node[] = readNodeCSV(nodeStr);
 //convert to db node
 const edgeDBArray: EdgeDataBase[] = [];
 const nodeDBArray: NodeDataBase[] = [];
+//employee test data
+const employee1: Employee = {userName:"doctor_smith", lastName:"Smith", firstName:"John", designation: Roles.doctor, isAdmin: true};
+const employee2: Employee = {userName:"nurse_davis", lastName:"Davis", firstName:"Emily", designation: Roles.nurse, isAdmin: false};
+const employee3: Employee = {userName:"admin_jones", lastName:"Jones", firstName:"Robert", designation: Roles.admin, isAdmin: true};
+const employee4: Employee = { userName:"receptionist_wang", lastName:"Wang" , firstName: "Lisa", designation: Roles.janitor, isAdmin: false};
+const employee5: Employee = {userName:"doctor_miller", lastName:"Miller", firstName:"Sarah", designation: Roles.doctor, isAdmin: false};
+const employee6: Employee = {userName:"nurse_anderson", lastName:"Anderson", firstName:"David", designation: Roles.nurse, isAdmin:false};
+const employee7: Employee = {userName:"admin_white", lastName:"White", firstName:"Alice", designation: Roles.admin, isAdmin:true};
+const employee8: Employee = {userName:"janitor_harris", lastName:"Harris", firstName:"Michael", designation: Roles.janitor, isAdmin:false};
+const employee9: Employee = {userName:"doctor_jackson", lastName:"Jackson", firstName:"Emma", designation: Roles.doctor, isAdmin:false};
+const employee10: Employee = {userName:"nurse_brown", lastName:"Brown", firstName:"James", designation: Roles.nurse, isAdmin:false};
+
+const employeeArray: Employee[] =
+    [employee1, employee2, employee3, employee4, employee5, employee6, employee7, employee8, employee9, employee10];
 
 edgeArray.forEach((edge) => {
   const newEdgeDB = edgeToEdgeDataBase(edge);
@@ -53,10 +68,12 @@ export default async function dbInit() {
       PrismaClient.edgeDB.deleteMany(),
       PrismaClient.medReq.deleteMany(),
       PrismaClient.nodeDB.deleteMany(),
+      PrismaClient.employee.deleteMany(),
     ]);
     //add in all the Nodes and Edges that are in the above CSV file
     await PrismaClient.nodeDB.createMany({ data: nodeDBArray });
     await PrismaClient.edgeDB.createMany({ data: edgeDBArray });
+    await PrismaClient.employee.createMany({data: employeeArray});
   } catch (err) {
     console.log(
       "\n\nSo sad bc initially populating the nodes and edges didn't work\n\n",

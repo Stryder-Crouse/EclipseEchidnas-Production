@@ -1,19 +1,18 @@
-import { ServiceRequest } from "../Requests/Request.ts";
 
 /** Type to store employees*/
 export type Employee = {
     userName: string;
     firstName: string;
     lastName: string;
-    designation: string;
+    designation: Roles;
     isAdmin: boolean;
-
-    assignedTasks: Array<ServiceRequest>;
 };
 
 /** Enum to hold the possible roles staff members can have */
 export enum Roles {
     nurse = "nurse",
+    doctor = "doctor",
+    admin = "administrator",
     janitor = "janitor",
     flower_deliverer = "flower deliverer",
     religious_personnel = "religious personnel"

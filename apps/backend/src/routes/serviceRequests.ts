@@ -1,7 +1,7 @@
 import express, {Router, Request, Response} from "express";
 //import { MedReq, Request } from "../algorithms/node.ts";
 import PrismaClient from "../bin/database-connection.ts";
-import {MedReq, ServiceRequest} from "../algorithms/Requests/Request.ts"; //may also be wrong
+//import {MedReq, ServiceRequest} from "../algorithms/Requests/Request.ts"; //may also be wrong
 
 //import path from "path";
 //import fs from "fs";
@@ -12,7 +12,7 @@ const router: Router = express.Router();
 //router.post("/post-all", async function (req: Request, res: Response) {});
 
 //posts one new request from the user to the database
-router.post("/medReq", async function (req: Request, res: Response) {
+/*router.post("/medReq", async function (req: Request, res: Response) {
     const data: MedReq = req.body;
 
     console.log(req.body);
@@ -42,8 +42,8 @@ router.post("/medReq", async function (req: Request, res: Response) {
         console.error(`Unable to save medReq`);
         res.sendStatus(400); // Send error
     }
-});
-router.post("/serviceReq", async function (req: Request, res: Response) {
+});*/
+/*router.post("/serviceReq", async function (req: Request, res: Response) {
     const data: ServiceRequest = req.body;
 
     console.log(req.body);
@@ -76,7 +76,7 @@ router.post("/serviceReq", async function (req: Request, res: Response) {
         console.error(`Unable to save req`);
         res.sendStatus(400); // Send error
     }
-});
+});*/
 //gets all requests from the database in the form of request objects
 router.get("/medReq", async function (req: Request, res: Response) {
     try {
@@ -86,16 +86,17 @@ router.get("/medReq", async function (req: Request, res: Response) {
         console.info("\nSuccessfully gave you the medRequests\n");
     } catch (err) {
         console.error("\nUnable to send medRequests\n");
+        res.sendStatus(400); // Send error
     }
 });
 router.get("/serviceReq", async function (req: Request, res: Response) {
     try {
-        //try to send all the nodes to the client
-        //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
-        res.send(await PrismaClient.serviceRequest.findMany()); //end res.send (this is what will be sent to the client)
+        //try to send all the requests to the client
+        res.send(await PrismaClient.serviceRequest.findMany());
         console.info("\nSuccessfully gave you the requests\n");
     } catch (err) {
         console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
     }
 });
 
@@ -111,7 +112,7 @@ router.post("/changeUser", async function (req: Request, res: Response) {
         });
         if (!serviceRequest) {
             console.error(`Service Request with ID ${reqID} not found`);
-            return;
+            res.sendStatus(400); // Send error
         }
 
         //checks to make sure employee exists in database
@@ -120,7 +121,7 @@ router.post("/changeUser", async function (req: Request, res: Response) {
         });
         if (!newAssignedEmployee) {
             console.error(`Employee with username ${newAssignedUser} not found`);
-            return;
+            res.sendStatus(400); // Send error
         }
 
         await PrismaClient.serviceRequest.update({
@@ -133,6 +134,7 @@ router.post("/changeUser", async function (req: Request, res: Response) {
         console.info("Successfully changed assigned user");
     } catch (error) {
         console.error("Unable to change assigned user");
+        res.sendStatus(400); // Send error
     }
 });
 
@@ -148,7 +150,7 @@ router.post("/changeState", async function (req: Request, res: Response) {
         });
         if (!serviceRequest) {
             console.error(`Service Request with ID ${reqID} not found`);
-            return;
+            res.sendStatus(400); // Send error
         }
 
         await PrismaClient.serviceRequest.update({
@@ -160,6 +162,7 @@ router.post("/changeState", async function (req: Request, res: Response) {
         console.info("Successfully changed service request state");
     } catch(error){
         console.error("Unable to change service request state");
+        res.sendStatus(400); // Send error
     }
 });
 
