@@ -27,7 +27,7 @@ router.get("/", async function (req: Request, res: Response) {
 
 
 router.get("/floor", async function (req: Request, res: Response) {
-    let floor = floorToString(parseInt(req.query.floor as string) );
+    const floor = floorToString(parseInt(req.query.floor as string) );
     console.log("querying for node on floor "+ floor);
 
 

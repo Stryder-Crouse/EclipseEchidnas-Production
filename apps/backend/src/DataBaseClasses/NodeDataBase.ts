@@ -47,7 +47,7 @@ export function nodeDataBaseToNode(dbNode: NodeDataBase) {
 }
 
 export function multipleNodeDataBaseToNode(dbNodes: Array<NodeDataBase>) {
-    let nodes:Array<Node> = [];
+    const nodes:Array<Node> = [];
 
     dbNodes.forEach((dbnode)=>{
         nodes.push(nodeDataBaseToNode(dbnode));
@@ -58,7 +58,7 @@ export function multipleNodeDataBaseToNode(dbNodes: Array<NodeDataBase>) {
 }
 
 export function multipleNodeToNodeDataBase(nodes: Array<Node>) {
-    let dbNodes:Array<NodeDataBase> = [];
+    const dbNodes:Array<NodeDataBase> = [];
 
     nodes.forEach((node)=>{
         dbNodes.push(nodeToNodeDataBase(node));
