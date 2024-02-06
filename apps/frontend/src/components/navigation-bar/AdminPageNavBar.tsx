@@ -19,7 +19,7 @@ export default function NavBar() {
       <div className="navbar-container">
           <div className="dropdown">
               <a href={"/AdminMapPage"}>
-                  <button className="dropbtn">Home Page</button>
+                  <button className="dropbtn">Map Page</button>
               </a>
           </div>
 

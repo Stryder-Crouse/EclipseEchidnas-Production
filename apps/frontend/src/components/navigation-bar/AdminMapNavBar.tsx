@@ -10,28 +10,24 @@ export default function AdminMapNavBar() {
             {/*</div>*/}
             <div className="navbar-container">
                 <div className="dropdown">
-                    <button className="dropbtn">
-                        Levels
-                    </button>
-                    <div className={"dropdown-content"}>
-                        <a href={"/AdminMapPage"}>L2</a>
-                            <hr className={"dotted"}/>
-                        <a href={"/AdminMapPage"}>L1</a>
-                            <hr className={"dotted"}/>
-                        <a href={"/AdminMapPage"}>G</a>
-                            <hr className={"dotted"}/>
-                        <a href={"/AdminMapPage"}>1</a>
-                            <hr className={"dotted"}/>
-                        <a href={"/AdminMapPage"}>2</a>
-                            <hr className={"dotted"}/>
-                        <a href={"/AdminMapPage"}>3</a>
-                    </div>
-                </div>
-                <div className="dropdown">
                     <a href={"/AdminMapPage"}>
-                        <button className="dropbtn">Home Page</button>
+                        <button className="dropbtn">Map Page</button>
                     </a>
+                        <div className={"dropdown-content"}>
+                            <a href={"/AdminMapPage"}>L2</a>
+                            <hr className={"dotted"}/>
+                            <a href={"/AdminMapPage"}>L1</a>
+                            <hr className={"dotted"}/>
+                            <a href={"/AdminMapPage"}>G</a>
+                            <hr className={"dotted"}/>
+                            <a href={"/AdminMapPage"}>1</a>
+                            <hr className={"dotted"}/>
+                            <a href={"/AdminMapPage"}>2</a>
+                            <hr className={"dotted"}/>
+                            <a href={"/AdminMapPage"}>3</a>
+                        </div>
                 </div>
+
                 <div className="dropdown">
                     <a href={"/ServiceRequest"}>
                         <button className="dropbtn">Service Request</button>
