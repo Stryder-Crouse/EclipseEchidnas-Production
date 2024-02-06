@@ -30,4 +30,11 @@ export interface IPriorityQueue<T> {
      * @returns true iff size() == 0;
      */
     isEmpty(): boolean;
+
+    /**
+     * Return true if the given thing is in the queue.
+     * @param thing the thing to check
+     * @returns true iff the thing is in the queue
+     */
+    contains(thing: T): boolean;
 }

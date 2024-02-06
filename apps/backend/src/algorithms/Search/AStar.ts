@@ -108,7 +108,11 @@ export function AStar(source: Node | null, target: Node | null, graph: Graph): A
 
             /* if the cost is the BEST EVER SEEN BEFORE */
             if (tentative_g_score < neighbor_g_score) {
-                break;
+                /* record it !!! */
+                predecessor.set(neighbors[i], current_node);
+                g_score.set(neighbors[i], tentative_g_score);
+                f_score.set(neighbors[i], tentative_g_score + neighbors[i].heuristic);
+                // STUFF HERE
             }
 
         }
