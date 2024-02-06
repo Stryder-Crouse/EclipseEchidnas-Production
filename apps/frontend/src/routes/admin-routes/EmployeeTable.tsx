@@ -1,35 +1,32 @@
 import React from "react";
-import ExitButton from "../../components/buttons/ExitButton.tsx";
+//import ExitButton from "../../components/buttons/ExitButton.tsx";
 import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx";
 import "../../css/route-css/requestList.css";
 import axios from "axios";
-import { MedReq } from "../../../../backend/src/algorithms/Requests/Request.ts";
+import { Employee } from "../../../../backend/src/algorithms/Employee/Employee.ts";
 
-function RequestList() {
+function EmployeeTable() {
     return (
         <div>
             <AdminPageNavBar />
-
             <div className={"request-table-container"}>
                 <div className={"table-container"}>
             <span className={"caption-container"}>
-              <span className={"table-title"}>Request Log</span>
+              <span className={"table-title"}>Employee Table</span>
             </span>
                     <div className={"table-wrapper"}>
                         <table className={"requestTable"} id={"request-table"}>
                             <thead>
                             <tr>
-                                <th>Request Type</th>
-                                <th>Going To</th>
-                                <th>Medicine type</th>
-                                <th>Dosage</th>
-                                <th>Amount</th>
+                                <th>User Name</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Designation</th>
                             </tr>
                             </thead>
                             {/* populating here */}
                         </table>
                     </div>
-                    <ExitButton />
                 </div>
             </div>
         </div>
@@ -41,11 +38,11 @@ function RequestList() {
 populateRequests().then();
 
 //test type REMOVE LATER
-export type request = {
-    startLocation: string;
-    endLocation: string;
-    requestType: string;
-};
+// export type request = {
+//     startLocation: string;
+//     endLocation: string;
+//     requestType: string;
+// };
 
 /**
  * This function populates the request table with requests
@@ -54,7 +51,7 @@ export type request = {
 async function populateRequests() {
     console.log("RAN");
 
-    const medReqs = await axios.get<MedReq[]>("/api/serviceRequests/medReq");
+    const empReqs = await axios.get<Employee[]>("/api/employeeRequests/employees");
 
     //fine dropdown div in the html on the page
     const table = document.getElementById("request-table");
@@ -62,32 +59,33 @@ async function populateRequests() {
     console.log(table);
 
     //for each node
-    medReqs.data.forEach(function (newRequest: MedReq) {
+    empReqs.data.forEach(function (newRequest: Employee) {
         //create tr element to store the record
         const tableRow = document.createElement("tr");
-        //create td tags for data from record
-        const reqType = document.createElement("td");
-        reqType.textContent = "Medicine request";
-        reqType.setAttribute("class", "node-id");
 
-        const reqStartLoc = document.createElement("td");
-        reqStartLoc.textContent = newRequest.reqLocationID;
+        // //create td tags for data from record
+        // const reqType = document.createElement("td");
+        // reqType.textContent = "Medicine request";
+        // reqType.setAttribute("class", "node-id");
 
-        const reqMedType = document.createElement("td");
-        reqMedType.textContent = newRequest.medType;
+        const userName = document.createElement("td");
+        userName.textContent = newRequest.userName;
 
-        const reqDosage = document.createElement("td");
-        reqDosage.textContent = newRequest.dosage;
+        const firstName = document.createElement("td");
+        firstName.textContent = newRequest.firstName;
 
-        const reqAmount = document.createElement("td");
-        reqAmount.textContent = newRequest.numDosages.toString();
+        const lastName = document.createElement("td");
+        lastName.textContent = newRequest.lastName;
+
+        const designation = document.createElement("td");
+        designation.textContent = newRequest.designation.toString();
 
         //append data elements together to one row
-        tableRow.appendChild(reqType);
-        tableRow.appendChild(reqStartLoc);
-        tableRow.appendChild(reqMedType);
-        tableRow.appendChild(reqDosage);
-        tableRow.appendChild(reqAmount);
+        tableRow.appendChild(userName);
+        tableRow.appendChild(firstName);
+        tableRow.appendChild(lastName);
+        tableRow.appendChild(designation);
+        //tableRow.appendChild(reqAmount);
 
         if (table == null) {
             return;
@@ -110,4 +108,4 @@ async function populateRequests() {
 //   }
 // }
 
-export default RequestList;
+export default EmployeeTable;

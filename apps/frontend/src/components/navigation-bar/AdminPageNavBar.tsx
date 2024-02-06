@@ -24,7 +24,7 @@ export default function NavBar() {
           </div>
 
           <div className="dropdown">
-              <a href={"/ServiceRequestPage"}>
+              <a href={"/ServiceRequest"}>
                   <button className="dropbtn">Service Request</button>
               </a>
           </div>
@@ -39,7 +39,7 @@ export default function NavBar() {
               </a>
           </div>
           <div className="dropdown">
-              <a href={"/NodeEdgeTablePage"}>
+              <a href={"/NodeEdgeTable"}>
                   <button className="dropbtn">CSV</button>
               </a>
           </div>

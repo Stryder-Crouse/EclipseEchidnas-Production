@@ -7,7 +7,7 @@ import ProtectedRequestList from "./components/protected-pages/ProtectedRequestL
 import ProtectedNodeEdgeTable from "./components/protected-pages/ProtectedNodeEdgeTable.tsx";
 import GuestMap from "./routes/guest-routes/GuestMap.tsx";
 import NewMapPage from "./routes/NewMapPage.tsx";
-import EmployeeTable from "./routes/admin-routes/EmployeeTable.tsx";
+import ProtectedEmployeeTable from "./components/protected-pages/ProtectedEmployeeTable.tsx";
 
 function App() {
     const router = createBrowserRouter([
@@ -41,12 +41,12 @@ function App() {
                     element: <GuestMap/>,
                 },
                 {
-                    path:"NewMapPage",
+                    path:"/NewMapPage",
                     element: <NewMapPage/>,
                 },
                 {
-                    path:"EmployeeTable",
-                    element: <EmployeeTable/>,
+                    path:"/EmployeeTable",
+                    element: <ProtectedEmployeeTable/>,
                 },
             ],
         },
