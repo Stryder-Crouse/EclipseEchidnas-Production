@@ -20,7 +20,7 @@ export default function ServiceRequestPage() {
       console.log(medRequestLocale);
     }
 
-    const medRequestequest: MedReq = {
+    const medRequest: MedReq = {
       dosage: medRequestDosage,
       medReqID: -1,
       medType: medRequestType,
@@ -28,10 +28,12 @@ export default function ServiceRequestPage() {
       reqLocationID: medRequestLocale,
     };
 
-    console.log(medRequestequest);
+    console.log(medRequest);
+
+    clear();
 
     try {
-      await axios.post("/api/serviceRequests/medReq", medRequestequest, {
+      await axios.post("/api/serviceRequests/medReq", medRequest, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -39,6 +41,13 @@ export default function ServiceRequestPage() {
     } catch (err) {
       throw new Error("Error with loading Nodes");
     }
+  }
+
+  function clear() {
+    setMedRequestDosage("");
+    setMedRequestLocale("");
+    setMedRequestType("");
+    setMedRequestDose("");
   }
 
   /**
