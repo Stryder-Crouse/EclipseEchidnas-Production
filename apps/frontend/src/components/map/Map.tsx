@@ -25,7 +25,7 @@ let endNode: Node | null = null;
 
 //get graph from database
 let graph: Graph | null = null;
-//let path:Array<Node> = [];
+let path:Array<Node> = [];
 
 
 
@@ -332,30 +332,30 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
 
     }
 
-    // /**
-    //  * sets the maps view box based on selectedFloorIndex
-    //  * */
-    // function updatePath(){
-    //     if (graph == null) {
-    //         console.error("Graph has not been created yet - makepath");
-    //         return;
-    //     }
-    //
-    //     //find path with bfs
-    //     const path: Array<Node> | null = BFS(startNode, endNode, graph);
-    //
-    //     //error is no path could be found
-    //     if (path == null) {
-    //         console.error(
-    //             "no path could be found between " + startNode?.id + " and " + endNode?.id,
-    //         );
-    //         return;
-    //     }
-    //
-    //     //todo only put nodes on the current floor into the path
-    //
-    //
-    // }
+    /**
+     * sets the maps view box based on selectedFloorIndex
+     * */
+    function updatePath(){
+        if (graph == null) {
+            console.error("Graph has not been created yet - makepath");
+            return;
+        }
+
+        //find path with bfs
+        const rawpath: Array<Node> | null = BFS(startNode, endNode, graph);
+
+        //error is no path could be found
+        if (rawpath == null) {
+            console.error(
+                "no path could be found between " + startNode?.id + " and " + endNode?.id,
+            );
+            return;
+        }
+
+        //todo only put nodes on the current floor into the path
+
+
+    }
 
 
 
