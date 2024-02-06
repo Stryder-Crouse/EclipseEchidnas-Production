@@ -47,7 +47,7 @@ model EdgeDB {
 }
 
 model MedReq {
-  medReqID Int    @id @default(autoincrement())
+  medReqID Int    @id @unique @default(autoincrement())
   medType  String @db.VarChar(256)
   dosage   String @db.VarChar(256)
   numDoses Int
@@ -71,13 +71,14 @@ model ServiceRequest {
 }
 
 model Employee {
-  userName    String  @id @db.VarChar(256)
+  userName    String  @id @unique @db.VarChar(256)
   firstName   String  @db.VarChar(256)
   lastName    String  @db.VarChar(256)
   designation String  @db.VarChar(256)
   isAdmin     Boolean
 
-  //This does not exist @relation tells prisma to now make an attribute and instead
+  //This DOES NOT EXIST - DON'T try to use it!!
+  //@relation tells prisma to now make an attribute and instead
   // relate the other table to this table through the specified key
   assignedTasks ServiceRequest[] @relation("assignedEmployee")
 }

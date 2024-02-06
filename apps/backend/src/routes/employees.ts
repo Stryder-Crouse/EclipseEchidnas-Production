@@ -22,9 +22,9 @@ router.post("/employee", async function (req: Request, res: Response) {
         });
         console.info("Successfully saved employee"); // Log that it was successful
     } catch(error){
-        // Log any failures
-        console.error(`Unable to save employee`);
-        res.sendStatus(400); // Send error
+    // Log any failures
+    console.error(`Unable to save employee`);
+    res.sendStatus(400); // Send error
     }
 });
 

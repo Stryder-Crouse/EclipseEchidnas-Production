@@ -102,7 +102,75 @@ router.get("/serviceReq", async function (req: Request, res: Response) {
         console.info("\nSuccessfully gave you all of the requests\n");
     } catch (err) {
         console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
     }
 });
+
+
+//Changing the assigned user given a service request id and the new assigned user
+router.post("/changeUser", async function (req: Request, res: Response) {
+    try {
+        const {reqID, newAssignedUser} = req.body;
+
+        //checks to make sure that service request exists in database
+        const serviceRequest = await PrismaClient.serviceRequest.findUnique({
+            where: {reqID: reqID},
+        });
+        if (!serviceRequest) {
+            console.error(`Service Request with ID ${reqID} not found`);
+            res.sendStatus(400); // Send error
+        }
+
+        //checks to make sure employee exists in database
+        const newAssignedEmployee = await PrismaClient.employee.findUnique({
+            where: {userName: newAssignedUser},
+        });
+        if (!newAssignedEmployee) {
+            console.error(`Employee with username ${newAssignedUser} not found`);
+            res.sendStatus(400); // Send error
+        }
+
+        await PrismaClient.serviceRequest.update({
+            where: {reqID: reqID},
+            data: {
+                assignedUName: newAssignedUser,
+            }
+        });
+
+        console.info("Successfully changed assigned user");
+    } catch (error) {
+        console.error("Unable to change assigned user");
+        res.sendStatus(400); // Send error
+    }
+});
+
+
+//Changing the state of the service request given its id and the new state
+router.post("/changeState", async function (req: Request, res: Response) {
+    try {
+        const {reqID, newState} = req.body;
+
+        //checks to make sure that service request exists in database
+        const serviceRequest = await PrismaClient.serviceRequest.findUnique({
+            where: {reqID: reqID},
+        });
+        if (!serviceRequest) {
+            console.error(`Service Request with ID ${reqID} not found`);
+            res.sendStatus(400); // Send error
+        }
+
+        await PrismaClient.serviceRequest.update({
+            where: { reqID: reqID },
+            data: {
+                status: newState,
+            }
+        });
+        console.info("Successfully changed service request state");
+    } catch(error){
+        console.error("Unable to change service request state");
+        res.sendStatus(400); // Send error
+    }
+});
+
 
 export default router;
