@@ -4,6 +4,7 @@ import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx
 import "../../css/route-css/requestList.css";
 import axios from "axios";
 import { MedReq } from "../../../../backend/src/algorithms/Requests/Request.ts";
+import status from "../../../../backend/src/algorithms/Requests/Status.ts";
 
 function RequestList() {
   return (
@@ -24,6 +25,7 @@ function RequestList() {
                     <th>Medicine type</th>
                     <th>Dosage</th>
                     <th>Amount</th>
+                      <th>Status</th>
                   </tr>
                 </thead>
                 {/* populating here */}
@@ -66,7 +68,7 @@ async function populateRequests() {
     const tableRow = document.createElement("tr");
     //create td tags for data from record
     const reqType = document.createElement("td");
-    reqType.textContent = "Medicine request";
+    reqType.textContent = "Medicine Request";
     reqType.setAttribute("class", "node-id");
 
     const reqStartLoc = document.createElement("td");
@@ -81,12 +83,21 @@ async function populateRequests() {
     const reqAmount = document.createElement("td");
     reqAmount.textContent = newRequest.numDosages.toString();
 
+    const reqStatus = document.createElement("td");
+    reqStatus.innerHTML = '<select>\n' +
+        '                <option className={"unassigned"} value={' + status + '.Unassigned}>Unassigned</option>\n' +
+        '                <option className={"assigned"} value={' + status + '.Assigned}>Assigned</option>\n' +
+        '                <option className={"progressed"} value={' + status + '.InProgress}>In Progress</option>\n' +
+        '                <option className={"completed"} value={' + status + '.Completed}>Completed</option>\n' +
+        '            </select>';
+
     //append data elements together to one row
     tableRow.appendChild(reqType);
     tableRow.appendChild(reqStartLoc);
     tableRow.appendChild(reqMedType);
     tableRow.appendChild(reqDosage);
     tableRow.appendChild(reqAmount);
+    tableRow.appendChild(reqStatus);
 
     if (table == null) {
       return;
