@@ -328,7 +328,6 @@ export class Graph {
      *
      * note that if an edge in the graph start and ends with elevator nodes the edge's weight is set to 1
      */
-    //todo need tests
     private generateWeights() {
 
         //for each edge
