@@ -84,7 +84,7 @@ router.post("/serviceReq", async function (req: Request, res: Response) {
 
     } catch (error) {
         // Log any failures
-        console.error(`Unable to save Req`);
+        console.error(`Unable to save Req` + error);
         res.sendStatus(400); // Send error
     }
 });

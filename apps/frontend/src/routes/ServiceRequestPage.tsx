@@ -25,6 +25,7 @@ export default function ServiceRequestPage() {
     //What I learned:
     //  Only 1 axios.post() can be put in a try{}catch{} block (idk why but just
     //  make sure to not put them in the same one)
+
     try {
         //const tempNode = await axios.get<Node>("/api/load-nodes/one-node" + medRequestLocale);
         const servReq : ServiceRequest = {
@@ -41,6 +42,7 @@ export default function ServiceRequestPage() {
                 "Content-Type": "application/json",
             },
         });
+        console.log("posted serv");
 
         reqid = axiosReturn.data.genReqID;
 
@@ -65,6 +67,7 @@ export default function ServiceRequestPage() {
               "Content-Type": "application/json",
           },
       });
+      console.log("posted meq");
 
   } catch (err) {
       throw new Error("Error with trying to save Med Req in ServiceRequestPage.tsx");
