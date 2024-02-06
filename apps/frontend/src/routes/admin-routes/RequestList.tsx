@@ -71,7 +71,7 @@ async function populateRequests() {
     reqType.setAttribute("class", "node-id");
 
     const reqStartLoc = document.createElement("td");
-    reqStartLoc.textContent = newRequest.genReq.reqLocation;
+    reqStartLoc.textContent = newRequest.genReqID.toString();   //idk if the to string works
 
     const reqMedType = document.createElement("td");
     reqMedType.textContent = newRequest.medType;

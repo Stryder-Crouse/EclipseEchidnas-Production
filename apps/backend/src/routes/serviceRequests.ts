@@ -1,7 +1,7 @@
 import express, {Router, Request, Response} from "express";
 //import { MedReq, Request } from "../algorithms/node.ts";
 import PrismaClient from "../bin/database-connection.ts";
-import {MedReq, ServiceRequest} from "../algorithms/Requests/Request.ts"; //may also be wrong
+import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
 
 //import path from "path";
 //import fs from "fs";
@@ -11,37 +11,25 @@ const router: Router = express.Router();
 //posts all requests from ____ (a csv?) to the database
 //router.post("/post-all", async function (req: Request, res: Response) {});
 
-//posts one new request from the user to the database
+//posts one new medication request from the user to the database
+//the new medReq and the new serviceRequest both get their own auto-generated ID
 router.post("/medReq", async function (req: Request, res: Response) {
-    const data: MedReq = req.body;
-
+    console.log("Nodes Below");
     console.log(req.body);
     //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
     try {
-        const newReq = await PrismaClient.serviceRequest.create({
-            data: {
-                // reqID: data.genReq.reqID,
-                reqType: req.body.reqType,
-                reqLocationID: req.body.reqLocation,
-                extraInfo: req.body.extraInfo,
-                assignedUName: "Nobody",
-                status: "Not Assigned",
-            }
-        });
         await PrismaClient.medReq.create({
             data: {
-                medReqID: data.medReqID,
-                medType: data.medType,
-                dosage: data.dosage,
-                numDoses: data.numDoses,
-                genReqID: newReq.reqID,
-            },
+                medType: req.body.medType,
+                dosage: req.body.dosage,
+                numDoses: req.body.numDoses,
+                genReqID: req.body.genReqID,
+                }
         });
-
         console.info("Successfully saved Med Request"); // Log that it was successful
     } catch (error) {
         // Log any failures
-        console.error(`Unable to save requests`);
+        console.error(`Unable to save Med Req`);
         res.sendStatus(400); // Send error
     }
 });
@@ -49,10 +37,10 @@ router.post("/serviceReq", async function (req: Request, res: Response) {
 
     console.log(req.body);
 
-    let assignedUName : string = "No one";
+    /*let assignedUName : string = "No one";
     if(req.body.assignedUName != null && !req.body.assignedUName.equals("") && !req.body.assignedUName.equals("No one")){
         assignedUName = req.body.assignedUName;
-    }
+    }*/
 
     //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
     try {
@@ -70,17 +58,26 @@ router.post("/serviceReq", async function (req: Request, res: Response) {
                 status: req.body.status,
                 //connect the Employee field using the username as a foreign key
                 assigned: {
-                    connect: {
-                        userName: assignedUName,
+                    connectOrCreate: {
+                       create : {
+                           userName: "No one",
+                           firstName: "N/A",
+                           lastName: "N/A",
+                           designation: "N/A",
+                           isAdmin: true,
+                       },
+                       where : {
+                           userName: "No one"
+                       }
                     }
                 }
             },
         });
 
-        console.info("Successfully saved node"); // Log that it was successful
+        console.info("Successfully saved Req"); // Log that it was successful
     } catch (error) {
         // Log any failures
-        console.error(`Unable to save requests`);
+        console.error(`Unable to save Req`);
         res.sendStatus(400); // Send error
     }
 });

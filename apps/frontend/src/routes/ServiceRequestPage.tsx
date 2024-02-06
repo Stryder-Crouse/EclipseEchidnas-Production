@@ -36,20 +36,35 @@ export default function ServiceRequestPage() {
             status: "Not Assigned",
         };
 
-        const medReqData: MedReq = {
-            dosage: medRequestDosage,
-            medType: medRequestType,
-            numDoses: parseInt(medRequestDoses),
-            genReqID: servReq,
-        };
-
-        console.log(medReqData);
         try {
             await axios.post("/api/serviceRequests/serviceReq", servReq, {
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
+
+            console.log(reqid);
+
+            const medReqData: MedReq = {
+                dosage: medRequestDosage,
+                medType: medRequestType,
+                numDoses: parseInt(medRequestDoses),
+                genReqID: reqid.data.genReqID,
+            };
+
+            console.log("\n\nIMPORTANT STUFF\n\n");
+            console.log(medReqData);
+
+
+            //post Med Req to DB
+            await axios.post("/api/serviceRequests/medReq", medReqData, {
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+
+            console.log(medReqData);
+
         } catch (err) {
             throw new Error("Error with loading Nodes");
         }
