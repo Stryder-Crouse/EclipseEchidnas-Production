@@ -367,12 +367,12 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
 
         //get path(s) on floor
 
-        let floorPaths :Array<Array<Node>> = []
+        const floorPaths :Array<Array<Node>> = [];
 
         for (let i = 0; i < rawpath.length; i++) {
-            let node = rawpath[i];
+            const node = rawpath[i];
             if (floorToNumber(node.floor) == selectedFloorIndex) {
-                pathCordnates.push()
+                pathCordnates.push();
             }
         }
 

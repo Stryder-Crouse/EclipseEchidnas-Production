@@ -42,12 +42,12 @@ const defaultFloor = FloorToIndex.LowerLevel1;
         const handleNodeClick = (selectedNode : Node) => {
             setStartNode(selectedNode);
             updateText(selectedNode);
-        }
+        };
 
         const updateText = (selectedNode : Node) => {
             const startInput = document.getElementById("startingNodeInput") as HTMLInputElement;
             const endInput = document.getElementById("startingNodeInput") as HTMLInputElement;
-        }
+        };
 
     }
 
