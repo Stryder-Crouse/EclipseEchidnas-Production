@@ -8,6 +8,7 @@ import fileLoading from "./routes/loadFromCSVFile.ts";
 import serviceRequests from "./routes/serviceRequests.ts";
 import loadNodes from "./routes/loadNodes.ts";
 import loadEdges from "./routes/loadEdges.ts";
+import employees from "./routes/employees.ts";
 
 const app: Express = express(); // Setup the backend
 
@@ -31,6 +32,7 @@ app.use("/api/load-nodes", loadNodes); //axios goes here on its own (dont worry)
 app.use("/api/load-edges", loadEdges); //creates url for function of loading nodes
 app.use("/api/loadCSVFile", fileLoading);
 app.use("/api/serviceRequests", serviceRequests);
+app.use("/api/employees", employees);
 
 /**
  * Catch all 404 errors, and forward them to the error handler
