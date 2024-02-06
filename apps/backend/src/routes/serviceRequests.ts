@@ -54,6 +54,7 @@ router.post("/medReq", async function (req: Request, res: Response) {
                             designation: "N/A",
                             isAdmin: true,
                         },
+                        //second part of create or connect (the what-we-connect-to part)
                         where : {
                             userName: "No one"
                         }
