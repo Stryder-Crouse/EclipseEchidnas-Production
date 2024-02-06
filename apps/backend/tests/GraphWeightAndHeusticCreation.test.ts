@@ -46,6 +46,7 @@ const edgesString: string =
     "e13-15,13,15\r\n" ;
 
 const floorPenalty = 5000;
+const tranistionWeight = 5000;
 
 
 
@@ -62,9 +63,9 @@ test("edge weight creation", () => {
     //edge 1 to 3
     expect(graph.getEdges()[1].weight).toStrictEqual(euclideanDistance({x:0,y:0},{x:3,y:-4}));
     //check that evelator and stairs edges is weighted correctly
-    expect(graph.getEdges()[15].weight).toStrictEqual(5000);
-    expect(graph.getEdges()[16].weight).toStrictEqual(5000);
-    expect(graph.getEdges()[17].weight).toStrictEqual(5000);
+    expect(graph.getEdges()[15].weight).toStrictEqual(tranistionWeight);
+    expect(graph.getEdges()[16].weight).toStrictEqual(tranistionWeight);
+    expect(graph.getEdges()[17].weight).toStrictEqual(tranistionWeight);
 
 });
 
