@@ -19,7 +19,6 @@ export default function ServiceRequestPage() {
     /*if (medRequestLocale !== "") {
       console.log(medRequestLocale);
     }*/
-    let reqid: number = 0;
 
 
     //What I learned:
@@ -36,42 +35,28 @@ export default function ServiceRequestPage() {
             status: "Not Assigned",
         };
 
+        const medReqData: MedReq = {
+            dosage: medRequestDosage,
+            medType: medRequestType,
+            numDoses: parseInt(medRequestDoses),
+            genReqID: -1,    // default is 0, but is always changed to the value of the newly created Service Req
+        };
+
         //Post Req to DB (also store it so I can get the id for the med req)
-        const axiosReturn = await axios.post("/api/serviceRequests/serviceReq", servReq, {
+        await axios.post("/api/serviceRequests/medReq",
+            [servReq,medReqData], {
             headers: {
                 "Content-Type": "application/json",
             },
         });
         console.log("posted serv");
 
-        reqid = axiosReturn.data.genReqID;
 
     } catch {
         console.error("Error with trying to save Service Req in ServiceRequestPage.tsx");
     }
 
-  try {
-      // console.log(reqid);
 
-      const medReqData: MedReq = {
-          dosage: medRequestDosage,
-          medType: medRequestType,
-          numDoses: parseInt(medRequestDoses),
-          genReqID: reqid,    // default is 0, but is always changed to the value of the newly created Service Req
-      };
-
-
-      //post Med Req to DB (Service Req is before so Med Req can reference it)
-      await axios.post("/api/serviceRequests/medReq", medReqData, {
-          headers: {
-              "Content-Type": "application/json",
-          },
-      });
-      console.log("posted meq");
-
-  } catch (err) {
-      throw new Error("Error with trying to save Med Req in ServiceRequestPage.tsx");
-  }
 
 
 

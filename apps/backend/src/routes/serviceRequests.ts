@@ -1,6 +1,7 @@
 import express, {Router, Request, Response} from "express";
 //import { MedReq, Request } from "../algorithms/node.ts";
 import PrismaClient from "../bin/database-connection.ts";
+import {MedReq, ServiceRequest} from "../algorithms/Requests/Request.ts";
 // import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
 
 //import path from "path";
@@ -17,77 +18,63 @@ const router: Router = express.Router();
 router.post("/medReq", async function (req: Request, res: Response) {
     //console.log(req.body);
     //console.log("Med Req Above");
-    const medReq1 = req.body;
-    console.info(medReq1);
-    console.info(req.body.genReqID);
-    console.info("This is the Med Req");
+    const sentData:[ServiceRequest,MedReq] = req.body;
+    console.info(sentData);
+
     //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
     try {
-        await PrismaClient.medReq.create({
+
+        const service = await PrismaClient.serviceRequest.create({
             data: {
-                dosage: req.body.dosage,
-                medType: req.body.medType,
-                numDoses: req.body.numDoses,
-                genReqID: 0,
+                //ID is auto created
+                reqType: sentData[0].reqType,
+                //connect the Node field using the node id as a foreign key
+                reqLocation: {
+                    connect : {
+                        nodeID: sentData[0].reqLocationID
+                    }
+                },
+                extraInfo: sentData[0].extraInfo,
+                status: sentData[0].status,
+                //connect the Employee field using the username as a foreign key
+                assigned: {
+                    connectOrCreate: {
+                        create : {
+                            userName: "No one",
+                            firstName: "N/A",
+                            lastName: "N/A",
+                            designation: "N/A",
+                            isAdmin: true,
+                        },
+                        where : {
+                            userName: "No one"
+                        }
+                    }
+                }
+            },
+        });
+        console.info("Successfully saved Req"); // Log that it was successful
+
+
+        const record =await PrismaClient.medReq.create({
+            data: {
+                dosage: sentData[1].dosage,
+                medType: sentData[1].medType,
+                numDoses: sentData[1].numDoses,
+                genReqID: service.reqID,
                 }
         });
         console.info("Successfully saved Med Req"); // Log that it was successful
+        //sendback the id of the request
+        console.info("HHH " +record.genReqID);
+        res.send(record.genReqID);
     } catch (error) {
         // Log any failures
         console.error(`Unable to save Med Req`);
         res.sendStatus(400); // Send error
     }
 });
-router.post("/serviceReq", async function (req: Request, res: Response) {
 
-    console.log(req.body);
-
-    /*let assignedUName : string = "No one";
-    if(req.body.assignedUName != null && !req.body.assignedUName.equals("") && !req.body.assignedUName.equals("No one")){
-        assignedUName = req.body.assignedUName;
-    }*/
-
-    //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
-    try {
-        await PrismaClient.serviceRequest.create({
-            data: {
-                //ID is auto created
-                reqType: req.body.reqType,
-                //connect the Node field using the node id as a foreign key
-                reqLocation: {
-                    connect : {
-                        nodeID: req.body.reqLocationID
-                    }
-                },
-                extraInfo: req.body.extraInfo,
-                status: req.body.status,
-                //connect the Employee field using the username as a foreign key
-                assigned: {
-                    connectOrCreate: {
-                       create : {
-                           userName: "No one",
-                           firstName: "N/A",
-                           lastName: "N/A",
-                           designation: "N/A",
-                           isAdmin: true,
-                       },
-                       where : {
-                           userName: "No one"
-                       }
-                    }
-                }
-            },
-        });
-        console.info("Successfully saved Req"); // Log that it was successful
-        res.sendStatus(200);
-
-
-    } catch (error) {
-        // Log any failures
-        console.error(`Unable to save Req` + error);
-        res.sendStatus(400); // Send error
-    }
-});
 //gets all requests from the database in the form of request objects
 router.get("/medReq", async function (req: Request, res: Response) {
     try {
