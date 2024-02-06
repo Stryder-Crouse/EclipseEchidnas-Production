@@ -23,11 +23,6 @@ export default function NavBar() {
                   </div>
               </div>
               <div className="dropdown">
-                  <a href={"/GuestMap"}>
-                      <button className="dropbtn">Home Page</button>
-                  </a>
-              </div>
-              <div className="dropdown">
                   <a href={"/ServiceRequestPage"}>
                       <button className="dropbtn">Service Request</button>
                   </a>

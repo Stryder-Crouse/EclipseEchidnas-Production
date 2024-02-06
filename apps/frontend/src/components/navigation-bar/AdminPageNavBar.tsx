@@ -18,11 +18,18 @@ export default function NavBar() {
   return (
       <div className="navbar-container">
           <div className="dropdown">
-              <a href={"/AdminMapPage"}>
-                  <button className="dropbtn">Home Page</button>
-              </a>
+              <button className="dropbtn">
+                  Levels
+              </button>
+              <div className={"dropdown-content"}>
+                  <a href={"/AdminMapPage"}>L2</a>
+                  <a href={"/AdminMapPage"}>L1</a>
+                  <a href={"/AdminMapPage"}>G</a>
+                  <a href={"/AdminMapPage"}>1</a>
+                  <a href={"/AdminMapPage"}>2</a>
+                  <a href={"/AdminMapPage"}>3</a>
+              </div>
           </div>
-
           <div className="dropdown">
               <a href={"/ServiceRequest"}>
                   <button className="dropbtn">Service Request</button>

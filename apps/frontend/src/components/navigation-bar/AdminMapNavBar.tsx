@@ -23,11 +23,6 @@ export default function AdminMapNavBar() {
                 </div>
             </div>
             <div className="dropdown">
-                <a href={"/AdminMapPage"}>
-                    <button className="dropbtn">Home Page</button>
-                </a>
-            </div>
-            <div className="dropdown">
                 <a href={"/ServiceRequest"}>
                     <button className="dropbtn">Service Request</button>
                 </a>
