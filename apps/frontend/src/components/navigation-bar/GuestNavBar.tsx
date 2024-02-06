@@ -20,9 +20,9 @@ export default function NavBar({selectedFloorIndex:selectedFloorIndex,setSelecte
           {/*</div>*/}
           <div className="navbar-container">
               <div className="dropdown">
-                  <button className="dropbtn">
-                      Levels
-                  </button>
+                  <a href={"/GuestMap"}>
+                      <button className="dropbtn">Map Page</button>
+                  </a>
                   <div className={"dropdown-content"}>
                       <a onClick={()=>{ setSelectedFloorIndex(FloorToIndex.LowerLevel2);}}>Lower level 2</a>
                       <a onClick={()=>{ setSelectedFloorIndex(FloorToIndex.LowerLevel1);}}>Lower level 1</a>
@@ -31,11 +31,6 @@ export default function NavBar({selectedFloorIndex:selectedFloorIndex,setSelecte
                       <a onClick={()=>{ setSelectedFloorIndex(FloorToIndex.Level2);}}>Level 2</a>
                       <a onClick={()=>{ setSelectedFloorIndex(FloorToIndex.Level3);}}>Level 3</a>
                   </div>
-              </div>
-              <div className="dropdown">
-                  <a href={"/GuestMap"}>
-                      <button className="dropbtn">Home Page</button>
-                  </a>
               </div>
               <div className="dropdown">
                   <a href={"/ServiceRequestPage"}>

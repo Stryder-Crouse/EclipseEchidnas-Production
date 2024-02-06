@@ -1,6 +1,7 @@
 import React from "react";
 import { EdgeDataBase } from "../../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
 import axios from "axios";
+import "../../css/route-css/nodeEdgeTablePage.css";
 
 function EdgeTable() {
   return (

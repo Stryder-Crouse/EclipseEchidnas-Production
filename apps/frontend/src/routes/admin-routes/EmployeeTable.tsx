@@ -2,8 +2,8 @@ import React from "react";
 //import ExitButton from "../../components/buttons/ExitButton.tsx";
 import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx";
 import "../../css/route-css/requestList.css";
-import axios from "axios";
-import { Employee } from "../../../../backend/src/algorithms/Employee/Employee.ts";
+//import axios from "axios";
+//import { Employee } from "../../../../backend/src/algorithms/Employee/Employee.ts";
 
 function EmployeeTable() {
     return (
@@ -35,7 +35,7 @@ function EmployeeTable() {
 
 //may need onload for other ones as well
 
-populateRequests().then();
+//populateRequests().then();
 
 //test type REMOVE LATER
 // export type request = {
@@ -48,6 +48,8 @@ populateRequests().then();
  * This function populates the request table with requests
  * SHOULD ONLY BE RUN ONCE.
  */
+
+/*
 async function populateRequests() {
     console.log("RAN");
 
@@ -106,6 +108,6 @@ async function populateRequests() {
 //   } catch (err) {
 //     throw new Error("Error getting Nodes");
 //   }
-// }
+// } */
 
 export default EmployeeTable;

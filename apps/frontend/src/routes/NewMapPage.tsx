@@ -2,7 +2,7 @@ import {Map} from "../components/map/Map.tsx";
 import "../css/route-css/newMapPage.css";
 import axios from "axios";
 import {multipleNodeDataBaseToNode, NodeDataBase} from "../../../backend/src/DataBaseClasses/NodeDataBase.ts";
-import ExitButton from "../components/buttons/ExitButton.tsx";
+
 import {useEffect, useState} from "react";
 import { FloorToIndex, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
 
@@ -85,7 +85,7 @@ const defaultFloor = FloorToIndex.LowerLevel1;
                     </div>
                 </div>
             </div>
-            <ExitButton/>
+
         </div>
 
 
