@@ -21,9 +21,9 @@ router.post("/medReq", async function (req: Request, res: Response) {
         const newReq = await PrismaClient.serviceRequest.create({
             data: {
                 // reqID: data.genReq.reqID,
-                reqType: data.genReq.reqType,
-                reqLocationID: data.genReq.reqLocation,
-                extraInfo: data.genReq.extraInfo,
+                reqType: req.body.reqType,
+                reqLocationID: req.body.reqLocation,
+                extraInfo: req.body.extraInfo,
                 assignedUName: "Nobody",
                 status: "Not Assigned",
             }
