@@ -227,7 +227,7 @@ export class Graph {
                 //find the closest elevator or stairs that lets the path get to a closer floor to the goal
                 // and consider that elevator or stairs the goal node for the current node
                 for(let j = 0; j < this.transitionNodesByFloor[nodeFloor].length;j++ ){
-                    const tranistionNode = this.transitionNodesByFloor[nodeFloor][i];
+                    const tranistionNode = this.transitionNodesByFloor[nodeFloor][j];
                     const tranistionDistance = euclideanDistance(tranistionNode.coordinate,node.coordinate);
 
 
@@ -250,7 +250,7 @@ export class Graph {
                 }
 
                 if(cloestTransitionDistance == Number.MAX_VALUE){
-                    console.log("no vaild tranistion nodes found for node "+node+ "assigning the closest tranistion node");
+                    console.log("no vaild tranistion nodes found for node "+node.id+ "assigning the closest tranistion node");
                     node.heuristic = tranistionDistanceNoneVaild + floorDiffrence * this.floorPenalty;
                     continue;
                 }
@@ -288,17 +288,18 @@ export class Graph {
       const floorDiffrence = Math.abs(floorToNumber(goalNode.floor) - floorToNumber(tranisionNode.floor));
 
       //for each edge from tran node check the ending node
-        //if the ending node is on a closer floor return true
+        //if the ending node is on a closer floor to the goal node return true
         //if all edges do not allow the goal to get closer return false
-      tranisionNode.edges.forEach(function(edge:Edge){
-          const floorDiffrenceEndNode = Math.abs(floorToNumber(edge.endNode.floor) - floorToNumber(tranisionNode.floor));
+        for(let i = 0; i < tranisionNode.edges.length;i++ ){
+            const edge = tranisionNode.edges[i];
+            const floorDiffrenceEndNode = Math.abs(floorToNumber(goalNode.floor) - floorToNumber(edge.endNode.floor));
 
-          if(floorDiffrenceEndNode < floorDiffrence){
-              return true;
-          }
+            if(floorDiffrenceEndNode < floorDiffrence){
+                return true;
+            }
 
+        }
 
-      });
 
       return false;
 
