@@ -5,14 +5,36 @@ import axios from "axios";
 import {NodeDataBase} from "../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import ExitButton from "../components/buttons/ExitButton.tsx";
 import AdminMapNavBar from "../components/navigation-bar/AdminMapNavBar.tsx";
+import {useState} from "react";
+import {Buildings, Node, NodeType} from "../../../backend/src/algorithms/Graph/Node.ts";
+
+
+const nullNode:Node = {
+    building: Buildings.UNDEFINED,
+    coordinate: {x:-100,y:-100},
+    edges: [],
+    floor: "",
+    id: "NULL",
+    longName: "",
+    nodeType: NodeType.UNDEFINED,
+    shortName: ""
+
+};
 
 function NewMapPage() {
+
+    const [startNode, setStartNode] = useState(nullNode);
+    const [endNode, setEndNode] = useState(nullNode);
+    const [selectedFloorIndex, setSelectedFloorIndex] = useState();
+    const [drawPath, setDrawPath] = useState(false);
+
+
     return (
         //TODO BNBN implement backend feature to populate SELECTS for each floor node/edge
         //located in div "sidenav" , id for each is under each select
 
         //TODO BNBN implement toggle function to reset selected node
-        <body className={"newMapPage"} id={"newMapPage"}>
+
         <div className={"newMapPage-container"}>
             {/* where navbar needs to be */}
             <div>
@@ -45,7 +67,7 @@ function NewMapPage() {
             </div>
             <ExitButton/>
         </div>
-        </body>
+
 
     );
 }
