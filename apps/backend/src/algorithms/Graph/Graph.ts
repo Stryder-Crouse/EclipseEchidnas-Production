@@ -6,16 +6,16 @@ import {euclideanDistance} from "./Coordinate.ts";
  * Class that represents an undirected graph
  */
 export class Graph {
-    /** Stores all nodes in the graph*/
+    /* Stores all nodes in the graph */
     private readonly nodes: Array<Node>;
-    /** Stores all edges in the graph*/
+    /* Stores all edges in the graph */
     private readonly edges: Array<Edge>;
-    /** Stores a map that maps a node obj to at list of node obj
-     * adjacent to it in the graph*/
+    /* Stores a map that maps a node obj to at list of node obj adjacent to it in the graph */
     private readonly adjacent: Map<Node, Array<Node>>;
-    /** Stores a map that maps a node id (string) to its
-     * corresponding node*/
-    private readonly idLookup: Map<string, Node>;
+    /* Stores a map that maps a node id (string) to its corresponding node */
+    private readonly nodeIdLookup: Map<string, Node>;
+    /* Stores a map that maps an edge id (string) to its corresponding edge */
+    private readonly edgeIdLookup: Map<string, Edge>;
 
     //these should probe be the same to avoid over estimation by a*
     private readonly floorPenalty: number = 5000;
@@ -42,11 +42,13 @@ export class Graph {
      *
      */
     constructor(unLinkedNodes: Array<Node>, edges: Array<Edge>) {
-        //create map to relate node id strings to their corresponding node obj
+        // create map to relate node id strings to their corresponding node obj
         const nodeMap = new Map<string, Node>();
-        //create map relate a node obj to the list of nodes it is adjacent to
+        // create map to relate edge id strings to their corresponding edge obj
+        const edgeMap: Map<string, Edge> = new Map<string, Edge>();
+        // create map relate a node obj to the list of nodes it is adjacent to
         const adj = new Map<Node, Array<Node>>();
-        //set up empty arrays for to be filled to set transitionNodesByFloor
+        // set up empty arrays for to be filled to set transitionNodesByFloor
         const transitionNodesByFloor: Array<Array<Node>> = [[], [], [], [], [], []];
 
         //for each inputted node
@@ -126,13 +128,18 @@ export class Graph {
             startAdj.push(endNode);
             //add startNode to endNode adjacency list
             endAdj.push(startNode);
+
+            /* populate edge map */
+            edgeMap.set(edge.id, edge);
+            edgeMap.set(backEdge.id, edge);
         });
 
         //set obj variables
         this.nodes = unLinkedNodes;
         this.edges = edges;
         this.adjacent = adj;
-        this.idLookup = nodeMap;
+        this.nodeIdLookup = nodeMap;
+        this.edgeIdLookup = edgeMap;
 
         //generate weights for edges
         this.generateWeights();
@@ -304,13 +311,21 @@ export class Graph {
     }
 
     /**
-     *
+     * Retrieve the corresponding Node from its ID.
      * @param nodeID - node id as a string
      * @returns returns a node with the corresponding ID or null if node not found
-     *
      */
     public idToNode(nodeID: string): Node | null {
-        return this.idLookup.get(nodeID) ?? null;
+        return this.nodeIdLookup.get(nodeID) ?? null;
+    }
+
+    /**
+     * Retrieve the corresponding Edge from its ID.
+     * @param edgeID - edge id as a string
+     * @returns returns an edge with the corresponding ID or null if edge not found
+     */
+    public idToEdge(edgeID: string): Edge | null {
+        return this.edgeIdLookup.get(edgeID) ?? null;
     }
 
     /**
