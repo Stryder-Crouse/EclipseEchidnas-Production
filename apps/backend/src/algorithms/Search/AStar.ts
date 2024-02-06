@@ -12,6 +12,8 @@ import {Graph} from "../Graph/Graph.ts";
  * @returns  an array of node that stores the path from source to target if it exists or null
  *  if no such path exists in graph.
  *
+ *  @see {source here}
+ *
  */
 export function AStar(source: Node | null, target: Node | null, graph: Graph): Array<Node> | null {
     /* garbage */
@@ -23,6 +25,10 @@ export function AStar(source: Node | null, target: Node | null, graph: Graph): A
         console.error("target in A* was null");
         return null;
     }
+
+    /* YEET 😍 */
+
+
     console.log(graph);
     return null;
 }

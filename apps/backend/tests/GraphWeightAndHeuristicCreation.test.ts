@@ -16,12 +16,12 @@ const nodesString: string =
     "7,10,10,1,Tower,HALL,Hallway 1 Floor L1,Hallway C001L1\r\n" +
     "8,12,6,1,45 Francis,HALL,Hallway 2 Floor L1,Hallway C002L1\r\n" +
     "9,27,-2,1,45 Francis,HALL,Hallway 3 Floor L1,Hallway C003L1\r\n" +
-    "10,12,0,1,45 Francis,ELEV, Evelvator  node 10,Evelvator  node 10\r\n" +
+    "10,12,0,1,45 Francis,ELEV, Elevator node 10,Elevator  node 10\r\n" +
     "11,2,4,2,Tower,STAI,stairs  node 11,stairs  node 11\r\n" +
     "12,4,0,2,Tower,HALL,Hallway 6 Floor L1,Hallway C006L1\r\n" +
-    "13,0,0,2,Tower,ELEV,Evelvator  node 13,Evelvator  node 13\r\n" +
-    "14,8,4,2,45 Francis,ELEV,Evelvator  node 14,Evelvator  node 14\r\n" +
-    "15,5,0,3,45 Francis,ELEV,Evelvator  node 15,Evelvator  node 15\r\n" +
+    "13,0,0,2,Tower,ELEV,Elevator node 13,Elevator  node 13\r\n" +
+    "14,8,4,2,45 Francis,ELEV,Elevator node 14,Elevator node 14\r\n" +
+    "15,5,0,3,45 Francis,ELEV,Elevator node 15,Elevator node 15\r\n" +
     "16,0,0,3,45 Francis,HALL,Node 16,node 16\r\n" ;
 const edgesString: string =
     "e1-2,1,2\r\n" +
@@ -40,13 +40,13 @@ const edgesString: string =
     "e12-14,12,14\r\n" +
     "e15-16,15,16\r\n" +
 
-    //evelator and stairs edges
+    //elevator and stairs edges
     "e4-11,4,11\r\n" +
     "e10-14,10,14\r\n" +
     "e13-15,13,15\r\n" ;
 
 const floorPenalty = 5000;
-const tranistionWeight = 5000;
+const transitionWeight = 5000;
 
 
 
@@ -62,10 +62,10 @@ test("edge weight creation", () => {
     expect(graph.getEdges()[0].weight).toStrictEqual(euclideanDistance({x:0,y:0},{x:0,y:5}));
     //edge 1 to 3
     expect(graph.getEdges()[1].weight).toStrictEqual(euclideanDistance({x:0,y:0},{x:3,y:-4}));
-    //check that evelator and stairs edges is weighted correctly
-    expect(graph.getEdges()[15].weight).toStrictEqual(tranistionWeight);
-    expect(graph.getEdges()[16].weight).toStrictEqual(tranistionWeight);
-    expect(graph.getEdges()[17].weight).toStrictEqual(tranistionWeight);
+    //check that elevator and stairs edges is weighted correctly
+    expect(graph.getEdges()[15].weight).toStrictEqual(transitionWeight);
+    expect(graph.getEdges()[16].weight).toStrictEqual(transitionWeight);
+    expect(graph.getEdges()[17].weight).toStrictEqual(transitionWeight);
 
 });
 
@@ -77,29 +77,29 @@ test("heuristic creation",()=>{
 
     //test nodes on the same floor
     graph.generateNodeHeuristic(graph.idToNode("9")!);
-    //goal node hurstic should be 0
+    //goal node heuristic should be 0
     expect(graph.idToNode("9")?.heuristic).toStrictEqual(0);
-    //heustic node 1
+    //heuristic node 1
     expect(graph.idToNode("1")?.heuristic).toStrictEqual(euclideanDistance({x:0,y:0},{x:27,y:-2}));
-    //heurstic node 9
+    //heuristic node 9
     expect(graph.idToNode("7")?.heuristic).toStrictEqual(euclideanDistance({x:10,y:10},{x:27,y:-2}));
 
 
-    //test nodes on diffrent floors
+    //test nodes on different floors
     graph.generateNodeHeuristic(graph.idToNode("15")!);
-    //make sure nodes on the same floor have only euclidean distance as the heuristic to the goal
+    //make sure nodes on the same floor have only Euclidean distance as the heuristic to the goal
     expect(graph.idToNode("16")?.heuristic).toStrictEqual(5);
-    //nodes one floor away should have a penatly hurstic of 5000 and chose the closest tranision node to the goal.
+    //nodes one floor away should have a penalty heuristic of 5000 and chose the closest transition node to the goal.
     expect(graph.idToNode("13")?.heuristic).toStrictEqual(floorPenalty);
     expect(graph.idToNode("11")?.heuristic).toStrictEqual(floorPenalty + euclideanDistance({x:2,y:4},{x:0,y:0}));
-    //nodese two floors away should have a penatly hurstic of 10000 and chose the closest tranision node to the goal.
+    //nodes two floors away should have a penalty heuristic of 10000 and chose the closest transition node to the goal.
     expect(graph.idToNode("4")?.heuristic).toStrictEqual(floorPenalty*2);
     expect(graph.idToNode("10")?.heuristic).toStrictEqual(floorPenalty*2);
-    //node 1 should pick node 4 as the closest tranistion node
+    //node 1 should pick node 4 as the closest transition node
     expect(graph.idToNode("1")?.heuristic).toStrictEqual(floorPenalty*2+euclideanDistance({x:0,y:0},{x:-6,y:-4}));
-    //node 6 should pick node 10 as the closest tranistion node
+    //node 6 should pick node 10 as the closest transition node
     expect(graph.idToNode("6")?.heuristic).toStrictEqual(floorPenalty*2+euclideanDistance({x:12,y:-3},{x:12,y:0}));
-    //node 5 should pick node 10 as the closest tranistion node
+    //node 5 should pick node 10 as the closest transition node
     expect(graph.idToNode("5")?.heuristic).toStrictEqual(floorPenalty*2+euclideanDistance({x:4,y:10},{x:12,y:0}));
 });
 
