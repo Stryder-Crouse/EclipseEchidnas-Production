@@ -5,8 +5,9 @@ import {multipleNodeDataBaseToNode, NodeDataBase} from "../../../backend/src/Dat
 import ExitButton from "../components/buttons/ExitButton.tsx";
 import {useEffect, useState} from "react";
 import { FloorToIndex, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
-import NavBar from "../components/navigation-bar/GuestNavBar.tsx";
+
 import {Node} from "../../../backend/src/algorithms/Graph/Node.ts";
+import AdminMapNavBar from "../components/navigation-bar/AdminMapNavBar.tsx";
 
 
 
@@ -46,7 +47,7 @@ const defaultFloor = FloorToIndex.LowerLevel1;
         <div className={"newMapPage-container"}>
             {/* where navbar needs to be */}
             <div>
-                <NavBar selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}/>
+                <AdminMapNavBar selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}/>
             </div>
             <div className={"wholeNewMapPageBody"}>
                 <div className={"sidenav"}>

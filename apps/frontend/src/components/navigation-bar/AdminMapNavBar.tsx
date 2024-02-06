@@ -1,9 +1,13 @@
 import React from "react";
 import "../../css/component-css/NavBar.css";
+import {FloorToIndex} from "../../../../backend/src/algorithms/Graph/Node.ts";
+import {NavBarStates} from "./GuestNavBar.tsx";
 // import LocationsDropDown from "./LocationsDropDown.tsx";
 
-export default function AdminMapNavBar() {
-  return (
+export default function AdminMapNavBar({selectedFloorIndex:selectedFloorIndex,setSelectedFloorIndex:setSelectedFloorIndex}:NavBarStates) {
+
+    console.log(selectedFloorIndex);
+    return (
     <div>
       {/*<div className="left-navbar-container">*/}
       {/*  <LocationsDropDown></LocationsDropDown>*/}
@@ -14,12 +18,24 @@ export default function AdminMapNavBar() {
                     Levels
                 </button>
                 <div className={"dropdown-content"}>
-                    <a href={"/AdminMapPage"}>L2</a>
-                    <a href={"/AdminMapPage"}>L1</a>
-                    <a href={"/AdminMapPage"}>G</a>
-                    <a href={"/AdminMapPage"}>1</a>
-                    <a href={"/AdminMapPage"}>2</a>
-                    <a href={"/AdminMapPage"}>3</a>
+                    <a onClick={() => {
+                        setSelectedFloorIndex(FloorToIndex.LowerLevel2);
+                    }}>Lower level 2</a>
+                    <a onClick={() => {
+                        setSelectedFloorIndex(FloorToIndex.LowerLevel1);
+                    }}>Lower level 1</a>
+                    <a onClick={() => {
+                        setSelectedFloorIndex(FloorToIndex.Ground);
+                    }}>Ground</a>
+                    <a onClick={() => {
+                        setSelectedFloorIndex(FloorToIndex.Level1);
+                    }}>Level 1</a>
+                    <a onClick={() => {
+                        setSelectedFloorIndex(FloorToIndex.Level2);
+                    }}>Level 2</a>
+                    <a onClick={() => {
+                        setSelectedFloorIndex(FloorToIndex.Level3);
+                    }}>Level 3</a>
                 </div>
             </div>
             <div className="dropdown">

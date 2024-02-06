@@ -25,7 +25,7 @@ let endNode: Node | null = null;
 
 //get graph from database
 let graph: Graph | null = null;
-const path:Array<Node> = [];
+// let path:Array<Node> = [];
 
 
 
@@ -247,9 +247,9 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
     //todo remove these
     console.log(startNode,setStartNode,endNode,setEndNode,selectedFloorIndex,setSelectedFloorIndex,drawPath,setDrawPath,setLocations);
 
-    if(drawPath){
-
-    }
+    // if(drawPath){
+    //
+    // }
 
 
     //the html returned from the component
@@ -286,17 +286,22 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
 
 
                 }
-                {
-                    /**
-                     * draws the path on the current floor
-                     * */
 
-
-                }
             </svg>
         </div>
     );
 
+    // {
+    //     /**
+    //      * draws the path on the current floor
+    //      * */
+    //     path.map((node)=>{
+    //         return(
+    //             <line ></line>
+    //         );
+    //     })
+    //
+    // }
 
     /**
      * sets the maps image based on selectedFloorIndex
@@ -333,29 +338,42 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
     }
 
     /**
-     * sets the maps view box based on selectedFloorIndex
+     * sets the path to the path to be displaued on the page
      * */
-    function updatePath(){
-        if (graph == null) {
-            console.error("Graph has not been created yet - makepath");
-            return;
-        }
-
-        //find path with bfs
-        const rawpath: Array<Node> | null = BFS(startNode, endNode, graph);
-
-        //error is no path could be found
-        if (rawpath == null) {
-            console.error(
-                "no path could be found between " + startNode?.id + " and " + endNode?.id,
-            );
-            return;
-        }
-
-        //todo only put nodes on the current floor into the path
-
-
-    }
+    // function updatePath(){
+    //
+    //     if(drawPath) {
+    //
+    //         //zero out the path
+    //         path = [];
+    //
+    //         if (graph == null) {
+    //             console.error("Graph has not been created yet - makepath");
+    //             return;
+    //         }
+    //
+    //         //find path with bfs
+    //         const rawpath: Array<Node> | null = BFS(startNode, endNode, graph);
+    //
+    //         //error is no path could be found
+    //         if (rawpath == null) {
+    //             console.error(
+    //                 "no path could be found between " + startNode?.id + " and " + endNode?.id,
+    //             );
+    //             return;
+    //         }
+    //
+    //
+    //         for (let i = 0; i < rawpath.length; i++) {
+    //             let node = rawpath[i];
+    //             if (floorToNumber(node.floor) == selectedFloorIndex) {
+    //                 path.push(node)
+    //             }
+    //         }
+    //     }
+    //
+    //
+    // }
 
 
 
