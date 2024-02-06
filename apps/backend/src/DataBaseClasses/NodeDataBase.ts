@@ -41,6 +41,7 @@ export function nodeDataBaseToNode(dbNode: NodeDataBase) {
     longName: dbNode.longName,
     nodeType: dbNode.nodeType,
     shortName: dbNode.shortName,
+      heuristic:-1,
   };
   return node;
 }

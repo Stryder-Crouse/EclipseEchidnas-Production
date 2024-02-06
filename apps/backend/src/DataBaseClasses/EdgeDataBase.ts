@@ -33,6 +33,7 @@ export function edgeDataBasetoEdge(eDB: EdgeDataBase) {
     longName: "",
     shortName: "",
     edges: [],
+      heuristic:-1,
   };
 
   const end: Node = {
@@ -44,12 +45,14 @@ export function edgeDataBasetoEdge(eDB: EdgeDataBase) {
     longName: "",
     shortName: "",
     edges: [],
+      heuristic:-1,
   };
 
   const edge: Edge = {
     endNode: end,
     id: eDB.edgeID,
     startNode: start,
+      weight:-1,
   };
   return edge;
 }
