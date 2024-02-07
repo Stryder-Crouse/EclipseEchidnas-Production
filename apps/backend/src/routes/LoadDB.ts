@@ -71,6 +71,8 @@ export default async function dbInit() {
       PrismaClient.nodeDB.deleteMany(),
       PrismaClient.employee.deleteMany(),
     ]);
+
+
     //add in all the Nodes and Edges that are in the above CSV file
     await PrismaClient.nodeDB.createMany({ data: nodeDBArray });
     await PrismaClient.edgeDB.createMany({ data: edgeDBArray });
