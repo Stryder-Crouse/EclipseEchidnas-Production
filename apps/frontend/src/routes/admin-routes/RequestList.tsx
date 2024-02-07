@@ -95,11 +95,11 @@ async function populateRequests() {
         reqAmount.textContent = newRequest.numDoses.toString();
 
     const reqStatus = document.createElement("td");
-    reqStatus.innerHTML = '<select>\n' +
-        '                <option className={"unassigned"} value={' + status + '.Unassigned}>Unassigned</option>\n' +
-        '                <option className={"assigned"} value={' + status + '.Assigned}>Assigned</option>\n' +
-        '                <option className={"progressed"} value={' + status + '.InProgress}>In Progress</option>\n' +
-        '                <option className={"completed"} value={' + status + '.Completed}>Completed</option>\n' +
+    reqStatus.innerHTML = '<select className="status-dropdown">\n' +
+        '                <option className={"status-dropdown"} value={' + status + '.Unassigned}>Unassigned</option>\n' +
+        '                <option className={"status-dropdown"} value={' + status + '.Assigned}>Assigned</option>\n' +
+        '                <option className={"status-dropdown"} value={' + status + '.InProgress}>In Progress</option>\n' +
+        '                <option className={"status-dropdown"} value={' + status + '.Completed}>Completed</option>\n' +
         '            </select>';
 
     //append data elements together to one row
