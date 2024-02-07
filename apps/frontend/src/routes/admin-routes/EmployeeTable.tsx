@@ -66,7 +66,7 @@ function EmployeeTable() {
 async function populateRequests() {
     console.log("RAN");
 
-    const empReqs = await axios.get<Employee[]>("/api/employeeRequests/employees");
+    const empReqs = await axios.get<Employee[]>("/api/employees/employees");
 
     //fine dropdown div in the html on the page
     const table = document.getElementById("request-table");
@@ -85,6 +85,7 @@ async function populateRequests() {
 
         const userName = document.createElement("td");
         userName.textContent = newRequest.userName;
+        userName.setAttribute("class","node-id");
 
         const firstName = document.createElement("td");
         firstName.textContent = newRequest.firstName;
