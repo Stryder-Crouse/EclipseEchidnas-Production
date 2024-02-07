@@ -22,7 +22,7 @@ function NavBar({selectedFloorIndex:selectedFloorIndex,setSelectedFloorIndex:set
           <div className="navbar-container">
               <div className="dropdown">
                   <a href={"/AdminMapPage"}>
-                      <button className="dropbtn">Map Page</button>
+                      <button className="dropbtn">Levels</button>
                   </a>
                   <div className={"dropdown-content"}>
                       <a onClick={() => {
@@ -32,7 +32,7 @@ function NavBar({selectedFloorIndex:selectedFloorIndex,setSelectedFloorIndex:set
                       <a onClick={() => {
                           setSelectedFloorIndex(FloorToIndex.LowerLevel1);
                       }}>Lower level 1</a>
-                      <hr className={"dotted"}/>
+
                       <a onClick={() => {
                           setSelectedFloorIndex(FloorToIndex.Ground);
                       }}>Ground</a>

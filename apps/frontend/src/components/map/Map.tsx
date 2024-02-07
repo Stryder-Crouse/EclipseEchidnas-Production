@@ -5,11 +5,12 @@ import {FloorToIndex, Node} from "../../../../backend/src/algorithms/Graph/Node.
 import "../../css/component-css/Map.css";
 import {Edge} from "../../../../backend/src/algorithms/Graph/Edge.ts";
 import {Graph} from "../../../../backend/src/algorithms/Graph/Graph.ts";
-import {BFS} from "../../../../backend/src/algorithms/Search/BFS.ts";
+//import {BFS} from "../../../../backend/src/algorithms/Search/BFS.ts";
 import {onNodeHover, onNodeLeave,} from "../../event-logic/circleNodeEventHandlers.ts";
 import {NodeDataBase, nodeDataBaseToNode,} from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import {EdgeDataBase, edgeDataBasetoEdge,} from "../../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
 import {Dispatch, SetStateAction} from "react";
+import {AStar} from "../../../../backend/src/algorithms/Search/AStar.ts";
 //import {Coordinate} from "../../../../backend/src/algorithms/Graph/Coordinate.ts";
 
 /**
@@ -176,7 +177,7 @@ function makePath(startNode: Node, endNode: Node) {
     }
 
     //find path with bfs
-    const path: Array<Node> | null = BFS(startNode, endNode, graph);
+    const path: Array<Node> | null = AStar(startNode, endNode, graph);
 
     //error is no path could be found
     if (path == null) {
