@@ -1,8 +1,11 @@
 import React from "react";
 import "../../css/component-css/NavBar.css";
+import {useAuth0} from "@auth0/auth0-react";
+
 // import LocationsDropDown from "./LocationsDropDown.tsx";
 
 export default function AdminMapNavBar() {
+    const {logout} = useAuth0();
     return (
         <div>
             {/*<div className="left-navbar-container">*/}
@@ -48,10 +51,11 @@ export default function AdminMapNavBar() {
                         <button className="dropbtn">CSV</button>
                     </a>
                 </div>
-                <div className="dropdown">
-                    <a href="http://localhost:3000">
-                        <button className="dropbtn">End Session</button>
-                    </a>
+                <div className="dropdown" >
+                        <button className="dropbtn" onClick={() =>
+                            logout ({logoutParams: { returnTo:"http://localhost:3000"}})
+                        } >
+                            End Session </button>
                 </div>
 
             </div>

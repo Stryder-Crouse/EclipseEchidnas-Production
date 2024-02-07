@@ -1,7 +1,7 @@
 import React, { useEffect} from "react";
 //import ExitButton from "../../components/buttons/ExitButton.tsx";
 import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx";
-import "../../css/route-css/requestList.css";
+import "../../css/route-css/EmployeeTable.css";
 import axios from "axios";
 import { Employee } from "../../../../backend/src/algorithms/Employee/Employee.ts";
 
@@ -66,7 +66,7 @@ function EmployeeTable() {
 async function populateRequests() {
     console.log("RAN");
 
-    const empReqs = await axios.get<Employee[]>("/api/employeeRequests/employees");
+    const empReqs = await axios.get<Employee[]>("/api/employees/employees");
 
     //fine dropdown div in the html on the page
     const table = document.getElementById("request-table");

@@ -2,18 +2,27 @@
     border-radius: 2rem;
     background-color: #fcfcfd;
     padding: 1.5rem;
-
-    max-width: 47.5rem;
+    margin-top: 2rem;
+    font-family: 'Work Sans', sans-serif;
     border: 2px solid #edeef1;
     box-shadow: 0 4px 16px 0 rgba(148, 156, 169, 0.15);
     text-align: center;
-    overflow-y: hidden;
-
+    max-height: 30vh;
+    /** Flexbox centering Div **/
+    display: grid;
     justify-content: center;
-    display: flex;
+    align-items: center;
+    width: auto;
+}
+
+.table-wrapper {
+
+    padding-bottom: 0.5rem;
     margin: auto;
-    /*//height: 100rem;*/
-    /* removed position absolute center */
+    /*margin-bottom: 1rem;*/
+    max-height: 20vh;
+    align-items: center;
+
 }
 
 td:nth-child(2) {
@@ -24,7 +33,6 @@ td:nth-child(2) {
 .request-table-container {
     margin: 10% auto auto;
     font-family: 'Work Sans', sans-serif;
-    /*height: 80rem;*/
 }
 
 td {
