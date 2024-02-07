@@ -5,7 +5,10 @@ import axios from "axios";
 import {NodeDataBase} from "../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import AdminMapNavBar from "../components/navigation-bar/AdminMapNavBar.tsx";
 
+
 function NewMapPage() {
+
+
     return (
         //TODO BNBN implement backend feature to populate SELECTS for each floor node/edge
         //located in div "sidenav" , id for each is under each select

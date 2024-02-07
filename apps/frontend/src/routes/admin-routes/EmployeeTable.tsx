@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useEffect} from "react";
 //import ExitButton from "../../components/buttons/ExitButton.tsx";
 import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx";
 import "../../css/route-css/requestList.css";
-//import axios from "axios";
-//import { Employee } from "../../../../backend/src/algorithms/Employee/Employee.ts";
+import axios from "axios";
+import { Employee } from "../../../../backend/src/algorithms/Employee/Employee.ts";
+
+let ran = false;
 
 function EmployeeTable() {
+
+    useEffect(()=>{
+        if(!ran){
+            populateRequests().then();
+
+            ran=true;
+        }
+
+    },[]);
+
+
     return (
         <div>
             <AdminPageNavBar />
@@ -49,7 +62,7 @@ function EmployeeTable() {
  * SHOULD ONLY BE RUN ONCE.
  */
 
-/*
+
 async function populateRequests() {
     console.log("RAN");
 
@@ -108,6 +121,6 @@ async function populateRequests() {
 //   } catch (err) {
 //     throw new Error("Error getting Nodes");
 //   }
-// } */
+// }
 
 export default EmployeeTable;
