@@ -139,13 +139,6 @@ router.post("/changeUser", async function (req: Request, res: Response) {
             res.sendStatus(400); // Send error
         }
 
-        //update request to assigned
-        await PrismaClient.serviceRequest.update({
-            where: { reqID: reqID },
-            data: {
-                status: status,
-            }
-        });
 
         //checks to make sure employee exists in database
         const newAssignedEmployee = await PrismaClient.employee.findUnique({
@@ -160,6 +153,7 @@ router.post("/changeUser", async function (req: Request, res: Response) {
             where: {reqID: reqID},
             data: {
                 assignedUName: newAssignedUser,
+                status: status
             }
         });
 

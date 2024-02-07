@@ -86,13 +86,16 @@ async function onStatusChange(select: HTMLSelectElement, servReqID: number, empl
         }
 
         //database
-
-        await axios.post("/api/serviceRequests/changeState",
-            {reqID: servReqID, newState: select.value as string}, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
+        try {
+            await axios.post("/api/serviceRequests/changeState",
+                {reqID: servReqID, newState: select.value as string}, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+        } catch (e) {
+            console.error("faild to change state");
+        }
 
 
     } else {
@@ -132,12 +135,17 @@ async function onEmployeeChange(select: HTMLSelectElement, servReqID: number) {
 
         //database
 
-        await axios.post("/api/serviceRequests/changeUser",
-            {reqID: servReqID, newAssignedUser: select.value as string, status:"Assigned"}, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
+        try {
+            await axios.post("/api/serviceRequests/changeUser",
+                {reqID: servReqID, newAssignedUser: select.value as string, status: "Assigned"}, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+        }
+        catch (e) {
+            console.error("faild to change user");
+        }
     }
     else{
         statusSelect.value="Unassigned";
@@ -147,13 +155,17 @@ async function onEmployeeChange(select: HTMLSelectElement, servReqID: number) {
             const event = e.target as HTMLSelectElement;
             onStatusChange(event,servReqID,select.value);
         };
-
-        await axios.post("/api/serviceRequests/changeUser",
-            {reqID: servReqID, newAssignedUser: select.value as string, status:"Unassigned"}, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
+        try {
+            await axios.post("/api/serviceRequests/changeUser",
+                {reqID: servReqID, newAssignedUser: select.value as string, status: "Unassigned"}, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+        }
+        catch (e) {
+            console.error("faild to change user");
+        }
     }
 
 
