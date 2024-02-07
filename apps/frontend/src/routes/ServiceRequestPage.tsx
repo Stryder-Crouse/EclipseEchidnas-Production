@@ -32,6 +32,7 @@ export default function ServiceRequestPage() {
             extraInfo: "",                      //no extra info is asked for a med req so just ignore (empty string)
             assignedUName: "No one",            //upon creation, no employee is assigned
             status: "Not Assigned",             //upon creation, nobody is assigned, so set status to unassigned
+            reqID:-1
         };
 
         //Make a Med Req after the service req (Med req needs service req's id, so med req cannot be made before)
