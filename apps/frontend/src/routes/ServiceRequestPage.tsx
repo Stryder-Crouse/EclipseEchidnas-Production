@@ -6,7 +6,7 @@ import RequestButtons from "../components/buttons/RequestButtons.tsx";
 import ExitButton from "../components/buttons/ExitButton.tsx";
 
 import axios from "axios";
-import { MedReq } from "../../../backend/src/algorithms/Requests/Request.ts";
+import {MedReq, ReqTypes, ServiceRequest} from "../../../backend/src/algorithms/Requests/Request.ts";
 
 export default function ServiceRequestPage() {
   const [medRequestLocale, setMedRequestLocale] = useState("");
@@ -14,31 +14,53 @@ export default function ServiceRequestPage() {
   const [medRequestType, setMedRequestType] = useState("");
   const [medRequestDosage, setMedRequestDosage] = useState("");
 
-  //CHanged for database
+  //use state keeps info in boxes between renders (rerenders every now and then like a videogame)
+  // in html, "value" is the variable being changed by the user's action
+  // and onChange is the function specifier, so for example: value={medRequestLocale} and onChange={setMedRequestLocale}
+    //reference html is at bottom of this file
+
+  //Changed for database
   async function submit() {
-    if (medRequestLocale !== "") {
-      console.log(medRequestLocale);
-    }
 
-    const medRequestequest: MedReq = {
-      dosage: medRequestDosage,
-      medReqID: -1,
-      medType: medRequestType,
-        numDoses: parseInt(medRequestDoses),
-      reqLocationID: medRequestLocale,
-    };
-
-    console.log(medRequestequest);
 
     try {
-      await axios.post("/api/serviceRequests/medReq", medRequestequest, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    } catch (err) {
-      throw new Error("Error with loading Nodes");
+        //Make a Service Request Data Type and then a Med Request Data Type
+        // this is bc Front End will beconfused if we pass it a bunch of data so use data structures
+        const servReq : ServiceRequest = {
+            reqType: ReqTypes.medReq,           //Set req type to med req automatically bc we only make med reqs
+            reqLocationID: medRequestLocale,    //Need to know location of where the service request needs to be
+            extraInfo: "",                      //no extra info is asked for a med req so just ignore (empty string)
+            assignedUName: "No one",            //upon creation, no employee is assigned
+            status: "Not Assigned",             //upon creation, nobody is assigned, so set status to unassigned
+        };
+
+        //Make a Med Req after the service req (Med req needs service req's id, so med req cannot be made before)
+        const medReqData: MedReq = {
+            dosage: medRequestDosage,               //
+            medType: medRequestType,                //etc etc etc
+            numDoses: parseInt(medRequestDoses),    //
+            genReqID: -1,    // default is 0, but is always changed to the value of the newly created Service Req
+        };
+
+        //Post Med Req to DB (pass in objects of MedReq and ServiceRequest as an array)
+        await axios.post("/api/serviceRequests/medReq",
+            [servReq,medReqData], {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+
+    } catch {
+        console.error("Error with trying to save Service Req in ServiceRequestPage.tsx");
     }
+
+
+
+
+
+
+
   }
 
   /**
@@ -49,9 +71,11 @@ export default function ServiceRequestPage() {
     setMedRequestLocale(e.target.value);
   }
 
+
   function handleMedRequestDoseInput(e: ChangeEvent<HTMLInputElement>) {
     setMedRequestDose(e.target.value);
   }
+
 
   function handleMedRequestDosageInput(e: ChangeEvent<HTMLInputElement>) {
     setMedRequestDosage(e.target.value);

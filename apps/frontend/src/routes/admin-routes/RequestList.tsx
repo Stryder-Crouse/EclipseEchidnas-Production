@@ -54,7 +54,7 @@ export type request = {
 async function populateRequests() {
     console.log("RAN");
 
-    const requests = await axios.get<MedReq[]>("/api/serviceRequests/medReq");
+  const requests = await axios.get<MedReq[]>("/api/serviceRequests/medReq");
 
     //fine dropdown div in the html on the page
     const table = document.getElementById("request-table");
@@ -62,17 +62,17 @@ async function populateRequests() {
     console.log(table);
     console.log(requests.data + "hi");
 
-    //for each node
-    requests.data.forEach(function (newRequest: MedReq) {
-        //create tr element to store the record
-        const tableRow = document.createElement("tr");
-        //create td tags for data from record
-        const reqType = document.createElement("td");
-        reqType.textContent = "Medicine request";
-        reqType.setAttribute("class", "node-id");
+  //for each node
+  requests.data.forEach( function a (newRequest: MedReq) {
+    //create tr element to store the record
+    const tableRow = document.createElement("tr");
+    //create td tags for data from record
+    const reqType = document.createElement("td");
+    reqType.textContent = "Medicine request";
+    reqType.setAttribute("class", "node-id");
 
-        const reqStartLoc = document.createElement("td");
-        reqStartLoc.textContent = newRequest.genReq.toString();
+    const reqStartLoc = document.createElement("td");
+    reqStartLoc.textContent = newRequest.genReqID.toString();   //idk if the to string works
 
         const reqMedType = document.createElement("td");
         reqMedType.textContent = newRequest.medType;

@@ -1,99 +1,106 @@
 import express, {Router, Request, Response} from "express";
 //import { MedReq, Request } from "../algorithms/node.ts";
 import PrismaClient from "../bin/database-connection.ts";
-//import {MedReq, ServiceRequest} from "../algorithms/Requests/Request.ts"; //may also be wrong
+import {MedReq, ServiceRequest} from "../algorithms/Requests/Request.ts";
+// import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
 
 //import path from "path";
 //import fs from "fs";
 
 const router: Router = express.Router();
 
-//posts all requests from ____ (a csv?) to the database
+//posts all medication requests in the body of the function to the database
+// each request gets its own auto-generated ID
 //router.post("/post-all", async function (req: Request, res: Response) {});
 
-//posts one new request from the user to the database
-/*router.post("/medReq", async function (req: Request, res: Response) {
-    const data: MedReq = req.body;
+//posts one new medication request from the user to the database
+//the new medReq and the new serviceRequest both get their own auto-generated ID
+router.post("/medReq", async function (req: Request, res: Response) {
+    //console.log(req.body);
+    //console.log("Med Req Above");
+    const sentData:[ServiceRequest,MedReq] = req.body;
+    console.info(sentData);
 
-    console.log(req.body);
     //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
     try {
-        await PrismaClient.medReq.create({
+
+        //create a service request in the database
+        const service = await PrismaClient.serviceRequest.create({
+            //data passed into post is array of 2 data types
+            // first data type is a service request, so all the data we want to create a service req in the table
+            // will be stored in the first spot of array (passed as a json through prisma client)
             data: {
-                medReqID: data.medReqID,
-                medType: data.medType,
-                dosage: data.dosage,
-                numDoses: data.numDoses,
-
-                genReq: {
-                    connectOrCreate: {
-                        where: {
-                            reqID: data.genReq.reqID
-                        },
-                        create: {}
-                    }
-                }
-            },
-        });
-
-        console.info("Successfully saved medReq"); // Log that it was successful
-    } catch (error) {
-        // Log any failures
-        console.error(`Unable to save medReq`);
-        res.sendStatus(400); // Send error
-    }
-});*/
-/*router.post("/serviceReq", async function (req: Request, res: Response) {
-    const data: ServiceRequest = req.body;
-
-    console.log(req.body);
-    //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
-    try {
-        await PrismaClient.serviceRequest.create({
-            data: {
-                reqID: data.reqID,
-                reqType: data.reqType,
+                //ID is auto created
+                reqType: sentData[0].reqType,
                 //connect the Node field using the node id as a foreign key
                 reqLocation: {
-                    connect: {
-                        nodeID: data.reqLocation.id,
+                    connect : {
+                        nodeID: sentData[0].reqLocationID
                     }
                 },
-                extraInfo: data.extraInfo,
-                status: data.status,
+                extraInfo: sentData[0].extraInfo,
+                status: sentData[0].status,
                 //connect the Employee field using the username as a foreign key
+                //assigned is the relation, so itt does not actually exist as data (data that
+                // will exist and connect is data you specify below)
                 assigned: {
-                    connect: {
-                        userName: data.assigned.userName,
+                    connectOrCreate: {
+                        //connectOrCreate makes you specify what data you will create with and also what you
+                        // want to connect to (needs to know both potential outcomes)
+                        create : {
+                            userName: "No one",
+                            firstName: "N/A",
+                            lastName: "N/A",
+                            designation: "N/A",
+                            isAdmin: true,
+                        },
+                        //second part of create or connect (the what-we-connect-to part)
+                        where : {
+                            userName: "No one"
+                        }
                     }
                 }
             },
         });
+        console.info("Successfully saved Req"); // Log that it was successful
 
-        console.info("Successfully saved req"); // Log that it was successful
+        //create a Med Req (use data from the second element since we always put med req data type in second)
+        await PrismaClient.medReq.create({
+            data: {
+                dosage: sentData[1].dosage,
+                medType: sentData[1].medType,
+                numDoses: sentData[1].numDoses,
+                genReqID: service.reqID,
+                }
+        });
+        console.info("Successfully saved Med Req"); // Log that it was successful
+        //sendback the id of the request
+        //console.info("HHH " +record.genReqID);
+        res.send(200);
     } catch (error) {
         // Log any failures
-        console.error(`Unable to save req`);
+        console.error(`Unable to save Med Req`);
         res.sendStatus(400); // Send error
     }
-});*/
+});
+
 //gets all requests from the database in the form of request objects
 router.get("/medReq", async function (req: Request, res: Response) {
     try {
         //try to send all the nodes to the client
         //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
         res.send(await PrismaClient.medReq.findMany()); //end res.send (this is what will be sent to the client)
-        console.info("\nSuccessfully gave you the medRequests\n");
+        console.info("\nSuccessfully gave you all of the medical requests\n");
     } catch (err) {
-        console.error("\nUnable to send medRequests\n");
-        res.sendStatus(400); // Send error
+        console.error("\nUnable to send requests\n");
     }
 });
 router.get("/serviceReq", async function (req: Request, res: Response) {
     try {
-        //try to send all the requests to the client
-        res.send(await PrismaClient.serviceRequest.findMany());
-        console.info("\nSuccessfully gave you the requests\n");
+        //try to send all the nodes to the client
+        //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
+        res.send(await PrismaClient.serviceRequest.findMany()); //end res.send (this is what will be sent to the client)
+        console.info("\nSuccessfully gave you all of the requests\n");
     } catch (err) {
         console.error("\nUnable to send requests\n");
         res.sendStatus(400); // Send error

@@ -67,6 +67,7 @@ export default async function dbInit() {
     await PrismaClient.$transaction([
       PrismaClient.edgeDB.deleteMany(),
       PrismaClient.medReq.deleteMany(),
+      PrismaClient.serviceRequest.deleteMany(),
       PrismaClient.nodeDB.deleteMany(),
       PrismaClient.employee.deleteMany(),
     ]);
@@ -76,7 +77,7 @@ export default async function dbInit() {
     await PrismaClient.employee.createMany({data: employeeArray});
   } catch (err) {
     console.log(
-      "\n\nSo sad bc initially populating the nodes and edges didn't work\n\n",
+      "\n\nWiping DB on Boot Error\n\n",
     );
   }
 }

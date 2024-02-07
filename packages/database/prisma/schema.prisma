@@ -51,27 +51,23 @@ model MedReq {
   medType  String @db.VarChar(256)
   dosage   String @db.VarChar(256)
   numDoses Int
+  genReqID Int    @unique
 
-  genReq   ServiceRequest @relation("genericRequest", fields: [genReqID], references: [reqID])
-  genReqID Int            @unique
+  genReq ServiceRequest @relation("genericRequest", fields: [genReqID], references: [reqID])
 }
 
 model ServiceRequest {
-  reqID         Int      @id @unique @default(autoincrement())
-  reqType       String   @db.VarChar(256)
-  // start "nodeID" foreign key
-  reqLocation   NodeDB   @relation("requestLocation", fields: [reqLocationID], references: [nodeID])
-  reqLocationID String   @db.VarChar(256)
-  // end "nodeID" foreign key
-  extraInfo     String   @db.VarChar(256)
-  status        String   @db.VarChar(256)
-  // start "userName" foreign key
-  assigned      Employee @relation("assignedEmployee", fields: [assignedUName], references: [userName])
-  assignedUName String   @db.VarChar(256)
-  // end "userName" foreign key
+  reqID         Int     @id @unique @default(autoincrement())
+  reqType       String  @db.VarChar(256)
+  reqLocationID String  @db.VarChar(256)
+  extraInfo     String  @db.VarChar(256)
+  status        String  @db.VarChar(256)
+  assignedUName String? @db.VarChar(256)
 
-  //not actually here B]
-  medReq MedReq? @relation("genericRequest")
+  //not actually here
+  medReq      MedReq?   @relation("genericRequest")
+  reqLocation NodeDB    @relation("requestLocation", fields: [reqLocationID], references: [nodeID])
+  assigned    Employee? @relation("assignedEmployee", fields: [assignedUName], references: [userName])
 }
 
 model Employee {
