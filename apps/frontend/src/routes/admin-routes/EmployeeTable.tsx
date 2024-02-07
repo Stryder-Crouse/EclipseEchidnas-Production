@@ -85,6 +85,7 @@ async function populateRequests() {
 
         const userName = document.createElement("td");
         userName.textContent = newRequest.userName;
+        userName.setAttribute("class","node-id");
 
         const firstName = document.createElement("td");
         firstName.textContent = newRequest.firstName;
