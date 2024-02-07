@@ -3,7 +3,8 @@ import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx
 import "../../css/route-css/requestList.css";
 import axios from "axios";
 import {MedReq, ServiceRequest} from "../../../../backend/src/algorithms/Requests/Request.ts";
-import status from "../../../../backend/src/algorithms/Requests/Status.ts";
+import {Employee} from "../../../../backend/src/algorithms/Employee/Employee.ts";
+
 
 
 
@@ -33,14 +34,15 @@ function RequestList() {
             <div className={"table-wrapper"}>
               <table className={"requestTable"} id={"request-table"}>
                 <thead>
-                  <tr>
+                <tr>
                     <th>Request Type</th>
                     <th>Going To</th>
                     <th>Medicine type</th>
                     <th>Dosage</th>
                     <th>Amount</th>
-                      <th>Status</th>
-                  </tr>
+                    <th>Status</th>
+                    <th>Employee</th>
+                </tr>
                 </thead>
                 {/* populating here */}
               </table>
@@ -64,32 +66,96 @@ export type request = {
 //todo clean up -stryder
 
 // used in populate function
- 
-function onStatusChange(select:HTMLSelectElement,servReqID:number, employee:string){
+
+async function onStatusChange(select: HTMLSelectElement, servReqID: number, employee: string) {
 
     //CHANGE
-    if(employee!="a"){
+    if (employee != "No one") {
 
-        if(select==null){
+        if (select == null) {
             console.error("could not find request dropdown for request " + servReqID);
             return;
         }
-        console.log("XD "+select.value);
-        if(select.value=="unassigned"){
-            select.value = status.Assigned;
-            console.error("you cannot change the status of an assigned request to unassigned" + servReqID);
+        console.log("XD " + select.value);
+        if (select.value == "Unassigned") {
+
+            //todo show visual error
+            console.error("you cannot change the status of an assigned request to unassigned " + servReqID);
+            select.value="Assigned";
+
         }
 
         //database
 
+        await axios.post("/api/serviceRequests/changeState",
+            {reqID: servReqID, newState: select.value as string}, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
 
 
-
-
-    }
-    else{
+    } else {
+        select.value="Unassigned";
+        //todo visual error
         console.error("you cannot change the status of an unassigned request");
     }
+
+
+}
+
+//todo clean up -stryder
+
+async function onEmployeeChange(select: HTMLSelectElement, servReqID: number) {
+
+
+    if (select == null) {
+        console.error("could not find request dropdown for request " + servReqID);
+        return;
+    }
+    console.log("EE " + select.value);
+    //defult status of same record to assigned
+    const statusSelect = document.getElementById("requestDropdown"+servReqID) as HTMLSelectElement;
+
+    if(select.value!="No one"){
+
+
+        statusSelect.value="Assigned"; //DOES NOT CAUSE onStatusChange to fire so the post call changes this for us
+
+        //update status dropdown event listener
+        statusSelect.onchange = (e)=>{
+            const event = e.target as HTMLSelectElement;
+            onStatusChange(event,servReqID,select.value);
+        };
+
+
+
+        //database
+
+        await axios.post("/api/serviceRequests/changeUser",
+            {reqID: servReqID, newAssignedUser: select.value as string, status:"Assigned"}, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+    }
+    else{
+        statusSelect.value="Unassigned";
+
+        //update status dropdown event listener
+        statusSelect.onchange = (e)=>{
+            const event = e.target as HTMLSelectElement;
+            onStatusChange(event,servReqID,select.value);
+        };
+
+        await axios.post("/api/serviceRequests/changeUser",
+            {reqID: servReqID, newAssignedUser: select.value as string, status:"Unassigned"}, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+    }
+
 
 
 
@@ -105,7 +171,8 @@ async function populateRequests() {
     console.log("RAN");
 
   const requests = await axios.get<[MedReq[],ServiceRequest[]]>("/api/serviceRequests/medReq");
-
+    const employees = await axios.get<Employee[]>("/api/employees/employees/med");
+    console.log("hihi:"+employees.data);
     //fine dropdown div in the html on the page
     const table = document.getElementById("request-table");
 
@@ -140,14 +207,18 @@ async function populateRequests() {
         const reqAmount = document.createElement("td");
         reqAmount.textContent = medReq.numDoses.toString();
 
+        // status drop down
         const reqStatus = document.createElement("td");
         const select = document.createElement("select");
-        select.id = "request"+servReq.reqID;
+        select.id = "requestDropdown"+servReq.reqID;
+        select.className="status-dropdown";
+
+
         select.innerHTML =
-            '                <option className={"unassigned"} value={status.Unassigned}>Unassigned</option>\n' +
-            '                <option className={"assigned"} value={status.Assigned}>Assigned</option>\n' +
-            '                <option className={"progressed"} value={status.InProgress}>In Progress</option>\n' +
-            '                <option className={"completed"} value={status.Completed}>Completed</option>\n';
+            '                <option className={"status-dropdown"} value="Unassigned">Unassigned</option>\n' +
+            '                <option className={"status-dropdown"} value="Assigned">Assigned</option>\n' +
+            '                <option className={"status-dropdown"} value="In Progress">In Progress</option>\n' +
+            '                <option className={"status-dropdown"} value="Completed">Completed</option>\n';
         //todo remove this do proper popualtion code
         select.onchange = (e)=>{
             const event = e.target as HTMLSelectElement;
@@ -157,6 +228,41 @@ async function populateRequests() {
 
         reqStatus.appendChild(select);
 
+        //set value afther appending the options
+        select.value = servReq.status;
+
+        // employee drop down
+        const reqEmployee = document.createElement("td");
+
+
+        const selectEmp = document.createElement("select");
+        selectEmp.id = "employeeDropdown"+servReq.reqID;
+        selectEmp.className="status-dropdown";
+
+        reqEmployee.appendChild(selectEmp);
+
+
+        employees.data.forEach((employee)=>{
+            const newOption = document.createElement("option");
+            newOption.className="status-dropdown";
+            newOption.value = employee.userName;
+            newOption.textContent = employee.firstName + " " +employee.lastName + " ("+employee.designation+")";
+            selectEmp.appendChild(newOption);
+
+
+
+        });
+
+        //todo remove this do proper popualtion code
+        selectEmp.onchange = (e)=>{
+            const event = e.target as HTMLSelectElement;
+            onEmployeeChange(event,servReq.reqID);
+        };
+
+
+        //
+        // //set value afther appending the options
+        selectEmp.value = servReq.assignedUName;
 
 
 
@@ -167,6 +273,8 @@ async function populateRequests() {
         tableRow.appendChild(reqDosage);
         tableRow.appendChild(reqAmount);
         tableRow.appendChild(reqStatus);
+
+        tableRow.appendChild(reqEmployee);
 
         if (table == null) {
             return;
@@ -179,6 +287,8 @@ async function populateRequests() {
 
 
 }
+
+
 
 // async function getRequests() {
 //   try {

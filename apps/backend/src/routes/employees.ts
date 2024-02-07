@@ -41,6 +41,39 @@ router.get("/employees", async function (req: Request, res: Response) {
     }
 });
 
+//gets all employees with medicalRequest permissions
+router.get("/employees/med", async function (req: Request, res: Response) {
+    try {
+
+        res.send(await PrismaClient.employee.findMany(
+            {
+                where:{
+                    OR:[
+                        {
+                        designation:"doctor"
+                        },
+                        {
+                            designation:"nurse"
+                        },
+                        {
+                            designation:"administrator"
+                        },
+                        {
+                            userName:"No one"
+                        }
+                    ]
+
+                }
+
+            }
+
+        )); //end res.send (this is what will be sent to the client)
+        console.info("\nSuccessfully gave you the the employees\n");
+    } catch (err) {
+        console.error("\nUnable to send employees\n");
+    }
+});
+
 //gets the employee with the username of the Auth0 login
 router.get("/current_employee", async function (req: Request, res: Response) {
     const currentUser : Employee = req.body;
