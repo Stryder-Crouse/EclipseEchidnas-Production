@@ -1,10 +1,11 @@
 /** importations **/
 import React from "react";
 
-import GuestNavBar from "../../components/navigation-bar/GuestNavBar.tsx";
 
-import ExitButton from "../../components/buttons/ExitButton.tsx";
-import { Map } from "../../components/map/Map.tsx";
+
+//import ExitButton from "../../components/buttons/ExitButton.tsx";
+
+import NewMapPage from "../NewMapPage.tsx";
 
 export default function GuestMap() {
   //  const Dropdown = () => {
@@ -31,16 +32,6 @@ export default function GuestMap() {
   // };
 
   return (
-    <div>
-      <div>
-        <GuestNavBar />
-      </div>
-      <div>
-        <ExitButton />
-      </div>
-      <div className={"mapDiv"}>
-        <Map />
-      </div>
-    </div>
+    <NewMapPage></NewMapPage>
   );
 }

@@ -1,6 +1,6 @@
 import "../../css/route-css/nodeEdgeTablePage.css";
 import React from "react";
-import ExitButton from "../../components/buttons/ExitButton.tsx";
+//import ExitButton from "../../components/buttons/ExitButton.tsx";
 import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx";
 import NodeTable from "../../components/NodeAndEdgeTable/NodeTable.tsx";
 import EdgeTable from "../../components/NodeAndEdgeTable/EdgeTable.tsx";
@@ -17,9 +17,6 @@ function NodeEdgeTablePage() {
         <ImportExportButtons />
         <NodeTable />
         <EdgeTable />
-      </div>
-      <div>
-        <ExitButton />
       </div>
     </div>
   );

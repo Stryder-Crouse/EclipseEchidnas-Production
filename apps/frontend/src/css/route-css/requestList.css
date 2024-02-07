@@ -1,4 +1,4 @@
-.table-container-list {
+.table-container {
   border-radius: 2rem;
   background-color: #fcfcfd;
   padding: 1.5rem;
@@ -9,6 +9,9 @@
   text-align: center;
   overflow: auto;
 
+    justify-content: center;
+    display: flex;
+    margin: auto;
 
 
   /* removed position absolute center */
@@ -21,4 +24,25 @@ td:nth-child(2) {
 
 .request-table-container {
     margin: 10% auto auto;
+    font-family: 'Work Sans', sans-serif;
 }
+
+td {
+    font-family: 'Work Sans', sans-serif;
+}
+
+select {
+    background-color: #012d5a;
+    color: white;
+    border-color: transparent;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: bold;
+    border-radius: 1rem;
+    padding: 8px;
+}
+
+option {
+    background-color: #F1F1F1;
+    color: black;
+}
+

@@ -13,7 +13,7 @@
   background-color: #fcfcfd;
   padding: 1.5rem;
   margin-top: 2rem;
-
+    font-family: 'Work Sans', sans-serif;
   border: 2px solid #edeef1;
   box-shadow: 0 4px 16px 0 rgba(148, 156, 169, 0.15);
   text-align: center;
@@ -22,6 +22,7 @@
   display: grid;
   justify-content: center;
   align-items: center;
+    width: auto;
 }
 
 .table-wrapper {
@@ -149,6 +150,7 @@ td:nth-child(7) {
   align-items: center;
   display: flex;
   gap: 1rem;
+
 }
 
 .export {
@@ -158,10 +160,15 @@ td:nth-child(7) {
   color: #f1f1f1;
   cursor: pointer;
   font-weight: bold;
+    border-color: transparent;
 }
 
 .nodeEdge-container {
   margin-top: 10rem;
   margin-left: auto;
   margin-right: auto;
+}
+
+td {
+    font-family: 'Work Sans', sans-serif;
 }

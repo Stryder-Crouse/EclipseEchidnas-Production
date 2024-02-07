@@ -49,6 +49,7 @@ test("BFS test", () => {
       longName: "",
       nodeType: NodeType.UNDEFINED,
       shortName: "",
+        heuristic:-1,
     },
     graph,
   );
@@ -96,6 +97,7 @@ function graphToString(g: Graph) {
     longName: "",
     nodeType: NodeType.UNDEFINED,
     shortName: "",
+      heuristic:-1,
   };
 
   for (let i = 0; i < g.getNodes().length; i++) {

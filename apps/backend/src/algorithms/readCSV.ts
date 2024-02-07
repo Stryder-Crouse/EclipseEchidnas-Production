@@ -56,6 +56,7 @@ export function readNodeCSV(fileContent: string): Array<Node> {
         longName: nodeValues.at(6) ?? ERROR_STRING,
         shortName: nodeValues.at(7) ?? ERROR_STRING,
         edges: [],
+          heuristic:-1,
       };
       //add node to node list
       nodes.push(newNode);
@@ -111,6 +112,7 @@ export function readEdgeCSV(fileContent: string): Array<Edge> {
         longName: "",
         shortName: "",
         edges: [],
+          heuristic:-1,
       };
 
       const end: Node = {
@@ -122,13 +124,22 @@ export function readEdgeCSV(fileContent: string): Array<Edge> {
         longName: "",
         shortName: "",
         edges: [],
+          heuristic:-1,
       };
+
+
+      //check that edge id is in format startedge_endEdge if not make it that way
+        //this is needed as the OG data is corrupted
+        if( edgeValues.at(0) != edgeValues.at(1)+"_"+edgeValues.at(2)){
+            edgeValues[0]= edgeValues.at(1)+"_"+edgeValues.at(2);
+        }
 
       //create new edge
       const newEdge: Edge = {
         id: edgeValues.at(0) ?? ERROR_STRING,
         startNode: start,
         endNode: end,
+          weight:-1
       };
       //add new edge to list
       edges.push(newEdge);

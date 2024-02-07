@@ -3,9 +3,10 @@
   display: flex;
   width: 70vw;
   max-height: 80vh;
-  border-radius: 2rem;
+  border-radius: 1rem;
     justify-content: center;
     margin: 10% auto auto;
+    background-color: #a0a7b1;
 }
 
 .clickableAtag {
@@ -45,4 +46,10 @@
 .endSelectedHovered {
   fill: red;
   r: 15; /* radius of node */
+}
+
+
+.heavy {
+    font: bold 50px sans-serif;
+    fill:white;
 }

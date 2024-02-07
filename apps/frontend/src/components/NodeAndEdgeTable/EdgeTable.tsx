@@ -1,8 +1,20 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { EdgeDataBase } from "../../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
 import axios from "axios";
+import "../../css/route-css/nodeEdgeTablePage.css";
+
+let ran = false;
 
 function EdgeTable() {
+    //todo FNFN fix with proper population code
+    useEffect(()=>{
+        if(!ran){
+            populateEdges().then();
+
+            ran=true;
+        }
+
+    },[]);
   return (
     <div className={"table-container"}>
       <span className={"caption-container"}>

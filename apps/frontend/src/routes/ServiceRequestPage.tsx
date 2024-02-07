@@ -31,7 +31,8 @@ export default function ServiceRequestPage() {
             reqLocationID: medRequestLocale,    //Need to know location of where the service request needs to be
             extraInfo: "",                      //no extra info is asked for a med req so just ignore (empty string)
             assignedUName: "No one",            //upon creation, no employee is assigned
-            status: "Not Assigned",             //upon creation, nobody is assigned, so set status to unassigned
+            status: "Unassigned",             //upon creation, nobody is assigned, so set status to unassigned
+            reqID:-1
         };
 
         //Make a Med Req after the service req (Med req needs service req's id, so med req cannot be made before)
@@ -41,6 +42,7 @@ export default function ServiceRequestPage() {
             numDoses: parseInt(medRequestDoses),    //
             genReqID: -1,    // default is 0, but is always changed to the value of the newly created Service Req
         };
+        clear();
 
         //Post Med Req to DB (pass in objects of MedReq and ServiceRequest as an array)
         await axios.post("/api/serviceRequests/medReq",
@@ -61,6 +63,15 @@ export default function ServiceRequestPage() {
 
 
 
+
+
+  }
+
+  function clear() {
+    setMedRequestDosage("");
+    setMedRequestLocale("");
+    setMedRequestType("");
+    setMedRequestDose("");
   }
 
   /**
@@ -71,20 +82,14 @@ export default function ServiceRequestPage() {
     setMedRequestLocale(e.target.value);
   }
 
-
   function handleMedRequestDoseInput(e: ChangeEvent<HTMLInputElement>) {
     setMedRequestDose(e.target.value);
   }
-
 
   function handleMedRequestDosageInput(e: ChangeEvent<HTMLInputElement>) {
     setMedRequestDosage(e.target.value);
   }
 
-  /**
-   *
-   * @param e
-   */
   function handleMedRequestTypeInput(e: ChangeEvent<HTMLInputElement>) {
     setMedRequestType(e.target.value);
   }

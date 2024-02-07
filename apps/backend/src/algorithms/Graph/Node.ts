@@ -9,10 +9,67 @@ export type Node = {
   nodeType: NodeType;
   longName: string;
   shortName: string;
+  heuristic:number;
+
   edges: Array<Edge>;
 };
 
-//todo clean up - stryder
+
+
+
+/**
+ *
+ * @returns a number representing the floor of the node
+ *
+ * mapping
+ * "1" = 3
+ * "2" = 4
+ * "3" = 5
+ * "G" = 2
+ * "L1" = 1
+ * "L2" = 0
+ *
+ * */
+export function floorToNumber(floor:string){
+
+    switch (floor) {
+        case "3": return FloorToIndex.Level3;
+        case "2": return FloorToIndex.Level2;
+        case "1": return FloorToIndex.Level1;
+        case "G": return FloorToIndex.Ground; //no nodes with G floor exist right now (i have asked wong about it)
+        case "L1": return FloorToIndex.LowerLevel1;
+        case "L2": return FloorToIndex.LowerLevel2;
+
+        default: return FloorToIndex.UNDEFINED;
+    }
+
+
+}
+
+export function floorToString(floor:number){
+
+    switch (floor) {
+        case 0: return "L2";
+        case 1: return "L1";
+        case 2: return "G";
+        case 3: return "1";
+        case 4: return "2";
+        case 5: return "3";
+
+        default: return "FAIL";
+    }
+
+
+}
+
+
+/**
+ *
+ * @param n - node to be converted to string
+ *
+ *
+ * @returns a csv representation of the passed node with a \r\n at the end
+ */
 export function nodeToString(n: Node) {
   return (
     n.id +
@@ -39,6 +96,8 @@ export enum Buildings {
   B45Francis = "45 Francis",
   Tower = "Tower",
   Shapiro = "Shapiro",
+  B15Francis ="15 Francis",
+  BTM="BTM",
   UNDEFINED = "UNDEFINED",
 }
 
@@ -55,6 +114,18 @@ export enum NodeType {
   EXIT = "EXIT",
   STAI = "STAI",
   UNDEFINED = "UNDEFINED",
+}
+
+/** Enum to hold the floors internal index numbers in the graph class */
+export enum FloorToIndex {
+    Level3 = 5,
+    Level2 =4,
+    Level1=3,
+    Ground=2,
+    LowerLevel1 =1,
+    LowerLevel2 =0,
+    UNDEFINED = -99
+
 }
 
 /**
@@ -74,6 +145,10 @@ export function stringToBuilding(buildingName: string) {
       return Buildings.Tower;
     case "shapiro":
       return Buildings.Shapiro;
+  case "15 francis":
+      return Buildings.B15Francis;
+      case "btm":
+          return Buildings.BTM;
     default:
       return Buildings.UNDEFINED;
   }
@@ -114,3 +189,16 @@ export function stringToNodeType(nodeTypeName: string) {
       return NodeType.UNDEFINED;
   }
 }
+
+export const NULLNODE:Node = {
+    building: Buildings.UNDEFINED,
+    coordinate: {x:-100,y:-100},
+    edges: [],
+    floor: "",
+    id: "NULL",
+    longName: "",
+    nodeType: NodeType.UNDEFINED,
+    shortName: "",
+    heuristic:-1
+
+};
