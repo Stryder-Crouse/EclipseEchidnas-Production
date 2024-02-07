@@ -132,6 +132,7 @@ body.newMapPage {
     font-weight: bold;
     transition: 0.3s;
     box-shadow: 0 4px 4px -2px gray;
+    text-align: center;
 }
 
 .level-location:hover {

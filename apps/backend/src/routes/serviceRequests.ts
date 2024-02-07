@@ -88,8 +88,24 @@ router.post("/medReq", async function (req: Request, res: Response) {
 router.get("/medReq", async function (req: Request, res: Response) {
     try {
         //try to send all the nodes to the client
-        //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
-        res.send(await PrismaClient.medReq.findMany()); //end res.send (this is what will be sent to the client)
+
+        const medReqs = await PrismaClient.medReq.findMany({
+            orderBy: {
+                genReqID: "asc", //order by service request id so the two arrays are parallel
+            }
+        });
+
+        const serviceReqs = await PrismaClient.serviceRequest.findMany({
+            orderBy: {
+                reqID: "asc", //order by service request id so the two arrays are parallel
+            },
+            where:{
+                reqType:"medication"
+            }
+        });
+
+
+        res.send([medReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you all of the medical requests\n");
     } catch (err) {
         console.error("\nUnable to send requests\n");
@@ -109,9 +125,10 @@ router.get("/serviceReq", async function (req: Request, res: Response) {
 
 
 //Changing the assigned user given a service request id and the new assigned user
+//also makes updates the service request to make it assigned or unassigned
 router.post("/changeUser", async function (req: Request, res: Response) {
     try {
-        const {reqID, newAssignedUser} = req.body;
+        const {reqID, newAssignedUser, status} = req.body;
 
         //checks to make sure that service request exists in database
         const serviceRequest = await PrismaClient.serviceRequest.findUnique({
@@ -121,6 +138,7 @@ router.post("/changeUser", async function (req: Request, res: Response) {
             console.error(`Service Request with ID ${reqID} not found`);
             res.sendStatus(400); // Send error
         }
+
 
         //checks to make sure employee exists in database
         const newAssignedEmployee = await PrismaClient.employee.findUnique({
@@ -135,6 +153,7 @@ router.post("/changeUser", async function (req: Request, res: Response) {
             where: {reqID: reqID},
             data: {
                 assignedUName: newAssignedUser,
+                status: status
             }
         });
 
@@ -150,6 +169,8 @@ router.post("/changeUser", async function (req: Request, res: Response) {
 router.post("/changeState", async function (req: Request, res: Response) {
     try {
         const {reqID, newState} = req.body;
+
+        console.log("PPP "+reqID+"  "+newState);
 
         //checks to make sure that service request exists in database
         const serviceRequest = await PrismaClient.serviceRequest.findUnique({

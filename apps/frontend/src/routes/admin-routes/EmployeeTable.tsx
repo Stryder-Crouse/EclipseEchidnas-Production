@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useEffect} from "react";
 //import ExitButton from "../../components/buttons/ExitButton.tsx";
 import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx";
-import "../../css/route-css/requestList.css";
-//import axios from "axios";
-//import { Employee } from "../../../../backend/src/algorithms/Employee/Employee.ts";
+import "../../css/route-css/EmployeeTable.css";
+import axios from "axios";
+import { Employee } from "../../../../backend/src/algorithms/Employee/Employee.ts";
+
+let ran = false;
 
 function EmployeeTable() {
+
+    useEffect(()=>{
+        if(!ran){
+            populateRequests().then();
+
+            ran=true;
+        }
+
+    },[]);
+
+
     return (
         <div>
             <AdminPageNavBar />
@@ -49,11 +62,11 @@ function EmployeeTable() {
  * SHOULD ONLY BE RUN ONCE.
  */
 
-/*
+
 async function populateRequests() {
     console.log("RAN");
 
-    const empReqs = await axios.get<Employee[]>("/api/employeeRequests/employees");
+    const empReqs = await axios.get<Employee[]>("/api/employees/employees");
 
     //fine dropdown div in the html on the page
     const table = document.getElementById("request-table");
@@ -72,6 +85,7 @@ async function populateRequests() {
 
         const userName = document.createElement("td");
         userName.textContent = newRequest.userName;
+        userName.setAttribute("class","node-id");
 
         const firstName = document.createElement("td");
         firstName.textContent = newRequest.firstName;
@@ -108,6 +122,6 @@ async function populateRequests() {
 //   } catch (err) {
 //     throw new Error("Error getting Nodes");
 //   }
-// } */
+// }
 
 export default EmployeeTable;

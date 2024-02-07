@@ -17,11 +17,11 @@ import {
 //We always know where the file is located, so save the directory's location
 const csvLocation_Nodes = path.resolve(
   __dirname,
-  "../../resources/L1Nodes.csv",
+  "../../resources/nodes.csv",
 );
 const csvLocation_Edges = path.resolve(
   __dirname,
-  "../../resources/L1Edges.csv",
+  "../../resources/edges.csv",
 );
 
 //now parse the file and get all the data as a string
@@ -71,6 +71,8 @@ export default async function dbInit() {
       PrismaClient.nodeDB.deleteMany(),
       PrismaClient.employee.deleteMany(),
     ]);
+
+
     //add in all the Nodes and Edges that are in the above CSV file
     await PrismaClient.nodeDB.createMany({ data: nodeDBArray });
     await PrismaClient.edgeDB.createMany({ data: edgeDBArray });

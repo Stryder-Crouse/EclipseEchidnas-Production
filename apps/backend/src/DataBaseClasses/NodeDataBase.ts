@@ -45,3 +45,25 @@ export function nodeDataBaseToNode(dbNode: NodeDataBase) {
   };
   return node;
 }
+
+export function multipleNodeDataBaseToNode(dbNodes: Array<NodeDataBase>) {
+    const nodes:Array<Node> = [];
+
+    dbNodes.forEach((dbnode)=>{
+        nodes.push(nodeDataBaseToNode(dbnode));
+    });
+
+
+    return nodes;
+}
+
+export function multipleNodeToNodeDataBase(nodes: Array<Node>) {
+    const dbNodes:Array<NodeDataBase> = [];
+
+    nodes.forEach((node)=>{
+        dbNodes.push(nodeToNodeDataBase(node));
+    });
+
+
+    return dbNodes;
+}
