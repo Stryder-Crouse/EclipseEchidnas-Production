@@ -101,6 +101,7 @@ router.get("/", async function (req: Request, res: Response) {
   }
 });
 
+
 // // Whenever a get request is made to /CSVnode, send back the data from the node file.
 // router.get("/CSVnode", async function (req: Request, res: Response) {
 //   let allNodesString = null;

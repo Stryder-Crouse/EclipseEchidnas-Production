@@ -1,18 +1,30 @@
-import React from "react";
-//import ExitButton from "../../components/buttons/ExitButton.tsx";
+import React, {useEffect} from "react";
 import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx";
 import "../../css/route-css/requestList.css";
 import axios from "axios";
-import { MedReq } from "../../../../backend/src/algorithms/Requests/Request.ts";
+import {MedReq} from "../../../../backend/src/algorithms/Requests/Request.ts";
 import status from "../../../../backend/src/algorithms/Requests/Status.ts";
 
-function RequestList() {
-  return (
-    <div>
-      <AdminPageNavBar />
+let ran = false;
 
-        <div className={"request-table-container"}>
-          <div className={"table-container"}>
+function RequestList() {
+
+    //todo FNFN fix with proper population code
+    useEffect(()=>{
+        if(!ran){
+            populateRequests().then();
+
+            ran=true;
+        }
+
+    },[]);
+
+    return (
+        <div>
+            <AdminPageNavBar />
+
+            <div className={"request-table-container"}>
+                <div className={"table-container"}>
             <span className={"caption-container"}>
               <span className={"table-title"}>Request Log</span>
             </span>
@@ -39,13 +51,11 @@ function RequestList() {
 
 //may need onload for other ones as well
 
-populateRequests().then();
-
 //test type REMOVE LATER
 export type request = {
-  startLocation: string;
-  endLocation: string;
-  requestType: string;
+    startLocation: string;
+    endLocation: string;
+    requestType: string;
 };
 
 /**
@@ -53,17 +63,18 @@ export type request = {
  * SHOULD ONLY BE RUN ONCE.
  */
 async function populateRequests() {
-  console.log("RAN");
+    console.log("RAN");
 
-  const medReqs = await axios.get<MedReq[]>("/api/serviceRequests/medReq");
+  const requests = await axios.get<MedReq[]>("/api/serviceRequests/medReq");
 
-  //fine dropdown div in the html on the page
-  const table = document.getElementById("request-table");
+    //fine dropdown div in the html on the page
+    const table = document.getElementById("request-table");
 
-  console.log(table);
+    console.log(table);
+    console.log(requests.data + "hi");
 
   //for each node
-  medReqs.data.forEach(function (newRequest: MedReq) {
+  requests.data.forEach( function a (newRequest: MedReq) {
     //create tr element to store the record
     const tableRow = document.createElement("tr");
     //create td tags for data from record
@@ -72,16 +83,16 @@ async function populateRequests() {
     reqType.setAttribute("class", "node-id");
 
     const reqStartLoc = document.createElement("td");
-    reqStartLoc.textContent = newRequest.reqLocationID;
+    reqStartLoc.textContent = newRequest.genReqID.toString();   //idk if the to string works
 
-    const reqMedType = document.createElement("td");
-    reqMedType.textContent = newRequest.medType;
+        const reqMedType = document.createElement("td");
+        reqMedType.textContent = newRequest.medType;
 
-    const reqDosage = document.createElement("td");
-    reqDosage.textContent = newRequest.dosage;
+        const reqDosage = document.createElement("td");
+        reqDosage.textContent = newRequest.dosage;
 
-    const reqAmount = document.createElement("td");
-    reqAmount.textContent = newRequest.numDosages.toString();
+        const reqAmount = document.createElement("td");
+        reqAmount.textContent = newRequest.numDoses.toString();
 
     const reqStatus = document.createElement("td");
     reqStatus.innerHTML = '<select>\n' +
@@ -99,13 +110,13 @@ async function populateRequests() {
     tableRow.appendChild(reqAmount);
     tableRow.appendChild(reqStatus);
 
-    if (table == null) {
-      return;
-    }
+        if (table == null) {
+            return;
+        }
 
-    //add new row element to table
-    table.appendChild(tableRow);
-  });
+        //add new row element to table
+        table.appendChild(tableRow);
+    });
 }
 
 // async function getRequests() {
@@ -121,3 +132,4 @@ async function populateRequests() {
 // }
 
 export default RequestList;
+
