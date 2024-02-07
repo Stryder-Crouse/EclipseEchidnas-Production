@@ -1,4 +1,4 @@
-.table-container-list {
+.table-container {
   border-radius: 2rem;
   background-color: #fcfcfd;
   padding: 1.5rem;
@@ -8,6 +8,11 @@
   box-shadow: 0 4px 16px 0 rgba(148, 156, 169, 0.15);
   text-align: center;
   overflow: auto;
+
+    justify-content: center;
+    display: flex;
+    margin: auto;
+
 
   /* removed position absolute center */
 }
