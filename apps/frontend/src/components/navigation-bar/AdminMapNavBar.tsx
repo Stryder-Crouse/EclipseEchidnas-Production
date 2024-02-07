@@ -21,18 +21,23 @@ export default function AdminMapNavBar({selectedFloorIndex:selectedFloorIndex,se
                     <a onClick={() => {
                         setSelectedFloorIndex(FloorToIndex.LowerLevel2);
                     }}>Lower level 2</a>
+                    <hr className={"dotted"}/>
                     <a onClick={() => {
                         setSelectedFloorIndex(FloorToIndex.LowerLevel1);
                     }}>Lower level 1</a>
+                    <hr className={"dotted"}/>
                     <a onClick={() => {
                         setSelectedFloorIndex(FloorToIndex.Ground);
                     }}>Ground</a>
+                    <hr className={"dotted"}/>
                     <a onClick={() => {
                         setSelectedFloorIndex(FloorToIndex.Level1);
                     }}>Level 1</a>
+                    <hr className={"dotted"}/>
                     <a onClick={() => {
                         setSelectedFloorIndex(FloorToIndex.Level2);
                     }}>Level 2</a>
+                    <hr className={"dotted"}/>
                     <a onClick={() => {
                         setSelectedFloorIndex(FloorToIndex.Level3);
                     }}>Level 3</a>

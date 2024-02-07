@@ -33,7 +33,6 @@ function NavBar({selectedFloorIndex:selectedFloorIndex,setSelectedFloorIndex:set
                           setSelectedFloorIndex(FloorToIndex.LowerLevel1);
                       }}>Lower level 1</a>
                       <hr className={"dotted"}/>
-                      <hr className={"dotted"}/>
                       <a onClick={() => {
                           setSelectedFloorIndex(FloorToIndex.Ground);
                       }}>Ground</a>

@@ -12,8 +12,6 @@ import {onNodeHover, onNodeLeave} from "../event-logic/circleNodeEventHandlers.t
 import NavBar from "../components/navigation-bar/GuestNavBar.tsx";
 
 
-
-
 const defaultFloor = FloorToIndex.LowerLevel1;
 
  function NewMapPage() {
