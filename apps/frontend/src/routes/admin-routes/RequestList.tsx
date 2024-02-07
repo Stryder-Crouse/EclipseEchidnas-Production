@@ -1,50 +1,61 @@
-import React from "react";
+import React, {useEffect} from "react";
 import ExitButton from "../../components/buttons/ExitButton.tsx";
 import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx";
 import "../../css/route-css/requestList.css";
 import axios from "axios";
-import { MedReq } from "../../../../backend/src/algorithms/Requests/Request.ts";
+import {MedReq} from "../../../../backend/src/algorithms/Requests/Request.ts";
+
+let ran = false;
 
 function RequestList() {
-  return (
-    <div>
-      <AdminPageNavBar />
 
-        <div className={"request-table-container"}>
-          <div className={"table-container"}>
+    //todo FNFN fix with proper population code
+    useEffect(()=>{
+        if(!ran){
+            populateRequests().then();
+
+            ran=true;
+        }
+
+    },[]);
+
+    return (
+        <div>
+            <AdminPageNavBar />
+
+            <div className={"request-table-container"}>
+                <div className={"table-container"}>
             <span className={"caption-container"}>
               <span className={"table-title"}>Request Log</span>
             </span>
-            <div className={"table-wrapper"}>
-              <table className={"requestTable"} id={"request-table"}>
-                <thead>
-                  <tr>
-                    <th>Request Type</th>
-                    <th>Going To</th>
-                    <th>Medicine type</th>
-                    <th>Dosage</th>
-                    <th>Amount</th>
-                  </tr>
-                </thead>
-                {/* populating here */}
-              </table>
+                    <div className={"table-wrapper"}>
+                        <table className={"requestTable"} id={"request-table"}>
+                            <thead>
+                            <tr>
+                                <th>Request Type</th>
+                                <th>Going To</th>
+                                <th>Medicine type</th>
+                                <th>Dosage</th>
+                                <th>Amount</th>
+                            </tr>
+                            </thead>
+                            {/* populating here */}
+                        </table>
+                    </div>
+                    <ExitButton />
+                </div>
             </div>
-            <ExitButton />
-          </div>
         </div>
-    </div>
-  );
+    );
 }
 
 //may need onload for other ones as well
 
-populateRequests().then();
-
 //test type REMOVE LATER
 export type request = {
-  startLocation: string;
-  endLocation: string;
-  requestType: string;
+    startLocation: string;
+    endLocation: string;
+    requestType: string;
 };
 
 /**
@@ -52,17 +63,18 @@ export type request = {
  * SHOULD ONLY BE RUN ONCE.
  */
 async function populateRequests() {
-  console.log("RAN");
+    console.log("RAN");
 
-  const medReqs = await axios.get<MedReq[]>("/api/serviceRequests/medReq");
+  const requests = await axios.get<MedReq[]>("/api/serviceRequests/medReq");
 
-  //fine dropdown div in the html on the page
-  const table = document.getElementById("request-table");
+    //fine dropdown div in the html on the page
+    const table = document.getElementById("request-table");
 
-  console.log(table);
+    console.log(table);
+    console.log(requests.data + "hi");
 
   //for each node
-  medReqs.data.forEach(function (newRequest: MedReq) {
+  requests.data.forEach( function a (newRequest: MedReq) {
     //create tr element to store the record
     const tableRow = document.createElement("tr");
     //create td tags for data from record
@@ -71,31 +83,31 @@ async function populateRequests() {
     reqType.setAttribute("class", "node-id");
 
     const reqStartLoc = document.createElement("td");
-    reqStartLoc.textContent = newRequest.reqLocationID;
+    reqStartLoc.textContent = newRequest.genReqID.toString();   //idk if the to string works
 
-    const reqMedType = document.createElement("td");
-    reqMedType.textContent = newRequest.medType;
+        const reqMedType = document.createElement("td");
+        reqMedType.textContent = newRequest.medType;
 
-    const reqDosage = document.createElement("td");
-    reqDosage.textContent = newRequest.dosage;
+        const reqDosage = document.createElement("td");
+        reqDosage.textContent = newRequest.dosage;
 
-    const reqAmount = document.createElement("td");
-    reqAmount.textContent = newRequest.numDosages.toString();
+        const reqAmount = document.createElement("td");
+        reqAmount.textContent = newRequest.numDoses.toString();
 
-    //append data elements together to one row
-    tableRow.appendChild(reqType);
-    tableRow.appendChild(reqStartLoc);
-    tableRow.appendChild(reqMedType);
-    tableRow.appendChild(reqDosage);
-    tableRow.appendChild(reqAmount);
+        //append data elements together to one row
+        tableRow.appendChild(reqType);
+        tableRow.appendChild(reqStartLoc);
+        tableRow.appendChild(reqMedType);
+        tableRow.appendChild(reqDosage);
+        tableRow.appendChild(reqAmount);
 
-    if (table == null) {
-      return;
-    }
+        if (table == null) {
+            return;
+        }
 
-    //add new row element to table
-    table.appendChild(tableRow);
-  });
+        //add new row element to table
+        table.appendChild(tableRow);
+    });
 }
 
 // async function getRequests() {
@@ -111,3 +123,4 @@ async function populateRequests() {
 // }
 
 export default RequestList;
+

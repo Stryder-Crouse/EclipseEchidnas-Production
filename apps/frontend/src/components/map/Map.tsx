@@ -18,6 +18,7 @@ import {
   EdgeDataBase,
   edgeDataBasetoEdge,
 } from "../../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
+import {useEffect} from "react";
 
 /**
  * @param startNodeID the ID of the starting node to path find from
@@ -250,6 +251,11 @@ async function makeNodes() {
     //find svg map
     const map = document.getElementById("map");
 
+    if (map == null) {
+        console.error("Map has not been created yet");
+        return;
+    }
+
     //for each node add it to the file
     graph.getNodes().forEach(function (newNode: Node) {
         //atag to contain the event lisener / make it clickable also contatins the circle within it
@@ -312,7 +318,25 @@ async function getEdgeCSVString(): Promise<string> {
   return "";
 }*/
 
+
+let ran:boolean = false;
+
 export function Map() {
+
+
+    //todo FNFN fix with proper population code
+    useEffect(()=>{
+
+        if(!ran){
+            updateGraph().then(() => {
+                makeNodes().then();
+                //makePath("CCONF003L1", "CHALL014L1").then();
+                resetSelectedNodes();
+            });
+            ran=true;
+        }
+
+    },[]);
     //the html returned from the component
     return (
         <div id={"map-test"}>
@@ -345,8 +369,5 @@ export function Map() {
 }
 
 //code below runs on page load
-updateGraph().then(() => {
-    makeNodes().then();
-    //makePath("CCONF003L1", "CHALL014L1").then();
-    resetSelectedNodes();
-});
+
+

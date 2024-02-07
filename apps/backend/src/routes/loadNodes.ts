@@ -1,6 +1,7 @@
 import express, { Router, Request, Response } from "express";
 //import { Prisma } from "database"; //may be very wrong
-import PrismaClient from "../bin/database-connection.ts"; //may also be wrong
+import PrismaClient from "../bin/database-connection.ts";
+// import {nodeDataBaseToNode} from "../DataBaseClasses/NodeDataBase.ts"; //may also be wrong
 
 const router: Router = express.Router();
 
@@ -20,6 +21,28 @@ router.get("/", async function (req: Request, res: Response) {
     console.error("\n\n\n\n\n\nUnable to send Nodes\n\n\n\n\n\n");
   }
 });
+
+
+// router.get("/one-node/:nodeID", async function (req: Request, res: Response) {
+//     //only a node ID will be passed in, so get that and string it
+//     /*const nodeIDParam: string = req.params.nodeID;
+//     //get the Node from the DB by querying the ID and then save the node
+//     const fetchNode = await PrismaClient.nodeDB.findFirst({
+//         where: {
+//             nodeID: nodeIDParam
+//         },
+//     });
+//     //send the node back to whoever queried it
+//     if(fetchNode != null)
+//     {
+//         res.send(nodeDataBaseToNode(fetchNode));
+//     }
+//     else
+//     {
+//         res.send(400);
+//     }*/
+//     //:param gives param as a var you can pass into get request
+// });
 
 export default router;
 
