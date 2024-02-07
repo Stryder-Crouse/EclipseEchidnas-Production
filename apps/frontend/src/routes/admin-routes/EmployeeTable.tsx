@@ -1,7 +1,7 @@
 import React, { useEffect} from "react";
 //import ExitButton from "../../components/buttons/ExitButton.tsx";
 import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx";
-import "../../css/route-css/requestList.css";
+import "../../css/route-css/EmployeeTable.css";
 import axios from "axios";
 import { Employee } from "../../../../backend/src/algorithms/Employee/Employee.ts";
 

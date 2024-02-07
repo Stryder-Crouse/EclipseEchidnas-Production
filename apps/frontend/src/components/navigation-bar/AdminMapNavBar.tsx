@@ -1,11 +1,15 @@
 import React from "react";
 import "../../css/component-css/NavBar.css";
+import {useAuth0} from "@auth0/auth0-react";
+
 import {FloorToIndex} from "../../../../backend/src/algorithms/Graph/Node.ts";
 import {NavBarStates} from "./GuestNavBar.tsx";
 // import LocationsDropDown from "./LocationsDropDown.tsx";
 
-export default function AdminMapNavBar({selectedFloorIndex:selectedFloorIndex,setSelectedFloorIndex:setSelectedFloorIndex}:NavBarStates) {
 
+
+export default function AdminMapNavBar({selectedFloorIndex:selectedFloorIndex,setSelectedFloorIndex:setSelectedFloorIndex}:NavBarStates) {
+    const {logout} = useAuth0();
     console.log(selectedFloorIndex);
     return (
     <div>
@@ -14,9 +18,11 @@ export default function AdminMapNavBar({selectedFloorIndex:selectedFloorIndex,se
       {/*</div>*/}
         <div className="navbar-container">
             <div className="dropdown">
-                <button className="dropbtn">
-                    Levels
-                </button>
+                <a href={"/AdminMapPage"}>
+                    <button className="dropbtn">
+                        Levels
+                    </button>
+                </a>
                 <div className={"dropdown-content"}>
                     <a onClick={() => {
                         setSelectedFloorIndex(FloorToIndex.LowerLevel2);
@@ -69,12 +75,14 @@ export default function AdminMapNavBar({selectedFloorIndex:selectedFloorIndex,se
                 </a>
             </div>
             <div className="dropdown">
-                <a href= "http://localhost:3000" >
-                    <button className="dropbtn">End Session</button>
-                </a>
+                <button className="dropbtn" onClick={() =>
+                    logout({logoutParams: {returnTo: "http://localhost:3000"}})
+                }>
+                    End Session
+                </button>
             </div>
 
         </div>
     </div>
-  );
+    );
 }
