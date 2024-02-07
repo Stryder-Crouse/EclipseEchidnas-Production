@@ -15,7 +15,7 @@ import {MapMinPriorityQueue} from "../Queue/MapMinPriorityQueue.ts";
  * @returns  an array of node that stores the path from source to target if it exists or null
  *  if no such path exists in graph.
  *
- *  @see {source here}
+ *  @see {https://en.wikipedia.org/wiki/A*_search_algorithm}
  *
  */
 export function AStar(source: Node | null, target: Node | null, graph: Graph): Array<Node> | null {
@@ -72,16 +72,19 @@ export function AStar(source: Node | null, target: Node | null, graph: Graph): A
 
         /* for each neighbor */
         for (let i: number = 0; i < neighbors.length; i++) {
+            /* symbol */
+            const neighbor: Node = neighbors[i];
+
             /* cool init */
-            if (g_score.get(neighbors[i]) == undefined) {
-                g_score.set(neighbors[i], Number.MAX_VALUE);
+            if (g_score.get(neighbor) == undefined) {
+                g_score.set(neighbor, Number.MAX_VALUE);
             }
-            if (f_score.get(neighbors[i]) == undefined) {
-                f_score.set(neighbors[i], Number.MAX_VALUE);
+            if (f_score.get(neighbor) == undefined) {
+                f_score.set(neighbor, Number.MAX_VALUE);
             }
 
             /* find the weight of the edge from current_node to this neighbor */
-            const edge_name: string = current_node.id + "_" + neighbors[i].id;
+            const edge_name: string = current_node.id + "_" + neighbor.id;
             const edge_between: Edge | null = graph.idToEdge(edge_name);
             if (edge_between == null) {
                 console.error("A*: " + edge_name + " not found");
@@ -96,10 +99,10 @@ export function AStar(source: Node | null, target: Node | null, graph: Graph): A
                 return null;
             }
 
-            /* find neighbors[i]'s g score */
-            const neighbor_g_score: number | undefined = g_score.get(neighbors[i]);
+            /* find neighbor's g score */
+            const neighbor_g_score: number | undefined = g_score.get(neighbor);
             if (neighbor_g_score == undefined) {
-                console.error("A*: undefined in g_score map for neighbor node " + neighbors[i].id);
+                console.error("A*: undefined in g_score map for neighbor node " + neighbor.id);
                 return null;
             }
 
@@ -109,17 +112,35 @@ export function AStar(source: Node | null, target: Node | null, graph: Graph): A
             /* if the cost is the BEST EVER SEEN BEFORE */
             if (tentative_g_score < neighbor_g_score) {
                 /* record it !!! */
-                predecessor.set(neighbors[i], current_node);
-                g_score.set(neighbors[i], tentative_g_score);
-                f_score.set(neighbors[i], tentative_g_score + neighbors[i].heuristic);
-                // STUFF HERE
+                const new_f_score: number = tentative_g_score + neighbor.heuristic;
+                predecessor.set(neighbor, current_node);
+                g_score.set(neighbor, tentative_g_score);
+                f_score.set(neighbor, new_f_score);
+                if (!open_set.contains(neighbor)) {
+                    open_set.push(neighbor, new_f_score);
+                }
             }
-
         }
     }
+
+    /* if we found the way to the end */
     if (path_found) {
-        return path;
+        /* construct the path from the predecessor map from the target-back */
+        let current_predecessor: Node | null | undefined = target;
+
+        /* the predecessor to the source node is null */
+        while (current_predecessor != null) {
+            /* push the current predecessor to the found path */
+            path.push(current_predecessor);
+
+            /* update the predecessor */
+            current_predecessor = predecessor.get(current_predecessor);
+        }
+
+        /* whoops */
+        return path.reverse();
     }
 
+    /* no path found */
     return null;
 }
