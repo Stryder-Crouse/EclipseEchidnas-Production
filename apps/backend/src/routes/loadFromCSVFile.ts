@@ -46,13 +46,14 @@ router.post("/", async function (req: Request, res: Response) {
     await PrismaClient.$transaction([
       PrismaClient.edgeDB.deleteMany(),
       PrismaClient.medReq.deleteMany(),
+        PrismaClient.serviceRequest.deleteMany(),
       PrismaClient.nodeDB.deleteMany(),
     ]);
     //add in all the Nodes and Edges that are in the sent above CSV file
     await PrismaClient.nodeDB.createMany({ data: nodeDBArray });
     await PrismaClient.edgeDB.createMany({ data: edgeDBArray });
   } catch (error) {
-    console.error("could not add cvs files to db");
+    console.error("could not add csv files to db");
     res.status(400); // and send 204
     return;
   }
