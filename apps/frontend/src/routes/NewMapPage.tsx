@@ -22,6 +22,7 @@ const defaultFloor = FloorToIndex.LowerLevel1;
     const [drawPath, setDrawPath] = useState(false);
     const [locations, setLocations] = useState([] as Array<Node>);
 
+
     //todo need drawALL for dawing all edges and node on the graph
 
 

@@ -47,3 +47,9 @@
   fill: red;
   r: 15; /* radius of node */
 }
+
+
+.heavy {
+    font: bold 50px sans-serif;
+    fill:white;
+}

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import {FloorToIndex, Node} from "../../../../backend/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, floorToNumber, Node} from "../../../../backend/src/algorithms/Graph/Node.ts";
 
 import "../../css/component-css/Map.css";
 import {Edge} from "../../../../backend/src/algorithms/Graph/Edge.ts";
@@ -25,9 +25,13 @@ import {AStar} from "../../../../backend/src/algorithms/Search/AStar.ts";
 let startNode: Node | null = null;
 let endNode: Node | null = null;
 
+let toggleGraph=false;
+
 //get graph from database
 let graph: Graph | null = null;
 //let pathCordnates:Array<Array<Coordinate>> = [];
+
+let veiwbox:Array<number> = [1040,590];
 
 
 
@@ -161,6 +165,10 @@ function deletePath() {
     }
 }
 
+
+
+
+
 /**
  *
  * @param startNode - starting node obj of the path
@@ -270,6 +278,14 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
                     height="3400"
                     href={setMapImage()}
                 ></image>
+
+                <a className={"clickableAtag"} onClick={handleMapToggle}>
+                    <circle cx={veiwbox[0]} cy={veiwbox[1]} r={100} fill={"blue"}>
+
+                    </circle>
+                    <text x={veiwbox[0]-50} y={veiwbox[1]+10} className={"heavy"}>ALL</text>
+                </a>
+
                 {
                     /**
                      * creates the node objects on the map
@@ -294,6 +310,86 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
         </div>
     );
 
+    function drawFullPath(){
+
+        const nodesraw = graph?.getNodes();
+
+        if(nodesraw == undefined){
+            return;
+        }
+
+        const nodes:Array<Node> = [];
+        //remove any nodes that are not on the current floor
+        for(let i=0;i<nodesraw.length!;i++){
+            console.log(nodesraw[i].floor);
+
+            if(floorToNumber(nodesraw[i].floor) == selectedFloorIndex){
+                console.log(nodesraw[i].floor);
+                nodes.push(nodesraw[i]);
+
+            }
+
+        }
+
+        nodes?.forEach((node:Node)=>{
+
+            node.edges.forEach((edge:Edge)=>{
+
+                const map = document.getElementById("map");
+
+                //create new svg line obj
+                const newLine = document.createElementNS(
+                    "http://www.w3.org/2000/svg",
+                    "line",
+                );
+
+                //get node at start of line and end of line
+                const start = edge.startNode ?? null;
+                const end = edge.endNode?? null;
+
+                if(floorToNumber(end.floor) != selectedFloorIndex){
+                    return;
+                }
+
+                if (start == null || end == null) {
+                    console.error("a node is the path in null ");
+                    return;
+                }
+
+                //add node cordnates to the line obj
+                newLine.setAttribute("class", "pathLine");
+                //start node cordnates
+                newLine.setAttribute("x1", start.coordinate.x.toString());
+                newLine.setAttribute("y1", start.coordinate.y.toString());
+                //end node cordnates
+                newLine.setAttribute("x2", end.coordinate.x.toString());
+                newLine.setAttribute("y2", end.coordinate.y.toString());
+                if (map == null) {
+                    console.error("map html obj could not be fond");
+                    return;
+                }
+                //add line onto map
+                map.appendChild(newLine);
+
+
+            });
+
+        });
+
+    }
+
+    function handleMapToggle(){
+        if(toggleGraph == false){
+            drawFullPath();
+
+            toggleGraph = true;
+        }
+        else{
+            deletePath();
+            toggleGraph = false;
+        }
+    }
+
     // {
     //     /**
     //      * draws the path on the current floor
@@ -312,12 +408,24 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
     function setMapImage():string{
 
         switch (selectedFloorIndex) {
-            case FloorToIndex.LowerLevel2: return "/src/images/00_thelowerlevel2.png";
-            case FloorToIndex.LowerLevel1: return "/src/images/00_thelowerlevel1.png";
-            case FloorToIndex.Ground: return "/src/images/00_thegroundfloor.png";
-            case FloorToIndex.Level1: return "/src/images/01_thefirstfloor.png";
-            case FloorToIndex.Level2: return "/src/images/02_thesecondfloor.png";
-            case FloorToIndex.Level3: return "/src/images/03_thethirdfloor.png";
+            case FloorToIndex.LowerLevel2:
+
+                return "/src/images/00_thelowerlevel2.png";
+            case FloorToIndex.LowerLevel1:
+
+                return "/src/images/00_thelowerlevel1.png";
+            case FloorToIndex.Ground:
+
+                return "/src/images/00_thegroundfloor.png";
+            case FloorToIndex.Level1:
+
+                return "/src/images/01_thefirstfloor.png";
+            case FloorToIndex.Level2:
+
+                return "/src/images/02_thesecondfloor.png";
+            case FloorToIndex.Level3:
+
+                return "/src/images/03_thethirdfloor.png";
             default: return "/src/images/00_thelowerlevel1.png";
         }
 
@@ -329,12 +437,24 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
     function setMapViewBox():string{
 
         switch (selectedFloorIndex) {
-            case FloorToIndex.LowerLevel2: return "940 490 3000 2700";
-            case FloorToIndex.LowerLevel1: return "940 490 2160 1900";
-            case FloorToIndex.Ground: return "500 0 5000 3400";
-            case FloorToIndex.Level1: return "940 490 3000 2900";
-            case FloorToIndex.Level2: return "940 290 3500 2900";
-            case FloorToIndex.Level3: return "940 490 3000 2700";
+            case FloorToIndex.LowerLevel2:
+                veiwbox = [1040,590];
+                return "940 490 3000 2700";
+            case FloorToIndex.LowerLevel1:
+                veiwbox = [1040,590];
+                return "940 490 2160 1900";
+            case FloorToIndex.Ground:
+                veiwbox = [600,100];
+                return "500 0 5000 3400";
+            case FloorToIndex.Level1:
+                veiwbox = [1040,590];
+                return "940 490 3000 2900";
+            case FloorToIndex.Level2:
+                veiwbox = [1040,390];
+                return "940 290 3500 2900";
+            case FloorToIndex.Level3:
+                veiwbox = [1040,590];
+                return "940 490 3000 2700";
             default: return "940 490 2160 1900";
         }
 

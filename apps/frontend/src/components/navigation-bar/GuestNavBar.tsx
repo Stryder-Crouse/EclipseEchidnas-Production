@@ -27,12 +27,12 @@ function NavBar({selectedFloorIndex:selectedFloorIndex,setSelectedFloorIndex:set
                   <div className={"dropdown-content"}>
                       <a onClick={() => {
                           setSelectedFloorIndex(FloorToIndex.LowerLevel2);
-                      }}>Lower level 2</a>
+                      }}>Lower Level 2</a>
                       <hr className={"dotted"}/>
                       <a onClick={() => {
                           setSelectedFloorIndex(FloorToIndex.LowerLevel1);
-                      }}>Lower level 1</a>
-
+                      }}>Lower Level 1</a>
+                      <hr className={"dotted"}/>
                       <a onClick={() => {
                           setSelectedFloorIndex(FloorToIndex.Ground);
                       }}>Ground</a>

@@ -96,6 +96,8 @@ export enum Buildings {
   B45Francis = "45 Francis",
   Tower = "Tower",
   Shapiro = "Shapiro",
+  B15Francis ="15 Francis",
+  BTM="BTM",
   UNDEFINED = "UNDEFINED",
 }
 
@@ -143,6 +145,10 @@ export function stringToBuilding(buildingName: string) {
       return Buildings.Tower;
     case "shapiro":
       return Buildings.Shapiro;
+  case "15 francis":
+      return Buildings.B15Francis;
+      case "btm":
+          return Buildings.BTM;
     default:
       return Buildings.UNDEFINED;
   }
