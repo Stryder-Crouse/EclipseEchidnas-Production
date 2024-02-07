@@ -1,11 +1,24 @@
-import React from "react";
+import React, {useEffect} from "react";
 import ExitButton from "../../components/buttons/ExitButton.tsx";
 import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx";
 import "../../css/route-css/requestList.css";
 import axios from "axios";
 import {MedReq} from "../../../../backend/src/algorithms/Requests/Request.ts";
 
+let ran = false;
+
 function RequestList() {
+
+    //todo FNFN fix with proper population code
+    useEffect(()=>{
+        if(!ran){
+            populateRequests().then();
+
+            ran=true;
+        }
+
+    },[]);
+
     return (
         <div>
             <AdminPageNavBar />
@@ -37,8 +50,6 @@ function RequestList() {
 }
 
 //may need onload for other ones as well
-
-populateRequests().then();
 
 //test type REMOVE LATER
 export type request = {
