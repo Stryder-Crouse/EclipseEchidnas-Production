@@ -2,12 +2,9 @@
 
 /** Type to store requests*/
 export type ServiceRequest = {
-    reqType: string;
-//  reqLocationID: string; //should be a fk to a node
+    reqType: ReqTypes;
     reqLocationID: string;
-    //reqLocationID is reqLocation.id
     extraInfo: string;
-    //assigneeUName is assigned.userName
     status: string;
     assignedUName: string;
 };
