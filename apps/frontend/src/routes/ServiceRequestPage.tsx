@@ -41,6 +41,7 @@ export default function ServiceRequestPage() {
             numDoses: parseInt(medRequestDoses),    //
             genReqID: -1,    // default is 0, but is always changed to the value of the newly created Service Req
         };
+        clear();
 
         //Post Med Req to DB (pass in objects of MedReq and ServiceRequest as an array)
         await axios.post("/api/serviceRequests/medReq",
@@ -61,6 +62,15 @@ export default function ServiceRequestPage() {
 
 
 
+
+
+  }
+
+  function clear() {
+    setMedRequestDosage("");
+    setMedRequestLocale("");
+    setMedRequestType("");
+    setMedRequestDose("");
   }
 
   /**
@@ -71,11 +81,9 @@ export default function ServiceRequestPage() {
     setMedRequestLocale(e.target.value);
   }
 
-
   function handleMedRequestDoseInput(e: ChangeEvent<HTMLInputElement>) {
     setMedRequestDose(e.target.value);
   }
-
 
   function handleMedRequestDosageInput(e: ChangeEvent<HTMLInputElement>) {
     setMedRequestDosage(e.target.value);
