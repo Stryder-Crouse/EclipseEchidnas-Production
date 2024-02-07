@@ -52,6 +52,10 @@ export class MapMinPriorityQueue<T> implements IPriorityQueue<T> {
         return this.storage.size;
     }
 
+    public contains(thing: T): boolean {
+        return this.storage.has(thing);
+    }
+
     /**
      * Find the element with the lowest numerical priority value.
      * @returns the thing with the lowest priority in the queue;
