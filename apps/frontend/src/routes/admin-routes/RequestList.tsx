@@ -3,6 +3,7 @@ import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx
 import "../../css/route-css/requestList.css";
 import axios from "axios";
 import {MedReq, ServiceRequest} from "../../../../backend/src/algorithms/Requests/Request.ts";
+import status from "../../../../backend/src/algorithms/Requests/Status.ts";
 
 
 
@@ -63,21 +64,25 @@ export type request = {
 //todo clean up -stryder
 
 // used in populate function
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function onStatusChange(servReqID:number, employee:string){
+ 
+function onStatusChange(select:HTMLSelectElement,servReqID:number, employee:string){
 
     //CHANGE
     if(employee!="a"){
-        const select = document.getElementById("request"+servReqID);
+
         if(select==null){
             console.error("could not find request dropdown for request " + servReqID);
             return;
         }
-        console.log("XD "+select.getAttribute("value"));
-        if(select.getAttribute("value")=="unassigned"){
-            select.setAttribute("value","assigned");
+        console.log("XD "+select.value);
+        if(select.value=="unassigned"){
+            select.value = status.Assigned;
             console.error("you cannot change the status of an assigned request to unassigned" + servReqID);
         }
+
+        //database
+
+
 
 
 
@@ -136,12 +141,22 @@ async function populateRequests() {
         reqAmount.textContent = medReq.numDoses.toString();
 
         const reqStatus = document.createElement("td");
-        reqStatus.innerHTML = '<select id={"request"+servReq.reqID} onClick={} >\n' +
+        const select = document.createElement("select");
+        select.id = "request"+servReq.reqID;
+        select.innerHTML =
             '                <option className={"unassigned"} value={status.Unassigned}>Unassigned</option>\n' +
             '                <option className={"assigned"} value={status.Assigned}>Assigned</option>\n' +
             '                <option className={"progressed"} value={status.InProgress}>In Progress</option>\n' +
-            '                <option className={"completed"} value={status.Completed}>Completed</option>\n' +
-            '            </select>';
+            '                <option className={"completed"} value={status.Completed}>Completed</option>\n';
+        //todo remove this do proper popualtion code
+        select.onchange = (e)=>{
+            const event = e.target as HTMLSelectElement;
+            onStatusChange(event,servReq.reqID,servReq.assignedUName);
+        };
+
+
+        reqStatus.appendChild(select);
+
 
 
 
