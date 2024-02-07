@@ -2,8 +2,9 @@ import React, {useEffect} from "react";
 import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx";
 import "../../css/route-css/requestList.css";
 import axios from "axios";
-import {MedReq} from "../../../../backend/src/algorithms/Requests/Request.ts";
-import status from "../../../../backend/src/algorithms/Requests/Status.ts";
+import {MedReq, ServiceRequest} from "../../../../backend/src/algorithms/Requests/Request.ts";
+
+
 
 let ran = false;
 
@@ -58,14 +59,47 @@ export type request = {
     requestType: string;
 };
 
+
+//todo clean up -stryder
+
+// used in populate function
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function onStatusChange(servReqID:number, employee:string){
+
+    //CHANGE
+    if(employee!="a"){
+        const select = document.getElementById("request"+servReqID);
+        if(select==null){
+            console.error("could not find request dropdown for request " + servReqID);
+            return;
+        }
+        console.log("XD "+select.getAttribute("value"));
+        if(select.getAttribute("value")=="unassigned"){
+            select.setAttribute("value","assigned");
+            console.error("you cannot change the status of an assigned request to unassigned" + servReqID);
+        }
+
+
+
+    }
+    else{
+        console.error("you cannot change the status of an unassigned request");
+    }
+
+
+
+}
+
+
 /**
  * This function populates the request table with requests
  * SHOULD ONLY BE RUN ONCE.
  */
+
 async function populateRequests() {
     console.log("RAN");
 
-  const requests = await axios.get<MedReq[]>("/api/serviceRequests/medReq");
+  const requests = await axios.get<[MedReq[],ServiceRequest[]]>("/api/serviceRequests/medReq");
 
     //fine dropdown div in the html on the page
     const table = document.getElementById("request-table");
@@ -73,42 +107,51 @@ async function populateRequests() {
     console.log(table);
     console.log(requests.data + "hi");
 
-  //for each node
-  requests.data.forEach( function a (newRequest: MedReq) {
-    //create tr element to store the record
-    const tableRow = document.createElement("tr");
-    //create td tags for data from record
-    const reqType = document.createElement("td");
-    reqType.textContent = "Medicine Request";
-    reqType.setAttribute("class", "node-id");
+    if(requests.data[0].length != requests.data[1].length){
+        console.error("med and serv arrays not equal in length");
+        return;
+    }
+    //for each request
+    for(let i=0; i< requests.data[0].length;i++){
+        const medReq:MedReq = requests.data[0][i];
+        const servReq:ServiceRequest = requests.data[1][i];
 
-    const reqStartLoc = document.createElement("td");
-    reqStartLoc.textContent = newRequest.genReqID.toString();   //idk if the to string works
+        //create tr element to store the record
+        const tableRow = document.createElement("tr");
+        //create td tags for data from record
+        const reqType = document.createElement("td");
+        reqType.textContent = "Medicine Request";
+        reqType.setAttribute("class", "node-id");
+
+        const reqStartLoc = document.createElement("td");
+        reqStartLoc.textContent = servReq.reqLocationID;   //idk if the to string works
 
         const reqMedType = document.createElement("td");
-        reqMedType.textContent = newRequest.medType;
+        reqMedType.textContent = medReq.medType;
 
         const reqDosage = document.createElement("td");
-        reqDosage.textContent = newRequest.dosage;
+        reqDosage.textContent = medReq.dosage;
 
         const reqAmount = document.createElement("td");
-        reqAmount.textContent = newRequest.numDoses.toString();
+        reqAmount.textContent = medReq.numDoses.toString();
 
-    const reqStatus = document.createElement("td");
-    reqStatus.innerHTML = '<select>\n' +
-        '                <option className={"unassigned"} value={' + status + '.Unassigned}>Unassigned</option>\n' +
-        '                <option className={"assigned"} value={' + status + '.Assigned}>Assigned</option>\n' +
-        '                <option className={"progressed"} value={' + status + '.InProgress}>In Progress</option>\n' +
-        '                <option className={"completed"} value={' + status + '.Completed}>Completed</option>\n' +
-        '            </select>';
+        const reqStatus = document.createElement("td");
+        reqStatus.innerHTML = '<select id={"request"+servReq.reqID} onClick={} >\n' +
+            '                <option className={"unassigned"} value={status.Unassigned}>Unassigned</option>\n' +
+            '                <option className={"assigned"} value={status.Assigned}>Assigned</option>\n' +
+            '                <option className={"progressed"} value={status.InProgress}>In Progress</option>\n' +
+            '                <option className={"completed"} value={status.Completed}>Completed</option>\n' +
+            '            </select>';
 
-    //append data elements together to one row
-    tableRow.appendChild(reqType);
-    tableRow.appendChild(reqStartLoc);
-    tableRow.appendChild(reqMedType);
-    tableRow.appendChild(reqDosage);
-    tableRow.appendChild(reqAmount);
-    tableRow.appendChild(reqStatus);
+
+
+        //append data elements together to one row
+        tableRow.appendChild(reqType);
+        tableRow.appendChild(reqStartLoc);
+        tableRow.appendChild(reqMedType);
+        tableRow.appendChild(reqDosage);
+        tableRow.appendChild(reqAmount);
+        tableRow.appendChild(reqStatus);
 
         if (table == null) {
             return;
@@ -116,7 +159,10 @@ async function populateRequests() {
 
         //add new row element to table
         table.appendChild(tableRow);
-    });
+
+    }
+
+
 }
 
 // async function getRequests() {

@@ -88,8 +88,24 @@ router.post("/medReq", async function (req: Request, res: Response) {
 router.get("/medReq", async function (req: Request, res: Response) {
     try {
         //try to send all the nodes to the client
-        //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
-        res.send(await PrismaClient.medReq.findMany()); //end res.send (this is what will be sent to the client)
+
+        const medReqs = await PrismaClient.medReq.findMany({
+            orderBy: {
+                genReqID: "asc", //order by service request id so the two arrays are parallel
+            }
+        });
+
+        const serviceReqs = await PrismaClient.serviceRequest.findMany({
+            orderBy: {
+                reqID: "asc", //order by service request id so the two arrays are parallel
+            },
+            where:{
+                reqType:"medication"
+            }
+        });
+
+
+        res.send([medReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you all of the medical requests\n");
     } catch (err) {
         console.error("\nUnable to send requests\n");
