@@ -116,7 +116,7 @@ async function onEmployeeChange(select: HTMLSelectElement, servReqID: number) {
         console.error("could not find request dropdown for request " + servReqID);
         return;
     }
-    console.log("EE " + select.value);
+
     //defult status of same record to assigned
     const statusSelect = document.getElementById("requestDropdown"+servReqID) as HTMLSelectElement;
 
@@ -144,8 +144,9 @@ async function onEmployeeChange(select: HTMLSelectElement, servReqID: number) {
                 });
         }
         catch (e) {
-            console.error("faild to change user");
+            console.error("faild to change user" + e);
         }
+
     }
     else{
         statusSelect.value="Unassigned";
@@ -164,11 +165,11 @@ async function onEmployeeChange(select: HTMLSelectElement, servReqID: number) {
                 });
         }
         catch (e) {
-            console.error("faild to change user");
+            console.error("faild to change user "+e);
         }
     }
 
-
+    console.log("EE " + select.value);
 
 
 }

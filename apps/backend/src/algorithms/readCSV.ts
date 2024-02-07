@@ -127,6 +127,13 @@ export function readEdgeCSV(fileContent: string): Array<Edge> {
           heuristic:-1,
       };
 
+
+      //check that edge id is in format startedge_endEdge if not make it that way
+        //this is needed as the OG data is corrupted
+        if( edgeValues.at(0) != edgeValues.at(1)+"_"+edgeValues.at(2)){
+            edgeValues[0]= edgeValues.at(1)+"_"+edgeValues.at(2);
+        }
+
       //create new edge
       const newEdge: Edge = {
         id: edgeValues.at(0) ?? ERROR_STRING,
