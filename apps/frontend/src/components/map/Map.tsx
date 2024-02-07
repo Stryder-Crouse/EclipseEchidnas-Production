@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import {FloorToIndex, floorToNumber, Node} from "../../../../backend/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, Node} from "../../../../backend/src/algorithms/Graph/Node.ts";
 
 import "../../css/component-css/Map.css";
 import {Edge} from "../../../../backend/src/algorithms/Graph/Edge.ts";
@@ -10,7 +10,7 @@ import {onNodeHover, onNodeLeave,} from "../../event-logic/circleNodeEventHandle
 import {NodeDataBase, nodeDataBaseToNode,} from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import {EdgeDataBase, edgeDataBasetoEdge,} from "../../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
 import {Dispatch, SetStateAction} from "react";
-import {Coordinate} from "../../../../backend/src/algorithms/Graph/Coordinate.ts";
+//import {Coordinate} from "../../../../backend/src/algorithms/Graph/Coordinate.ts";
 
 /**
  * @param startNodeID the ID of the starting node to path find from
@@ -26,7 +26,7 @@ let endNode: Node | null = null;
 
 //get graph from database
 let graph: Graph | null = null;
-let pathCordnates:Array<Array<Coordinate>> = [];
+//let pathCordnates:Array<Array<Coordinate>> = [];
 
 
 
@@ -287,23 +287,23 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
 
 
                 }
-                {
-                    /**
-                     * draws the path on the current floor
-                     * */
-                    pathCordnates.map((lineCord)=>{
-                        return(
-                            <line className={""}></line>
-                        );
-                    })
 
-                }
 
             </svg>
         </div>
     );
 
-
+    // {
+    //     /**
+    //      * draws the path on the current floor
+    //      * */
+    //     pathCordnates.map((lineCord)=>{
+    //         return(
+    //             <line className={""}></line>
+    //         );
+    //     })
+    //
+    // }
 
     /**
      * sets the maps image based on selectedFloorIndex
@@ -342,43 +342,43 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
     /**
      * sets the path to the path to be displaued on the page
      * */
-    function updatePath(){
-
-
-
-        //zero out the path
-        pathCordnates = [];
-
-        if (graph == null) {
-            console.error("Graph has not been created yet - makepath");
-            return;
-        }
-
-        //find path with bfs
-        const rawpath: Array<Node> | null = BFS(startNode, endNode, graph);
-
-        //error is no path could be found
-        if (rawpath == null) {
-            console.error(
-                "no path could be found between " + startNode?.id + " and " + endNode?.id,
-            );
-            return;
-        }
-
-        //get path(s) on floor
-
-        const floorPaths :Array<Array<Node>> = [];
-
-        for (let i = 0; i < rawpath.length; i++) {
-            const node = rawpath[i];
-            if (floorToNumber(node.floor) == selectedFloorIndex) {
-                pathCordnates.push();
-            }
-        }
-
-
-
-    }
+    // function updatePath(){
+    //
+    //
+    //
+    //     //zero out the path
+    //     pathCordnates = [];
+    //
+    //     if (graph == null) {
+    //         console.error("Graph has not been created yet - makepath");
+    //         return;
+    //     }
+    //
+    //     //find path with bfs
+    //     const rawpath: Array<Node> | null = BFS(startNode, endNode, graph);
+    //
+    //     //error is no path could be found
+    //     if (rawpath == null) {
+    //         console.error(
+    //             "no path could be found between " + startNode?.id + " and " + endNode?.id,
+    //         );
+    //         return;
+    //     }
+    //
+    //     //get path(s) on floor
+    //
+    //     const floorPaths :Array<Array<Node>> = [];
+    //
+    //     for (let i = 0; i < rawpath.length; i++) {
+    //         const node = rawpath[i];
+    //         if (floorToNumber(node.floor) == selectedFloorIndex) {
+    //             pathCordnates.push();
+    //         }
+    //     }
+    //
+    //
+    //
+    // }
 
 
 

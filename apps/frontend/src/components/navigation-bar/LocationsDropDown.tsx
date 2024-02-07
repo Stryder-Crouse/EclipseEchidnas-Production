@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import "../../css/component-css/NavBar.css";
 import "../../css/component-css/Map.css";
 import axios from "axios";
@@ -12,9 +12,21 @@ import {
   nodeDataBaseToNode,
 } from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 
+let ran=false;
 export default function LocationsDropDown() {
   const [showDropdown, setShowDropdown] = useState(false);
   // const [filterValue, setFilterValue] = useState('');
+
+    //todo FNFN fix with proper population code
+    useEffect(()=>{
+
+        if(!ran){
+            populateLocationDropdown().then();
+            ran=true;
+        }
+
+    },[]);
+
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -39,7 +51,7 @@ export default function LocationsDropDown() {
 //
 // }); //populates the Node table
 
-populateLocationDropdown().then();
+
 
 // //submitEdges().then();
 // //submitEdges(); //populates the Edge table

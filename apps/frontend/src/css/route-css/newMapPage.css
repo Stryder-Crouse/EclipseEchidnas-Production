@@ -17,7 +17,7 @@ body.newMapPage {
 
 /** SIDEBAR  (LEFT)  **/
 .sidenav {
-    max-height: 63vh;
+    max-height: 29.5rem;
     width: 15%; /* Change max-width to width */
     margin-top: 7.5%;
     margin-left: 3%;
