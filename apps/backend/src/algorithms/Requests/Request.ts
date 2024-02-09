@@ -24,7 +24,9 @@ export type MedReq = {
 
 /** Enum to hold the possible request types staff members can make */
 export enum ReqTypes {
-    medReq = "medication" /*,
-  sanReq = "sanitation",
-  floReq = "flower delivery", ... etc.*/,
+    medReq = "medication" ,
+    religReq = "religious",
+    flowReq = "flower delivery",
+    sanReq = "sanitation",
+    tranReq = "transportation"
 }

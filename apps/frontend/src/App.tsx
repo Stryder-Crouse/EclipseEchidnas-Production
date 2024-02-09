@@ -9,6 +9,8 @@ import GuestMap from "./routes/guest-routes/GuestMap.tsx";
 import NewMapPage from "./routes/NewMapPage.tsx";
 import ProtectedEmployeeTable from "./components/protected-pages/ProtectedEmployeeTable.tsx";
 
+
+import OLDServiceRequestPage from "./routes/OLDServiceRequestPage.tsx";
 function App() {
     const router = createBrowserRouter([
         {
@@ -47,6 +49,10 @@ function App() {
                 {
                     path:"/EmployeeTable",
                     element: <ProtectedEmployeeTable/>,
+                },
+                {
+                    path:"/OLDServiceRequestPage",
+                    element: <OLDServiceRequestPage/>,
                 },
             ],
         },
