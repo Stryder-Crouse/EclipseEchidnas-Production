@@ -36,7 +36,7 @@ router.post("/medReq", async function (req: Request, res: Response) {
             data: {
                 //ID is auto created
                 reqType: sentData[0].reqType,
-                reqPriority: "Low",
+                reqPriority: sentData[0].reqPriority,
                 //connect the Node field using the node id as a foreign key
                 reqLocation: {
                     connect : {
@@ -242,7 +242,50 @@ router.post("/changePriority", async function (req: Request, res: Response){
 router.post("/outsideTransport", async function (req: Request, res: Response) {
     try {
         const sentData:[ServiceRequest,OutsideTransport] = req.body;
-        console.log(sentData);
+        const servReq = await PrismaClient.serviceRequest.create({
+            data: {
+                reqType: sentData[0].reqType,
+                reqPriority: sentData[0].reqPriority,
+                reqLocation: {
+                    connect: {
+                        nodeID: sentData[0].reqLocationID
+                    }
+                },
+                extraInfo: sentData[0].extraInfo,
+                status: sentData[0].status,
+                //connect the Employee field using the username as a foreign key
+                //assigned is the relation, so itt does not actually exist as data (data that
+                // will exist and connect is data you specify below)
+                assigned: {
+                    connectOrCreate: {
+                        //connectOrCreate makes you specify what data you will create with and also what you
+                        // want to connect to (needs to know both potential outcomes)
+                        create: {
+                            userName: "No one",
+                            firstName: "N/A",
+                            lastName: "N/A",
+                            designation: "N/A",
+                            isAdmin: true,
+                        },
+                        //second part of create or connect (the what-we-connect-to part)
+                        where: {
+                            userName: "No one"
+                        }
+                    }
+                }
+            }
+        });
+        console.log("Successfully saved Service Requirement");
+
+        await PrismaClient.outsideTransport.create({
+            data: {
+                patientName: sentData[1].patientName,
+                destination: sentData[1].destination,
+                modeOfTransport: sentData[1].modeOfTransport,
+                serviceReqID: servReq.reqID
+            }
+        });
+        console.log("Successfully saved the Outside Transportation Request");
         res.sendStatus(200);
     } catch {
         console.error("Outside Transportation Request Failed");
