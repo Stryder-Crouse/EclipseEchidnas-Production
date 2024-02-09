@@ -11,6 +11,7 @@ import ProtectedEmployeeTable from "./components/protected-pages/ProtectedEmploy
 
 
 import OLDServiceRequestPage from "./routes/OLDServiceRequestPage.tsx";
+import OLDRequestList from "./routes/admin-routes/OLDRequestList.tsx";
 function App() {
     const router = createBrowserRouter([
         {
@@ -53,6 +54,10 @@ function App() {
                 {
                     path:"/OLDServiceRequestPage",
                     element: <OLDServiceRequestPage/>,
+                },
+                {
+                    path:"/OLDRequestList",
+                    element: <OLDRequestList/>,
                 },
             ],
         },
