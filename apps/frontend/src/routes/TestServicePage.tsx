@@ -1,10 +1,19 @@
-import React from "react";
+import React, {useState} from "react";
 import "./testServicePage.css";
-//from https://github.com/frontend-joe/react-widgets
+import {ReqTypes} from "../../../backend/src/algorithms/Requests/Request.ts";
+//from https://github.com/frontend-joe/react-widgets for css
+//import Flower_input from "../components/service-requests/flower-request/Flower_input.tsx";
+//import Religious_input from "../components/service-requests/religious-request/Religious_input.tsx";
+//import Medicine_input from "../components/service-requests/medicine-request/Medicine_input.tsx";
+//import Transportation_Input from "../components/service-requests/transportation-outside-request/Transportation_Input.tsx";
+//import Sanitation_input from "../components/service-requests/sanitation-request/Sanitation_input.tsx";
+
 export default function ServiceRequest() {
 
 
-
+    //const [statusFilter , setStatusFilter ] = useState("");
+    const [curentServiceRequest , setCurentServiceRequest ] = useState(ReqTypes.medReq);
+    console.log(curentServiceRequest);
 
     // useEffect(() => {
     //
@@ -15,34 +24,56 @@ export default function ServiceRequest() {
         <div className="tabs-container">
             <ul className="tabs">
                 <li>
-                    <a id="tab1" title="Analytics" href="#tab1" className={"tabButton"}>
-                        Medicine
+                    <a id={"button_"+ReqTypes.flowReq} title="Flower Request" className={"tabButton"} onClick={()=>{setCurentServiceRequest(ReqTypes.flowReq);}}>
+                        Flower Request
                     </a>
                 </li>
                 <li>
-                    <a id="tab2" title="Reports" href="#tab2" className={"tabButton"}>
-                        Transport
+                    <a id={"button_"+ReqTypes.religReq} title="Religious Request" className={"tabButton"} onClick={()=>{setCurentServiceRequest(ReqTypes.religReq);}}>
+                        Religious Request
                     </a>
                 </li>
                 <li>
-                    <a id="tab3" title="Performance" href="#tab3" className={"tabButton"}>
-                        Flower
+                    <a id={"button_"+ReqTypes.medReq} title="Medicine Request" className={"tabButton"} onClick={()=>{setCurentServiceRequest(ReqTypes.medReq);}}>
+                        Medicine Request
                     </a>
                 </li>
                 <li>
-                    <a id="tab4" title="Funds" href="#tab4" className={"tabButton"}>
-                        Religious
+                    <a id={"button_"+ReqTypes.tranReq} title="Transportation Request" className={"tabButton"} onClick={()=>{setCurentServiceRequest(ReqTypes.tranReq);}}>
+                        Transportation Request
                     </a>
                 </li>
                 <li>
-                    <a id="tab5" title="Audio/Visual" href="#tab5" className={"tabButton"}>
-                        Audio/Visual
+                    <a id={"button_"+ReqTypes.sanReq} title="Sanitation Request" className={"tabButton"} onClick={()=>{setCurentServiceRequest(ReqTypes.sanReq);}}>
+                        Sanitation Request
                     </a>
                 </li>
             </ul>
             <div className="tab-content-wrapper">
-
+                {/* the content to be populated with each request */}
             </div>
         </div>
     );
+    /*
+    function generateSelectedTable(){
+        // For each div/request to overlay
+        switch(curentServiceRequest)
+        {
+            case ReqTypes.flowReq:
+                return (<Flower_input/>);
+            case ReqTypes.religReq:
+                return (<Religious_input/>);
+            case ReqTypes.medReq:
+                return (<Medicine_input/>);
+            case ReqTypes.tranReq:
+                return (<Transportation_Input/>);
+            case ReqTypes.sanReq:
+                return (<Sanitation_input/>);
+
+
+        }
+
+    } */
+
+
 }
