@@ -28,6 +28,7 @@ export default function ServiceRequestPage() {
         // this is bc Front End will beconfused if we pass it a bunch of data so use data structures
         const servReq : ServiceRequest = {
             reqType: ReqTypes.medReq,           //Set req type to med req automatically bc we only make med reqs
+            reqPriority: "Low",                 //todo FNFN --- if you guys redesign the Service Request Page, then pls set this value to data from page
             reqLocationID: medRequestLocale,    //Need to know location of where the service request needs to be
             extraInfo: "",                      //no extra info is asked for a med req so just ignore (empty string)
             assignedUName: "No one",            //upon creation, no employee is assigned

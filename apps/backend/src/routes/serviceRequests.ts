@@ -32,6 +32,7 @@ router.post("/medReq", async function (req: Request, res: Response) {
             data: {
                 //ID is auto created
                 reqType: sentData[0].reqType,
+                reqPriority: "Low",
                 //connect the Node field using the node id as a foreign key
                 reqLocation: {
                     connect : {
@@ -191,6 +192,36 @@ router.post("/changeState", async function (req: Request, res: Response) {
     } catch(error){
         console.error("Unable to change service request state");
         res.sendStatus(400); // Send error
+    }
+});
+
+router.post("/changePriority", async function (req: Request, res: Response){
+    try {
+        //let the router know that the data that is incoming will be organized like this
+        const {reqID, newPriority} = req.body;
+
+        //make sure the entry is in the DB
+        const servReq = await PrismaClient.serviceRequest.findUnique({
+            where: {reqID: reqID},
+        });
+
+        //if there is no entry in the DB matching that service request id, then let the person know that there is an error
+        if(!servReq) {
+            console.error(`Service Request with ID ${reqID} not found`);
+            res.sendStatus(400); // Send error
+        }
+
+
+        //Since th entry is in the DB, then update it
+        await PrismaClient.serviceRequest.update({
+            where: {reqID: reqID},
+            data: {
+                reqPriority: newPriority,
+            }
+        });
+    } catch {
+        console.error("Database issue with changing the Priority");
+        res.sendStatus(400);
     }
 });
 

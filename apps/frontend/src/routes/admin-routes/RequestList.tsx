@@ -20,6 +20,8 @@ function RequestList() {
         useState<Array<[MedReq,ServiceRequest]>>([]);
     const [medEmployees, setMedEmployees] =
         useState<Employee[]>([]);
+    const [servReqPriority, setReqPriority] =
+        useState<ServiceRequest[]>([]);
 
 
 
@@ -31,6 +33,7 @@ function RequestList() {
         if (!queryDone) {
             getEmployees().then(result=>{ setMedEmployees(result);});
             getMedRequests().then(result=>{ setMedRequestList(result);});
+            getPriority().then(result => {setReqPriority(result);});
         }
         return ()=>{
             queryDone = true;
@@ -53,6 +56,7 @@ function RequestList() {
                 <thead>
                 <tr>
                     <th>Request Type</th>
+                    <th>Priority</th>
                     <th>Going To</th>
                     <th>Medicine type</th>
                     <th>Dosage</th>
@@ -69,6 +73,23 @@ function RequestList() {
                           return (
                               <tr key={"Med_"+request[0].genReqID}>
                                   <td className={"node-id"}>{request[1].reqType}</td>
+                                  <td>
+                                      <select
+                                          value={request[1].reqPriority}
+                                          id={"priorityDropdown" + request[1].reqID}
+                                          onChange={
+                                              (event) => {
+                                                  const eventHTML = event.target as HTMLSelectElement;
+                                                  onPriorityChange(eventHTML, requestIndex).then();/////todo RYAN (uncomment when done with function)
+                                              }
+                                          }
+                                      >
+                                          <option className={"priorityDropdown"} value="Low">Low</option>
+                                          <option className={"priorityDropdown"} value="Medium">Medium</option>
+                                          <option className={"priorityDropdown"} value="High">High</option>
+                                          <option className={"priorityDropdown"} value="Emergency">Emergency</option>
+                                      </select>
+                                  </td>
                                   <td>{request[1].reqLocationID}</td>
                                   <td>{request[0].medType}</td>
                                   <td>{request[0].dosage}</td>
@@ -76,12 +97,11 @@ function RequestList() {
                                   <td>
                                       <select
                                           value={request[1].status}
-                                          id = {"medStatusDropdown"+request[1].reqID}
+                                          id={"medStatusDropdown" + request[1].reqID}
                                           onChange={
-                                              (event)=>
-                                              {
+                                              (event) => {
                                                   const eventHTML = event.target as HTMLSelectElement;
-                                                  onStatusChange(eventHTML,requestIndex).then();
+                                                  onStatusChange(eventHTML, requestIndex).then();
                                               }
                                           }
                                       >
@@ -265,8 +285,50 @@ function RequestList() {
 
 
     }
+    async function onPriorityChange(select: HTMLSelectElement, requestIndex: number) {
+        const medRequests = [...medRequestList]; //make a copy of the array to update
+        const thisRequest = medRequests?.at(requestIndex);//use the copy to make changes
+
+        console.log("servReqPriority: "+servReqPriority);
+        console.log("medRequests: "+medRequests);
+        //console.log("servReq: "+servReq);
+        //console.log("thisReq: "+thisReq);
+        console.log("thisRequest" + thisRequest);
+
+        if(thisRequest== undefined){
+            console.error("request not found from request index ");
+            return;
+        }
+
+        if (select == null) {
+            console.error("could not find request dropdown for request " + thisRequest[1].reqID);
+            return;
+        }
+
+        //assign new status
+        thisRequest[1].status=select.value;
+        console.log("New Status: " + select.value);
+
+        //const servReqList = medRequests[1];
+        //setReqPriority(medRequests);    //thisRequest[1]
+        setMedRequestList(medRequests);
+
+        //update data in the DB
+        try {
+            await axios.post("/api/serviceRequests/changePriority",
+                {reqID: thisRequest[1].reqID, newPriority: select.value as string}, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+        } catch {
+            console.error("Failed to Change the Priority");
+        }
+    }
 
 }
+
+
 
 
 //get service requests and medical request and employees
@@ -288,6 +350,12 @@ async function getEmployees() {
     const employees = await axios.get<Employee[]>("/api/employees/employees/med");
     return employees.data;
 
+}
+
+//todo RYAN --- add axios.get functionality
+async function getPriority() {
+    const priority = await axios.get<ServiceRequest[]>("/api/serviceRequests/changePriority");
+    return priority.data;
 }
 
 

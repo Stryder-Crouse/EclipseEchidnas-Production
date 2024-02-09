@@ -63,6 +63,7 @@ model ServiceRequest {
   extraInfo     String  @db.VarChar(256)
   status        String  @db.VarChar(256)
   assignedUName String? @db.VarChar(256)
+  reqPriority   String  @db.VarChar(256)
 
   //not actually here
   medReq      MedReq?   @relation("genericRequest")

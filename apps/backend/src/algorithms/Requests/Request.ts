@@ -3,6 +3,7 @@
 /** Type to store requests*/
 export type ServiceRequest = {
     reqType: string;
+    reqPriority: string;
 //  reqLocationID: string; //should be a fk to a node
     reqLocationID: string;
     //reqLocationID is reqLocation.id
