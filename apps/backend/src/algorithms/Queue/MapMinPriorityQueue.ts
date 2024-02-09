@@ -52,7 +52,7 @@ export class MapMinPriorityQueue<T> implements IPriorityQueue<T> {
         return this.storage.size;
     }
 
-    contains(thing: T): boolean {
+    public contains(thing: T): boolean {
         return this.storage.has(thing);
     }
 

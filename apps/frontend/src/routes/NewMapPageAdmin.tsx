@@ -7,21 +7,21 @@ import {useEffect, useState} from "react";
 import { FloorToIndex, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
 
 import {Node} from "../../../backend/src/algorithms/Graph/Node.ts";
-
+import AdminMapNavBar from "../components/navigation-bar/AdminMapNavBar.tsx";
 import {onNodeHover, onNodeLeave} from "../event-logic/circleNodeEventHandlers.ts";
-import NavBar from "../components/navigation-bar/GuestNavBar.tsx";
+
+
 
 
 const defaultFloor = FloorToIndex.LowerLevel1;
 
- function NewMapPage() {
+ function NewMapPageAdmin() {
 
     const [startNode, setStartNode] = useState(NULLNODE);
     const [endNode, setEndNode] = useState(NULLNODE);
     const [selectedFloorIndex, setSelectedFloorIndex] = useState(defaultFloor);
     const [drawPath, setDrawPath] = useState(false);
     const [locations, setLocations] = useState([] as Array<Node>);
-
 
     //todo need drawALL for dawing all edges and node on the graph
 
@@ -70,7 +70,7 @@ const defaultFloor = FloorToIndex.LowerLevel1;
         <div className={"newMapPage-container"}>
             {/* where navbar needs to be */}
             <div>
-                <NavBar selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}/>
+                <AdminMapNavBar selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}/>
             </div>
             <div className={"wholeNewMapPageBody"}>
                 <div className={"sidenav"}>
@@ -172,4 +172,4 @@ const defaultFloor = FloorToIndex.LowerLevel1;
 
 
 }
-export default NewMapPage;
+export default NewMapPageAdmin;

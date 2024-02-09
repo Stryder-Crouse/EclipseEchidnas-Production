@@ -1,8 +1,19 @@
-import React from "react";
+import React, {Dispatch, SetStateAction} from "react";
 import "../../css/component-css/NavBar.css";
+import {FloorToIndex} from "../../../../backend/src/algorithms/Graph/Node.ts";
+
 //import LocationsDropDown from "./LocationsDropDown.tsx";
 
-export default function NavBar() {
+//todo move to file
+export interface NavBarStates{
+    selectedFloorIndex:FloorToIndex;
+    setSelectedFloorIndex: Dispatch<SetStateAction<FloorToIndex>>;
+}
+function NavBar({selectedFloorIndex:selectedFloorIndex,setSelectedFloorIndex:setSelectedFloorIndex}:NavBarStates) {
+
+    console.log(selectedFloorIndex);
+
+
   return (
       <div>
           {/*<div className="left-navbar-container">*/}
@@ -10,16 +21,33 @@ export default function NavBar() {
           {/*</div>*/}
           <div className="navbar-container">
               <div className="dropdown">
-                  <a href={"/GuestMap"}>
-                      <button className="dropbtn">Map Page</button>
+                  <a href={"/AdminMapPage"}>
+                      <button className="dropbtn">Levels</button>
                   </a>
                   <div className={"dropdown-content"}>
-                      <a href={"/AdminMapPage"}>L2</a>
-                      <a href={"/AdminMapPage"}>L1</a>
-                      <a href={"/AdminMapPage"}>G</a>
-                      <a href={"/AdminMapPage"}>1</a>
-                      <a href={"/AdminMapPage"}>2</a>
-                      <a href={"/AdminMapPage"}>3</a>
+                      <a onClick={() => {
+                          setSelectedFloorIndex(FloorToIndex.LowerLevel2);
+                      }}>Lower Level 2</a>
+                      <hr className={"dotted"}/>
+                      <a onClick={() => {
+                          setSelectedFloorIndex(FloorToIndex.LowerLevel1);
+                      }}>Lower Level 1</a>
+                      <hr className={"dotted"}/>
+                      <a onClick={() => {
+                          setSelectedFloorIndex(FloorToIndex.Ground);
+                      }}>Ground</a>
+                      <hr className={"dotted"}/>
+                      <a onClick={() => {
+                          setSelectedFloorIndex(FloorToIndex.Level1);
+                      }}>Level 1</a>
+                      <hr className={"dotted"}/>
+                      <a onClick={() => {
+                          setSelectedFloorIndex(FloorToIndex.Level2);
+                      }}>Level 2</a>
+                      <hr className={"dotted"}/>
+                      <a onClick={() => {
+                          setSelectedFloorIndex(FloorToIndex.Level3);
+                      }}>Level 3</a>
                   </div>
               </div>
               <div className="dropdown">
@@ -39,3 +67,5 @@ export default function NavBar() {
 
   );
 }
+
+export default NavBar;

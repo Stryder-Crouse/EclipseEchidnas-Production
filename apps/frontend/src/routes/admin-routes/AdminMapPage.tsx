@@ -1,8 +1,9 @@
 /** importations **/
 import React from "react";
-import AdminMapNavBar from "../../components/navigation-bar/AdminMapNavBar.tsx";
+
 // import ExitButton from "../../components/buttons/ExitButton.tsx";
-import { Map } from "../../components/map/Map.tsx";
+
+import NewMapPageAdmin from "../NewMapPageAdmin.tsx";
 
 export default function AdminMapPage() {
   //  const Dropdown = () => {
@@ -29,13 +30,6 @@ export default function AdminMapPage() {
   // };
 
   return (
-    <div>
-      <div>
-        <AdminMapNavBar />
-      </div>
-      <div>
-        <Map />
-      </div>
-    </div>
+    <NewMapPageAdmin></NewMapPageAdmin>
   );
 }

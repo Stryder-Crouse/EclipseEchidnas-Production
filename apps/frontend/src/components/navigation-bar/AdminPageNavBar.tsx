@@ -1,5 +1,6 @@
 import React from "react";
 import "../../css/component-css/NavBar.css";
+import {useAuth0} from "@auth0/auth0-react";
 // import { Node } from "../../../backend/src/algorithms/Graph/Node.ts";
 // import { readNodeCSV } from "../../../backend/src/algorithms/readCSV.ts";
 // import axios from "axios";
@@ -14,6 +15,7 @@ export default function NavBar() {
   //     loadedLocations = true;
   //   }
   // }, []);
+    const {logout} = useAuth0();
 
   return (
       <div className="navbar-container">
@@ -21,6 +23,19 @@ export default function NavBar() {
               <a href={"/AdminMapPage"}>
                   <button className="dropbtn">Map Page</button>
               </a>
+              <div className={"dropdown-content"}>
+                  <a href={"/AdminMapPage"}>L2</a>
+                  <hr className={"dotted"}/>
+                  <a href={"/AdminMapPage"}>L1</a>
+                  <hr className={"dotted"}/>
+                  <a href={"/AdminMapPage"}>G</a>
+                  <hr className={"dotted"}/>
+                  <a href={"/AdminMapPage"}>1</a>
+                  <hr className={"dotted"}/>
+                  <a href={"/AdminMapPage"}>2</a>
+                  <hr className={"dotted"}/>
+                  <a href={"/AdminMapPage"}>3</a>
+              </div>
           </div>
 
           <div className="dropdown">
@@ -44,9 +59,11 @@ export default function NavBar() {
               </a>
           </div>
           <div className="dropdown">
-              <a href="http://localhost:3000">
-                  <button className="dropbtn">End Session</button>
-              </a>
+              <button className="dropbtn" onClick={() =>
+                  logout({logoutParams: {returnTo: "http://localhost:3000"}})
+              }>
+                  End Session
+              </button>
           </div>
 
       </div>

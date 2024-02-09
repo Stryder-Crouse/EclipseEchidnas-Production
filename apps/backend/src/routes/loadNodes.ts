@@ -1,11 +1,13 @@
 import express, { Router, Request, Response } from "express";
 //import { Prisma } from "database"; //may be very wrong
 import PrismaClient from "../bin/database-connection.ts";
-// import {nodeDataBaseToNode} from "../DataBaseClasses/NodeDataBase.ts"; //may also be wrong
+import {floorToString} from "../algorithms/Graph/Node.ts"; //may also be wrong
 
 const router: Router = express.Router();
 
 router.get("/", async function (req: Request, res: Response) {
+
+
   try {
     //try to send all the nodes to the client
     //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
@@ -14,12 +16,39 @@ router.get("/", async function (req: Request, res: Response) {
         orderBy: {
           longName: "asc", //specify here that we are ordering the 'longName' field in ascending order (A->Z)
         },
+
       }),
     ); //end res.send (this is what will be sent to the client)
     console.info("\n\n\n\n\n\nSuccessfully gave you the nodes\n\n\n\n\n\n");
   } catch (err) {
     console.error("\n\n\n\n\n\nUnable to send Nodes\n\n\n\n\n\n");
   }
+});
+
+
+router.get("/floor", async function (req: Request, res: Response) {
+    const floor = floorToString(parseInt(req.query.floor as string) );
+    console.log("querying for node on floor "+ floor);
+
+
+    try {
+        //try to send all the nodes to the client
+        //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
+        res.send(
+            await PrismaClient.nodeDB.findMany({
+                orderBy: {
+                    longName: "asc", //specify here that we are ordering the 'longName' field in ascending order (A->Z)
+                },
+                where:{
+                    floor:floor
+
+                },
+            }),
+        ); //end res.send (this is what will be sent to the client)
+        console.info("\n\n\n\n\n\nSuccessfully gave you the nodes\n\n\n\n\n\n");
+    } catch (err) {
+        console.error("\n\n\n\n\n\nUnable to send Nodes\n\n\n\n\n\n");
+    }
 });
 
 

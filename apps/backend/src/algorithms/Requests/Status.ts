@@ -2,7 +2,8 @@ enum status {
     Unassigned = "Unassigned",
     Assigned = "Assigned",
     InProgress = "In Progress",
-    Completed = "Completed"
+    Completed = "Completed",
+    Any = "Any"
 }
 
 export default status;
