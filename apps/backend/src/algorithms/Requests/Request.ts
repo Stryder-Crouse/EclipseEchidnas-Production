@@ -20,6 +20,20 @@ export type MedReq = {
     genReqID: number;
 };
 
+export type OutsideTransport = {
+    patientName: string;
+    destination: string;
+    modeOfTransport: string;
+    serviceReqID: number;
+}
+
+
+
+
+
+// ---------------------------------    ENUMS (which we don't use)    ---------------------------------
+
+
 /** Enum to hold the possible request types staff members can make */
 export enum ReqTypes {
     medReq = "medication" ,

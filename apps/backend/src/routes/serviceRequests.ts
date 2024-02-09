@@ -1,13 +1,17 @@
 import express, {Router, Request, Response} from "express";
 //import { MedReq, Request } from "../algorithms/node.ts";
 import PrismaClient from "../bin/database-connection.ts";
-import {MedReq, ServiceRequest} from "../algorithms/Requests/Request.ts";
+import {MedReq, OutsideTransport, ServiceRequest} from "../algorithms/Requests/Request.ts";
 // import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
 
 //import path from "path";
 //import fs from "fs";
 
 const router: Router = express.Router();
+
+// ---------------------------------    Med Request DB Interaction    ---------------------------------
+
+
 
 //posts all medication requests in the body of the function to the database
 // each request gets its own auto-generated ID
@@ -112,6 +116,13 @@ router.get("/medReq", async function (req: Request, res: Response) {
         console.error("\nUnable to send requests\n");
     }
 });
+
+
+
+// ---------------------------------    Service Request DB Interaction    ---------------------------------
+
+
+
 router.get("/serviceReq", async function (req: Request, res: Response) {
     try {
         //try to send all the nodes to the client
@@ -225,5 +236,22 @@ router.post("/changePriority", async function (req: Request, res: Response){
     }
 });
 
+
+// ---------------------------------    Outside Transport DB Interaction    ---------------------------------
+
+router.post("/outsideTransport", async function (req: Request, res: Response) {
+    try {
+        const sentData:[ServiceRequest,OutsideTransport] = req.body;
+        console.log(sentData);
+        res.sendStatus(200);
+    } catch {
+        console.error("Outside Transportation Request Failed");
+        res.sendStatus(400);
+    }
+});
+
+router.get("/outsideTransport", async function (/*req: Request, res: Response*/) {
+    // res.status(200).json(database);
+});
 
 export default router;
