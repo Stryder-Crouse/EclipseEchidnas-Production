@@ -31,7 +31,7 @@ export type OutsideTransport = {
 
 
 
-// ---------------------------------    ENUMS (which we don't use)    ---------------------------------
+// ---------------------------------    ENUMS    ---------------------------------
 
 
 /** Enum to hold the possible request types staff members can make */
@@ -40,5 +40,6 @@ export enum ReqTypes {
     religReq = "religious",
     flowReq = "flower delivery",
     sanReq = "sanitation",
-    tranReq = "transportation"
+    tranReq = "transportation",
+    outTransReq = "outside transportation"
 }

@@ -293,8 +293,30 @@ router.post("/outsideTransport", async function (req: Request, res: Response) {
     }
 });
 
-router.get("/outsideTransport", async function (/*req: Request, res: Response*/) {
-    // res.status(200).json(database);
+router.get("/outsideTransport", async function (req: Request, res: Response) {
+    try {
+
+        const transportReq = await PrismaClient.outsideTransport.findMany({
+            orderBy: {
+                serviceReqID: "asc", //order by service request id so the two arrays are parallel
+            }
+        });
+
+        const serviceReqs = await PrismaClient.serviceRequest.findMany({
+            orderBy: {
+                reqID: "asc", //order by service request id so the two arrays are parallel
+            },
+            where:{
+                reqType:"outside transportation"
+            }
+        });
+
+        //we display info from both the service req and the outside transportation req, so we send the person both DB objects
+        res.send([transportReq,serviceReqs]);
+        console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
+    } catch (err) {
+        console.error("\nUnable to send Requests\n");
+    }
 });
 
 export default router;
