@@ -1,0 +1,186 @@
+:root {
+    --white: #FFF;
+    --gray: #363638;
+    --gray-mid: #9D9D9D;
+    --gray-dark: #3e3e3e;
+    --gray-hover: #F7F7F7;
+    --body-background: #012D5A;
+    --primary: #0097A0;
+    --primary-border: #42375d;
+    --text: #CEC0E0;
+    --widget-background: #F1F1F1;
+}
+/*
+html {
+    font-family: 'Work Sans', sans-serif;
+}
+
+body {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 16px;
+    background: rgb(255,255,255);
+    background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 0%, rgba(0,83,168,0.40662202380952384) 100%);
+} */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.tabs-container {
+
+    padding: 16px;
+    margin: 7.5% auto auto;
+    width: 65%;
+    height: 90vh;
+
+    display: flex;
+
+    /*justify-content: center;*/
+
+    border-radius: 16px;
+    background-color: #F1F1F1;
+    box-shadow: 8px -9px 114px 0px rgba(217,217,217,1);
+
+    /*proberly should get rid of this*/
+    /*transform: scale(1.5);*/
+}
+
+
+.tab-content-wrapper {
+    overflow-y: auto;
+    overflow-x: auto;
+    max-height: 100%;
+
+    transition: all 0.45s ease-in-out;
+    padding: 0 16px;
+}
+
+.tab-content h2 {
+    color: black;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 0px;
+    margin-bottom: 8px;
+}
+
+.tab-content {
+    font-size: 0.8rem;
+    min-height: 300px;
+    min-width: 240px;
+    color: black;
+    overflow-x: auto;
+    transition: all 0.45s ease-in-out;
+
+}
+
+.tab-content img {
+    width: 100%;
+    height: auto;
+    margin-top: 16px;
+}
+
+.tabs {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    min-width: 140px;
+    width: 20%;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    list-style-type: none;
+    padding-right: 4px;
+    gap: 8px;
+}
+
+/* Left hand side bar **/
+.tabs a {
+    position: relative;
+    display: flex;
+    text-decoration: none;
+    width: 100%;
+
+    font-size: min(20px, 20px);
+
+    font-weight: 600;
+    text-align: left;
+    border-radius: 8px;
+    justify-content: start;
+    padding: 4px;
+    align-items: center;
+    gap: 8px;
+    color: black;
+    user-select: none;
+    margin-top: .75rem;
+    background-color: #d9d9d9;
+    transition: all 0.45s ease-in-out;
+
+
+}
+
+.tabs a img {
+    height: 20px;
+    width: 20px;
+}
+
+
+/* hover effects on selection */
+.tabs .active,
+.tabs a:hover {
+    outline: none;
+    background-color: #012D5A;
+    color: white;
+
+}
+
+
+
+
+.requestButton {
+    font-family: 'Work Sans', sans-serif;
+    background-color: #012D5A;
+    color: white;
+    white-space: nowrap;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    line-height: 1rem;
+    outline: none;
+    font-size: 1rem;
+    letter-spacing: 0.025em;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 800;
+    min-height: 2.5rem;
+    width: 49.5%;
+    border-radius: 0.5rem;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+.tab-input-fields {
+    color: black;
+    font-size: 0.75rem;
+    font-weight: 500;
+    max-width: 100%;
+    width: 15rem;
+    border: 1px solid black;
+    height: 2rem;
+    letter-spacing: 0.03rem;
+    background-color: transparent;
+    outline: none;
+    transition: 0.25s;
+    border-radius: 0.5rem;
+    text-indent: 1.25rem;
+    margin-top: 0.5rem;
+
+
+}
