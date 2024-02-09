@@ -20,8 +20,7 @@ function RequestList() {
         useState<Array<[MedReq,ServiceRequest]>>([]);
     const [medEmployees, setMedEmployees] =
         useState<Employee[]>([]);
-    const [servReqPriority, setReqPriority] =
-        useState<ServiceRequest[]>([]);
+
 
 
 
@@ -33,7 +32,7 @@ function RequestList() {
         if (!queryDone) {
             getEmployees().then(result=>{ setMedEmployees(result);});
             getMedRequests().then(result=>{ setMedRequestList(result);});
-            getPriority().then(result => {setReqPriority(result);});
+
         }
         return ()=>{
             queryDone = true;
@@ -289,7 +288,6 @@ function RequestList() {
         const medRequests = [...medRequestList]; //make a copy of the array to update
         const thisRequest = medRequests?.at(requestIndex);//use the copy to make changes
 
-        console.log("servReqPriority: "+servReqPriority);
         console.log("medRequests: "+medRequests);
         //console.log("servReq: "+servReq);
         //console.log("thisReq: "+thisReq);
@@ -306,7 +304,7 @@ function RequestList() {
         }
 
         //assign new status
-        thisRequest[1].status=select.value;
+        thisRequest[1].reqPriority=select.value;
         console.log("New Status: " + select.value);
 
         //const servReqList = medRequests[1];
@@ -352,11 +350,7 @@ async function getEmployees() {
 
 }
 
-//todo RYAN --- add axios.get functionality
-async function getPriority() {
-    const priority = await axios.get<ServiceRequest[]>("/api/serviceRequests/changePriority");
-    return priority.data;
-}
+
 
 
 
