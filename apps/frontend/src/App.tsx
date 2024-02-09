@@ -10,7 +10,7 @@ import NewMapPage from "./routes/NewMapPage.tsx";
 import ProtectedEmployeeTable from "./components/protected-pages/ProtectedEmployeeTable.tsx";
 
 
-import TestServicePage from "../src/routes/TestServicePage.tsx";
+import TestServicePage from "./components/service-requests/ServiceRequestInput.tsx";
 function App() {
     const router = createBrowserRouter([
         {

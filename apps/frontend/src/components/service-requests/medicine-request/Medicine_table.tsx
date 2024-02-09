@@ -8,9 +8,9 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
     console.log(statusFilter);
 
     return (
-        <div >
+        <div>
             {/* make your table in here  */}
-            Flower request table
+            Medicine request table
         </div>
     );
 

@@ -35,27 +35,28 @@ body {
 .tabs-container {
 
     padding: 16px;
-    margin: auto;
-    margin-top: 7.5%;
+    margin: 7.5% auto auto;
     width: 65%;
-    height: 50%;
+    height: 90vh;
 
     display: flex;
 
-    justify-content: center;
+    /*justify-content: center;*/
 
     border-radius: 16px;
     background-color: #F1F1F1;
     box-shadow: 8px -9px 114px 0px rgba(217,217,217,1);
 
-    transform: scale(1.5);
+    /*proberly should get rid of this*/
+    /*transform: scale(1.5);*/
 }
 
 
 .tab-content-wrapper {
-    overflow-y: hidden;
+    overflow-y: auto;
     overflow-x: auto;
-    height: 20rem;
+    max-height: 100%;
+
     transition: all 0.45s ease-in-out;
     padding: 0 16px;
 }
@@ -88,9 +89,14 @@ body {
     position: relative;
     display: flex;
     flex-direction: column;
+    max-height: 100%;
+    min-width: 140px;
+    width: 20%;
+    overflow-x: hidden;
+    overflow-y: auto;
 
     list-style-type: none;
-    padding-right: 16px;
+    padding-right: 4px;
     gap: 8px;
 }
 
@@ -100,12 +106,14 @@ body {
     display: flex;
     text-decoration: none;
     width: 100%;
-    font-size: 14px;
+
+    font-size: min(20px, 20px);
+
     font-weight: 600;
     text-align: left;
     border-radius: 8px;
     justify-content: start;
-    padding: 12px;
+    padding: 4px;
     align-items: center;
     gap: 8px;
     color: black;
