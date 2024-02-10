@@ -280,6 +280,9 @@ router.post("/flowReq", async function (req: Request, res: Response) {
         await PrismaClient.flowReq.create({
             data: {
                 flowType: flowData[1].flowType,
+                sender: flowData[1].sender,
+                receiver: flowData[1].receiver,
+                message: flowData[1].message,
                 genReqID: service.reqID,
             }
         });

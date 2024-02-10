@@ -22,6 +22,9 @@ export type MedReq = {
 
 export type FlowReq = {
     flowType: string;
+    sender: string;
+    receiver: string;
+    message: string;
     genReqID: number;
 }
 

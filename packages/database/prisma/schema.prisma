@@ -59,6 +59,9 @@ model MedReq {
 model FlowReq {
   flowReqID Int    @id @unique @default(autoincrement())
   flowType  String @db.VarChar(256)
+  sender    String @db.VarChar(256)
+  receiver  String @db.VarChar(256)
+  message   String @db.VarChar(256)
 
   genReqID Int            @unique
   genReq   ServiceRequest @relation("FlowerReq", fields: [genReqID], references: [reqID])
