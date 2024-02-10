@@ -241,6 +241,7 @@ router.post("/changePriority", async function (req: Request, res: Response){
 
 router.post("/outsideTransport", async function (req: Request, res: Response) {
     try {
+        //you need a service request to make an outside transportation request, so let the router know that you are receiving both
         const sentData:[ServiceRequest,OutsideTransport] = req.body;
         const servReq = await PrismaClient.serviceRequest.create({
             data: {
