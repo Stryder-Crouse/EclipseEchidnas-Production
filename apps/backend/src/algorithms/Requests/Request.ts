@@ -20,6 +20,11 @@ export type MedReq = {
     genReqID: number;
 };
 
+export type FlowReq = {
+    flowType: string;
+    genReqID: number;
+}
+
 /** Enum to hold the possible request types staff members can make */
 export enum ReqTypes {
     medReq = "medication" ,

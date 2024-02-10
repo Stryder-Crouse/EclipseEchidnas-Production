@@ -56,18 +56,13 @@ model MedReq {
   genReq ServiceRequest @relation("genericRequest", fields: [genReqID], references: [reqID])
 }
 
-//making new request table exsample
-// model FlowerReq {
-//   medReqID Int    @id @unique @default(autoincrement())
-//   medType  String @db.VarChar(256)
-//   dosage   String @db.VarChar(256)
-//   numDoses Int
-//
-//
-//   genReqID Int    @unique
-//
-//   genReq ServiceRequest @relation("FlowerReq", fields: [genReqID], references: [reqID])
-// }
+model FlowReq {
+  flowReqID Int    @id @unique @default(autoincrement())
+  flowType  String @db.VarChar(256)
+
+  genReqID Int            @unique
+  genReq   ServiceRequest @relation("FlowerReq", fields: [genReqID], references: [reqID])
+}
 
 model ServiceRequest {
   reqID         Int     @id @unique @default(autoincrement())
@@ -80,8 +75,7 @@ model ServiceRequest {
 
   //not actually here
   medReq      MedReq?   @relation("genericRequest")
-  //making new request table exsample
-  //flowReq      FlowerReq?   @relation("FlowerReq")
+  flowReq     FlowReq?  @relation("FlowerReq")
   reqLocation NodeDB    @relation("requestLocation", fields: [reqLocationID], references: [nodeID])
   assigned    Employee? @relation("assignedEmployee", fields: [assignedUName], references: [userName])
 }
