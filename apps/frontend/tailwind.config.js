@@ -1,12 +1,19 @@
-/** @type {import('tailwindcss').Config} **/
+/** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./index.html",
-    "./src/**/.{js,ts,jsx,tsx}",
+    './pages/**/*.{html,js,tsx}',
+    './components/**/*.{html,js}',
+    './src/**/**.{html,js,tsx}',
+
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        navStart: '#024C96',
+        navy: '#012d5A',
+        ivoryWhite: '#f1f1f1',
+      }
+    },
   },
   plugins: [],
 };
-
