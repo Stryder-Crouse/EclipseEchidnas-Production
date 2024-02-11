@@ -8,18 +8,15 @@ function RequestButtons({ submit }: RequestButtonsInterface) {
 
   function show() {
       const tag: HTMLElement = document.getElementById("popup") as HTMLElement;
-
       tag.style.opacity = "1";
-
-      setInterval(fadeEffect, 200);
-
+      setInterval(fadeEffect, 300);
   }
 
   function fadeEffect() {
       const target = document.getElementById("popup") as HTMLElement;
       let opacity = target.style.opacity;
         if(opacity != "0") {
-            opacity = (Number(opacity) - 0.05).toString();
+            opacity = (Number(opacity) - 0.03).toString();
             target.style.opacity = opacity;
         }
 
@@ -37,7 +34,7 @@ function RequestButtons({ submit }: RequestButtonsInterface) {
           <br/>
           <div id={"popup"} className={"popup"}>
               <h3>
-                  Succesfully submitted!
+                  Successfully submitted!
               </h3>
           </div>
       </div>
