@@ -1,12 +1,16 @@
 import express, {Router, Request, Response} from "express";
 //import { MedReq, Request } from "../algorithms/node.ts";
 import PrismaClient from "../bin/database-connection.ts";
-import {FlowReq, MedReq, ServiceRequest} from "../algorithms/Requests/Request.ts";
+import {FlowReq, MedReq,  OutsideTransport, ServiceRequest} from "../algorithms/Requests/Request.ts";
 
 //import path from "path";
 //import fs from "fs";
 
 const router: Router = express.Router();
+
+// ---------------------------------    Med Request DB Interaction    ---------------------------------
+
+
 
 //posts all medication requests in the body of the function to the database
 // each request gets its own auto-generated ID
@@ -31,7 +35,7 @@ router.post("/medReq", async function (req: Request, res: Response) {
             data: {
                 //ID is auto created
                 reqType: sentData[0].reqType,
-                reqPriority: "Low",
+                reqPriority: sentData[0].reqPriority,
                 //connect the Node field using the node id as a foreign key
                 reqLocation: {
                     connect : {
@@ -111,6 +115,12 @@ router.get("/medReq", async function (req: Request, res: Response) {
         console.error("\nUnable to send requests\n");
     }
 });
+
+
+
+// ---------------------------------    Service Request DB Interaction    ---------------------------------
+
+
 
 router.get("/serviceReq", async function (req: Request, res: Response) {
     try {
@@ -226,6 +236,92 @@ router.post("/changePriority", async function (req: Request, res: Response){
 });
 
 
+// ---------------------------------    Outside Transport DB Interaction    ---------------------------------
+
+router.post("/outsideTransport", async function (req: Request, res: Response) {
+    try {
+        //you need a service request to make an outside transportation request, so let the router know that you are receiving both
+        const sentData:[ServiceRequest,OutsideTransport] = req.body;
+        const servReq = await PrismaClient.serviceRequest.create({
+            data: {
+                reqType: sentData[0].reqType,
+                reqPriority: sentData[0].reqPriority,
+                reqLocation: {
+                    connect: {
+                        nodeID: sentData[0].reqLocationID
+                    }
+                },
+                extraInfo: sentData[0].extraInfo,
+                status: sentData[0].status,
+                //connect the Employee field using the username as a foreign key
+                //assigned is the relation, so itt does not actually exist as data (data that
+                // will exist and connect is data you specify below)
+                assigned: {
+                    connectOrCreate: {
+                        //connectOrCreate makes you specify what data you will create with and also what you
+                        // want to connect to (needs to know both potential outcomes)
+                        create: {
+                            userName: "No one",
+                            firstName: "N/A",
+                            lastName: "N/A",
+                            designation: "N/A",
+                            isAdmin: true,
+                        },
+                        //second part of create or connect (the what-we-connect-to part)
+                        where: {
+                            userName: "No one"
+                        }
+                    }
+                }
+            }
+        });
+        console.log("Successfully saved Service Requirement");
+
+        await PrismaClient.outsideTransport.create({
+            data: {
+                patientName: sentData[1].patientName,
+                destination: sentData[1].destination,
+                modeOfTransport: sentData[1].modeOfTransport,
+                serviceReqID: servReq.reqID
+            }
+        });
+        console.log("Successfully saved the Outside Transportation Request");
+        res.sendStatus(200);
+    } catch {
+        console.error("Outside Transportation Request Failed");
+        res.sendStatus(400);
+    }
+});
+
+router.get("/outsideTransport", async function (req: Request, res: Response) {
+    try {
+
+        const transportReq = await PrismaClient.outsideTransport.findMany({
+            orderBy: {
+                serviceReqID: "asc", //order by service request id so the two arrays are parallel
+            }
+        });
+
+        const serviceReqs = await PrismaClient.serviceRequest.findMany({
+            orderBy: {
+                reqID: "asc", //order by service request id so the two arrays are parallel
+            },
+            where:{
+                reqType:"outside transportation"
+            }
+        });
+
+        //we display info from both the service req and the outside transportation req, so we send the person both DB objects
+        res.send([transportReq,serviceReqs]);
+        console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
+    } catch (err) {
+        console.error("\nUnable to send Requests\n");
+    }
+});
+
+
+// ---------------------------------    Flower Request DB Interaction    ---------------------------------
+
 router.post("/flowReq", async function (req: Request, res: Response) {
     //console.log(req.body);
     //console.log("Flow Req Above");
@@ -243,7 +339,7 @@ router.post("/flowReq", async function (req: Request, res: Response) {
             data: {
                 //ID is auto created
                 reqType: flowData[0].reqType,
-                reqPriority: "Low",
+                reqPriority: flowData[0].reqPriority,
                 //connect the Node field using the node id as a foreign key
                 reqLocation: {
                     connect : {
