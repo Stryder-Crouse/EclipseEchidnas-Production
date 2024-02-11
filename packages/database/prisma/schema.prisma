@@ -59,6 +59,7 @@ model MedReq {
 model FlowReq {
   flowReqID Int    @id @unique @default(autoincrement())
   flowType  String @db.VarChar(256)
+  quantity  Int
   sender    String @db.VarChar(256)
   receiver  String @db.VarChar(256)
   message   String @db.VarChar(256)

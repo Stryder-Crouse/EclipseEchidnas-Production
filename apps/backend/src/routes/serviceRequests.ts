@@ -280,6 +280,7 @@ router.post("/flowReq", async function (req: Request, res: Response) {
         await PrismaClient.flowReq.create({
             data: {
                 flowType: flowData[1].flowType,
+                quantity: flowData[1].quantity,
                 sender: flowData[1].sender,
                 receiver: flowData[1].receiver,
                 message: flowData[1].message,
@@ -302,31 +303,48 @@ router.get("/flowReq", async function (req: Request, res: Response) {
         //
         const filterStatus = req.body.status;
 
-        //try to send all the nodes to the client
-        const flowReqs = await PrismaClient.flowReq.findMany({
-            orderBy: {
-                genReqID: "asc", //order by service request id so the two arrays are parallel
-            },
-            where: {
-                genReq:{
+        if (filterStatus == "Any"){
+            //try to send all the nodes to the client
+            const flowReqs = await PrismaClient.flowReq.findMany({
+                orderBy: {
+                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                },
+            });
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"flower delivery",
+                }
+            });
+            res.send([flowReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
+            console.info("\nSuccessfully gave you all of the flower requests\n");
+        }
+        else{
+            //try to send all the nodes to the client
+            const flowReqs = await PrismaClient.flowReq.findMany({
+                orderBy: {
+                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where: {
+                    genReq:{
+                        status: filterStatus,
+                    }
+                }
+            });
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"flower delivery",
                     status: filterStatus,
                 }
-            }
-        });
-
-        const serviceReqs = await PrismaClient.serviceRequest.findMany({
-            orderBy: {
-                reqID: "asc", //order by service request id so the two arrays are parallel
-            },
-            where:{
-                reqType:"flower delivery",
-                status: filterStatus,
-            }
-        });
-
-
-        res.send([flowReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
-        console.info("\nSuccessfully gave you all of the flower requests\n");
+            });
+            res.send([flowReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
+            console.info("\nSuccessfully gave you all of the flower requests\n");
+        }
     } catch (err) {
         console.error("\nUnable to send requests\n");
     }

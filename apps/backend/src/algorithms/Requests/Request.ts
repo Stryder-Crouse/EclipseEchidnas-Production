@@ -22,6 +22,7 @@ export type MedReq = {
 
 export type FlowReq = {
     flowType: string;
+    quantity: number;
     sender: string;
     receiver: string;
     message: string;
