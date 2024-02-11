@@ -6,9 +6,7 @@ export type ServiceRequest = {
     reqPriority: string;
 //  reqLocationID: string; //should be a fk to a node
     reqLocationID: string;
-    //reqLocationID is reqLocation.id
     extraInfo: string;
-    //assigneeUName is assigned.userName
     status: string;
     assignedUName: string;
     reqID:number;
@@ -22,11 +20,26 @@ export type MedReq = {
     genReqID: number;
 };
 
+export type OutsideTransport = {
+    patientName: string;
+    destination: string;
+    modeOfTransport: string;
+    serviceReqID: number;
+}
+
+
+
+
+
+// ---------------------------------    ENUMS    ---------------------------------
+
+
 /** Enum to hold the possible request types staff members can make */
 export enum ReqTypes {
     medReq = "medication" ,
     religReq = "religious",
     flowReq = "flower delivery",
     sanReq = "sanitation",
-    tranReq = "transportation"
+    tranReq = "transportation",
+    outTransReq = "outside transportation"
 }
