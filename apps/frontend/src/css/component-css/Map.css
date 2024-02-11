@@ -25,6 +25,21 @@
     stroke-width: 5;
 }
 
+.showAllText{
+    font: bold 20px "Courier New";
+    fill: white;
+}
+
+.floorLinkRect{
+    rx:5;
+    fill: #062651;
+    fill-opacity: 85%;
+}
+.floorLinkText {
+    font: bold 50px sans-serif;
+    fill: white;
+}
+
 .normalNode {
   fill: blue;
   r: 10; /* radius of node */
@@ -71,6 +86,26 @@
     font: bold 50px sans-serif;
     fill: white;
 }
+
+/*node info hoverOver*/
+
+
+
+.spanNodeInfo{
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+
 
 @keyframes dash {
 

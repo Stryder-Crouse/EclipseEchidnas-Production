@@ -3,7 +3,7 @@ import axios from "axios";
 import {FloorToIndex, floorToNumber, Node, NULLNODE} from "../../../../backend/src/algorithms/Graph/Node.ts";
 
 import "../../css/component-css/Map.css";
-import {Edge} from "../../../../backend/src/algorithms/Graph/Edge.ts";
+import {Edge, NULLEDGE} from "../../../../backend/src/algorithms/Graph/Edge.ts";
 import {Graph} from "../../../../backend/src/algorithms/Graph/Graph.ts";
 import {onNodeHover, onNodeLeave,} from "../../event-logic/circleNodeEventHandlers.ts";
 import {NodeDataBase, nodeDataBaseToNode,} from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
@@ -63,13 +63,7 @@ function updatePathEdges(startingNode:Node,
                          setPathEdges:Dispatch<SetStateAction<Edge[]>>,
                          floorIndex:number,
                          drawAllEdges:boolean,
-                         setPathFloorTransitionNodes:Dispatch<SetStateAction<Edge[]>>){
-
-    if(startingNode == NULLNODE || endingNode == NULLNODE){
-        setPathEdges([]);
-        setPathFloorTransitionNodes([]);
-        return;
-    }
+                         setPathFloorTransitionNodes:Dispatch<Array<{startTranNode:Node, endTranNode:Node} >>){
 
     if(drawAllEdges){
         //set all edges that start and end on this floor to be drawn
@@ -82,6 +76,15 @@ function updatePathEdges(startingNode:Node,
         setPathEdges(allFloorEdges);
         return;
     }
+
+
+    if(startingNode == NULLNODE || endingNode == NULLNODE){
+        setPathEdges([]);
+        setPathFloorTransitionNodes([]);
+        return;
+    }
+
+
 
 
     if (graph == null) {
@@ -111,11 +114,11 @@ function updatePathEdges(startingNode:Node,
 
     //get path on this floor
     const pathEdges:Array<Edge> =[];
-    const pathTranistionEdges:Array<Edge> =[];
+    const pathTranistions:Array<{startTranNode:Node, endTranNode:Node} > =[];
 
     for (let i = 0; i < rawpath.length -1; i++) {
-        const start = rawpath.at(i) ?? null;
-        const end = rawpath.at(i + 1) ?? null;
+        const start = rawpath.at(i)!;
+        const end = rawpath.at(i + 1)!;
 
         //edge starts and ends on this floor
         if (floorToNumber(start!.floor) == floorIndex && floorToNumber(end!.floor) == floorIndex) {
@@ -126,21 +129,87 @@ function updatePathEdges(startingNode:Node,
                 }
             });
         }
-        //one node of the edge in on the current floor
-        else if (floorToNumber(start!.floor) == floorIndex || floorToNumber(end!.floor) == floorIndex){
-            //find edge that connects start and end node and add it
-            start!.edges.forEach((edge)=>{
-                if(edge.endNode==end){
-                    pathTranistionEdges.push(edge);
+        //if edge leaves the current floor
+        else if (floorToNumber(start!.floor) == floorIndex){
+            //go forwards to find the tranistion node it ends at
+            const newTranistion:{startTranNode:Node, endTranNode:Node} = {startTranNode:start, endTranNode:end};
+
+            let currentNode = end;
+
+            while( i < rawpath.length -2){
+                currentNode = rawpath.at(i + 1)!;
+                const nextNode = rawpath.at(i + 2)!;
+                let connectingEdge:Edge = {endNode: end, id: "BAD", startNode: start, weight: 0};
+                //find edge to next node in tranistion
+                currentNode!.edges.forEach((edge)=>{
+                    if(edge.endNode==nextNode){
+                        connectingEdge=edge;
+                    }
+                });
+                if(connectingEdge==NULLEDGE){
+                    console.error("connecting edge not found");
+                    break;
                 }
-            });
+
+                //if edge has a floor tranistion weight then keep going if not break;
+                if(connectingEdge.weight==Graph.getElevatorAndStairsEdgeWeight()){
+                    newTranistion.endTranNode = nextNode;
+                }
+                else{
+                    break;
+                }
+
+                i++;
+            }
+
+
+            pathTranistions.push(newTranistion);
+        }
+        //if edge ends at current floor
+        else if(floorToNumber(end!.floor) == floorIndex){
+            //go backwards to find the tranistion node it started from
+            const newTranistion:{startTranNode:Node, endTranNode:Node} = {startTranNode:start, endTranNode:end};
+
+            let currentNode = start;
+            const startingI=i;
+
+            while( i > 0){
+                currentNode = rawpath.at(i)!;
+                const prevNode = rawpath.at(i - 1)!;
+                let connectingEdge:Edge = NULLEDGE;
+                //find edge to next node in tranistion
+                currentNode!.edges.forEach((edge)=>{
+                    if(edge.endNode==prevNode){
+                        connectingEdge=edge;
+                    }
+                });
+                if(connectingEdge==NULLEDGE){
+                    console.error("connecting edge not found");
+                    break;
+                }
+
+                //if edge has a floor tranistion weight then keep going if not break;
+                if(connectingEdge.weight==Graph.getElevatorAndStairsEdgeWeight()){
+                    newTranistion.startTranNode = prevNode;
+                }
+                else{
+                    break;
+                }
+
+                i++;
+            }
+
+            //go back to starting i to advoid recaluations
+            i=startingI;
+
+            pathTranistions.push(newTranistion);
         }
     }
     console.log("edges on this floor");
     console.log(pathEdges);
-    console.log("tranision edges on this floor");
-    console.log(pathTranistionEdges);
-    setPathFloorTransitionNodes(pathTranistionEdges);
+    console.log("tranisions on this floor");
+    console.log(pathTranistions);
+    setPathFloorTransitionNodes(pathTranistions);
     setPathEdges(pathEdges);
 
 }
@@ -170,10 +239,11 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
     console.log(setSelectedFloorIndex,setLocations);
 
     useEffect(() => {
-        updatePathEdges(startNode,endNode,setPathDrawnEdges,selectedFloorIndex,drawEntirePath,setPathFloorTransitionEdges);
+        updatePathEdges(startNode,endNode,setPathDrawnEdges,selectedFloorIndex,drawEntirePath,setPathFloorTransitions);
     }, [drawEntirePath, endNode, selectedFloorIndex, startNode]);
     const [pathDrawnEdges, setPathDrawnEdges] = useState<Array<Edge>>([]);
-    const [pathFloorTransitionEdges, setPathFloorTransitionEdges] = useState<Array<Edge>>([]);
+    const [pathFloorTransitions, setPathFloorTransitions] =
+        useState<Array<{startTranNode:Node, endTranNode:Node} >>([]);
 
     //the html returned from the component
     return (
@@ -217,6 +287,11 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
                     })
 
 
+                }
+                {
+                    pathFloorTransitions.map((tranistion)=>{
+                        return drawTranistionText(tranistion);
+                    })
                 }
 
 
@@ -267,35 +342,67 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
                 </a>
             );
         }
-        else if(inTranistionEdge(node.id)){
+        else if(inTranistion(node.id)){
+
             return (
                 <a key={node.id} id={node.id} className={"clickableAtag"}
-                   onClick={()=> onNodeClick(node.id)}
-                   onMouseOver={()=> onNodeHover(node.id)}
-                   onMouseLeave={()=> onNodeLeave(node.id)}
+                   onClick={() => onNodeClick(node.id)}
+                   onMouseOver={() => onNodeHover(node.id)}
+                   onMouseLeave={() => onNodeLeave(node.id)}
                 >
                     <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"transitionNode"}></circle>
                 </a>
             );
         }
-        else{
+        else if(drawEntirePath){
+
+            const height = 30;
+            const width = node.longName.length*12.5+10;
+
+            const xTranform = -width/2;
+            const xTextTranform = -width/2+5;
+            const yTranform = +15;
+            const yTextTranform = 35;
+
+
             return (
                 <a key={node.id} id={node.id} className={"clickableAtag"}
-                   onClick={()=> onNodeClick(node.id)}
+                   onClick={() => onNodeClick(node.id)}
+                   onMouseOver={() => onNodeHover(node.id)}
+                   onMouseLeave={() => onNodeLeave(node.id)}
+                >
+                    {/* todo maybe remove this text it looks bad and i think the other info show statifies the requerment*/}
+                    <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"normalNode"}></circle>
+                    <rect x={node.coordinate.x + xTranform}
+                          y={node.coordinate.y + yTranform} height={height}
+                          width={width}
+                          className={"floorLinkRect"}/>
+                    <text x={node.coordinate.x + xTextTranform}
+                          y={node.coordinate.y + yTextTranform}
+                          className={"showAllText"}>
+                        {node.longName}</text>
+                </a>
+            );
+        }
+        else {
+            return (
+                <a key={node.id} id={node.id} className={"clickableAtag"}
+                   onClick={() => onNodeClick(node.id)}
                    onMouseOver={()=> onNodeHover(node.id)}
                    onMouseLeave={()=> onNodeLeave(node.id)}
                 >
                     <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"normalNode"}></circle>
+                    <span className={"spanNodeInfo"}> HIIIIIII </span>
                 </a>
             );
         }
 
     }
 
-    function inTranistionEdge(nodeID:string){
+    function inTranistion(nodeID:string){
         let isATranistionNode = false;
-        pathFloorTransitionEdges.forEach((edge)=>{
-            if(edge.startNode.id == nodeID || edge.endNode.id == nodeID){
+        pathFloorTransitions.forEach((tranistion)=>{
+            if(tranistion.startTranNode.id == nodeID || tranistion.endTranNode.id == nodeID){
                 isATranistionNode=true;
             }
         });
@@ -304,9 +411,51 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
     }
 
 
+    function drawTranistionText(tranistion:{startTranNode:Node, endTranNode:Node}){
 
-    function handleMapToggle(){
-        if(!drawEntirePath){
+        const floorStart =floorToNumber(tranistion!.startTranNode.floor);
+        const floorEnd =floorToNumber(tranistion!.endTranNode.floor);
+
+        const xTranform = -225;
+        const xTextTranform = -220;
+        const yTranform = -10;
+        const yTextTranform = 35;
+        const height = 60;
+        const width =210;
+
+        if(floorStart==selectedFloorIndex){
+            return (
+                <a key={"tranistion_" + tranistion.startTranNode.id}>
+                    <rect x={tranistion.startTranNode.coordinate.x + xTranform} y={tranistion.startTranNode.coordinate.y + yTranform} height={height}
+                          width={width}
+                          className={"floorLinkRect"}/>
+                    <text x={tranistion.startTranNode.coordinate.x + xTextTranform} y={tranistion.startTranNode.coordinate.y + yTextTranform}
+                          className={"floorLinkText"}>
+                        {"Go to " + tranistion!.endTranNode.floor}</text>
+                </a>
+
+            );
+        } else if (floorEnd == selectedFloorIndex) {
+            return (
+                <a key={"tranistion_" + tranistion.startTranNode.id}>
+                    <rect x={tranistion.endTranNode.coordinate.x + xTranform} y={tranistion.endTranNode.coordinate.y + yTranform} height={height}
+                          width={width}
+                          className={"floorLinkRect"}/>
+                    <text x={tranistion.endTranNode.coordinate.x + xTextTranform} y={tranistion.endTranNode.coordinate.y + yTextTranform}
+                          className={"floorLinkText"}>
+                        {"From " + tranistion!.startTranNode.floor}</text>
+                </a>
+
+            );
+        }
+
+        return <a>error</a>;
+
+    }
+
+
+    function handleMapToggle() {
+        if (!drawEntirePath) {
             setDrawEntirePath(true);
         }
         else{

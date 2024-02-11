@@ -18,6 +18,7 @@ export function onNodeHover(nodeID: string) {
   else if (nodeCircle?.getAttribute("class") == "transitionNode") {
       nodeCircle.setAttribute("class", "transitionNodeHovered");
   }
+
 }
 
 /**
