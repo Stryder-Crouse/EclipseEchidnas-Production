@@ -61,7 +61,7 @@ export function SideBarItem({ icon, text, link }: SideBarItemProps): JSX.Element
     // eslint-disable-next-line no-empty-function
     const { expanded } = useContext(SidebarContext) || { expanded: true, setExpanded: () => {} };
     return (
-        <li className="relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group ">
+        <li className="relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group hover:bg-navy">
             <a href={link} className="flex mb-8 mt-8 ">
                 <img src={icon} alt={"Map Icon"} className={"absolute"}
                      style={{ width: expanded ? '24' : '24', height: '24px' }}/>
