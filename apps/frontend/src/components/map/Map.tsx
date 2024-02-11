@@ -473,23 +473,23 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
         switch (selectedFloorIndex) {
             case FloorToIndex.LowerLevel2:
 
-                return "/src/images/00_thelowerlevel2.png";
+                return "/src/images/maps/00_thelowerlevel2.png";
             case FloorToIndex.LowerLevel1:
 
-                return "/src/images/00_thelowerlevel1.png";
+                return "/src/images/maps/00_thelowerlevel1.png";
             case FloorToIndex.Ground:
 
-                return "/src/images/00_thegroundfloor.png";
+                return "/src/images/maps/00_thegroundfloor.png";
             case FloorToIndex.Level1:
 
-                return "/src/images/01_thefirstfloor.png";
+                return "/src/images/maps/01_thefirstfloor.png";
             case FloorToIndex.Level2:
 
-                return "/src/images/02_thesecondfloor.png";
+                return "/src/images/maps/02_thesecondfloor.png";
             case FloorToIndex.Level3:
 
-                return "/src/images/03_thethirdfloor.png";
-            default: return "/src/images/00_thelowerlevel1.png";
+                return "/src/images/maps/03_thethirdfloor.png";
+            default: return "/src/images/maps/00_thelowerlevel1.png";
         }
 
     }
