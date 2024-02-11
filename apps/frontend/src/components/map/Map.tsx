@@ -357,7 +357,7 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
                 }
 
                 //add node cordnates to the line obj
-                newLine.setAttribute("class", "pathLine");
+                newLine.setAttribute("class", "pathLineAll");
                 //start node cordnates
                 newLine.setAttribute("x1", start.coordinate.x.toString());
                 newLine.setAttribute("y1", start.coordinate.y.toString());
