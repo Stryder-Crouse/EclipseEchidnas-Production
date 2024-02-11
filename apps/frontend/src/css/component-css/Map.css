@@ -16,6 +16,13 @@
 .pathLine {
   stroke: black;
   stroke-width: 5;
+    animation: dash 10s linear infinite reverse;
+    stroke-dasharray: 1vw;
+}
+
+.pathLineAll {
+    stroke: black;
+    stroke-width: 5;
 }
 
 .normalNode {
@@ -51,5 +58,13 @@
 
 .heavy {
     font: bold 50px sans-serif;
-    fill:white;
+    fill: white;
+}
+
+@keyframes dash {
+
+    to {
+        stroke-dashoffset: 1000;
+    }
+
 }
