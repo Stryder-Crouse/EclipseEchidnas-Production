@@ -56,7 +56,7 @@ model MedReq {
   genReq ServiceRequest @relation("genericRequest", fields: [genReqID], references: [reqID])
 }
 
-//making new request table exsample
+// making new request table exsample
 // model FlowerReq {
 //   medReqID Int    @id @unique @default(autoincrement())
 //   medType  String @db.VarChar(256)
@@ -78,12 +78,13 @@ model ServiceRequest {
   assignedUName String? @db.VarChar(256)
   reqPriority   String  @db.VarChar(256)
 
-  //not actually here
-  medReq      MedReq?   @relation("genericRequest")
-  //making new request table exsample
-  //flowReq      FlowerReq?   @relation("FlowerReq")
-  reqLocation NodeDB    @relation("requestLocation", fields: [reqLocationID], references: [nodeID])
-  assigned    Employee? @relation("assignedEmployee", fields: [assignedUName], references: [userName])
+  // not actually here
+  medReq           MedReq?           @relation("genericRequest")
+  outsideTransport outsideTransport? @relation("outsideTransport")
+  // making new request table exsample
+  // flowReq      FlowerReq?   @relation("FlowerReq")
+  reqLocation      NodeDB            @relation("requestLocation", fields: [reqLocationID], references: [nodeID])
+  assigned         Employee?         @relation("assignedEmployee", fields: [assignedUName], references: [userName])
 }
 
 model Employee {
@@ -93,8 +94,19 @@ model Employee {
   designation String  @db.VarChar(256)
   isAdmin     Boolean
 
-  //This DOES NOT EXIST - DON'T try to use it!!
+  // This DOES NOT EXIST - DON'T try to use it!!
   //@relation tells prisma to now make an attribute and instead
   // relate the other table to this table through the specified key
   assignedTasks ServiceRequest[] @relation("assignedEmployee")
+}
+
+model outsideTransport {
+  // do not need a patient room since this will be the location of the request
+  outsideTransportID Int    @id @unique @default(autoincrement())
+  patientName        String @db.VarChar(256)
+  destination        String @db.VarChar(256)
+  modeOfTransport    String @db.VarChar(256)
+  serviceReqID       Int    @unique
+
+  serviceReq ServiceRequest @relation("outsideTransport", fields: [serviceReqID], references: [reqID])
 }
