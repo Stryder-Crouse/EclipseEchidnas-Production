@@ -1,17 +1,16 @@
 import axios from "axios";
 
-import {FloorToIndex, floorToNumber, Node} from "../../../../backend/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, floorToNumber, Node, NULLNODE} from "../../../../backend/src/algorithms/Graph/Node.ts";
 
 import "../../css/component-css/Map.css";
 import {Edge} from "../../../../backend/src/algorithms/Graph/Edge.ts";
 import {Graph} from "../../../../backend/src/algorithms/Graph/Graph.ts";
-//import {BFS} from "../../../../backend/src/algorithms/Search/BFS.ts";
 import {onNodeHover, onNodeLeave,} from "../../event-logic/circleNodeEventHandlers.ts";
 import {NodeDataBase, nodeDataBaseToNode,} from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import {EdgeDataBase, edgeDataBasetoEdge,} from "../../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
-import {Dispatch, SetStateAction} from "react";
+import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {AStar} from "../../../../backend/src/algorithms/Search/AStar.ts";
-//import {Coordinate} from "../../../../backend/src/algorithms/Graph/Coordinate.ts";
+
 
 /**
  * @param startNodeID the ID of the starting node to path find from
@@ -21,15 +20,12 @@ import {AStar} from "../../../../backend/src/algorithms/Search/AStar.ts";
  *
  */
 
-//stores
-let startNode: Node | null = null;
-let endNode: Node | null = null;
 
-let toggleGraph=false;
 
 //get graph from database
 let graph: Graph | null = null;
-//let pathCordnates:Array<Array<Coordinate>> = [];
+
+
 
 let veiwbox:Array<number> = [1040,590];
 
@@ -58,180 +54,96 @@ async function updateGraph() {
     console.log(graph.getEdges());
 }
 
-/**
- * @param nodeClickedID - the id of the node clicked on the screen
- *
- * This function fires when a node is clicked on the map.
- * if only one node is selected it turns that node green and notes the node as the starting node
- * if two nodes are selected it turn the newly selected node red (end node) and attempts to draw a path
- * between them
- * if another node is selected while a path is draw it clears the path then sets the newly selected node
- * as the start node.
- *
- */
-function onNodeClick(nodeClickedID: string) {
-    //find node obj in graph
-    const nodeClicked = graph?.idToNode(nodeClickedID);
-
-    if (nodeClicked == null) {
-        console.error("Graph has not been created yet");
-        return;
-    }
-
-    //if no nodes selected
-    if (startNode == null && endNode == null) {
-        //set start node
-        startNode = nodeClicked;
-        //debug
-        console.log("start selected");
-        console.log(startNode);
-
-        //change to start node css
-        console.log(document.getElementById(nodeClickedID)?.children.item(0));
-        document
-            .getElementById(nodeClickedID)
-            ?.children.item(0)
-            ?.setAttribute("class", "startSelected");
-    }
-    //if start node has been selected
-    else if (endNode == null) {
-        //set end node
-        endNode = nodeClicked;
-        //debug
-        console.log("end selected");
-        console.log(endNode);
-        //change node color to red
-        console.log(document.getElementById(nodeClickedID)?.children.item(0));
-        document
-            .getElementById(nodeClickedID)
-            ?.children.item(0)
-            ?.setAttribute("class", "endSelected");
-
-        //attempt to draw path (! asserts that start node is not null)
-        makePath(startNode!, endNode);
-    }
-    //if both nodes were selected
-    else {
-        //change color of old nodes back to default
-        document
-            .getElementById(startNode?.id as string)
-            ?.children.item(0)
-            ?.setAttribute("class", "normalNode");
-        document
-            .getElementById(endNode?.id as string)
-            ?.children.item(0)
-            ?.setAttribute("class", "normalNode");
-
-        //delete old path
-        deletePath();
-
-        //set new start node and clear end node
-        startNode = nodeClicked;
-        endNode = null;
-
-        //change to start node css
-        console.log(document.getElementById(nodeClickedID)?.children.item(0));
-        document
-            .getElementById(nodeClickedID)
-            ?.children.item(0)
-            ?.setAttribute("class", "startSelected");
-
-        //debug
-        console.log("new path requested");
-        console.log(startNode);
-        console.log(endNode);
-    }
-}
 
 /**
- * helper function to delete the current path on the screen
+ * sets the path to the path to be displaued on the page
  * */
-function deletePath() {
-    //get map element
-    const map = document.getElementById("map");
-    //get maps children
-    const childrenOfMap = map?.children;
-    if (childrenOfMap == undefined) {
-        console.error("map has no children");
+function updatePathEdges(startingNode:Node,
+                         endingNode:Node,
+                         setPathEdges:Dispatch<SetStateAction<Edge[]>>,
+                         floorIndex:number,
+                         drawAllEdges:boolean,
+                         setPathFloorTransitionNodes:Dispatch<SetStateAction<Edge[]>>){
+
+    if(startingNode == NULLNODE || endingNode == NULLNODE){
+        setPathEdges([]);
+        setPathFloorTransitionNodes([]);
         return;
     }
 
-    //for each child check if it is a line element if it is delete it
-    for (let i = 0; i < childrenOfMap?.length; i++) {
-        if (childrenOfMap.item(i)?.tagName == "line") {
-            map?.removeChild(childrenOfMap.item(i)!);
-            i--; // dont iterate to not miss elements
-        }
+    if(drawAllEdges){
+        //set all edges that start and end on this floor to be drawn
+        const allFloorEdges:Array<Edge> = [];
+        graph?.getEdges().forEach((edge)=>{
+            if(floorToNumber(edge.startNode.floor) == floorIndex && floorToNumber(edge.endNode.floor) == floorIndex){
+                allFloorEdges.push(edge);
+            }
+        });
+        setPathEdges(allFloorEdges);
+        return;
     }
-}
 
 
-
-
-
-/**
- *
- * @param startNode - starting node obj of the path
- * @param endNode - end node / target node for the search
- *
- * helper function that does the bfs search to find a path between startNode and endNode.
- * once a path is found it draws lines between all the nodes in the path to show it to the user.
- *
- */
-function makePath(startNode: Node, endNode: Node) {
     if (graph == null) {
-        console.error("Graph has not been created yet - makepath");
+        console.error("Graph has not been created yet - updatePathEdges");
         return;
     }
+
+
+    //the nodes in startNode and endNode ARE NOT CONNECTED to any edge so we need to get the same connected ones in the graph
+    console.log("THIS IS START");
+    console.log(startingNode);
+    console.log("THIS IS END");
+    console.log(endingNode);
 
     //find path with bfs
-    const path: Array<Node> | null = AStar(startNode, endNode, graph);
+    const rawpath: Array<Node> | null = AStar(graph.idToNode(startingNode.id), graph.idToNode(endingNode.id), graph);
+    console.log("rawpath");
+    console.log(rawpath);
 
     //error is no path could be found
-    if (path == null) {
+    if (rawpath == null) {
         console.error(
-            "no path could be found between " + startNode?.id + " and " + endNode?.id,
+            "no path could be found between " + startingNode?.id + " and " + endingNode?.id,
         );
         return;
     }
 
-    //find svg map element
-    const map = document.getElementById("map");
+    //get path on this floor
+    const pathEdges:Array<Edge> =[];
+    const pathTranistionEdges:Array<Edge> =[];
 
-    //for each node in the path draw a line to the next node
-    for (let i = 0; i < path.length - 1; i++) {
-        //create new svg line obj
-        const newLine = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "line",
-        );
+    for (let i = 0; i < rawpath.length -1; i++) {
+        const start = rawpath.at(i) ?? null;
+        const end = rawpath.at(i + 1) ?? null;
 
-        //get node at start of line and end of line
-        const start = path.at(i) ?? null;
-        const end = path.at(i + 1) ?? null;
-
-        if (start == null || end == null) {
-            console.error("a node is the path in null ");
-            return;
+        //edge starts and ends on this floor
+        if (floorToNumber(start!.floor) == floorIndex && floorToNumber(end!.floor) == floorIndex) {
+            //find edge that connects start and end node and add it
+            start!.edges.forEach((edge)=>{
+                if(edge.endNode==end){
+                    pathEdges.push(edge);
+                }
+            });
         }
-
-        //add node cordnates to the line obj
-        newLine.setAttribute("class", "pathLine");
-        //start node cordnates
-        newLine.setAttribute("x1", start.coordinate.x.toString());
-        newLine.setAttribute("y1", start.coordinate.y.toString());
-        //end node cordnates
-        newLine.setAttribute("x2", end.coordinate.x.toString());
-        newLine.setAttribute("y2", end.coordinate.y.toString());
-        if (map == null) {
-            console.error("map html obj could not be fond");
-            return;
+        //one node of the edge in on the current floor
+        else if (floorToNumber(start!.floor) == floorIndex || floorToNumber(end!.floor) == floorIndex){
+            //find edge that connects start and end node and add it
+            start!.edges.forEach((edge)=>{
+                if(edge.endNode==end){
+                    pathTranistionEdges.push(edge);
+                }
+            });
         }
-        //add line onto map
-        map.appendChild(newLine);
     }
-}
+    console.log("edges on this floor");
+    console.log(pathEdges);
+    console.log("tranision edges on this floor");
+    console.log(pathTranistionEdges);
+    setPathFloorTransitionNodes(pathTranistionEdges);
+    setPathEdges(pathEdges);
 
+}
 
 
 
@@ -243,24 +155,25 @@ export interface MapStates{
     setEndNode: Dispatch<SetStateAction<Node>>;
     selectedFloorIndex:FloorToIndex;
     setSelectedFloorIndex: Dispatch<SetStateAction<FloorToIndex>>;
-    drawPath:boolean;
-    setDrawPath: Dispatch<SetStateAction<boolean>>;
+    drawEntirePath:boolean;
+    setDrawEntirePath: Dispatch<SetStateAction<boolean>>;
     locations:Node[];
     setLocations:Dispatch<SetStateAction<Node[]>>;
 }
 
 export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNode,setEndNode:setEndNode
                         ,selectedFloorIndex:selectedFloorIndex,setSelectedFloorIndex:setSelectedFloorIndex,
-                        drawPath:drawPath,setDrawPath:setDrawPath,
+                        drawEntirePath:drawEntirePath,setDrawEntirePath:setDrawEntirePath,
                         locations:locations, setLocations:setLocations}:MapStates) {
 
     //todo remove these
-    console.log(startNode,setStartNode,endNode,setEndNode,selectedFloorIndex,setSelectedFloorIndex,drawPath,setDrawPath,setLocations);
+    console.log(setSelectedFloorIndex,setLocations);
 
-    // if(drawPath){
-    //
-    // }
-
+    useEffect(() => {
+        updatePathEdges(startNode,endNode,setPathDrawnEdges,selectedFloorIndex,drawEntirePath,setPathFloorTransitionEdges);
+    }, [drawEntirePath, endNode, selectedFloorIndex, startNode]);
+    const [pathDrawnEdges, setPathDrawnEdges] = useState<Array<Edge>>([]);
+    const [pathFloorTransitionEdges, setPathFloorTransitionEdges] = useState<Array<Edge>>([]);
 
     //the html returned from the component
     return (
@@ -287,19 +200,20 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
                 </a>
 
                 {
+                    pathDrawnEdges.map((edge)=>{
+                        return drawEdge(edge);
+
+                        }
+                    )
+
+                }
+
+                {
                     /**
                      * creates the node objects on the map
                      * */
                     locations.map((node)=>{
-                        return (
-                            <a id={node.id} className={"clickableAtag"}
-                               onClick={()=>onNodeClick(node.id)}
-                               onMouseOver={()=> onNodeHover(node.id)}
-                               onMouseLeave={()=> onNodeLeave(node.id)}
-                            >
-                                <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"normalNode"}></circle>
-                            </a>
-                        );
+                        return drawNode(node);
                     })
 
 
@@ -310,97 +224,97 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
         </div>
     );
 
-    function drawFullPath(){
-
-        const nodesraw = graph?.getNodes();
-
-        if(nodesraw == undefined){
-            return;
-        }
-
-        const nodes:Array<Node> = [];
-        //remove any nodes that are not on the current floor
-        for(let i=0;i<nodesraw.length!;i++){
-            console.log(nodesraw[i].floor);
-
-            if(floorToNumber(nodesraw[i].floor) == selectedFloorIndex){
-                console.log(nodesraw[i].floor);
-                nodes.push(nodesraw[i]);
-
-            }
-
-        }
-
-        nodes?.forEach((node:Node)=>{
-
-            node.edges.forEach((edge:Edge)=>{
-
-                const map = document.getElementById("map");
-
-                //create new svg line obj
-                const newLine = document.createElementNS(
-                    "http://www.w3.org/2000/svg",
-                    "line",
-                );
-
-                //get node at start of line and end of line
-                const start = edge.startNode ?? null;
-                const end = edge.endNode?? null;
-
-                if(floorToNumber(end.floor) != selectedFloorIndex){
-                    return;
-                }
-
-                if (start == null || end == null) {
-                    console.error("a node is the path in null ");
-                    return;
-                }
-
-                //add node cordnates to the line obj
-                newLine.setAttribute("class", "pathLineAll");
-                //start node cordnates
-                newLine.setAttribute("x1", start.coordinate.x.toString());
-                newLine.setAttribute("y1", start.coordinate.y.toString());
-                //end node cordnates
-                newLine.setAttribute("x2", end.coordinate.x.toString());
-                newLine.setAttribute("y2", end.coordinate.y.toString());
-                if (map == null) {
-                    console.error("map html obj could not be fond");
-                    return;
-                }
-                //add line onto map
-                map.appendChild(newLine);
+    function drawEdge(edge:Edge){
+        if(drawEntirePath){
+            return <line key={"line_"+edge.id} className={"pathLineAll"}
+                         x1={edge.startNode.coordinate.x.toString()}
+                         y1={edge.startNode.coordinate.y.toString()}
+                         x2={edge.endNode.coordinate.x.toString()}
+                         y2={edge.endNode.coordinate.y.toString()}></line>;
 
 
-            });
-
-        });
-
-    }
-
-    function handleMapToggle(){
-        if(toggleGraph == false){
-            drawFullPath();
-
-            toggleGraph = true;
         }
         else{
-            deletePath();
-            toggleGraph = false;
+            return <line key={"line_"+edge.id} className={"pathLine"}
+                         x1={edge.startNode.coordinate.x.toString()}
+                         y1={edge.startNode.coordinate.y.toString()}
+                         x2={edge.endNode.coordinate.x.toString()}
+                         y2={edge.endNode.coordinate.y.toString()}></line>;
         }
     }
 
-    // {
-    //     /**
-    //      * draws the path on the current floor
-    //      * */
-    //     pathCordnates.map((lineCord)=>{
-    //         return(
-    //             <line className={""}></line>
-    //         );
-    //     })
-    //
-    // }
+    function drawNode(node:Node){
+
+        if(node.id==startNode.id){
+            return (
+                <a key={node.id} id={node.id} className={"clickableAtag"}
+                   onClick={()=> onNodeClick(node.id)}
+                   onMouseOver={()=> onNodeHover(node.id)}
+                   onMouseLeave={()=> onNodeLeave(node.id)}
+                >
+                    <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"startSelected"}></circle>
+                </a>
+            );
+        }
+        else if(node.id==endNode.id){
+            return (
+                <a key={node.id} id={node.id} className={"clickableAtag"}
+                   onClick={()=> onNodeClick(node.id)}
+                   onMouseOver={()=> onNodeHover(node.id)}
+                   onMouseLeave={()=> onNodeLeave(node.id)}
+                >
+                    <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"endSelected"}></circle>
+                </a>
+            );
+        }
+        else if(inTranistionEdge(node.id)){
+            return (
+                <a key={node.id} id={node.id} className={"clickableAtag"}
+                   onClick={()=> onNodeClick(node.id)}
+                   onMouseOver={()=> onNodeHover(node.id)}
+                   onMouseLeave={()=> onNodeLeave(node.id)}
+                >
+                    <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"transitionNode"}></circle>
+                </a>
+            );
+        }
+        else{
+            return (
+                <a key={node.id} id={node.id} className={"clickableAtag"}
+                   onClick={()=> onNodeClick(node.id)}
+                   onMouseOver={()=> onNodeHover(node.id)}
+                   onMouseLeave={()=> onNodeLeave(node.id)}
+                >
+                    <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"normalNode"}></circle>
+                </a>
+            );
+        }
+
+    }
+
+    function inTranistionEdge(nodeID:string){
+        let isATranistionNode = false;
+        pathFloorTransitionEdges.forEach((edge)=>{
+            if(edge.startNode.id == nodeID || edge.endNode.id == nodeID){
+                isATranistionNode=true;
+            }
+        });
+
+        return isATranistionNode;
+    }
+
+
+
+    function handleMapToggle(){
+        if(!drawEntirePath){
+            setDrawEntirePath(true);
+        }
+        else{
+            setDrawEntirePath(false);
+        }
+    }
+
+
 
     /**
      * sets the maps image based on selectedFloorIndex
@@ -460,46 +374,57 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
 
     }
 
+
+
     /**
-     * sets the path to the path to be displaued on the page
-     * */
-    // function updatePath(){
-    //
-    //
-    //
-    //     //zero out the path
-    //     pathCordnates = [];
-    //
-    //     if (graph == null) {
-    //         console.error("Graph has not been created yet - makepath");
-    //         return;
-    //     }
-    //
-    //     //find path with bfs
-    //     const rawpath: Array<Node> | null = BFS(startNode, endNode, graph);
-    //
-    //     //error is no path could be found
-    //     if (rawpath == null) {
-    //         console.error(
-    //             "no path could be found between " + startNode?.id + " and " + endNode?.id,
-    //         );
-    //         return;
-    //     }
-    //
-    //     //get path(s) on floor
-    //
-    //     const floorPaths :Array<Array<Node>> = [];
-    //
-    //     for (let i = 0; i < rawpath.length; i++) {
-    //         const node = rawpath[i];
-    //         if (floorToNumber(node.floor) == selectedFloorIndex) {
-    //             pathCordnates.push();
-    //         }
-    //     }
-    //
-    //
-    //
-    // }
+     * @param nodeClickedID - the id of the node clicked on the screen
+     *
+     * This function fires when a node is clicked on the map.
+     * if only one node is selected it turns that node green and notes the node as the starting node
+     * if two nodes are selected it turn the newly selected node red (end node) and attempts to draw a path
+     * between them
+     * if another node is selected while a path is draw it clears the path then sets the newly selected node
+     * as the start node.
+     *
+     */
+    function onNodeClick(nodeClickedID: string) {
+        //find node obj in graph
+        const nodeClicked = graph?.idToNode(nodeClickedID);
+
+        if (nodeClicked == null) {
+            console.error("Graph has not been created yet");
+            return;
+        }
+
+        //if no nodes selected
+        if (startNode == NULLNODE && endNode == NULLNODE) {
+            //set start node
+            setStartNode(nodeClicked);
+            //debug
+            console.log("start selected");
+            console.log(startNode);
+        }
+        //if start node has been selected
+        else if (endNode == NULLNODE) {
+            //set end node
+            setEndNode(nodeClicked);
+            //debug
+            console.log("end selected");
+            console.log(endNode);
+
+        }
+        //if both nodes were selected
+        else {
+
+            //set new start node and clear end node
+            setStartNode(nodeClicked);
+            setEndNode(NULLNODE);
+
+            console.log("new path requested");
+            console.log(startNode);
+            console.log(endNode);
+        }
+    }
 
 
 

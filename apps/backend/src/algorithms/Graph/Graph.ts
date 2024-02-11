@@ -110,8 +110,8 @@ export class Graph {
             //add backEdge to endNode
             endNode.edges.push(backEdge);
 
-            //todo remove
-            edges.push(backEdge);
+
+            edges.push(backEdge); //need this for correct weight caluations
 
 
             /* create adjList */
@@ -146,36 +146,37 @@ export class Graph {
         this.edgeIdLookup = edgeMap;
 
         //todo debug code
-        console.log("OKOK");
-        console.log(edges.length + " "+ edgeMap.size);
-        for(let i=0;i<edges.length; i++){
-            const hashValue = edgeMap.get(edges[i].id);
-            if(hashValue==undefined){
-                console.log("not found " +edges[i].id);
-                console.log(edges[i]);
 
-            }
-
-        }
-        let dupcount =0;
-        for(let i=0;i<edges.length; i++){
-            let dup=0;
-            for(let k=0;k<edges.length; k++){
-
-                if(edges[i].id==edges[k].id){
-                    dup++;
-                    if(dup>1){
-                        console.log("dup spoted "+ edges[i].id );
-                        console.log(edges[i]);
-                        console.log(edges[k]);
-                        dupcount++;
-
-                    }
-                }
-
-            }
-        }
-        console.log("dup count " + dupcount);
+        // console.log("OKOK");
+        // console.log(edges.length + " "+ edgeMap.size);
+        // for(let i=0;i<edges.length; i++){
+        //     const hashValue = edgeMap.get(edges[i].id);
+        //     if(hashValue==undefined){
+        //         console.log("not found " +edges[i].id);
+        //         console.log(edges[i]);
+        //
+        //     }
+        //
+        // }
+        // let dupcount =0;
+        // for(let i=0;i<edges.length; i++){
+        //     let dup=0;
+        //     for(let k=0;k<edges.length; k++){
+        //
+        //         if(edges[i].id==edges[k].id){
+        //             dup++;
+        //             if(dup>1){
+        //                 console.log("dup spoted "+ edges[i].id );
+        //                 console.log(edges[i]);
+        //                 console.log(edges[k]);
+        //                 dupcount++;
+        //
+        //             }
+        //         }
+        //
+        //     }
+        // }
+        // console.log("dup count " + dupcount);
 
         //generate weights for edges
         this.generateWeights();

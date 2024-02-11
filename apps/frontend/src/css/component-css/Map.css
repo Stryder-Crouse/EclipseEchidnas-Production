@@ -45,6 +45,17 @@
   r: 15; /* radius of node */
 }
 
+.transitionNode {
+    fill: #DD6F00;
+    r: 10; /* radius of node */
+}
+
+.transitionNodeHovered {
+    fill: #DD6F00;
+    r: 15; /* radius of node */
+}
+
+
 .endSelected {
   fill: red;
   r: 10; /* radius of node */

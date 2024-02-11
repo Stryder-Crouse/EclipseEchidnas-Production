@@ -15,6 +15,9 @@ export function onNodeHover(nodeID: string) {
   } else if (nodeCircle?.getAttribute("class") == "endSelected") {
     nodeCircle.setAttribute("class", "endSelectedHovered");
   }
+  else if (nodeCircle?.getAttribute("class") == "transitionNode") {
+      nodeCircle.setAttribute("class", "transitionNodeHovered");
+  }
 }
 
 /**
@@ -33,5 +36,8 @@ export function onNodeLeave(nodeID: string) {
     nodeCircle.setAttribute("class", "startSelected");
   } else if (nodeCircle?.getAttribute("class") == "endSelectedHovered") {
     nodeCircle.setAttribute("class", "endSelected");
+  }
+  else if (nodeCircle?.getAttribute("class") == "transitionNodeHovered") {
+      nodeCircle.setAttribute("class", "transitionNode");
   }
 }
