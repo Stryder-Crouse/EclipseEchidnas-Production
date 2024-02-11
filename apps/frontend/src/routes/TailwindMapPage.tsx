@@ -10,14 +10,15 @@ function TailwindMapPage() {
         <div className="flex">
             <SideNavBarComponent>
                 <SideBarItem icon={MapIcon} text="Map" link="/TailwindMapPage" />
-                <SideBarItem icon={ServiceRequestIcon} text="Request" link="ServiceRequest"/>
+                <SideBarItem icon={ServiceRequestIcon} text="Services" link="ServiceRequest"/>
                 <SideBarItem icon={EmployeeIcon} text="Employees" link="/EmployeeTable"/>
                 <SideBarItem icon={CSVIcon} text=".CSV" link="/NodeEdgeTable"/>
                 <hr className="my-3"/>
                 {/*NEED THIS FIXED OR SUM */}
                 <SideBarItem icon={LogIcon} text="Login" link="/ServiceRequest"/>
-
             </SideNavBarComponent>
+
+
         </div>
     );
 }
