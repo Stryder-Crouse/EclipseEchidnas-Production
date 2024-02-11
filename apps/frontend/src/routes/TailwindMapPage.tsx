@@ -4,6 +4,7 @@ import ServiceRequestIcon from "../images/SideBar/requestIcon.png";
 import EmployeeIcon from "../images/SideBar/user.png";
 import CSVIcon from "../images/SideBar/table.png";
 import LogIcon from "../images/SideBar/log-in.png";
+
 function TailwindMapPage() {
 
     return(
