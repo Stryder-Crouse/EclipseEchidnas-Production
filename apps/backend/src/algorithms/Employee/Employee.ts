@@ -14,7 +14,7 @@ export enum Roles {
     doctor = "doctor",
     admin = "administrator",
     janitor = "janitor",
-    flower_deliverer = "flower deliverer",
-    religious_personnel = "religious personnel"
+    flowerDeliverer = "flower deliverer",
+    religiousPersonnel = "religious personnel"
     //nurse_and_flower_deliverer = "nurse and flower deliverer"
 }
