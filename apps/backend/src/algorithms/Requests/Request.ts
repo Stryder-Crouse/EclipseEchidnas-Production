@@ -20,16 +20,21 @@ export type MedReq = {
     genReqID: number;
 };
 
+export type FlowReq = {
+    flowType: string;
+    quantity: number;
+    sender: string;
+    receiver: string;
+    message: string;
+    genReqID: number;
+}
+
 export type OutsideTransport = {
     patientName: string;
     destination: string;
     modeOfTransport: string;
     serviceReqID: number;
 }
-
-
-
-
 
 // ---------------------------------    ENUMS    ---------------------------------
 
