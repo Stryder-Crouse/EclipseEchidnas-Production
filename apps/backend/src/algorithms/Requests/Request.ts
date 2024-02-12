@@ -27,7 +27,11 @@ export type OutsideTransport = {
     serviceReqID: number;
 }
 
-
+export type sanReq = {
+    sanLocale: string;
+    priortiy: string;
+    type: string;
+};
 
 
 
