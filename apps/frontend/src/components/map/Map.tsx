@@ -8,8 +8,9 @@ import {Graph} from "../../../../backend/src/algorithms/Graph/Graph.ts";
 import {onNodeHover, onNodeLeave,} from "../../event-logic/circleNodeEventHandlers.ts";
 import {NodeDataBase, nodeDataBaseToNode,} from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import {EdgeDataBase, edgeDataBasetoEdge,} from "../../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
-import {Dispatch, SetStateAction, useEffect, useState} from "react";
+import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {AStar} from "../../../../backend/src/algorithms/Search/AStar.ts";
+
 
 
 /**
@@ -27,8 +28,7 @@ let graph: Graph | null = null;
 
 
 
-let veiwbox:Array<number> = [1040,590];
-
+const showAllCircleXY:Array<number> = [1040,590];
 
 
 /**
@@ -52,6 +52,33 @@ async function updateGraph() {
 
     graph = new Graph(nodes, edges);
     console.log(graph.getEdges());
+}
+
+function createZoomEvent(veiwbox:{x:number, y:number, width:number, height:number}
+                         , setVeiwbox:Dispatch<{x:number, y:number, width:number, height:number}>){
+
+    document.getElementById("map-test")!.addEventListener("wheel", event =>{
+        event.preventDefault();
+        const mouseX = event.offsetX; //in relation to the Div
+        const mouseY = event.offsetY;
+        console.log("hihihhi");
+        console.log(mouseX,mouseY);
+        const zoomAmount = event.deltaY;//how far was the wheel scrolled up/down in pixels
+
+        //calulate change in width and height of the box based on zoom direction
+        const changeInWidth = veiwbox.width * Math.sign(zoomAmount)*0.05;
+        const changeInHeight = veiwbox.height * Math.sign(zoomAmount)*0.05;
+
+        //keep mouse in the center of the zoom and get new x and y
+        const newX = veiwbox.x +(changeInWidth*mouseX)/veiwbox.width;
+        const newY = veiwbox.y +(changeInHeight*mouseY)/veiwbox.height;
+
+        //set new veiwbox
+        setVeiwbox({x: newX, y: newY,
+            width:veiwbox.width - changeInWidth,height:veiwbox.height - changeInHeight});
+
+    });
+
 }
 
 
@@ -242,19 +269,38 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
         updatePathEdges(startNode,endNode,setPathDrawnEdges,selectedFloorIndex,drawEntirePath,setPathFloorTransitions);
     }, [drawEntirePath, endNode, selectedFloorIndex, startNode]);
 
+
+
     const [pathDrawnEdges, setPathDrawnEdges] = useState<Array<Edge>>([]);
     const [pathFloorTransitions, setPathFloorTransitions] =
         useState<Array<{startTranNode:Node, endTranNode:Node} >>([]);
 
+    //zoomStates
+    const [veiwbox, setVeiwbox] =
+        useState<{x:number, y:number, width:number, height:number}>({x:940,y:490, width:2160, height:1900});
+
+    useEffect(() => {
+        //create event lisenter in raw js for zoom as reacts onWheel event does not allow the preventDefault() option
+        // to work
+        createZoomEvent(veiwbox,setVeiwbox);
+
+    }, [veiwbox]);
+
+    // let currentlyPanning = false;
+    // let endOfClick:Coordinate = {x:0,y:0};
+    // let startOfClick:Coordinate = {x:0,y:0};
+
+
     //the html returned from the component
     return (
-        <div id={"map-test"}>
+        <div id={"map-test"} >
             <svg
                 id="map"
                 className={"map-test"}
                 version="1.1"
                 xmlns="http://www.w3.org/2000/svg"
-                viewBox={setMapViewBox()}
+                viewBox={veiwbox.x.toString()+" "+veiwbox.y.toString()+
+                    " "+veiwbox.width.toString()+" "+veiwbox.height.toString()}
             >
                 <use xmlnsXlink="http://www.w3.org/1999/xlink"></use>
                 <image
@@ -264,19 +310,17 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
                 ></image>
 
                 <a className={"clickableAtag"} onClick={handleMapToggle}>
-                    <circle cx={veiwbox[0]} cy={veiwbox[1]} r={100} fill={"blue"}>
+                    <circle cx={showAllCircleXY[0]} cy={showAllCircleXY[1]} r={100} fill={"blue"}>
 
                     </circle>
-                    <text x={veiwbox[0]-50} y={veiwbox[1]+10} className={"heavy"}>ALL</text>
+                    <text x={showAllCircleXY[0]-50} y={showAllCircleXY[1]+10} className={"heavy"}>ALL</text>
                 </a>
 
                 {
                     pathDrawnEdges.map((edge)=>{
                         return drawEdge(edge);
 
-                        }
-                    )
-
+                        })
                 }
                 {
                     /**
@@ -285,8 +329,6 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
                     locations.map((node)=>{
                         return drawNode(node);
                     })
-
-
                 }
                 {
                     locations.map((node)=>{
@@ -546,7 +588,9 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
             case FloorToIndex.Level3:
 
                 return "/src/images/maps/03_thethirdfloor.png";
-            default: return "/src/images/maps/00_thelowerlevel1.png";
+            default:
+
+                return "/src/images/maps/00_thelowerlevel1.png";
         }
 
     }
@@ -554,31 +598,32 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
     /**
      * sets the maps view box based on selectedFloorIndex
      * */
-    function setMapViewBox():string{
-
-        switch (selectedFloorIndex) {
-            case FloorToIndex.LowerLevel2:
-                veiwbox = [1040,590];
-                return "940 490 3000 2700";
-            case FloorToIndex.LowerLevel1:
-                veiwbox = [1040,590];
-                return "940 490 2160 1900";
-            case FloorToIndex.Ground:
-                veiwbox = [600,100];
-                return "500 0 5000 3400";
-            case FloorToIndex.Level1:
-                veiwbox = [1040,590];
-                return "940 490 3000 2900";
-            case FloorToIndex.Level2:
-                veiwbox = [1040,390];
-                return "940 290 3500 2900";
-            case FloorToIndex.Level3:
-                veiwbox = [1040,590];
-                return "940 490 3000 2700";
-            default: return "940 490 2160 1900";
-        }
-
-    }
+    // function initalMapViewBox():{x:number,y:number,width:number,height:number}{
+    //
+    //     switch (selectedFloorIndex) {
+    //         case FloorToIndex.LowerLevel2:
+    //             showAllCircleXY = [1040,590];
+    //             return {x:940,y:490,width:3000,height:2700};
+    //         case FloorToIndex.LowerLevel1:
+    //             showAllCircleXY = [1040,590];
+    //             return {x:940,y:490,width:2160,height:1900};
+    //         case FloorToIndex.Ground:
+    //             showAllCircleXY = [600,100];
+    //             return{x:500,y:0,width:5000,height:3400};
+    //         case FloorToIndex.Level1:
+    //             showAllCircleXY = [1040,590];
+    //             return {x:940,y:490,width:3000,height:2900};
+    //         case FloorToIndex.Level2:
+    //             showAllCircleXY = [1040,390];
+    //             return {x:940,y:290,width:3500,height:2900};
+    //         case FloorToIndex.Level3:
+    //             showAllCircleXY = [1040,590];
+    //             return {x:940,y:490,width:3000,height:2700};
+    //         default: return{x:940,y:490,width:2160,height:1900};
+    //     }
+    //
+    //
+    // }
 
 
 
