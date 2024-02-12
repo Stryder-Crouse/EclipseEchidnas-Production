@@ -30,15 +30,23 @@ export default function Transportation_Input() {
     //todo BNBN Implement the new version of backend integration (similar to assignment 3 but bigger and scarier
 
     return (
-        <body>
-        <div>
-            <form>
-                <h1>External Patient Transportation</h1>
-                <div>
+        <body className={"font-project"}>
 
-                    <div>
-                        <label htmlFor={"priority"}>Priority Level: </label>
+        <div className={"min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1"}>
+
+            <form className={"p-1"}>
+
+                <h1 className={"flex mb-3 justify-center font-bold text-xl"}>External Patient Transportation</h1>
+
+                <div className={"px-10"}>
+
+                    <div className={"flex justify-center items-center my-1.5"}>
+                        {/*<label
+                            className={"mr-1"}
+                            htmlFor={"priority"}
+                        >Priority Level: </label>*/}
                         <select
+                            className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow"}
                             value={priority}
                             id={"priority"}
                             onChange={(e) => setPriority(e.target.value as PriorityLevel)}
@@ -51,17 +59,22 @@ export default function Transportation_Input() {
                         </select>
                     </div>
 
-                    <div>
+                    <div className={"flex justify-center items-center my-1.5"}>
                         <input
+                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             type={"text"}
                             value={patientName}
                             placeholder={"Patient Name: "}
                             id={"patientName"}
                             onChange={(e) => setPatientName(e.target.value)}
-                        /> <br/>
+                        />
+                    </div>
+
+                    <div className={"flex justify-center items-center my-1.5"}>
                         {//todo FNFN change patient room to be a dropdown of hospital locations
                         }
                         <input
+                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             type={"text"}
                             value={room}
                             placeholder={"Patient Room: "}
@@ -70,17 +83,23 @@ export default function Transportation_Input() {
                         />
                     </div>
 
-                    <div>
+                    <div className={"flex justify-center items-center my-1.5"}>
                         <input
+                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             type={"text"}
                             value={destination}
                             placeholder={"Destination: "}
                             id={"destination"}
                             onChange={(e) => setDestination(e.target.value)}
-                        /> <br/>
+                        />
+                    </div>
 
-                        <label htmlFor={"modeTransport"}>Mode of Transportation: </label>
+                    <div className={"flex justify-center items-center my-1.5"}>
+                        {/*<label
+                            htmlFor={"modeTransport"}
+                        >Mode of Transportation: </label>*/}
                         <select
+                            className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow"}
                             value={modeTransport}
                             id={"modeTransport"}
                             onChange={(e) => setModeTransport(e.target.value as ModeTransport)}
@@ -93,19 +112,25 @@ export default function Transportation_Input() {
                         </select>
                     </div>
 
-                    <input
-                        type={"text"}
-                        id={"additional"}
-                        placeholder={"Additional Notes"}
-                        value={additional}
-                        onChange={(e) => setAdditional(e.target.value)}
-                    /><br/> <br/>
+                    <div className={"flex justify-center items-center my-1.5"}>
+                        <input
+                            className={"p-1 min-h-full h-20 w-60 bg-white text-black rounded-xl border border-black drop-shadow align-text-top"}
+                            type={"text"}
+                            id={"additional"}
+                            placeholder={"Additional Notes:"}
+                            value={additional}
+                            onChange={(e) => setAdditional(e.target.value)}
+                        />
+                    </div>
 
-                    <button
-                        type={"button"}
-                    >
-                        Submit
-                    </button>
+                    <div className={"flex justify-center items-center my-1.5"}>
+                        <button
+                            className={"p-1 bg-navStart text-ivoryWhite rounded-xl border border-black drop-shadow font-bold"}
+                            type={"button"}
+                        >
+                            Submit
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>

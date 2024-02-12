@@ -1,5 +1,4 @@
 /** importations **/
-import "../css/route-css/LoginPage.css";
 import Transportation_Input
     from "../components/service-requests/transportation-outside-request/Transportation_Input.tsx";
 

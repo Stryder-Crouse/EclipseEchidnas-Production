@@ -12,6 +12,9 @@ export default {
         navStart: '#024C96',
         navy: '#012d5A',
         ivoryWhite: '#f1f1f1',
+      },
+      fontFamily: {
+        project: ['Roboto', 'sans-serif']
       }
     },
   },
