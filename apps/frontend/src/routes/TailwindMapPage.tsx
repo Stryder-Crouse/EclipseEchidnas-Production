@@ -5,6 +5,7 @@ import EmployeeIcon from "../images/SideBar/user.png";
 import CSVIcon from "../images/SideBar/table.png";
 import LogIcon from "../images/SideBar/log-in.png";
 import TopMapButtons from "../components/TopMapButtons.tsx";
+import MapFeatureButtons from "../components/MapFeatureButtons.tsx";
 
 function TailwindMapPage() {
 
@@ -19,8 +20,10 @@ function TailwindMapPage() {
                 {/*NEED THIS FIXED OR SUM */}
                 <SideBarItem icon={LogIcon} text="Login" link="/ServiceRequest"/>
             </SideNavBarComponent>
+
             <TopMapButtons/>
 
+            <MapFeatureButtons/>
         </div>
     );
 }
