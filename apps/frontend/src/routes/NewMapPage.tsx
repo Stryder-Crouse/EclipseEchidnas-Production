@@ -18,8 +18,10 @@ const defaultFloor = FloorToIndex.LowerLevel1;
 
     const [startNode, setStartNode] = useState(NULLNODE);
     const [endNode, setEndNode] = useState(NULLNODE);
+
     const [selectedFloorIndex, setSelectedFloorIndex] = useState(defaultFloor);
     const [drawEntirePath, setDrawEntirePath] = useState(false);
+
     const [locations, setLocations] = useState([] as Array<Node>);
 
 

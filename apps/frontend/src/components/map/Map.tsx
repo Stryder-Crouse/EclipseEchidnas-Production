@@ -241,6 +241,7 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
     useEffect(() => {
         updatePathEdges(startNode,endNode,setPathDrawnEdges,selectedFloorIndex,drawEntirePath,setPathFloorTransitions);
     }, [drawEntirePath, endNode, selectedFloorIndex, startNode]);
+
     const [pathDrawnEdges, setPathDrawnEdges] = useState<Array<Edge>>([]);
     const [pathFloorTransitions, setPathFloorTransitions] =
         useState<Array<{startTranNode:Node, endTranNode:Node} >>([]);
@@ -277,7 +278,6 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
                     )
 
                 }
-
                 {
                     /**
                      * creates the node objects on the map
@@ -289,10 +289,16 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
 
                 }
                 {
+                    locations.map((node)=>{
+                        return drawNodeInfo(node);
+                    })
+                }
+                {
                     pathFloorTransitions.map((tranistion)=>{
                         return drawTranistionText(tranistion);
                     })
                 }
+
 
 
             </svg>
@@ -356,13 +362,13 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
         }
         else if(drawEntirePath){
 
-            const height = 30;
-            const width = node.longName.length*12.5+10;
-
-            const xTranform = -width/2;
-            const xTextTranform = -width/2+5;
-            const yTranform = +15;
-            const yTextTranform = 35;
+            // const height = 30;
+            // const width = node.longName.length*12.5+10;
+            //
+            // const xTranform = -width/2;
+            // const xTextTranform = -width/2+5;
+            // const yTranform = +15;
+            // const yTextTranform = 35;
 
 
             return (
@@ -373,18 +379,22 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
                 >
                     {/* todo maybe remove this text it looks bad and i think the other info show statifies the requerment*/}
                     <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"normalNode"}></circle>
-                    <rect x={node.coordinate.x + xTranform}
-                          y={node.coordinate.y + yTranform} height={height}
-                          width={width}
-                          className={"floorLinkRect"}/>
-                    <text x={node.coordinate.x + xTextTranform}
-                          y={node.coordinate.y + yTextTranform}
-                          className={"showAllText"}>
-                        {node.longName}</text>
+                    {/*<rect x={node.coordinate.x + xTranform}*/}
+                    {/*      y={node.coordinate.y + yTranform} height={height}*/}
+                    {/*      width={width}*/}
+                    {/*      className={"floorLinkRect"}/>*/}
+                    {/*<text x={node.coordinate.x + xTextTranform}*/}
+                    {/*      y={node.coordinate.y + yTextTranform}*/}
+                    {/*      className={"showAllText"}>*/}
+                    {/*    {node.longName}</text>*/}
                 </a>
             );
         }
         else {
+
+
+
+
             return (
                 <a key={node.id} id={node.id} className={"clickableAtag"}
                    onClick={() => onNodeClick(node.id)}
@@ -392,18 +402,77 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
                    onMouseLeave={()=> onNodeLeave(node.id)}
                 >
                     <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"normalNode"}></circle>
-                    <span className={"spanNodeInfo"}> HIIIIIII </span>
                 </a>
             );
         }
 
     }
 
-    function inTranistion(nodeID:string){
+    function drawNodeInfo(node:Node){
+
+
+        //draw name
+        if(drawEntirePath){
+            return (
+                <a key={"showAll_"+node.id} id={"showAll_"+node.id} className={"clickableAtag"}
+                   onClick={() => onNodeClick(node.id)}
+                >
+                    <rect x={node.coordinate.x-10} y={node.coordinate.y+10}  className={"nameRect"}></rect>
+                </a>
+
+            );
+
+        }
+        //draw normal node infor
+        else {
+            const connectedNode = graph?.idToNode(node.id);
+
+            if (connectedNode == null || undefined) {
+                console.error("could not find node " + node.id);
+                return;
+            }
+
+            let edgeConnections: string = " ";
+
+            connectedNode!.edges.forEach((edge) => {
+                edgeConnections += edge.endNode.id + ", ";
+            });
+            edgeConnections = edgeConnections.substring(0, edgeConnections.length - 2);
+            return (
+                <foreignObject key={"nodeInfo_" + node.id} id={"nodeInfo_" + node.id}
+                               className={"foreignObjectNode"} x={node.coordinate.x + 20} y={node.coordinate.y - 250}
+                >
+                        <span className={"spanNodeInfo"}>
+                            <ul className={"ulNodeinfo"}>
+                                <li><b>ID: </b>{node.id}</li>
+                                <li>
+                                    <b>Coordinate (x,y): </b>{"(" + node.coordinate.x.toString() + ","
+                                    + node.coordinate.y.toString() + ")"}
+                                </li>
+                                <li><b>Long name: </b>{node.longName}</li>
+                                <li><b>Short name: </b>{node.shortName}</li>
+                                <li><b>Type: </b>{node.nodeType}</li>
+                                <li><b>Building: </b>{node.building}</li>
+                                <li><b>Floor: </b>{node.floor}</li>
+                                <li><b>Heuristic: </b>{connectedNode.heuristic.toPrecision(3)}</li>
+                                <li><b>Connected to: </b>{edgeConnections}</li>
+
+                            </ul>
+
+                        </span>
+                </foreignObject>
+
+            );
+        }
+
+    }
+
+
+    function inTranistion(nodeID: string) {
         let isATranistionNode = false;
-        pathFloorTransitions.forEach((tranistion)=>{
-            if(tranistion.startTranNode.id == nodeID || tranistion.endTranNode.id == nodeID){
-                isATranistionNode=true;
+        pathFloorTransitions.forEach((tranistion) => {
+            if (tranistion.startTranNode.id == nodeID || tranistion.endTranNode.id == nodeID) {
+                isATranistionNode = true;
             }
         });
 
@@ -411,22 +480,23 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
     }
 
 
-    function drawTranistionText(tranistion:{startTranNode:Node, endTranNode:Node}){
+    function drawTranistionText(tranistion: { startTranNode: Node, endTranNode: Node }) {
 
-        const floorStart =floorToNumber(tranistion!.startTranNode.floor);
-        const floorEnd =floorToNumber(tranistion!.endTranNode.floor);
+        const floorStart = floorToNumber(tranistion!.startTranNode.floor);
+        const floorEnd = floorToNumber(tranistion!.endTranNode.floor);
 
         const xTranform = -225;
         const xTextTranform = -220;
         const yTranform = -10;
         const yTextTranform = 35;
         const height = 60;
-        const width =210;
+        const width = 210;
 
-        if(floorStart==selectedFloorIndex){
+        if (floorStart == selectedFloorIndex) {
             return (
                 <a key={"tranistion_" + tranistion.startTranNode.id}>
-                    <rect x={tranistion.startTranNode.coordinate.x + xTranform} y={tranistion.startTranNode.coordinate.y + yTranform} height={height}
+                    <rect x={tranistion.startTranNode.coordinate.x + xTranform}
+                          y={tranistion.startTranNode.coordinate.y + yTranform} height={height}
                           width={width}
                           className={"floorLinkRect"}/>
                     <text x={tranistion.startTranNode.coordinate.x + xTextTranform} y={tranistion.startTranNode.coordinate.y + yTextTranform}
