@@ -8,7 +8,6 @@ import TopMapButtons from "../components/TopMapButtons.tsx";
 import MapFeatureButtons from "../components/MapFeatureButtons.tsx";
 
 function TailwindMapPage() {
-
     return(
         <div className="flex">
             <SideNavBarComponent>
@@ -18,7 +17,7 @@ function TailwindMapPage() {
                 <SideBarItem icon={CSVIcon} text=".CSV" link="/NodeEdgeTable"/>
                 <hr className="my-3"/>
                 {/*NEED THIS FIXED OR SUM */}
-                <SideBarItem icon={LogIcon} text="Login" link="/ServiceRequest"/>
+                <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"} />
             </SideNavBarComponent>
 
             <TopMapButtons/>

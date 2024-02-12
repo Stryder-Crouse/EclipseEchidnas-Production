@@ -20,7 +20,7 @@ export default function SideNavBarComponent({ children }: SideNavBarProps): JSX.
     const [expanded, setExpanded] = useState(true);
 
     return (
-        <aside className="z-10 h-screen">
+        <aside className=" h-screen">
             <nav className="h-full flex flex-col bg-navStart border-r shadow-sm">
                 <div className="p-4 pb-2 flex justify-between items-center mt-2">
 
@@ -30,7 +30,7 @@ export default function SideNavBarComponent({ children }: SideNavBarProps): JSX.
 
                     {/* handles expansion of navbar */}
                     <button onClick={()=> setExpanded((curr)=>!curr)}
-                            className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 mr-1.5">
+                            className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 mr-1.5 drop-shadow-lg">
 
                         {/* changes expansion icon */}
                         {expanded ? <img src={ChevronFirst} alt={"ChevronFirst"}/> :

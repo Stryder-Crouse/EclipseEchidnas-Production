@@ -10,6 +10,7 @@ import NewMapPage from "./routes/NewMapPage.tsx";
 import ProtectedEmployeeTable from "./components/protected-pages/ProtectedEmployeeTable.tsx";
 
 import TailwindMapPage from "./routes/TailwindMapPage.tsx";
+import TestServiceReqPage from "./routes/TestServiceReqPage.tsx";
 
 import OLDServiceRequestPage from "./routes/OLDServiceRequestPage.tsx";
 import OLDRequestList from "./routes/admin-routes/OLDRequestList.tsx";
@@ -63,6 +64,10 @@ function App() {
                 {
                     path: "/TailwindMapPage",
                     element: <TailwindMapPage/>,
+                },
+                {
+                    path: "/TestServiceReqPage",
+                        element: <TestServiceReqPage/>,
                 },
             ],
         },
