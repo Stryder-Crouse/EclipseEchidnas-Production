@@ -411,59 +411,46 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
     function drawNodeInfo(node:Node){
 
 
-        //draw name
-        if(drawEntirePath){
-            return (
-                <a key={"showAll_"+node.id} id={"showAll_"+node.id} className={"clickableAtag"}
-                   onClick={() => onNodeClick(node.id)}
-                >
-                    <rect x={node.coordinate.x-10} y={node.coordinate.y+10}  className={"nameRect"}></rect>
-                </a>
 
-            );
+        const connectedNode = graph?.idToNode(node.id);
 
+        if (connectedNode == null || undefined) {
+            console.error("could not find node " + node.id);
+            return;
         }
-        //draw normal node infor
-        else {
-            const connectedNode = graph?.idToNode(node.id);
 
-            if (connectedNode == null || undefined) {
-                console.error("could not find node " + node.id);
-                return;
-            }
+        let edgeConnections: string = " ";
 
-            let edgeConnections: string = " ";
+        connectedNode!.edges.forEach((edge) => {
+            edgeConnections += edge.endNode.id + ", ";
+        });
+        edgeConnections = edgeConnections.substring(0, edgeConnections.length - 2);
+        return (
+            <foreignObject key={"nodeInfo_" + node.id} id={"nodeInfo_" + node.id}
+                           className={"foreignObjectNode"} x={node.coordinate.x + 20} y={node.coordinate.y - 250}
+            >
+                    <span className={"spanNodeInfo"}>
+                        <ul className={"ulNodeinfo"}>
+                            <li><b>ID: </b>{node.id}</li>
+                            <li>
+                                <b>Coordinate (x,y): </b>{"(" + node.coordinate.x.toString() + ","
+                                + node.coordinate.y.toString() + ")"}
+                            </li>
+                            <li><b>Long name: </b>{node.longName}</li>
+                            <li><b>Short name: </b>{node.shortName}</li>
+                            <li><b>Type: </b>{node.nodeType}</li>
+                            <li><b>Building: </b>{node.building}</li>
+                            <li><b>Floor: </b>{node.floor}</li>
+                            <li><b>Heuristic: </b>{connectedNode.heuristic.toPrecision(3)}</li>
+                            <li><b>Connected to: </b>{edgeConnections}</li>
 
-            connectedNode!.edges.forEach((edge) => {
-                edgeConnections += edge.endNode.id + ", ";
-            });
-            edgeConnections = edgeConnections.substring(0, edgeConnections.length - 2);
-            return (
-                <foreignObject key={"nodeInfo_" + node.id} id={"nodeInfo_" + node.id}
-                               className={"foreignObjectNode"} x={node.coordinate.x + 20} y={node.coordinate.y - 250}
-                >
-                        <span className={"spanNodeInfo"}>
-                            <ul className={"ulNodeinfo"}>
-                                <li><b>ID: </b>{node.id}</li>
-                                <li>
-                                    <b>Coordinate (x,y): </b>{"(" + node.coordinate.x.toString() + ","
-                                    + node.coordinate.y.toString() + ")"}
-                                </li>
-                                <li><b>Long name: </b>{node.longName}</li>
-                                <li><b>Short name: </b>{node.shortName}</li>
-                                <li><b>Type: </b>{node.nodeType}</li>
-                                <li><b>Building: </b>{node.building}</li>
-                                <li><b>Floor: </b>{node.floor}</li>
-                                <li><b>Heuristic: </b>{connectedNode.heuristic.toPrecision(3)}</li>
-                                <li><b>Connected to: </b>{edgeConnections}</li>
+                        </ul>
 
-                            </ul>
+                    </span>
+            </foreignObject>
 
-                        </span>
-                </foreignObject>
+        );
 
-            );
-        }
 
     }
 
