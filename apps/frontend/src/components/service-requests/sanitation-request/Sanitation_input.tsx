@@ -1,6 +1,7 @@
 import React, {ChangeEvent, useState} from "react";
 
 
+
 export default function Sanitation_input() {
     const [sanitationLocation, setsanitationLocation] = useState("");
     const [priority,setPriority] = useState("");
@@ -10,6 +11,11 @@ export default function Sanitation_input() {
     const priorityChange = (e:ChangeEvent<HTMLSelectElement>) => {
         setPriority(e.target.value);
     };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const sanitationLocationChange = (e:ChangeEvent<HTMLSelectElement>) => {
+        setsanitationLocation(e.target.value);
+    };
+
     return (
 
         <>
