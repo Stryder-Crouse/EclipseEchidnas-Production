@@ -1,29 +1,38 @@
 import express, { Router, Request, Response } from "express";
 import { Edge } from "../algorithms/Graph/Edge.ts";
 import { Node } from "../algorithms/Graph/Node.ts";
-import { readEdgeCSV, readNodeCSV } from "../algorithms/readCSV.ts";
+
 import {
-  NodeDataBase,
-  nodeDataBaseToNode,
-  nodeToNodeDataBase,
+    NodeDataBase,
+    nodeDataBaseToNode, nodeToNodeDataBase,
+
 } from "../DataBaseClasses/NodeDataBase.ts";
 import {
-  EdgeDataBase,
-  edgeDataBasetoEdge,
-  edgeToEdgeDataBase,
+    EdgeDataBase,
+    edgeDataBasetoEdge, edgeToEdgeDataBase,
+
 } from "../DataBaseClasses/EdgeDataBase.ts";
 import PrismaClient from "../bin/database-connection.ts";
 import { Graph } from "../algorithms/Graph/Graph.ts";
+
+
+import {Multer} from "multer";
+import {readEdgeCSV, readNodeCSV} from "../algorithms/readCSV.ts";
+
 // import fs from "fs";
 // import * as path from "path";
 
 const router: Router = express.Router();
 
+const upload = Multer({ dest: 'uploadedCSVs/' });
+
+
+
 //load recived cvs file into the database
-router.post("/", async function (req: Request, res: Response) {
-  const files: string[] = req.body;
-  const nodes: Array<Node> = readNodeCSV(files.at(0)!);
-  const edges: Array<Edge> = readEdgeCSV(files.at(1)!);
+router.route("/").post(upload.array("csv",2), async function (req, res) {
+
+  const nodes: Array<Node> = readNodeCSV(req.files[0]);
+  const edges: Array<Edge> = readEdgeCSV(req.files[1]!);
 
   //convert to db node
   const edgeDBArray: EdgeDataBase[] = [];
