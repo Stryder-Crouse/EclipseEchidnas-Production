@@ -19,6 +19,7 @@ export default function SideNavBarComponent({ children }: SideNavBarProps): JSX.
     //To close and open the navbar
     const [expanded, setExpanded] = useState(true);
 
+
     return (
         <aside className=" h-screen z-10">
             <nav className="h-full flex flex-col bg-navStart border-r shadow-sm">

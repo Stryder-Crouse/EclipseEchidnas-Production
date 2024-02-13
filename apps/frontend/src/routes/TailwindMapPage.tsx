@@ -32,7 +32,9 @@ function TailwindMapPage() {
     const [zoomScale, setZoomScale] = useState(1);
 
 
-
+    // let mapPageLink = "";
+    // console.log("Hello");
+    // console.log(window.location.pathname);
 
 
     //useEffect for start up
@@ -48,33 +50,12 @@ function TailwindMapPage() {
 
     }, [selectedFloorIndex]);
 
-    const handleNodeClick = (node: Node) => {
-
-        if(startNode == NULLNODE && endNode == NULLNODE){
-
-            setStartNode(node);
-        }
-        else if (endNode == NULLNODE){
-
-            setEndNode(node);
-
-        }
-        else{
-
-            setStartNode(node);
-            setEndNode(NULLNODE);
-        }
-
-
-    };
-    //todo remvoe
-    console.log(handleNodeClick);
 
     return(
         <div className="flex">
             <div className="flex absolute w-screen h-screen">
                 <SideNavBarComponent>
-                    <SideBarItem icon={MapIcon} text="Map" link="/TailwindMapPage"/>
+                    <SideBarItem icon={MapIcon} text="Map" link={window.location.pathname}/>
                     <SideBarItem icon={ServiceRequestIcon} text="Services" link="ServiceRequest"/>
                     <SideBarItem icon={EmployeeIcon} text="Employees" link="/EmployeeTable"/>
                     <SideBarItem icon={CSVIcon} text=".CSV" link="/NodeEdgeTable"/>
