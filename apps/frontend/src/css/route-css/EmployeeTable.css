@@ -1,55 +1,157 @@
-.table-container {
+.employee-caption-container {
+    font-size: 1.12rem;
+    font-weight: 700;
+    text-align: left;
+    padding-bottom: 1rem;
+    border-bottom: 0.125rem solid #edeef1;
+
+
+}
+
+.employee-table-container {
     border-radius: 2rem;
     background-color: #fcfcfd;
-    padding: 1.5rem;
-    margin-top: 2rem;
+    padding: 1.5rem 2rem;
     font-family: 'Work Sans', sans-serif;
     border: 2px solid #edeef1;
     box-shadow: 0 4px 16px 0 rgba(148, 156, 169, 0.15);
     text-align: center;
-    max-height: 30vh;
+    max-height: 100vh;
     /** Flexbox centering Div **/
-    display: grid;
+
+
+    justify-content: center;
+    margin: auto;
+
+
+}
+
+.employee-table-wrapper {
+    overflow: auto;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    max-height: 75vh;
+    align-items: center;
+    overflow-x: hidden;
+    width: 70vw;
+}
+
+.employee-table-container table {
+    max-width: 37.5rem;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.employee-table-container thead {
+    position: sticky;
+}
+
+.employee-table-container th {
+    padding: 0.75rem 0.75rem 0.75rem 0.5rem;
+    font-size: 0.875rem;
+    color: #a0a7b1;
+    width: fit-content;
+    white-space: nowrap;
+    background-color: #f4f5fc;
+}
+
+.employee-table-container tfoot {
+    margin-top: 1rem;
+    border-top: 0.125rem solid #edeef1;
+}
+
+.employee-table-container td {
+    padding: 0.75rem 0.75rem 0.75rem 0.5rem;
+    vertical-align: middle;
+    white-space: nowrap;
+    border-bottom: 2px solid #edeef1;
+}
+
+.employee-caption-container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.table-row-count {
+    font-size: 0.8rem;
+    font-weight: 700;
+    background-color: #f1f2f6;
+    padding: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 1rem;
+    border-radius: 0.5rem;
+}
+
+.employee-table-title {
+   text-align: left;
+
+}
+
+.employee-caption-container {
+    text-align: left;
+
+}
+
+.employee-table-container {
+    min-height: 5rem;
+}
+
+/** Leftmost row (Row 1) **/
+.node-id {
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #fcfcfd;
+    font-weight: bold;
+}
+
+/** Horizontal Scroll **/
+.employee-table-wrapper::-webkit-scrollbar {
+    height: 0.5rem;
+}
+
+.employee-table-wrapper::-webkit-scrollbar-track {
+    background: #f1f2f6;
+    border-radius: 6px;
+}
+
+.employee-table-wrapper::-webkit-scrollbar-thumb {
+    background: #a0a7b1;
+    border-radius: 5px;
+}
+
+/** Styling on columns **/
+
+
+/** Importation and Exportation buttons **/
+.import-and-export {
     justify-content: center;
     align-items: center;
-    width: auto;
-}
-
-.table-wrapper {
-
-    padding-bottom: 0.5rem;
-    margin: auto;
-    /*margin-bottom: 1rem;*/
-    max-height: 20vh;
-    align-items: center;
+    display: flex;
+    gap: 1rem;
 
 }
 
-td:nth-child(2) {
-    color: black;
-    width: 5rem;
+.export {
+    background-color: #0097a0;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    color: #f1f1f1;
+    cursor: pointer;
+    font-weight: bold;
+    border-color: transparent;
 }
 
-.request-table-container {
-    margin: 10% auto auto;
-    font-family: 'Work Sans', sans-serif;
+.nodeEdge-container {
+    margin-top: 10rem;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 td {
     font-family: 'Work Sans', sans-serif;
+
 }
 
-select {
-    background-color: #012d5a;
-    color: white;
-    border-color: transparent;
-    font-family: 'Work Sans', sans-serif;
-    font-weight: bold;
-    border-radius: 1rem;
-    padding: 8px;
-}
-
-option {
-    background-color: #F1F1F1;
-    color: black;
-}

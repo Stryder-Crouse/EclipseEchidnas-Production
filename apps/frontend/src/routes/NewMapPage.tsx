@@ -18,12 +18,16 @@ const defaultFloor = FloorToIndex.LowerLevel1;
 
     const [startNode, setStartNode] = useState(NULLNODE);
     const [endNode, setEndNode] = useState(NULLNODE);
+
     const [selectedFloorIndex, setSelectedFloorIndex] = useState(defaultFloor);
-    const [drawPath, setDrawPath] = useState(false);
+    const [drawEntirePath, setDrawEntirePath] = useState(false);
+
     const [locations, setLocations] = useState([] as Array<Node>);
 
+     const [veiwbox, setVeiwbox] =
+         useState<{x:number, y:number, width:number, height:number}>({x:940,y:490, width:2160, height:1900});
+     const [zoomScale, setZoomScale] = useState(1);
 
-    //todo need drawALL for dawing all edges and node on the graph
 
 
     //useEffect for start up
@@ -81,7 +85,7 @@ const defaultFloor = FloorToIndex.LowerLevel1;
                                 //id's are startingNodeInput and endingNodeInput
                                 locations.map((node) => {
                                     return (
-                                            <div className={"level-location"}
+                                            <div key={"Location"+node.id} className={"level-location"}
                                                  onClick={() => handleNodeClick(node)}
                                                  onMouseOver={()=> onNodeHover(node.id)}
                                                  onMouseLeave={()=> onNodeLeave(node.id)}
@@ -97,8 +101,8 @@ const defaultFloor = FloorToIndex.LowerLevel1;
                 <div className={"mapSide"}>
                     <Map startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
                          selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
-                         drawPath={drawPath} setDrawPath={setDrawPath} locations={locations} setLocations={setLocations}
-                    />
+                         drawEntirePath={drawEntirePath} setDrawEntirePath={setDrawEntirePath} locations={locations} setLocations={setLocations}
+                     setVeiwbox={setVeiwbox} setZoomScale={setZoomScale} veiwbox={veiwbox} zoomScale={zoomScale}/>
                     <div className={"start-end-typing-navigation"}>
                         <label className={"mapSide-label"}>
                             START AT: <input type={"text"} id={"startingNodeInput"} className={"newMapPage-input-fields"}/>

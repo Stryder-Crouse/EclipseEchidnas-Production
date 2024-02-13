@@ -17,11 +17,11 @@ const defaultFloor = FloorToIndex.LowerLevel1;
 
  function NewMapPageAdmin() {
 
-    const [startNode, setStartNode] = useState(NULLNODE);
-    const [endNode, setEndNode] = useState(NULLNODE);
-    const [selectedFloorIndex, setSelectedFloorIndex] = useState(defaultFloor);
-    const [drawPath, setDrawPath] = useState(false);
-    const [locations, setLocations] = useState([] as Array<Node>);
+     const [startNode, setStartNode] = useState(NULLNODE);
+     const [endNode, setEndNode] = useState(NULLNODE);
+     const [selectedFloorIndex, setSelectedFloorIndex] = useState(defaultFloor);
+     const [drawEntirePath, setDrawEntirePath] = useState(false);
+     const [locations, setLocations] = useState([] as Array<Node>);
 
     //todo need drawALL for dawing all edges and node on the graph
 
@@ -38,6 +38,9 @@ const defaultFloor = FloorToIndex.LowerLevel1;
         };
 
     }, [selectedFloorIndex]);
+     const [veiwbox, setVeiwbox] =
+         useState<{x:number, y:number, width:number, height:number}>({x:940,y:490, width:2160, height:1900});
+     const [zoomScale, setZoomScale] = useState(1);
 
      const handleNodeClick = (node: Node) => {
 
@@ -97,7 +100,9 @@ const defaultFloor = FloorToIndex.LowerLevel1;
                 <div className={"mapSide"}>
                     <Map startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
                          selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
-                         drawPath={drawPath} setDrawPath={setDrawPath} locations={locations} setLocations={setLocations}
+                         drawEntirePath={drawEntirePath} setDrawEntirePath={setDrawEntirePath} locations={locations}
+                         setLocations={setLocations} setVeiwbox={setVeiwbox} veiwbox={veiwbox} setZoomScale={setZoomScale}
+                         zoomScale={zoomScale}
                     />
                     <div className={"start-end-typing-navigation"}>
                         <label className={"mapSide-label"}>

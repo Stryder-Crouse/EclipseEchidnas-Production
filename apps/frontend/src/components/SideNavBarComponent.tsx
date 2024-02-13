@@ -19,8 +19,9 @@ export default function SideNavBarComponent({ children }: SideNavBarProps): JSX.
     //To close and open the navbar
     const [expanded, setExpanded] = useState(true);
 
+
     return (
-        <aside className="h-screen">
+        <aside className=" h-screen z-10">
             <nav className="h-full flex flex-col bg-navStart border-r shadow-sm">
                 <div className="p-4 pb-2 flex justify-between items-center mt-2">
 
@@ -30,7 +31,7 @@ export default function SideNavBarComponent({ children }: SideNavBarProps): JSX.
 
                     {/* handles expansion of navbar */}
                     <button onClick={()=> setExpanded((curr)=>!curr)}
-                            className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 mr-1.5">
+                            className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 mr-1.5 drop-shadow-lg">
 
                         {/* changes expansion icon */}
                         {expanded ? <img src={ChevronFirst} alt={"ChevronFirst"}/> :
@@ -61,7 +62,7 @@ export function SideBarItem({ icon, text, link }: SideBarItemProps): JSX.Element
     // eslint-disable-next-line no-empty-function
     const { expanded } = useContext(SidebarContext) || { expanded: true, setExpanded: () => {} };
     return (
-        <li className="relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group ">
+        <li className="relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group hover:bg-navy">
             <a href={link} className="flex mb-8 mt-8 ">
                 <img src={icon} alt={"Map Icon"} className={"absolute"}
                      style={{ width: expanded ? '24' : '24', height: '24px' }}/>
