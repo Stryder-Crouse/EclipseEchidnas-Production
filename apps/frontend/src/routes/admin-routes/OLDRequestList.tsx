@@ -7,13 +7,6 @@ import {Employee} from "../../../../backend/src/algorithms/Employee/Employee.ts"
 import Status from "../../../../backend/src/algorithms/Requests/Status.ts";
 
 
-
-
-
-
-
-
-
 function OLDRequestList() {
 
     const [medRequestList, setMedRequestList] =
