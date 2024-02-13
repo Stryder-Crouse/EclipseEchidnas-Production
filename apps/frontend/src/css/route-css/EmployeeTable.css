@@ -33,6 +33,7 @@
     max-height: 75vh;
     align-items: center;
     overflow-x: hidden;
+    width: 70vw;
 }
 
 .employee-table-container table {
