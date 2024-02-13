@@ -20,7 +20,7 @@ export default function SideNavBarComponent({ children }: SideNavBarProps): JSX.
     const [expanded, setExpanded] = useState(true);
 
     return (
-        <aside className=" h-screen">
+        <aside className=" h-screen z-10">
             <nav className="h-full flex flex-col bg-navStart border-r shadow-sm">
                 <div className="p-4 pb-2 flex justify-between items-center mt-2">
 

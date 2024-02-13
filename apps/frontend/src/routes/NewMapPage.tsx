@@ -24,7 +24,9 @@ const defaultFloor = FloorToIndex.LowerLevel1;
 
     const [locations, setLocations] = useState([] as Array<Node>);
 
-
+     const [veiwbox, setVeiwbox] =
+         useState<{x:number, y:number, width:number, height:number}>({x:940,y:490, width:2160, height:1900});
+     const [zoomScale, setZoomScale] = useState(1);
 
 
 
@@ -100,7 +102,7 @@ const defaultFloor = FloorToIndex.LowerLevel1;
                     <Map startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
                          selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
                          drawEntirePath={drawEntirePath} setDrawEntirePath={setDrawEntirePath} locations={locations} setLocations={setLocations}
-                    />
+                     setVeiwbox={setVeiwbox} setZoomScale={setZoomScale} veiwbox={veiwbox} zoomScale={zoomScale}/>
                     <div className={"start-end-typing-navigation"}>
                         <label className={"mapSide-label"}>
                             START AT: <input type={"text"} id={"startingNodeInput"} className={"newMapPage-input-fields"}/>

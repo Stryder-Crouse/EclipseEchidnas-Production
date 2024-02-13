@@ -10,6 +10,7 @@ import {NodeDataBase, nodeDataBaseToNode,} from "../../../../backend/src/DataBas
 import {EdgeDataBase, edgeDataBasetoEdge,} from "../../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {AStar} from "../../../../backend/src/algorithms/Search/AStar.ts";
+import {Coordinate} from "../../../../backend/src/algorithms/Graph/Coordinate.ts";
 
 
 
@@ -28,7 +29,9 @@ let graph: Graph | null = null;
 
 
 
-const showAllCircleXY:Array<number> = [1040,590];
+
+const panSpeed=2;
+const zoomSpeed = 0.1;
 
 
 /**
@@ -55,24 +58,31 @@ async function updateGraph() {
 }
 
 function createZoomEvent(veiwbox:{x:number, y:number, width:number, height:number}
-                         , setVeiwbox:Dispatch<{x:number, y:number, width:number, height:number}>){
+                         , setVeiwbox:Dispatch<{x:number, y:number, width:number, height:number}>
+                         , setScale:Dispatch<number>){
+
+    const svgElement =  document.getElementById("map")!;
+    const svgSize:{width:number,height:number} = {width:svgElement.clientWidth, height:svgElement.clientHeight};
+
 
     document.getElementById("map-test")!.addEventListener("wheel", event =>{
         event.preventDefault();
         const mouseX = event.offsetX; //in relation to the Div
         const mouseY = event.offsetY;
-        console.log("hihihhi");
-        console.log(mouseX,mouseY);
+        //console.log("hihihhi");
+        //console.log(mouseX,mouseY);
         const zoomAmount = event.deltaY;//how far was the wheel scrolled up/down in pixels
 
         //calulate change in width and height of the box based on zoom direction
-        const changeInWidth = veiwbox.width * Math.sign(zoomAmount)*0.05;
-        const changeInHeight = veiwbox.height * Math.sign(zoomAmount)*0.05;
+        const changeInWidth = veiwbox.width * Math.sign(zoomAmount)*zoomSpeed;
+        const changeInHeight = veiwbox.height * Math.sign(zoomAmount)*zoomSpeed;
 
         //keep mouse in the center of the zoom and get new x and y
-        const newX = veiwbox.x +(changeInWidth*mouseX)/veiwbox.width;
-        const newY = veiwbox.y +(changeInHeight*mouseY)/veiwbox.height;
+        const newX = veiwbox.x +(changeInWidth*mouseX)/svgSize.width;
+        const newY = veiwbox.y +(changeInHeight*mouseY)/svgSize.height;
 
+        //set scale for proper panning
+        setScale(svgSize.width/veiwbox.width);
         //set new veiwbox
         setVeiwbox({x: newX, y: newY,
             width:veiwbox.width - changeInWidth,height:veiwbox.height - changeInHeight});
@@ -80,6 +90,9 @@ function createZoomEvent(veiwbox:{x:number, y:number, width:number, height:numbe
     });
 
 }
+
+
+
 
 
 /**
@@ -255,15 +268,20 @@ export interface MapStates{
     setDrawEntirePath: Dispatch<SetStateAction<boolean>>;
     locations:Node[];
     setLocations:Dispatch<SetStateAction<Node[]>>;
+    veiwbox:{x:number, y:number, width:number, height:number},
+    setVeiwbox:Dispatch<SetStateAction<{x:number, y:number, width:number, height:number}>>
+    zoomScale:number,
+    setZoomScale:Dispatch<SetStateAction<number>>
 }
 
 export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNode,setEndNode:setEndNode
-                        ,selectedFloorIndex:selectedFloorIndex,setSelectedFloorIndex:setSelectedFloorIndex,
-                        drawEntirePath:drawEntirePath,setDrawEntirePath:setDrawEntirePath,
-                        locations:locations, setLocations:setLocations}:MapStates) {
+                        ,selectedFloorIndex:selectedFloorIndex,
+                        drawEntirePath:drawEntirePath,
+                        locations:locations, veiwbox:veiwbox, setVeiwbox:setVeiwbox, zoomScale:zoomScale,
+                    setZoomScale:setZoomScale}:MapStates) {
 
     //todo remove these
-    console.log(setSelectedFloorIndex,setLocations);
+    //console.log(setSelectedFloorIndex,setLocations);
 
     useEffect(() => {
         updatePathEdges(startNode,endNode,setPathDrawnEdges,selectedFloorIndex,drawEntirePath,setPathFloorTransitions);
@@ -274,26 +292,37 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
     const [pathDrawnEdges, setPathDrawnEdges] = useState<Array<Edge>>([]);
     const [pathFloorTransitions, setPathFloorTransitions] =
         useState<Array<{startTranNode:Node, endTranNode:Node} >>([]);
+    
 
-    //zoomStates
-    const [veiwbox, setVeiwbox] =
-        useState<{x:number, y:number, width:number, height:number}>({x:940,y:490, width:2160, height:1900});
-
-    useEffect(() => {
-        //create event lisenter in raw js for zoom as reacts onWheel event does not allow the preventDefault() option
-        // to work
-        createZoomEvent(veiwbox,setVeiwbox);
-
-    }, [veiwbox]);
-
-    // let currentlyPanning = false;
+    //panStates
+    const [currentlyPanning, setCurrentlyPanning] =
+        useState(false);
+    const [startOfClick, setStartOfClick] =
+        useState<Coordinate>({x:0,y:0});
+    const [endOfClick, setEndOfClick] =
+        useState<Coordinate>({x:0,y:0});
     // let endOfClick:Coordinate = {x:0,y:0};
     // let startOfClick:Coordinate = {x:0,y:0};
+    // let scale:number =1;
+
+    useEffect(() => {
+        //create event lisenter in raw js for zoom as reacts onWheel React event does not allow the preventDefault() option
+        // to work, reacts dev solution was "just use non react event lisensers"
+        createZoomEvent(veiwbox,setVeiwbox,setZoomScale);
+
+    }, [setVeiwbox, setZoomScale, veiwbox, zoomScale]);
+
 
 
     //the html returned from the component
     return (
-        <div id={"map-test"} >
+        <div id={"map-test"}
+             onMouseLeave={leftMapArea}
+             onMouseDown={(e)=>{startPan(e);}}
+
+             onMouseMove={(e)=>{whilePanning(e);}}
+             onMouseUp={(e)=>{stopPan(e);}}
+        >
             <svg
                 id="map"
                 className={"map-test"}
@@ -309,12 +338,7 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
                     href={setMapImage()}
                 ></image>
 
-                <a className={"clickableAtag"} onClick={handleMapToggle}>
-                    <circle cx={showAllCircleXY[0]} cy={showAllCircleXY[1]} r={100} fill={"blue"}>
 
-                    </circle>
-                    <text x={showAllCircleXY[0]-50} y={showAllCircleXY[1]+10} className={"heavy"}>ALL</text>
-                </a>
 
                 {
                     pathDrawnEdges.map((edge)=>{
@@ -553,14 +577,7 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
     }
 
 
-    function handleMapToggle() {
-        if (!drawEntirePath) {
-            setDrawEntirePath(true);
-        }
-        else{
-            setDrawEntirePath(false);
-        }
-    }
+
 
 
 
@@ -595,36 +612,49 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
 
     }
 
-    /**
-     * sets the maps view box based on selectedFloorIndex
-     * */
-    // function initalMapViewBox():{x:number,y:number,width:number,height:number}{
-    //
-    //     switch (selectedFloorIndex) {
-    //         case FloorToIndex.LowerLevel2:
-    //             showAllCircleXY = [1040,590];
-    //             return {x:940,y:490,width:3000,height:2700};
-    //         case FloorToIndex.LowerLevel1:
-    //             showAllCircleXY = [1040,590];
-    //             return {x:940,y:490,width:2160,height:1900};
-    //         case FloorToIndex.Ground:
-    //             showAllCircleXY = [600,100];
-    //             return{x:500,y:0,width:5000,height:3400};
-    //         case FloorToIndex.Level1:
-    //             showAllCircleXY = [1040,590];
-    //             return {x:940,y:490,width:3000,height:2900};
-    //         case FloorToIndex.Level2:
-    //             showAllCircleXY = [1040,390];
-    //             return {x:940,y:290,width:3500,height:2900};
-    //         case FloorToIndex.Level3:
-    //             showAllCircleXY = [1040,590];
-    //             return {x:940,y:490,width:3000,height:2700};
-    //         default: return{x:940,y:490,width:2160,height:1900};
-    //     }
-    //
-    //
-    // }
 
+    function startPan(event:React.MouseEvent<HTMLDivElement,MouseEvent>){
+        setCurrentlyPanning(true);
+        setStartOfClick({x:event.movementX, y:event.movementY});
+        //console.log("start");
+        //console.log(startOfClick);
+
+    }
+
+    function whilePanning(event:React.MouseEvent<HTMLDivElement,MouseEvent>){
+        if(currentlyPanning){
+            setEndOfClick({x: event.movementX, y: event.movementY});
+            const movementX = ((startOfClick.x - endOfClick.x) / zoomScale) * panSpeed;
+            const movementY = ((startOfClick.y - endOfClick.y) / zoomScale) * panSpeed;
+            setVeiwbox({
+                x: veiwbox.x + movementX, y: veiwbox.y + movementY,
+                width: veiwbox.width, height: veiwbox.height
+            });
+
+
+
+        }
+    }
+
+
+    function stopPan(event:React.MouseEvent<HTMLDivElement,MouseEvent>){
+        if(currentlyPanning){
+            setEndOfClick({x:event.movementX, y:event.movementY});
+            //console.log("start");
+            //console.log(endOfClick);
+            const movementX = ((startOfClick.x - endOfClick.x)/zoomScale)*panSpeed;
+            const movementY = ((startOfClick.y - endOfClick.y)/zoomScale)*panSpeed;
+            setVeiwbox({x: veiwbox.x + movementX, y: veiwbox.y + movementY,
+                width:veiwbox.width,height:veiwbox.height});
+            setCurrentlyPanning(false);
+            console.log("stoped pan");
+        }
+    }
+
+
+    function leftMapArea(){
+        setCurrentlyPanning(false);
+    }
 
 
     /**
