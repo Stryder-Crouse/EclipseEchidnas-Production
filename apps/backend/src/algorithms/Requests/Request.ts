@@ -11,19 +11,6 @@ export type ServiceRequest = {
     assignedUName: string;
     reqID:number;
 };
-
-
-export type flowerRequest = {
-    name: string;
-    priority: string;
-    location: string;
-    flowerName: string;
-    flowerQuantity: string;
-    flowerRecipient: string;
-    status: string;
-    Message: string;
-}
-
 /** Type to store data specific to medication requests*/
 export type MedReq = {
     medType: string;

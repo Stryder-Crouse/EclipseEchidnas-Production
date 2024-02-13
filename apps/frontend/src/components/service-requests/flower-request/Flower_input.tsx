@@ -1,7 +1,7 @@
 import React, {useState, ChangeEvent} from 'react';
 import '../../../css/route-css/Flower_input.css';
 import axios from "axios";
-import {flowerRequest}  from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import {FlowReq, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 
 export default function Flower_input() {
@@ -9,45 +9,53 @@ export default function Flower_input() {
     const [priority,setPriority] = useState("low");
     const [location,setLocation] = useState("");
     const [flowerType,setFlowerType] = useState("");
-    const [flowerQuantity,setFlowerQuantity] = useState("");
+    const [flowerQuantity,setFlowerQuantity] = useState(1);
     const [flowerRecipient,setFlowerRecipient] = useState("");
+    const [extraInfo,setExtraInfo] = useState("");
     const [status,setStatus] = useState("unassigned");
-    const [Message,setMessage] = useState("");
+    const [message,setMessage] = useState("");
 
 
 
         async function submitForm() {
+            const serviceRequest: ServiceRequest = {
+                reqType: "flower delivery",
+                reqLocationID: location,
+                extraInfo: extraInfo,
+                status: status,
+                assignedUName: "",
+                reqPriority: priority,
+                reqID: -1,
+            };
 
+            const flowerRequest: FlowReq = {
+                flowType: flowerType,
+                quantity: flowerQuantity,
+                sender: sender,
+                receiver: flowerRecipient,
+                message: message,
+                genReqID: -1,
+            };
 
-            try {
-                //Make a Service Request Data Type and then a Med Request Data Type
-                // this is bc Front End will beconfused if we pass it a bunch of data so use data structures
-                //Make a Med Req after the service req (Med req needs service req's id, so med req cannot be made before)
-                const newFlowerRequest:flowerRequest = {
-                    name: sender,
-                    priority: priority,
-                    location: location,
-                    flowerName: flowerType,
-                    flowerQuantity: flowerQuantity,
-                    flowerRecipient: flowerRecipient,
-                    status:status,
-                    Message:Message,
-                };
+            const sendInfo = {serviceRequest,flowerRequest};
 
-                clear();
-
-                //Post Med Req to DB (pass in objects of MedReq and ServiceRequest as an array)
-                await axios.post("/api/serviceRequests",
-                    [newFlowerRequest], {
+            try{
+                await axios.post(
+                    "/api/serviceRequests/flowReq",
+                    sendInfo,
+                    {
                         headers: {
-                            "Content-Type": "application/json",
+                            "Content-Type":
+                                "application/json",
                         },
-                    });
-
-
-            } catch {
-                console.error("Error with trying to save Service Req in ServiceRequestPage.tsx");
+                    },
+                );
+            } catch(error){
+                throw new Error("Error with sending flower request");
             }
+            
+
+            clear();
 
 
         }
@@ -57,10 +65,11 @@ export default function Flower_input() {
             setPriority('');
             setLocation('');
             setFlowerType('');
-            setFlowerQuantity('');
+            setFlowerQuantity(1);
             setFlowerRecipient('');
             setStatus('');
             setMessage('');
+            setExtraInfo('');
         }
         // Optionally, you can reset the form fields after submission
         function handleSender(e: ChangeEvent<HTMLInputElement>) {
@@ -75,14 +84,14 @@ export default function Flower_input() {
             setLocation(e.target.value);
         }
 
-        function handleFloyerType(e: ChangeEvent<HTMLInputElement>) {
+        function handleFlowerType(e: ChangeEvent<HTMLInputElement>) {
             setFlowerType(e.target.value);
         }
 
         function handleFlowerQuantity(e: ChangeEvent<HTMLInputElement>) {
-            setFlowerQuantity(e.target.value);
+            setFlowerQuantity(e.target.valueAsNumber);
         }
-        function handleFlowerRecepientr(e: ChangeEvent<HTMLInputElement>) {
+        function handleFlowerRecipient(e: ChangeEvent<HTMLInputElement>) {
             setFlowerRecipient(e.target.value);
         }
 
@@ -97,7 +106,6 @@ export default function Flower_input() {
 
     return(
         <div>
-
             <>
                 <div className="App">
                     <h1>Flower Request </h1>
@@ -143,7 +151,7 @@ export default function Flower_input() {
                             value={flowerType}
                             type={"text"}
                             className={"border-2 p-2 border-black rounded-2xl grow"}
-                            onChange={handleFloyerType}
+                            onChange={handleFlowerType}
                         />
                     </div>
 
@@ -162,7 +170,7 @@ export default function Flower_input() {
                             value={flowerRecipient}
                             type={"text"}
                             className={"border-2 p-2 border-black rounded-2xl grow"}
-                            onChange={handleFlowerRecepientr}
+                            onChange={handleFlowerRecipient}
                         />
                     </div>
 
@@ -183,7 +191,7 @@ export default function Flower_input() {
                     <div className="form-group">
                         <label className="label"> Message </label>
                         <input
-                            value={Message}
+                            value={message}
                             type={"text"}
                             className={"border-2 p-2 border-black rounded-2xl grow"}
                             onChange={handleMessage}
