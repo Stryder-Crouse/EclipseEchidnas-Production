@@ -8,7 +8,6 @@ import ProtectedNodeEdgeTable from "./components/protected-pages/ProtectedNodeEd
 import GuestMap from "./routes/guest-routes/GuestMap.tsx";
 import NewMapPage from "./routes/NewMapPage.tsx";
 import ProtectedEmployeeTable from "./components/protected-pages/ProtectedEmployeeTable.tsx";
-import LoginPage from "./routes/LoginPage.tsx";
 
 import TailwindMapPage from "./routes/TailwindMapPage.tsx";
 
@@ -64,10 +63,6 @@ function App() {
                 {
                     path: "/TailwindMapPage",
                     element: <TailwindMapPage/>,
-                },
-                {
-                    path: "/testTransPort",
-                    element: <LoginPage/>,
                 },
             ],
         },

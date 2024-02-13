@@ -58,14 +58,6 @@ export default function OLDServiceRequestPage() {
         console.error("Error with trying to save Service Req in ServiceRequestPage.tsx");
     }
 
-
-
-
-
-
-
-
-
   }
 
   function clear() {

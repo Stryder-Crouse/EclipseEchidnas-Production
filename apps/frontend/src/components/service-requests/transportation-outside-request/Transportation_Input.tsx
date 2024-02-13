@@ -1,5 +1,12 @@
 import React from "react";
 import {useState} from "react";
+import {
+    OutsideTransport,
+    ReqTypes,
+    ServiceRequest
+} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import axios from "axios";
+//import LocationsDropDown from "../../navigation-bar/LocationsDropDown.tsx";
 
 
 export default function Transportation_Input() {
@@ -27,26 +34,71 @@ export default function Transportation_Input() {
     const [modeTransport, setModeTransport] = useState(ModeTransport.Unchosen);
     const [additional, setAdditional] = useState('');
 
-    //todo BNBN Implement the new version of backend integration (similar to assignment 3 but bigger and scarier
+    async function submit() {
+
+
+        try {
+            //Make a Service Request Data Type and then a Med Request Data Type
+            // this is bc Front End will beconfused if we pass it a bunch of data so use data structures
+            const servReq : ServiceRequest = {
+                reqType: ReqTypes.tranReq,           //Set req type to med req automatically bc we only make med reqs
+                reqLocationID: room,    //Need to know location of where the service request needs to be
+                extraInfo: additional,                      //no extra info is asked for a med req so just ignore (empty string)
+                assignedUName: "No one",            //upon creation, no employee is assigned
+                status: "Unassigned",             //upon creation, nobody is assigned, so set status to unassigned
+                reqID:-1,
+                reqPriority:"Low"
+            };
+
+            const transportData: OutsideTransport = {
+                patientName: patientName,
+                destination: destination,
+                modeOfTransport: modeTransport.valueOf(),
+                serviceReqID: -1,
+            };
+            clear();
+
+            await axios.post("/api/serviceRequests/outsideTransport",
+                [servReq,transportData], {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+
+
+        } catch {
+            console.error("Error with trying to save Service Req in ServiceRequestPage.tsx");
+        }
+
+    }
+
+    function clear() {
+        setPriority(PriorityLevel.Unchosen);
+        setPatientName("");
+        setRoom("");
+        setDestination("");
+        setModeTransport(ModeTransport.Unchosen);
+        setAdditional("");
+    }
 
     return (
-        <body className={"font-project"}>
 
-        <div className={"min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1"}>
+        <div className={"min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
 
             <form className={"p-1"}>
 
-                <h1 className={"flex mb-3 justify-center font-bold text-xl"}>External Patient Transportation</h1>
+                <h1 className={"flex mb-3 justify-center font-bold text-xl"}>External Patient
+                    Transportation</h1> {/* Div Title */}
 
                 <div className={"px-10"}>
 
-                    <div className={"flex justify-center items-center my-1.5"}>
+                    <div className={"flex justify-center items-center my-1.5"}> {/* Priority Dropdown */}
                         {/*<label
                             className={"mr-1"}
                             htmlFor={"priority"}
                         >Priority Level: </label>*/}
                         <select
-                            className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow"}
+                            className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
                             value={priority}
                             id={"priority"}
                             onChange={(e) => setPriority(e.target.value as PriorityLevel)}
@@ -59,7 +111,7 @@ export default function Transportation_Input() {
                         </select>
                     </div>
 
-                    <div className={"flex justify-center items-center my-1.5"}>
+                    <div className={"flex justify-center items-center my-1.5"}> {/* Patient Name text input */}
                         <input
                             className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             type={"text"}
@@ -70,9 +122,7 @@ export default function Transportation_Input() {
                         />
                     </div>
 
-                    <div className={"flex justify-center items-center my-1.5"}>
-                        {//todo FNFN change patient room to be a dropdown of hospital locations
-                        }
+                    <div className={"flex justify-center items-center my-1.5"}> {/* Patient Room Input */}
                         <input
                             className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             type={"text"}
@@ -83,7 +133,7 @@ export default function Transportation_Input() {
                         />
                     </div>
 
-                    <div className={"flex justify-center items-center my-1.5"}>
+                    <div className={"flex justify-center items-center my-1.5"}>{/* Destination Input */}
                         <input
                             className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             type={"text"}
@@ -94,12 +144,12 @@ export default function Transportation_Input() {
                         />
                     </div>
 
-                    <div className={"flex justify-center items-center my-1.5"}>
+                    <div className={"flex justify-center items-center my-1.5"}>{/* Mode of Transportation Input */}
                         {/*<label
                             htmlFor={"modeTransport"}
                         >Mode of Transportation: </label>*/}
                         <select
-                            className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow"}
+                            className={"p-1 w-60 bg-white text-black rounded-2xl border border-black shadow cursor-pointer"}
                             value={modeTransport}
                             id={"modeTransport"}
                             onChange={(e) => setModeTransport(e.target.value as ModeTransport)}
@@ -112,10 +162,9 @@ export default function Transportation_Input() {
                         </select>
                     </div>
 
-                    <div className={"flex justify-center items-center my-1.5"}>
-                        <input
+                    <div className={"flex justify-center items-center my-1.5"}> {/* Additional notes textbox */}
+                        <textarea
                             className={"p-1 min-h-full h-20 w-60 bg-white text-black rounded-xl border border-black drop-shadow align-text-top"}
-                            type={"text"}
                             id={"additional"}
                             placeholder={"Additional Notes:"}
                             value={additional}
@@ -127,6 +176,7 @@ export default function Transportation_Input() {
                         <button
                             className={"p-1 bg-navStart text-ivoryWhite rounded-xl border border-black drop-shadow font-bold"}
                             type={"button"}
+                            onClick={submit}
                         >
                             Submit
                         </button>
@@ -134,7 +184,6 @@ export default function Transportation_Input() {
                 </div>
             </form>
         </div>
-        </body>
     );
 
 
