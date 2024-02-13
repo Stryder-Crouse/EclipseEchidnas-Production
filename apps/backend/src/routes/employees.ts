@@ -74,8 +74,8 @@ router.get("/employees/med", async function (req: Request, res: Response) {
     }
 });
 
-//gets all employees with medicalRequest permissions
-router.get("/employees/flow", async function (req: Request, res: Response) {
+//gets all employees with outsideTransport permissions
+router.get("/employees/transport", async function (req: Request, res: Response) {
     try {
 
         res.send(await PrismaClient.employee.findMany(
@@ -83,7 +83,13 @@ router.get("/employees/flow", async function (req: Request, res: Response) {
                 where:{
                     OR:[
                         {
-                            designation:"flower deliverer"
+                            designation:"doctor"
+                        },
+                        {
+                            designation:"nurse"
+                        },
+                        {
+                            designation:"administrator"
                         },
                         {
                             userName:"No one"

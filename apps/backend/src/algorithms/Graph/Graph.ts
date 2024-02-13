@@ -19,7 +19,7 @@ export class Graph {
 
     //these should probe be the same to avoid over estimation by a*
     private readonly floorPenalty: number = 5000;
-    private readonly elevatorAndStairsEdgeWeight: number = 5000;
+    private static readonly elevatorAndStairsEdgeWeight: number = 5000;
 
     /**
      * Stores, by every floor, what nodes are stairs and elevators
@@ -110,8 +110,8 @@ export class Graph {
             //add backEdge to endNode
             endNode.edges.push(backEdge);
 
-            //todo remove
-            edges.push(backEdge);
+
+            edges.push(backEdge); //need this for correct weight caluations
 
 
             /* create adjList */
@@ -145,7 +145,8 @@ export class Graph {
         this.nodeIdLookup = nodeMap;
         this.edgeIdLookup = edgeMap;
 
-        //todo DELETE debug code
+        //todo debug code
+
         // console.log("OKOK");
         // console.log(edges.length + " "+ edgeMap.size);
         // for(let i=0;i<edges.length; i++){
@@ -347,6 +348,13 @@ export class Graph {
     }
 
     /**
+     * @returns the weight assigned to a tranistion edge
+     */
+    public static getElevatorAndStairsEdgeWeight(): number {
+        return Graph.elevatorAndStairsEdgeWeight;
+    }
+
+    /**
      * Retrieve the corresponding Node from its ID.
      * @param nodeID - node id as a string
      * @returns returns a node with the corresponding ID or null if node not found
@@ -385,7 +393,7 @@ export class Graph {
 
         for (let i = 0; i < this.edges.length; i++) {
             if ((this.edges[i].startNode.nodeType == NodeType.ELEV && this.edges[i].endNode.nodeType == NodeType.ELEV) || (this.edges[i].startNode.nodeType == NodeType.STAI && this.edges[i].endNode.nodeType == NodeType.STAI)) {
-                this.edges[i].weight = this.elevatorAndStairsEdgeWeight;
+                this.edges[i].weight = Graph.elevatorAndStairsEdgeWeight;
             }
             // else find Euclidean distance of the edge and set it as the weight
             else {

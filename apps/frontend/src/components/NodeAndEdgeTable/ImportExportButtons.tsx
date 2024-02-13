@@ -103,11 +103,11 @@ function ImportExportButtons() {
   /*const */
 
   return (
-    <div className={"import-and-export"}>
-      <button className={"export"} onClick={inputFiles}>
+    <div className={"flex justify-center mt-5" }>
+      <button className={"transition-all hover:bg-navy w-40 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"} onClick={inputFiles}>
         Import .csv
       </button>
-      <button className={"export"} onClick={exportDataBase}>
+      <button className={"transition-all hover:bg-navy w-40 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"} onClick={exportDataBase}>
         Export Current
       </button>
     </div>

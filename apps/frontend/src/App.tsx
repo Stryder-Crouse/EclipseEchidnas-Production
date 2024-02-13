@@ -5,11 +5,13 @@ import ProtectedAdminMap from "./components/protected-pages/ProtectedAdminMap.ts
 import ProtectedServiceRequest from "./components/protected-pages/ProtectedServiceRequest.tsx";
 import ProtectedRequestList from "./components/protected-pages/ProtectedRequestList.tsx";
 import ProtectedNodeEdgeTable from "./components/protected-pages/ProtectedNodeEdgeTable.tsx";
-import GuestMap from "./routes/guest-routes/GuestMap.tsx";
+//import GuestMap from "./routes/guest-routes/GuestMap.tsx";
 import NewMapPage from "./routes/NewMapPage.tsx";
 import ProtectedEmployeeTable from "./components/protected-pages/ProtectedEmployeeTable.tsx";
 
 import TailwindMapPage from "./routes/TailwindMapPage.tsx";
+import TestServiceReqPage from "./routes/TestServiceReqPage.tsx";
+import TestingPage from "./routes/TestingPage.tsx";
 
 import OLDServiceRequestPage from "./routes/OLDServiceRequestPage.tsx";
 import OLDRequestList from "./routes/admin-routes/OLDRequestList.tsx";
@@ -42,7 +44,7 @@ function App() {
                 },
                 {
                     path: "/GuestMap",
-                    element: <GuestMap/>,
+                    element: <TailwindMapPage/>,
                 },
                 {
                     path:"/NewMapPage",
@@ -63,6 +65,14 @@ function App() {
                 {
                     path: "/TailwindMapPage",
                     element: <TailwindMapPage/>,
+                },
+                {
+                    path: "/TestServiceReqPage",
+                        element: <TestServiceReqPage/>,
+                },
+                {
+                    path: "/TestingPage",
+                    element: <TestingPage/>,
                 },
             ],
         },

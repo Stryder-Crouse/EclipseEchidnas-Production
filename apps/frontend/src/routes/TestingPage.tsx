@@ -1,15 +1,15 @@
-import SideNavBarComponent, {SideBarItem} from "../../components/SideNavBarComponent.tsx";
-import ServiceRequestIcon from "../../images/SideBar/requestIcon.png";
-import EmployeeIcon from "../../images/SideBar/user.png";
-import CSVIcon from "../../images/SideBar/table.png";
-import LogIcon from "../../images/SideBar/log-in.png";
-import MapIcon from "../../images/SideBar/map.png";
+import SideNavBarComponent, {SideBarItem} from "../components/SideNavBarComponent.tsx";
+import ServiceRequestIcon from "../images/SideBar/requestIcon.png";
+import EmployeeIcon from "../images/SideBar/user.png";
+import CSVIcon from "../images/SideBar/table.png";
+import LogIcon from "../images/SideBar/log-in.png";
+import MapIcon from "../images/SideBar/map.png";
 
-import ImportExportButtons from "../../components/NodeAndEdgeTable/ImportExportButtons.tsx";
-import NodeTable from "../../components/NodeAndEdgeTable/NodeTable.tsx";
-import EdgeTable from "../../components/NodeAndEdgeTable/EdgeTable.tsx";
+import ImportExportButtons from "../components/NodeAndEdgeTable/ImportExportButtons.tsx";
+import NodeTable from "../components/NodeAndEdgeTable/NodeTable.tsx";
+import EdgeTable from "../components/NodeAndEdgeTable/EdgeTable.tsx";
 
-function NodeEdgeTablePage() {
+function TestingPage() {
     return(
         <div className="flex h-lvh">
             <div className="z-10">
@@ -33,4 +33,4 @@ function NodeEdgeTablePage() {
     );
 }
 
-export default NodeEdgeTablePage;
+export default TestingPage;
