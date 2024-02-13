@@ -64,7 +64,7 @@ export default function Religious_input() {
             }
         });
         if (res.status === 200) {
-            console.log("recorded religious request with mouse event ");
+            console.log("recorded religious request");
         }
         else{
             console.log("Failed to record religious request");
@@ -106,6 +106,8 @@ export default function Religious_input() {
                                 populationArr={religions}
                                 setSelected={setReligionDDIndx}
                                 resetDropdown={resetDropdownRel}
+                                resetOnSelect={false}
+                                inputCSS={"n/a"} selectCSS={"dropdown"}
                                 setResetDropdown={setResetDropdownRel}/>
 
                 <textarea placeholder={"Describe the religious service to be performed here."}
@@ -120,6 +122,8 @@ export default function Religious_input() {
                                 populationArr={[Priority.low,Priority.normal,Priority.high,Priority.emergency]}
                                 setSelected={setUrgencyDDIndx}
                                 resetDropdown={resetDropdownUrg}
+                                resetOnSelect={false}
+                                inputCSS={"n/a"} selectCSS={"dropdown"}
                                 setResetDropdown={setResetDropdownUrg}/>
                 
                 <textarea placeholder={"Any extra notes?"}

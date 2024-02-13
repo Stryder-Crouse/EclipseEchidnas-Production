@@ -1,20 +1,15 @@
 import React from "react";
 import {createBrowserRouter, RouterProvider, Outlet} from "react-router-dom";
-import WelcomeStart from "./routes/WelcomePage.tsx";
 import ProtectedAdminMap from "./components/protected-pages/ProtectedAdminMap.tsx";
 import ProtectedServiceRequest from "./components/protected-pages/ProtectedServiceRequest.tsx";
 import ProtectedRequestList from "./components/protected-pages/ProtectedRequestList.tsx";
 import ProtectedNodeEdgeTable from "./components/protected-pages/ProtectedNodeEdgeTable.tsx";
-import GuestMap from "./routes/guest-routes/GuestMap.tsx";
-import NewMapPage from "./routes/NewMapPage.tsx";
+//import GuestMap from "./routes/guest-routes/GuestMap.tsx";
 import ProtectedEmployeeTable from "./components/protected-pages/ProtectedEmployeeTable.tsx";
 
 import TailwindMapPage from "./routes/TailwindMapPage.tsx";
 import TestServiceReqPage from "./routes/TestServiceReqPage.tsx";
-import TestingPage from "./routes/TestingPage.tsx";
 
-import OLDServiceRequestPage from "./routes/OLDServiceRequestPage.tsx";
-import OLDRequestList from "./routes/admin-routes/OLDRequestList.tsx";
 function App() {
     const router = createBrowserRouter([
         {
@@ -24,7 +19,7 @@ function App() {
             children: [
                 {
                     path: "",
-                    element: <WelcomeStart/>,
+                    element: <TailwindMapPage/>,
                 },
                 {
                     path: "/AdminMapPage",
@@ -44,23 +39,11 @@ function App() {
                 },
                 {
                     path: "/GuestMap",
-                    element: <GuestMap/>,
-                },
-                {
-                    path:"/NewMapPage",
-                    element: <NewMapPage/>,
+                    element: <TailwindMapPage/>,
                 },
                 {
                     path:"/EmployeeTable",
                     element: <ProtectedEmployeeTable/>,
-                },
-                {
-                    path:"/OLDServiceRequestPage",
-                    element: <OLDServiceRequestPage/>,
-                },
-                {
-                    path:"/OLDRequestList",
-                    element: <OLDRequestList/>,
                 },
                 {
                     path: "/TailwindMapPage",
@@ -69,10 +52,6 @@ function App() {
                 {
                     path: "/TestServiceReqPage",
                         element: <TestServiceReqPage/>,
-                },
-                {
-                    path: "/TestingPage",
-                    element: <TestingPage/>,
                 },
             ],
         },
