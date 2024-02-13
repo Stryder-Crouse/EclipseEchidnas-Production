@@ -7,12 +7,8 @@
     border: 2px solid #edeef1;
     box-shadow: 0 4px 16px 0 rgba(148, 156, 169, 0.15);
     text-align: center;
-    max-height: 30vh;
-    /** Flexbox centering Div **/
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    width: auto;
+    max-height: 100vh;
+
 }
 
 .table-wrapper {
@@ -20,7 +16,7 @@
     padding-bottom: 0.5rem;
     margin: auto;
     /*margin-bottom: 1rem;*/
-    max-height: 20vh;
+
     align-items: center;
 
 }
@@ -31,7 +27,8 @@ td:nth-child(2) {
 }
 
 .request-table-container {
-    margin: 10% auto auto;
+    margin:auto;
+    
     font-family: 'Work Sans', sans-serif;
 }
 

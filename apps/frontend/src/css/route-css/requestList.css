@@ -9,9 +9,6 @@
   text-align: center;
   overflow: auto;
 
-    justify-content: center;
-    display: flex;
-    margin: auto;
 
 
   /* removed position absolute center */
@@ -22,10 +19,7 @@ td:nth-child(2) {
   width: 5rem;
 }
 
-.request-table-container {
-    margin: 10% auto auto;
-    font-family: 'Work Sans', sans-serif;
-}
+
 
 td {
     font-family: 'Work Sans', sans-serif;
