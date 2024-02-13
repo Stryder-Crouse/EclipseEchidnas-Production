@@ -11,6 +11,7 @@ import ProtectedEmployeeTable from "./components/protected-pages/ProtectedEmploy
 
 import TailwindMapPage from "./routes/TailwindMapPage.tsx";
 import TestServiceReqPage from "./routes/TestServiceReqPage.tsx";
+import TestingPage from "./routes/TestingPage.tsx";
 
 import OLDServiceRequestPage from "./routes/OLDServiceRequestPage.tsx";
 import OLDRequestList from "./routes/admin-routes/OLDRequestList.tsx";
@@ -68,6 +69,10 @@ function App() {
                 {
                     path: "/TestServiceReqPage",
                         element: <TestServiceReqPage/>,
+                },
+                {
+                    path: "/TestingPage",
+                    element: <TestingPage/>,
                 },
             ],
         },

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx";
-import "../../css/route-css/requestList.css";
 import axios from "axios";
 import {MedReq, ServiceRequest} from "../../../../backend/src/algorithms/Requests/Request.ts";
 import {Employee} from "../../../../backend/src/algorithms/Employee/Employee.ts";

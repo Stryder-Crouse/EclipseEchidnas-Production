@@ -12,12 +12,15 @@ export default function MapFeatureButtons() {
             <button className="bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg">
                 <img src={RefreshIcon} alt={"Refresh"}/>
             </button>
-            <button className="bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg">
-                <img src={ZoomInIcon} alt={"Zoom In"}/>
-            </button>
-            <button className="bg-ivoryWhite rounded-md p-2 drop-shadow-lg">
-                <img src={ZoomOutIcon} alt={"Zoom Out"}/>
-            </button>
+            <div className="grid ">
+                <button className="bg-ivoryWhite p-2 drop-shadow-lg rounded-t-md">
+                    <img src={ZoomInIcon} alt={"Zoom In"}/>
+                </button>
+                <button className="bg-ivoryWhite p-2 drop-shadow-lg rounded-b-md ">
+                    <img src={ZoomOutIcon} alt={"Zoom Out"}/>
+                </button>
+            </div>
+
         </div>
     );
 }
