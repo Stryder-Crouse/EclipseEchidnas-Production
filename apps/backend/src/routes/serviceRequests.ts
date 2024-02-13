@@ -1,7 +1,7 @@
 import express, {Router, Request, Response} from "express";
 //import { MedReq, Request } from "../algorithms/node.ts";
 import PrismaClient from "../bin/database-connection.ts";
-import {MedReq, OutsideTransport, ServiceRequest} from "../algorithms/Requests/Request.ts";
+import {MedReq, OutsideTransport, sanReq, ServiceRequest} from "../algorithms/Requests/Request.ts";
 // import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
 
 //import path from "path";
@@ -315,6 +315,87 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
         //we display info from both the service req and the outside transportation req, so we send the person both DB objects
         res.send([transportReq,serviceReqs]);
         console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
+    } catch (err) {
+        console.error("\nUnable to send Requests\n");
+    }
+});
+
+// ---------------------------------    Sanitation DB Interaction    ---------------------------------
+
+router.post("/sanReq", async function (req: Request, res: Response) {
+    try {
+        //you need a service request to make an Sanitation transportation request, so let the router know that you are receiving both
+        const sentData:[ServiceRequest,sanReq] = req.body;
+        const serviceReq = await PrismaClient.serviceRequest.create({
+            data: {
+                reqType: sentData[0].reqType,
+                reqPriority: sentData[0].reqPriority,
+                reqLocation: {
+                    connect: {
+                        nodeID: sentData[0].reqLocationID
+                    }
+                },
+                extraInfo: sentData[0].extraInfo,
+                status: sentData[0].status,
+                //connect the Employee field using the username as a foreign key
+                //assigned is the relation, so itt does not actually exist as data (data that
+                // will exist and connect is data you specify below)
+                assigned: {
+                    connectOrCreate: {
+                        //connectOrCreate makes you specify what data you will create with and also what you
+                        // want to connect to (needs to know both potential outcomes)
+                        create: {
+                            userName: "No one",
+                            firstName: "N/A",
+                            lastName: "N/A",
+                            designation: "N/A",
+                            isAdmin: true,
+                        },
+                        //second part of create or connect (the what-we-connect-to part)
+                        where: {
+                            userName: "No one"
+                        }
+                    }
+                }
+            }
+        });
+        console.log("Successfully saved Service Requirement");
+
+        await PrismaClient.sanReq.create({
+            data: {
+                serviceReqID: serviceReq.reqID,
+                type: sentData[1].type
+            }
+        });
+        console.log("Successfully saved the Sanitation Request");
+        res.sendStatus(200);
+    } catch {
+        console.error("Sanitation Request Failed");
+        res.sendStatus(400);
+    }
+});
+
+router.get("/sanReq", async function (req: Request, res: Response) {
+    try {
+
+        const sanReq = await PrismaClient.sanReq.findMany({
+            orderBy: {
+                serviceReqID: "asc", //order by service request id so the two arrays are parallel
+            }
+        });
+
+        const serviceReqs = await PrismaClient.serviceRequest.findMany({
+            orderBy: {
+                reqID: "asc", //order by service request id so the two arrays are parallel
+            },
+            where:{
+                reqType:"sanitation"
+            }
+        });
+
+        //we display info from both the service req and the sanitation req, so we send the person both DB objects
+        res.send([sanReq,serviceReqs]);
+        console.info("\nSuccessfully gave you all of the Sanitation Requests\n");
     } catch (err) {
         console.error("\nUnable to send Requests\n");
     }

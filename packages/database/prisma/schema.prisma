@@ -81,6 +81,7 @@ model ServiceRequest {
   // not actually here
   medReq           MedReq?           @relation("genericRequest")
   outsideTransport outsideTransport? @relation("outsideTransport")
+  sanReq           SanReq?           @relation("sanReq")
   // making new request table exsample
   // flowReq      FlowerReq?   @relation("FlowerReq")
   reqLocation      NodeDB            @relation("requestLocation", fields: [reqLocationID], references: [nodeID])
@@ -109,4 +110,12 @@ model outsideTransport {
   serviceReqID       Int    @unique
 
   serviceReq ServiceRequest @relation("outsideTransport", fields: [serviceReqID], references: [reqID])
+}
+
+model SanReq {
+  sanReqID     Int    @id @unique @default(autoincrement())
+  type         String @db.VarChar(256)
+  serviceReqID Int    @unique
+
+  serviceReq ServiceRequest @relation("sanReq", fields: [serviceReqID], references: [reqID])
 }
