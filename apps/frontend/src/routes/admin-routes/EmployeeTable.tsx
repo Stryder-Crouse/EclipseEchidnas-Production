@@ -44,25 +44,24 @@ function EmployeeTable() {
                         <button onClick={openForm} className="items- drop-shadow-lg transition-all hover:bg-navy w-48 text-white p-2 bg-navStart rounded-full h-min font-semibold ">Add Employee</button>
 
                         {/* TODO ADD THIS FUNCTION INTO IT */}
-                            <div id={"addEmployeeFOrm"} className="hidden z-20">
+                            <div id={"addEmployeeForm"} className="hidden z-20">
                                 <form>
                                     <label form={"employeeUsername"}>Username</label>
                                     <input type={"text"} placeholder={"Enter Username"} name={"employeeUsername"} required/>
-                                    
+
                                     <label form={"employeeFirst"}>First Name</label>
                                     <input type={"text"} placeholder={"Enter First Name"} name={"employeeFirst"} required/>
-                                    
+
                                     <label form={"employeeLast"}>Last Name</label>
                                     <input type={"text"} placeholder={"Enter Last Name"} name={"employeeFirst"} required/>
-                                    
+
                                     <label form={"designation"}>Designation</label>
                                     <input type={"text"} placeholder={"Enter Designation"} name={"designation"} required/>
-                                    
+
                                     <button type={"submit"}>Add Employee</button>
                                     <button type={"button"} onClick={closeForm}>Close</button>
                                 </form>
                             </div>
-
                     </span>
                 </div>
 
@@ -82,29 +81,33 @@ function EmployeeTable() {
                         <tbody>
                         {
                             employees.map((employee) => {
-                                return (
-                                    <tr key={"Employee_" + employee.userName}>
-                                        <td>{employee.userName}</td>
-                                        <td>{employee.firstName}</td>
-                                        <td>{employee.lastName}</td>
-                                        <td>{employee.designation}</td>
-                                        <td>{employee.isAdmin}</td>
-                                    </tr>
-                                );
-
+                                return drawEmployeeRecord(employee);
                             })
                         }
                         </tbody>
                     </table>
                 </div>
             </div>
-
-
         </div>
-
-
     );
 }
+
+/**
+ * Draw a table row.
+ * @param employee the employee to draw.
+ */
+function drawEmployeeRecord(employee:Employee){
+    return (
+        <tr key={"Employee_" + employee.userName}>
+            <td className={"node-id"}>{employee.userName}</td>
+            <td>{employee.firstName}</td>
+            <td>{employee.lastName}</td>
+            <td>{employee.designation}</td>
+            <td>{employee.isAdmin}</td>
+        </tr>
+    );
+}
+
 
 /**
  * open the div add Employee Form
@@ -119,69 +122,29 @@ function openForm() {
 /**
  * close the div add Employee Form
  */
-function closeForm() {
+function closeForm(): void {
     const close = document.getElementById("addEmployeeForm");
     if (close != null) {
         close.style.display= "none";
     }
 }
 
-async function getEmployees() {
-    const employees = await
-        axios.get<Employee[]>("/api/employees/employees");
+async function getEmployees()  {
+    const employees = await axios.get<Employee[]>("/api/employees/employees");
     return employees.data;
 }
 
-//TODO this function needs to replaced by actually doing the right populating, follow homework 3
-// async function populateRequests() {
-//     /* useless comment */
-//     console.log("RAN");
-//
-//     /* get the employees from backend */
-//     const empReqs = await axios.get<Employee[]>("/api/employees/employees");
-//
-//     //fine dropdown div in the html on the page
-//     const table = document.getElementById("request-table");
-//
-//     console.log(table);
-//
-//     //for each node
-//     empReqs.data.forEach(function (newRequest: Employee) {
-//         //create tr element to store the record
-//         const tableRow = document.createElement("tr");
-//
-//         // //create td tags for data from record
-//         // const reqType = document.createElement("td");
-//         // reqType.textContent = "Medicine request";
-//         // reqType.setAttribute("className", "node-id");
-//
-//         const userName = document.createElement("td");
-//         userName.textContent = newRequest.userName;
-//         userName.setAttribute("className", "node-id");
-//
-//         const firstName = document.createElement("td");
-//         firstName.textContent = newRequest.firstName;
-//
-//         const lastName = document.createElement("td");
-//         lastName.textContent = newRequest.lastName;
-//
-//         const designation = document.createElement("td");
-//         designation.textContent = newRequest.designation.toString();
-//
-//         //append data elements together to one row
-//         tableRow.appendChild(userName);
-//         tableRow.appendChild(firstName);
-//         tableRow.appendChild(lastName);
-//         tableRow.appendChild(designation);
-//         //tableRow.appendChild(reqAmount);
-//
-//         if (table == null) {
-//             return;
-//         }
-//
-//         //add new row element to table
-//         table.appendChild(tableRow);
-//     });
+/**
+ * Delete an employee from the database.
+ * @param employee the employee to remove.
+ */
+// async function deleteEmployee(employee: Employee): void {
+//     console.log("Tried to delete employee " + employee);
+//     return;
 // }
+
+
+
+
 
 export default EmployeeTable;
