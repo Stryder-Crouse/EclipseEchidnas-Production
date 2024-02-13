@@ -1,16 +1,29 @@
 import MapSearchBar from "./MapSearchBar.tsx";
-import {FloorToIndex} from "../../../backend/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, Node} from "../../../backend/src/algorithms/Graph/Node.ts";
 import {Dispatch, SetStateAction} from "react";
 
 
 export interface levelStates{
     setSelectedFloorIndex: Dispatch<SetStateAction<FloorToIndex>>;
+    startNode:Node;
+    setStartNode: Dispatch<SetStateAction<Node>>;
+    endNode:Node;
+    setEndNode: Dispatch<SetStateAction<Node>>;
+    locations:Node[];
 }
 
-export default function TopMapButtons({setSelectedFloorIndex:setFloor }:levelStates) {
+export default function TopMapButtons({setSelectedFloorIndex:setFloor,
+                                          startNode:startNode,
+                                          setStartNode:setStartNode,
+                                      endNode:endNode,
+                                          setEndNode:setEndNode,
+                                          locations:locations
+                                      }:levelStates) {
     return (
         <div className="z-10 max-h-10 flex mt-5 justify-content-center">
-            <MapSearchBar/>
+            <MapSearchBar endNode={endNode} locations={locations} setEndNode={setEndNode}
+                          setStartNode={setStartNode}
+                          startNode={startNode}/>
 
             <button
                 className="transition-all  hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"

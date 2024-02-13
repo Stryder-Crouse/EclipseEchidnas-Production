@@ -3,6 +3,7 @@ import RefreshIcon from "../images/MapFunctions/refresh-cw.png";
 import ZoomInIcon from "../images/MapFunctions/plus.png";
 import ZoomOutIcon from "../images/MapFunctions/minus.png";
 import {Dispatch, SetStateAction} from "react";
+import {Node, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
 
 
 
@@ -12,13 +13,15 @@ export interface zoomAndMapStates{
     setDrawEntirePath: Dispatch<SetStateAction<boolean>>;
     veiwbox:{x:number, y:number, width:number, height:number},
     setVeiwbox:Dispatch<SetStateAction<{x:number, y:number, width:number, height:number}>>
-    setZoomScale:Dispatch<SetStateAction<number>>
+    setZoomScale:Dispatch<SetStateAction<number>>,
+    setStartNode:Dispatch<SetStateAction<Node>>
+    setEndNode:Dispatch<SetStateAction<Node>>
 }
 export default function MapFeatureButtons({drawEntirePath:drawEntirePath,
                                               setDrawEntirePath:setDrawEntirePath,
                                               veiwbox:veiwbox,
                                               setVeiwbox:setVeiwbox,
-                                              setZoomScale:setZoomScale}:zoomAndMapStates) {
+                                              setZoomScale:setZoomScale, setStartNode,setEndNode}:zoomAndMapStates) {
 
 
     function handleMapToggle() {
@@ -57,7 +60,11 @@ export default function MapFeatureButtons({drawEntirePath:drawEntirePath,
             <button className="bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg" onClick={handleMapToggle}>
                 <img src={EyeIcon} alt={"See All Locations and Paths"}/>
             </button>
-            <button className="bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg">
+            <button className="bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg"
+                    onClick={()=>{
+                        setStartNode(NULLNODE);
+                        setEndNode(NULLNODE);
+                    }}>
                 <img src={RefreshIcon} alt={"Refresh"}/>
             </button>
             <div className="grid ">

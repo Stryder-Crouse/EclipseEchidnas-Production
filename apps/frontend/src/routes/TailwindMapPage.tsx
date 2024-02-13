@@ -84,11 +84,14 @@ function TailwindMapPage() {
                 </SideNavBarComponent>
 
 
-                <TopMapButtons setSelectedFloorIndex={setSelectedFloorIndex}/>
+                <TopMapButtons setSelectedFloorIndex={setSelectedFloorIndex} endNode={endNode}
+                               locations={locations} setEndNode={setEndNode} setStartNode={setStartNode}
+                               startNode={startNode}/>
 
                 <MapFeatureButtons veiwbox={veiwbox} setVeiwbox={setVeiwbox}
                                    setDrawEntirePath={setDrawEntirePath} drawEntirePath={drawEntirePath}
-                                   setZoomScale={setZoomScale}/>
+                                   setZoomScale={setZoomScale} setEndNode={setEndNode}
+                                   setStartNode={setStartNode}/>
             </div>
             <Map startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
                  selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
@@ -96,6 +99,7 @@ function TailwindMapPage() {
                  setLocations={setLocations} setVeiwbox={setVeiwbox} veiwbox={veiwbox} setZoomScale={setZoomScale}
                  zoomScale={zoomScale}
              />
+
         </div>
 
     );
