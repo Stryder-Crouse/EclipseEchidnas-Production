@@ -10,8 +10,6 @@ const router: Router = express.Router();
 
 // ---------------------------------    Med Request DB Interaction    ---------------------------------
 
-
-
 //posts all medication requests in the body of the function to the database
 // each request gets its own auto-generated ID
 //router.post("/post-all", async function (req: Request, res: Response) {});
