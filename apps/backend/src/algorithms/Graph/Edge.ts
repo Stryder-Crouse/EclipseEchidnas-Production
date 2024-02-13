@@ -1,10 +1,15 @@
-import { Node } from "./Node.ts";
+import { Node, NULLNODE} from "./Node.ts";
 /** TS struct to hold an edge between nodes */
 export type Edge = {
   id: string;
   startNode: Node;
   endNode: Node;
   weight:number;
+
+};
+
+export const NULLEDGE:Edge = {
+    endNode: NULLNODE, id: "NULL", startNode: NULLNODE, weight: -1
 
 };
 /**

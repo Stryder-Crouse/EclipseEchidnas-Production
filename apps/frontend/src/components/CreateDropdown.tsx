@@ -1,40 +1,60 @@
-import React, {useEffect} from "react";
+import React from "react";
 
 export interface DropdownProps{
     dropBtnName:string,
     dropdownID:string,
     populationArr: string[],
     isSearchable: boolean,
+    resetOnSelect: boolean,
     resetDropdown: boolean,
     setResetDropdown: React.Dispatch<React.SetStateAction<boolean>>,
-    setSelected:   React.Dispatch<React.SetStateAction<string>>;
+    setSelected:   React.Dispatch<React.SetStateAction<string>>,
+    inputCSS:string,
+    selectCSS:string
 }
 
-export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populationArr, setSelected, resetDropdown, setResetDropdown}: DropdownProps) {
+export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populationArr, setSelected, resetDropdown,
+                                   setResetDropdown, inputCSS, resetOnSelect,selectCSS}: DropdownProps) {
 
-    //todo with Joseph and/or Stryder - review this code block
-    useEffect(() => {
-        if (resetDropdown) {
-            const dropdownElement = document.getElementById(dropdownID);
-            if (dropdownElement) {
-                if (isSearchable) {
-                    // If the dropdown is searchable (<input type="text">), reset its value to an empty string
-                    (dropdownElement as HTMLInputElement).value = '';
-                } else {
-                    // If the dropdown is not searchable (<select>), reset it to the default/first option
-                    (dropdownElement as HTMLSelectElement).selectedIndex = 0;
-                }
+
+    if (resetDropdown) {
+        const dropdownElement = document.getElementById(dropdownID);
+        if (dropdownElement) {
+            if (isSearchable) {
+                // If the dropdown is searchable (<input type="text">), reset its value to an empty string
+                (dropdownElement as HTMLInputElement).value = '';
+            } else {
+                // If the dropdown is not searchable (<select>), reset it to the default/first option
+                (dropdownElement as HTMLSelectElement).selectedIndex = 0;
             }
-            setSelected(populationArr[0]); // Reset selected value
-            setResetDropdown(false); // Stop it from continually resetting
         }
-    }, [resetDropdown, setSelected, dropdownID, isSearchable, populationArr, setResetDropdown]);
+        setSelected(""); // Reset selected value
+        setResetDropdown(false); // Stop it from continually resetting
+    }
+
+
 // -----------------------------------------------------------------------------------------
 
+    function resetInputBox(){
+
+        const dropdownElement = document.getElementById(dropdownID);
+        if (dropdownElement) {
+            if (isSearchable) {
+                // If the dropdown is searchable (<input type="text">), reset its value to an empty string
+                (dropdownElement as HTMLInputElement).value = '';
+            } else {
+                // If the dropdown is not searchable (<select>), reset it to the default/first option
+                (dropdownElement as HTMLSelectElement).selectedIndex = 0;
+            }
+        }
+    }
 
     function setValueCorrectly(index:number){
         const value = populationArr[index];
         setSelected(value);
+        if(resetOnSelect){
+            resetInputBox();
+        }
     }
 
     function findValueIndex(value:string)
@@ -57,7 +77,11 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
         return (
             <div className="dropdown">
 
-                <input type="text" placeholder={dropBtnName} list={datalistID} id={dropdownID} onChange={e => findValueIndex(e.target.value)}/>
+                <input type="text" placeholder={dropBtnName} list={datalistID} id={dropdownID}
+                       onChange={e => findValueIndex(e.target.value)}
+                       className={inputCSS}
+
+                />
                 <datalist className="dropbtn" id={datalistID}>
                     {
                         populationArr.map((option: string) => <option className={"dropdown-content"}>{option}</option>)
@@ -69,7 +93,7 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
     } else {
         return (
             <div className="dropdown">
-                <select id={dropdownID} className="dropbtn" name={dropBtnName} onChange={e => {
+                <select id={dropdownID} className={selectCSS} name={dropBtnName} onChange={e => {
                     setValueCorrectly(e.target.selectedIndex - 1);
                 }}>
                     <option disabled={true} selected={true} className={"dropdown-content unselectable"}>{dropBtnName}</option>
