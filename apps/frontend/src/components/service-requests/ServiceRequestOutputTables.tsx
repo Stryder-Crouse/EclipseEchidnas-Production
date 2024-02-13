@@ -71,7 +71,7 @@ export default function ServiceRequestOutputTables() {
 
             </ul>
             <div className="tab-content-wrapper">
-                {/* the content to be populated with each request */}
+                {/* the content to be populated with each request*/}
                 {
                     generateSelectedTable()
                 }
