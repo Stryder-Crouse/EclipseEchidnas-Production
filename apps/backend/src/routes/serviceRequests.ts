@@ -1,7 +1,7 @@
 import express, {Router, Request, Response} from "express";
 //import { MedReq, Request } from "../algorithms/node.ts";
 import PrismaClient from "../bin/database-connection.ts";
-import {MedReq, OutsideTransport, ServiceRequest} from "../algorithms/Requests/Request.ts";
+import {MedReq, OutsideTransport, ReligRequest, ServiceRequest} from "../algorithms/Requests/Request.ts";
 // import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
 
 //import path from "path";
@@ -320,4 +320,90 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
     }
 });
 
+// ---------------------------------    Relig Req DB Interaction    ---------------------------------
+router.post('/religiousRequest', async function(req:Request, res:Response) {
+    try{
+
+        const sentData:[ServiceRequest,ReligRequest] = req.body;
+        const servReq = await PrismaClient.serviceRequest.create({
+            data: {
+                reqType: sentData[0].reqType,
+                reqPriority: sentData[0].reqPriority,
+                reqLocation: {
+                    connect: {
+                        nodeID: sentData[0].reqLocationID
+                    }
+                },
+                extraInfo: sentData[0].extraInfo,
+                status: sentData[0].status,
+                //connect the Employee field using the username as a foreign key
+                //assigned is the relation, so itt does not actually exist as data (data that
+                // will exist and connect is data you specify below)
+                assigned: {
+                    connectOrCreate: {
+                        //connectOrCreate makes you specify what data you will create with and also what you
+                        // want to connect to (needs to know both potential outcomes)
+                        create: {
+                            userName: "No one",
+                            firstName: "N/A",
+                            lastName: "N/A",
+                            designation: "N/A",
+                            isAdmin: true,
+                        },
+                        //second part of create or connect (the what-we-connect-to part)
+                        where: {
+                            userName: "No one"
+                        }
+                    }
+                }
+            }
+        });
+        console.log("Successfully saved Service Requirement");
+
+        await PrismaClient.religiousReq.create({
+            data: {
+                patientName: sentData[1].patientName,
+                religion: sentData[1].religion,
+                reqDescription: sentData[1].reqDescription,
+                genReqID: servReq.reqID
+            }
+        });
+
+        console.log("Successfully saved the Religious Request");
+        res.sendStatus(200);
+    }
+    catch(err)
+    {
+        console.error("Unable to save the Religious Request");
+        res.sendStatus(400);
+    }
+});
+
+router.get("/religiousRequest", async function (req: Request, res: Response) {
+    try {
+
+        const religReq = await PrismaClient.religiousReq.findMany({
+            orderBy: {
+                genReqID: "asc", //order by service request id so the two arrays are parallel
+            }
+        });
+
+        const serviceReqs = await PrismaClient.serviceRequest.findMany({
+            orderBy: {
+                reqID: "asc", //order by service request id so the two arrays are parallel
+            },
+            where:{
+                reqType:"religious"
+            }
+        });
+
+        //we display info from both the service req and the outside transportation req, so we send the person both DB objects
+        res.send([religReq,serviceReqs]);
+        console.info("\nSuccessfully gave you all of the Religious Requests\n");
+    } catch (err) {
+        console.error("\nUnable to send Requests\n");
+    }
+});
+
 export default router;
+

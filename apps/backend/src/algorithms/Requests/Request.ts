@@ -4,7 +4,6 @@
 export type ServiceRequest = {
     reqType: string;
     reqPriority: string;
-//  reqLocationID: string; //should be a fk to a node
     reqLocationID: string;
     extraInfo: string;
     status: string;
@@ -27,9 +26,11 @@ export type OutsideTransport = {
     serviceReqID: number;
 }
 
-
-
-
+export type ReligRequest = {
+    patientName: string;
+    religion: string;
+    reqDescription: string;
+};
 
 // ---------------------------------    ENUMS    ---------------------------------
 

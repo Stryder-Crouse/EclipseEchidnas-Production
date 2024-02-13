@@ -7,7 +7,7 @@ export interface DropdownProps{
     isSearchable: boolean,
     resetDropdown: boolean,
     setResetDropdown: React.Dispatch<React.SetStateAction<boolean>>,
-    setSelected:   React.Dispatch<React.SetStateAction<string>>;
+    setSelected:   React.Dispatch<React.SetStateAction<number>>;
 }
 
 export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populationArr, setSelected, resetDropdown, setResetDropdown}: DropdownProps) {
@@ -25,7 +25,7 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
                     (dropdownElement as HTMLSelectElement).selectedIndex = 0;
                 }
             }
-            setSelected(populationArr[0]); // Reset selected value
+            setSelected(-1); // Reset selected value
             setResetDropdown(false); // Stop it from continually resetting
         }
     }, [resetDropdown, setSelected, dropdownID, isSearchable, populationArr, setResetDropdown]);
@@ -33,15 +33,15 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
 
 
     function setValueCorrectly(index:number){
-        const value = populationArr[index];
-        setSelected(value);
+        //let value = populationArr[index];
+        setSelected(index);
     }
 
     function findValueIndex(value:string)
     {
         for(let index = 0; index < populationArr.length; index++)
         {
-            const arrVal = populationArr[index].toString();
+            let arrVal = populationArr[index].toString();
             //let textVal = value;
             if(arrVal == value)
             {
@@ -53,7 +53,7 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
     }
 
     if(isSearchable){
-        const datalistID = "datalistOf" + dropdownID;
+        let datalistID = "datalistOf" + dropdownID;
         return (
             <div className="dropdown">
 
