@@ -10,10 +10,6 @@ import {MedReq, ReqTypes, ServiceRequest} from "../../../backend/src/algorithms/
 
 export default function OLDServiceRequestPage() {
 
-    /* WARNING: REAL */
-    return (
-        <div>hi</div>
-    );
 
   const [medRequestLocale, setMedRequestLocale] = useState("");
   const [medRequestDoses, setMedRequestDose] = useState("");
@@ -63,7 +59,6 @@ export default function OLDServiceRequestPage() {
     } catch {
         console.error("Error with trying to save Service Req in ServiceRequestPage.tsx");
     }
-
 
   }
 

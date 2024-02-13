@@ -14,6 +14,9 @@ export default {
         ivoryWhite: '#f1f1f1',
         tableHeader: '#f4f5fc',
         tableText: '#A0A7B1',
+      },
+      fontFamily: {
+        project: ['Roboto', 'sans-serif']
       }
     },
   },
