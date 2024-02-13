@@ -38,7 +38,7 @@ export default function Transportation_table({statusFilter:statusFilter}:statusF
         return () => {
             queryDone = true;
         };
-    });
+    },[]);
 
     function renderEmployees(employee:Employee, transportID:string) {
         return (
