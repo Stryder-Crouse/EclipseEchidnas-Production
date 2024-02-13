@@ -9,23 +9,30 @@
 }
 
 .table-container {
+
   border-radius: 2rem;
   background-color: #fcfcfd;
   padding: 1.5rem;
-  margin-top: 2rem;
+
     font-family: 'Work Sans', sans-serif;
   border: 2px solid #edeef1;
   box-shadow: 0 4px 16px 0 rgba(148, 156, 169, 0.15);
   text-align: center;
   max-height: 100vh;
+    width: 100vh;
   /** Flexbox centering Div **/
+
+
+    justify-content: center;
+    margin: 1.5rem auto auto;
+
 }
 
 .table-wrapper {
   overflow: auto;
   padding-bottom: 0.5rem;
   margin-bottom: 1rem;
-  max-height: 50vh;
+  max-height: 25vh;
   align-items: center;
 }
 
