@@ -458,7 +458,7 @@ router.post("/flowReq", async function (req: Request, res: Response) {
         console.info("Successfully saved Req"); // Log that it was successful
 
         //create a Flow Req (use data from the second element since we always put flow req data type in second)
-        await PrismaClient.flowRe.create({
+        await PrismaClient.flowReq.create({
             data: {
                 flowType: flowData[1].flowType,
                 quantity: flowData[1].quantity,
