@@ -16,23 +16,37 @@ import PrismaClient from "../bin/database-connection.ts";
 import { Graph } from "../algorithms/Graph/Graph.ts";
 
 
-import {Multer} from "multer";
+import multer from "multer";
 import {readEdgeCSV, readNodeCSV} from "../algorithms/readCSV.ts";
+import fs from "fs";
 
 // import fs from "fs";
 // import * as path from "path";
 
 const router: Router = express.Router();
 
-const upload = Multer({ dest: 'uploadedCSVs/' });
+const upload = multer({ dest: 'uploadedCSVs/' });
 
 
 
 //load recived cvs file into the database
-router.route("/").post(upload.array("csv",2), async function (req, res) {
+router.route("/").post(upload.array("csv",2), async function (req: Request, res: Response) {
 
-  const nodes: Array<Node> = readNodeCSV(req.files[0]);
-  const edges: Array<Edge> = readEdgeCSV(req.files[1]!);
+    const nodeFile = req.files as Express.Multer.File[];
+
+    if (req.files == null) {
+        console.error("Bad");
+        return;
+    }
+    const nodesString = fs.readFileSync(nodeFile[0].path, "utf-8");
+    const edgeString = fs.readFileSync(nodeFile[1].path, "utf-8");
+    console.log("DATA");
+    console.log(nodesString);
+    console.log("DATA 2");
+    console.log(edgeString);
+
+  const nodes: Array<Node> = readNodeCSV(nodesString);
+  const edges: Array<Edge> = readEdgeCSV(edgeString);
 
   //convert to db node
   const edgeDBArray: EdgeDataBase[] = [];

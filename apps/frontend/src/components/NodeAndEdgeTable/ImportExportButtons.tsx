@@ -41,8 +41,8 @@ function ImportExportButtons() {
 
 
             const fileData = new FormData();
-            fileData.append("file", nodeFile);
-            fileData.append("file", edgeFile);
+            fileData.append("csv", nodeFile);
+            fileData.append("csv", edgeFile);
             //send edge and node file to back end
 
             try {
