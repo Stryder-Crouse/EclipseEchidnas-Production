@@ -1,8 +1,7 @@
 import express, {Router, Request, Response} from "express";
 //import { MedReq, Request } from "../algorithms/node.ts";
 import PrismaClient from "../bin/database-connection.ts";
-import {MedReq, OutsideTransport, ServiceRequest} from "../algorithms/Requests/Request.ts";
-// import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
+import {FlowReq, MedReq,  OutsideTransport, ServiceRequest} from "../algorithms/Requests/Request.ts";
 
 //import path from "path";
 //import fs from "fs";
@@ -317,6 +316,133 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
         console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
     } catch (err) {
         console.error("\nUnable to send Requests\n");
+    }
+});
+
+
+// ---------------------------------    Flower Request DB Interaction    ---------------------------------
+
+router.post("/flowReq", async function (req: Request, res: Response) {
+    //console.log(req.body);
+    //console.log("Flow Req Above");
+    const flowData:[ServiceRequest,FlowReq] = req.body;
+    console.info(flowData);
+
+    //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
+    try {
+
+        //create a service request in the database
+        const service = await PrismaClient.serviceRequest.create({
+            //data passed into post is array of 2 data types
+            // first data type is a service request, so all the data we want to create a service req in the table
+            // will be stored in the first spot of array (passed as a json through prisma client)
+            data: {
+                //ID is auto created
+                reqType: flowData[0].reqType,
+                reqPriority: flowData[0].reqPriority,
+                //connect the Node field using the node id as a foreign key
+                reqLocation: {
+                    connect : {
+                        nodeID: flowData[0].reqLocationID
+                    }
+                },
+                extraInfo: flowData[0].extraInfo,
+                status: flowData[0].status,
+                //connect the Employee field using the username as a foreign key
+                //assigned is the relation, so itt does not actually exist as data (data that
+                // will exist and connect is data you specify below)
+                assigned: {
+                    connectOrCreate: {
+                        //connectOrCreate makes you specify what data you will create with and also what you
+                        // want to connect to (needs to know both potential outcomes)
+                        create : {
+                            userName: "No one",
+                            firstName: "N/A",
+                            lastName: "N/A",
+                            designation: "N/A",
+                            isAdmin: true,
+                        },
+                        //second part of create or connect (the what-we-connect-to part)
+                        where : {
+                            userName: "No one"
+                        }
+                    }
+                }
+            },
+        });
+        console.info("Successfully saved Req"); // Log that it was successful
+
+        //create a Flow Req (use data from the second element since we always put flow req data type in second)
+        await PrismaClient.flowReq.create({
+            data: {
+                flowType: flowData[1].flowType,
+                quantity: flowData[1].quantity,
+                sender: flowData[1].sender,
+                receiver: flowData[1].receiver,
+                message: flowData[1].message,
+                genReqID: service.reqID,
+            }
+        });
+        console.info("Successfully saved Flow Req"); // Log that it was successful
+        //sendback the id of the request
+        //console.info("HHH " +record.genReqID);
+        res.send(200);
+    } catch (error) {
+        // Log any failures
+        console.error(`Unable to save Flow Req`);
+        res.sendStatus(400); // Send error
+    }
+});
+
+router.get("/flowReq", async function (req: Request, res: Response) {
+    try {
+        //
+        const filterStatus = req.body.status;
+
+        if (filterStatus == "Any"){
+            //try to send all the nodes to the client
+            const flowReqs = await PrismaClient.flowReq.findMany({
+                orderBy: {
+                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                },
+            });
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"flower delivery",
+                }
+            });
+            res.send([flowReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
+            console.info("\nSuccessfully gave you all of the flower requests\n");
+        }
+        else{
+            //try to send all the nodes to the client
+            const flowReqs = await PrismaClient.flowReq.findMany({
+                orderBy: {
+                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where: {
+                    genReq:{
+                        status: filterStatus,
+                    }
+                }
+            });
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"flower delivery",
+                    status: filterStatus,
+                }
+            });
+            res.send([flowReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
+            console.info("\nSuccessfully gave you all of the flower requests\n");
+        }
+    } catch (err) {
+        console.error("\nUnable to send requests\n");
     }
 });
 
