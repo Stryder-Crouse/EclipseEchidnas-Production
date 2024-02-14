@@ -184,15 +184,15 @@ export default function Transportation_table({statusFilter:statusFilter}:statusF
             <table>
                 <thead>
                 <tr className={"tableTRHead"}>
-                    <th className={"tableTD"}>Request ID:</th>
-                    <th className={"tableTD"}>Priority Level:</th>
-                    <th className={"tableTD"}>Status:</th>
-                    <th className={"tableTD"}>Assigned Employee:</th>
-                    <th className={"tableTD"}>Patient Name:</th>
-                    <th className={"tableTD"}>Patient Room:</th>
-                    <th className={"tableTD"}>Destination:</th>
-                    <th className={"tableTD"}>Mode of Transportation</th>
-                    <th className={"tableTD"}>Additional Notes:</th>
+                    <th className={"tableTD"}>ID</th>
+                    <th className={"tableTD"}>Priority</th>
+                    <th className={"tableTD"}>Status</th>
+                    <th className={"tableTD"}>Assigned Employee</th>
+                    <th className={"tableTD"}>Patient Name</th>
+                    <th className={"tableTD"}>Patient Room</th>
+                    <th className={"tableTD"}>Destination</th>
+                    <th className={"tableTD"}>Transportation Mode</th>
+                    <th className={"tableTD"}>Additional</th>
                 </tr>
                 </thead>
                 <tbody>

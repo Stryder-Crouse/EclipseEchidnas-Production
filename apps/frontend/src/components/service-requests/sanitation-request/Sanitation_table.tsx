@@ -39,7 +39,7 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
             <table className={"requestTable"} id={"request-table"}>
                 <thead>
                 <tr className={"tableTRHead"}>
-                    <th className={"tableTD"}>Service Request ID</th>
+                    <th className={"tableTD"}>ID</th>
                     <th className={"tableTD"}>Request Type</th>
                     <th className={"tableTD"}>Priority</th>
                     <th className={"tableTD"}>Going To</th>

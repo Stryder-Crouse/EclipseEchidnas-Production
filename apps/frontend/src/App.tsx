@@ -1,8 +1,8 @@
 import React from "react";
 import {createBrowserRouter, RouterProvider, Outlet} from "react-router-dom";
 import ProtectedAdminMap from "./components/protected-pages/ProtectedAdminMap.tsx";
-import ProtectedServiceRequest from "./components/protected-pages/ProtectedServiceRequest.tsx";
-import ProtectedRequestList from "./components/protected-pages/ProtectedRequestList.tsx";
+import ServiceRequest from "./routes/ServiceRequestPage.tsx";
+import RequestList from "./routes/admin-routes/RequestList.tsx";
 import ProtectedNodeEdgeTable from "./components/protected-pages/ProtectedNodeEdgeTable.tsx";
 //import GuestMap from "./routes/guest-routes/GuestMap.tsx";
 import ProtectedEmployeeTable from "./components/protected-pages/ProtectedEmployeeTable.tsx";
@@ -27,7 +27,7 @@ function App() {
                 },
                 {
                     path: "/ServiceRequest",
-                    element: <ProtectedServiceRequest/>,
+                    element: <ServiceRequest/>,
                 },
                 {
                     path: "/NodeEdgeTable",
@@ -35,7 +35,7 @@ function App() {
                 },
                 {
                     path: "/RequestList",
-                    element: <ProtectedRequestList/>,
+                    element: <RequestList/>,
                 },
                 {
                     path: "/GuestMap",
