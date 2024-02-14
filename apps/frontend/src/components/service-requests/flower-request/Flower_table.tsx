@@ -57,7 +57,7 @@ import {FlowReq,ServiceRequest} from "../../../../../backend/src/algorithms/Requ
                         <div className={"request-table-container"}>
                             <div className={"table-container"}>
             <span className={"caption-container"}>
-              <span className={"table-title"}>FLower Requests </span>
+              <span className={"table-title"}>Flower Requests </span>
             </span>
                                 <div className={"table-wrapper"}>
                                     <table className={"requestTable"} id={"request-table"}>

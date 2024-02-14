@@ -1,13 +1,18 @@
-import React, {useState, ChangeEvent} from 'react';
+import React, {useState, useEffect,  ChangeEvent} from 'react';
 import '../../../css/route-css/Flower_input.css';
 import axios from "axios";
 import {FlowReq, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
+import {CreateDropdown} from "../../CreateDropdown.tsx";
+import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+
+
+const longNames:string[] = [];
 
 export default function Flower_input() {
     const [sender,setSender] = useState("");
     const [priority,setPriority] = useState("low");
-    const [location,setLocation] = useState("");
+    //const [location,setLocation] = useState("");
     const [flowerType,setFlowerType] = useState("");
     const [flowerQuantity,setFlowerQuantity] = useState(1);
     const [flowerRecipient,setFlowerRecipient] = useState("");
@@ -15,12 +20,24 @@ export default function Flower_input() {
     const [status,setStatus] = useState("unassigned");
     const [message,setMessage] = useState("");
 
+    const [resetDropdown, setResetDropdown] = useState(false);
+    const [selected, setSelected] = useState(-1);
+    const [locations, setLocations] = useState<NodeDataBase[]>([]);
 
 
+    useEffect(()=>{
+        getLocations().then(
+            (result)=>{
+                setLocations(result);
+                result.forEach((node)=>{ longNames.push(node.longName);});
+
+            });
+
+    },[]);
         async function submitForm() {
             const serviceRequest: ServiceRequest = {
                 reqType: "flower delivery",
-                reqLocationID: location,
+                reqLocationID: locations[selected].nodeID,
                 extraInfo: extraInfo,
                 status: status,
                 assignedUName: "",
@@ -37,7 +54,7 @@ export default function Flower_input() {
                 genReqID: -1,
             };
 
-            const sendInfo = {serviceRequest,flowerRequest};
+            const sendInfo = [serviceRequest,flowerRequest];
 
             try{
                 await axios.post(
@@ -63,10 +80,10 @@ export default function Flower_input() {
         function clear() {
             setSender('');
             setPriority('');
-            setLocation('');
             setFlowerType('');
             setFlowerQuantity(1);
             setFlowerRecipient('');
+            setResetDropdown(true);
             setStatus('');
             setMessage('');
             setExtraInfo('');
@@ -80,9 +97,9 @@ export default function Flower_input() {
             setPriority(e.target.value);
         }
 
-        function handleLocation(e: ChangeEvent<HTMLInputElement>) {
-            setLocation(e.target.value);
-        }
+        // function handleLocation(e: ChangeEvent<HTMLInputElement>) {
+        //     setLocation(e.target.value);
+        // }
 
         function handleFlowerType(e: ChangeEvent<HTMLInputElement>) {
             setFlowerType(e.target.value);
@@ -135,13 +152,20 @@ export default function Flower_input() {
                     </div>
 
                     <div className="form-group">
+
                         <label className="label">Location </label>
-                        <input
-                            value={location}
-                            type={"text"}
-                            className={"border-2 p-2 border-black rounded-2xl grow"}
-                            onChange={handleLocation}
-                        />
+                        <CreateDropdown dropBtnName={"Locations"} dropdownID={"Location"} isSearchable={true}
+                                        populationArr={longNames} resetDropdown={resetDropdown}
+                                        setSelected={setSelected}
+                                        inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
+                                        selectCSS={""}
+                                        resetOnSelect={false} setResetDropdown={setResetDropdown}/>
+                        {/*<input*/}
+                        {/*    value={location}*/}
+                        {/*    type={"text"}*/}
+                        {/*    className={"border-2 p-2 border-black rounded-2xl grow"}*/}
+                        {/*    onChange={handleLocation}*/}
+                        {/*/>*/}
                     </div>
 
                     <div className="form-group">
@@ -207,7 +231,11 @@ export default function Flower_input() {
 
 
 }
-
+async function getLocations() {
+    //load edges and node from database
+    const nodesDB = await axios.get<NodeDataBase[]>("/api/load-nodes");
+    return nodesDB.data;
+}
 
 
 

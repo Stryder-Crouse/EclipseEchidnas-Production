@@ -474,6 +474,7 @@ router.post("/flowReq", async function (req: Request, res: Response) {
     //console.log(req.body);
     //console.log("Flow Req Above");
     const flowData:[ServiceRequest,FlowReq] = req.body;
+    console.info("Flower Data");
     console.info(flowData);
 
     //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
@@ -518,7 +519,7 @@ router.post("/flowReq", async function (req: Request, res: Response) {
                 }
             },
         });
-        console.info("Successfully saved Req"); // Log that it was successful
+        console.log("Successfully saved Req"); // Log that it was successful
 
         //create a Flow Req (use data from the second element since we always put flow req data type in second)
         await PrismaClient.flowReq.create({
