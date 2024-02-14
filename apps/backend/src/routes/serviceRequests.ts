@@ -3,6 +3,7 @@ import express, {Router, Request, Response} from "express";
 import PrismaClient from "../bin/database-connection.ts";
 import {MedReq, OutsideTransport, sanReq, ServiceRequest, FlowReq} from "../algorithms/Requests/Request.ts";
 import Status from "../algorithms/Requests/Status.ts";
+import status from "../algorithms/Requests/Status.ts";
 // import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
 
 //import path from "path";
@@ -137,29 +138,35 @@ router.get("/serviceReq", async function (req: Request, res: Response) {
 });
 
 
-router.get("/serviceReq/filterByStatus", async function (req: Request, res: Response) {
+router.get("/filterByStatus", async function (req: Request, res: Response) {
     try {
-        const statusFilter:string = req.body;
+        const statusFilter:status = req.query.status as status;
+
+        console.log("statusfilter");
+        console.log(statusFilter);
         //if no filter is applied to the service request, then send all the service requests
         if(statusFilter == Status.Any) {
-                res.send(PrismaClient.serviceRequest.findMany({         //todo BNBN (RYAN) --- update to include all service requests when done
-                include: {
-                    outsideTransport: true,
-                    sanReq: true,
-                    flowReq: true,
-                    medReq: true
-                }
-            }));
+                res.send( await PrismaClient.serviceRequest.findMany({
+                    orderBy: {
+                        reqID: "desc"
+                    }
+                }));
+
+            // {
+            //     include: {
+            //         outsideTransport: true,
+            //             sanReq: true,
+            //             flowReq: true,
+            //             medReq: true
+            //     }
+            // }
         } else {            //otherwise... send only the service requests that have the desired status
-            res.send(PrismaClient.serviceRequest.findMany({         //todo BNBN (RYAN) --- update to include all service requests when done
+            res.send(await PrismaClient.serviceRequest.findMany({
                 where: {
                     status: statusFilter        //filtering
                 },
-                include: {                              //packages service request table together with whatever other request table is applicable
-                    outsideTransport: true,             // (for instance, a service request and medical request will be put together to be displayed in frontend)
-                    sanReq: true,
-                    flowReq: true,
-                    medReq: true
+                orderBy: {
+                    reqID: "desc"
                 }
             }));
 

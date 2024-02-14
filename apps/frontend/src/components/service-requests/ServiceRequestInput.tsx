@@ -13,7 +13,7 @@ export default function ServiceRequestInput() {
 
 
     //const [statusFilter , setStatusFilter ] = useState("");
-    const [curentServiceRequest , setCurentServiceRequest ] = useState(ReqTypes.medReq);
+    const [curentServiceRequest , setCurentServiceRequest ] = useState(ReqTypes.flowReq);
     console.log(curentServiceRequest);
 
     // useEffect(() => {

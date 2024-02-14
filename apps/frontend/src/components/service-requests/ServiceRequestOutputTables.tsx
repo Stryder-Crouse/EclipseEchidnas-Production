@@ -18,7 +18,7 @@ export default function ServiceRequestOutputTables() {
 
     const [statusFilter , setStatusFilter ] = useState(status.Any);
 
-    const [curentServiceRequest , setCurentServiceRequest ] = useState(ReqTypes.medReq);
+    const [curentServiceRequest , setCurentServiceRequest ] = useState(ReqTypes.serviceRequest);
     console.log(curentServiceRequest);
     console.log(setStatusFilter);
 

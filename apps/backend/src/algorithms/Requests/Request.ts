@@ -10,6 +10,7 @@ export type ServiceRequest = {
     status: string;
     assignedUName: string;
     reqID:number;
+
 };
 
 /** Type to store data specific to medication requests*/
