@@ -9,14 +9,17 @@ function RequestButtons({ submit }: RequestButtonsInterface) {
   function show() {
       const tag: HTMLElement = document.getElementById("popup") as HTMLElement;
       tag.style.opacity = "1";
-      setInterval(fadeEffect, 300);
+      setInterval(fadeEffect, 100);
   }
 
   function fadeEffect() {
       const target = document.getElementById("popup") as HTMLElement;
       let opacity = target.style.opacity;
-        if(opacity != "0") {
-            opacity = (Number(opacity) - 0.03).toString();
+        if(Number(opacity) >= 0.97) {
+            opacity = (Number(opacity) - 0.001).toString();
+            target.style.opacity = opacity;
+        } else {
+            opacity = (Number(opacity) - 0.1).toString();
             target.style.opacity = opacity;
         }
 
