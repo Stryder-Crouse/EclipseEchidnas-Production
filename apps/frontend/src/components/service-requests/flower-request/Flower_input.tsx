@@ -123,27 +123,29 @@ export default function Flower_input() {
 
 
     return(
-        <div>
+        <div className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
+            <form className="p-2">
                 <div className="App">
-                    <h1>Flower Request </h1>
-                    <div className={"form-group"}>
-                        <label className="label">Name </label>
+                    <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Flower Request </h1>
+                    <div className={"flex justify-center items-center my-1.5"}>
+                        <label className="label" form={"senderName"}>Name </label>
                         <input
+                            id={"senderName"}
                             value={sender}
                             type={"text"}
-                            className={"border-2 p-2 border-black rounded-2xl grow"}
+                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             onChange={handleSender}
                         />
                     </div>
 
-                    <div className="form-group">
-                        <label className="label">Priority </label>
+                    <div className="flex justify-center items-center my-1.5">
+                        <label id="priorityType">Priority </label>
                         <select
                             id={"priorityType"}
                             name={"priorityType"}
                             value={priority}
                             onChange={handlePriority}
-                            className={"border-2 p-2 border-black rounded-2xl grow"}
+                            className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
                         >
                             <option value="low">Low</option>
                             <option value="medium">Medium</option>
@@ -152,7 +154,7 @@ export default function Flower_input() {
                         </select>
                     </div>
 
-                    <div className="form-group">
+                    <div className="flex justify-center items-center my-1.5">
 
                         <label className="label">Location </label>
                         <CreateDropdown dropBtnName={"Locations"} dropdownID={"Location"} isSearchable={true}
@@ -170,40 +172,44 @@ export default function Flower_input() {
                         {/*/>*/}
                     </div>
 
-                    <div className="form-group">
-                        <label className="label">Flower Name </label>
+                    <div className="flex justify-center items-center my-1.5">
+                        <label className="label" id={"flowertype"}>Flower Name </label>
                         <input
+                            id={"flowertype"}
                             value={flowerType}
                             type={"text"}
-                            className={"border-2 p-2 border-black rounded-2xl grow"}
+                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             onChange={handleFlowerType}
                         />
                     </div>
 
-                    <div className="form-group">
-                        <label className="label">Flower Quantity </label>
+                    <div className="flex justify-center items-center my-1.5">
+                        <label className="label" form={"flowerquantity"}>Flower Quantity </label>
                         <input
+                            id={"flowerquantity"}
                             value={flowerQuantity}
                             type={"text"}
-                            className={"border-2 p-2 border-black rounded-2xl grow"}
+                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             onChange={handleFlowerQuantity}
                         />
                     </div>
-                    <div className="form-group">
-                        <label className="label">Flower Recipient </label>
+                    <div className="flex justify-center items-center my-1.5">
+                        <label className="label" form={"flowerrecipient"}>Flower Recipient </label>
                         <input
+                            id={"flowerrecipient"}
                             value={flowerRecipient}
                             type={"text"}
-                            className={"border-2 p-2 border-black rounded-2xl grow"}
+                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             onChange={handleFlowerRecipient}
                         />
                     </div>
 
-                    <div className="form-group">
-                        <label className="label">Status </label>
+                    <div className="flex justify-center items-center my-1.5">
+                        <label className="label" form={"statusTime"}>Status </label>
                         <select
+                            id={"statusTime"}
                             value={status}
-                            className={"border-2 p-2 border-black rounded-2xl grow"}
+                            className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
                             onChange={handleStatus}
                         >
                             <option value="unassigned">Unassigned</option>
@@ -213,12 +219,13 @@ export default function Flower_input() {
                         </select>
                     </div>
 
-                    <div className="form-group">
-                        <label className="label"> Message </label>
+                    <div className="flex justify-center items-center my-1.5">
+                        <label className="label" form={"additionalNotes"}> Message </label>
                         <input
+                            id={"additionalNotes"}
                             value={message}
                             type={"text"}
-                            className={"border-2 p-2 border-black rounded-2xl grow"}
+                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             onChange={handleMessage}
 
                         />
@@ -226,7 +233,7 @@ export default function Flower_input() {
 
                     <RequestButtons submit={submitForm}/>
                 </div>
-
+            </form>
         </div>
 
     );
