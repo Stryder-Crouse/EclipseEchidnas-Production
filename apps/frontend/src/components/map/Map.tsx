@@ -13,12 +13,16 @@ import {AStar} from "../../../../backend/src/algorithms/Search/AStar.ts";
 import {Coordinate} from "../../../../backend/src/algorithms/Graph/Coordinate.ts";
 
 /**
- * @param startNodeID the ID of the starting node to path find from
- * @param endNodeID the ID of the goal node
- *
- * Creates a path from startNode to endNode on the map if the path exists
- *
+ * We NEED this, Stryder
  */
+type TransitionTextStyle = {
+    xTransform: number;
+    xTextTransform: number;
+    yTransform: number;
+    yTextTransform: number;
+    height: number;
+    width: number;
+}
 
 //get graph from database
 let graph: Graph | null = null;
@@ -26,9 +30,9 @@ const panSpeed: number = 2;
 const zoomSpeed: number = 0.1;
 
 /**
- * gets the nodes and edges for the map and creates the graph for searching.
+ * Create the graph from nodes and edges gathered from the database.
  */
-async function updateGraph() {
+async function createGraph() {
     /* ask axios for nodes and edges */
     const edgesDB = await axios.get<EdgeDataBase[]>("/api/load-edges");
     const nodesDB = await axios.get<NodeDataBase[]>("/api/load-nodes");
@@ -47,40 +51,44 @@ async function updateGraph() {
         nodes.push(nodeDataBaseToNode(nodeDB));
     });
 
-    /* generate a graph from the data */
+    /* construct a graph from the data */
     graph = new Graph(nodes, edges);
     // console.log(graph.getEdges());
 }
 
-function createZoomEvent(viewbox: { x: number, y: number, width: number, height: number },
-                         setViewbox: Dispatch<{ x: number, y: number, width: number, height: number }>,
+function createZoomEvent(viewbox: {x: number, y: number, width: number, height: number},
+                         setViewbox: Dispatch<{x: number, y: number, width: number, height: number}>,
                          setScale: Dispatch<number>) {
-
+    /* grab the map and its current size */
     const svgElement = document.getElementById("map")!;
     const svgSize: { width: number, height: number } = {width: svgElement.clientWidth, height: svgElement.clientHeight};
 
-
+    /* listen to the mouse wheel and transform the map image */
     document.getElementById("map-test")!.addEventListener("wheel", event => {
+        /* prevent the page from scrolling */
         event.preventDefault();
-        const mouseX = event.offsetX; //in relation to the Div
-        const mouseY = event.offsetY;
-        //console.log("hihihhi");
-        //console.log(mouseX,mouseY);
-        const zoomAmount = event.deltaY;//how far was the wheel scrolled up/down in pixels
-        const inverseZoomAmount = -zoomAmount;
 
-        //calculate change in width and height of the box based on zoom direction
+        /* see where on the map div the wheel has scrolled */
+        const mouseX = event.offsetX; // in relation to the Div
+        const mouseY = event.offsetY;
+
+        /* see how far the scroll was */
+        const zoomAmount = event.deltaY; // how far was the wheel scrolled up/down in pixels
+        const inverseZoomAmount = -zoomAmount; // invert it for convention
+
         /* zoomAmount negated to follow conventional scrolling */
+        // calculate change in width and height of the box based on zoom direction
         const changeInWidth = viewbox.width * Math.sign(inverseZoomAmount) * zoomSpeed;
         const changeInHeight = viewbox.height * Math.sign(inverseZoomAmount) * zoomSpeed;
 
-        //keep mouse in the center of the zoom and get new x and y
+        // keep mouse in the center of the zoom and get new x and y
         const newX = viewbox.x + (changeInWidth * mouseX) / svgSize.width;
         const newY = viewbox.y + (changeInHeight * mouseY) / svgSize.height;
 
-        //set scale for proper panning
+        // set scale for proper panning
         setScale(svgSize.width / viewbox.width);
-        //set new viewbox
+
+        // set new viewbox
         setViewbox({
             x: newX, y: newY,
             width: viewbox.width - changeInWidth, height: viewbox.height - changeInHeight
@@ -286,8 +294,8 @@ export function Map({
     // let scale:number =1;
 
     useEffect(() => {
-        //create event lisenter in raw js for zoom as reacts onWheel React event does not allow the preventDefault() option
-        // to work, reacts dev solution was "just use non react event lisensers"
+        //create event listener in raw js for zoom as reacts onWheel React event does not allow the preventDefault() option
+        // to work, reacts dev solution was "just use non react event listeners"
         createZoomEvent(viewbox, setViewbox, setZoomScale);
 
     }, [setViewbox, setZoomScale, viewbox, zoomScale]);
@@ -375,7 +383,7 @@ export function Map({
         if (node.id == startNode.id) {
             return (
                 <a key={node.id} id={node.id} className={"clickableAtag"}
-                   onClick={() => onNodeClick(node.id)}
+                   onClick={() => markNodeOnClick(node.id)}
                    onMouseOver={() => onNodeHover(node.id)}
                    onMouseLeave={() => onNodeLeave(node.id)}
                 >
@@ -385,7 +393,7 @@ export function Map({
         } else if (node.id == endNode.id) {
             return (
                 <a key={node.id} id={node.id} className={"clickableAtag"}
-                   onClick={() => onNodeClick(node.id)}
+                   onClick={() => markNodeOnClick(node.id)}
                    onMouseOver={() => onNodeHover(node.id)}
                    onMouseLeave={() => onNodeLeave(node.id)}
                 >
@@ -396,7 +404,7 @@ export function Map({
 
             return (
                 <a key={node.id} id={node.id} className={"clickableAtag"}
-                   onClick={() => onNodeClick(node.id)}
+                   onClick={() => markNodeOnClick(node.id)}
                    onMouseOver={() => onNodeHover(node.id)}
                    onMouseLeave={() => onNodeLeave(node.id)}
                 >
@@ -414,7 +422,7 @@ export function Map({
 
             return (
                 <a key={node.id} id={node.id} className={"clickableAtag"}
-                   onClick={() => onNodeClick(node.id)}
+                   onClick={() => markNodeOnClick(node.id)}
                    onMouseOver={() => onNodeHover(node.id)}
                    onMouseLeave={() => onNodeLeave(node.id)}
                 >
@@ -426,7 +434,7 @@ export function Map({
 
             return (
                 <a key={node.id} id={node.id} className={"clickableAtag"}
-                   onClick={() => onNodeClick(node.id)}
+                   onClick={() => markNodeOnClick(node.id)}
                    onMouseOver={() => onNodeHover(node.id)}
                    onMouseLeave={() => onNodeLeave(node.id)}
                 >
@@ -505,50 +513,59 @@ export function Map({
         return false;
     }
 
-    function drawTransitionText(transition: { startTranNode: Node, endTranNode: Node }) {
-
+    function drawTransitionText(transition: {startTranNode: Node, endTranNode: Node}) {
+        /* find the starting and ending floors */
         const floorStart = floorToNumber(transition!.startTranNode.floor);
         const floorEnd = floorToNumber(transition!.endTranNode.floor);
 
-        const xTransform = -225;
-        const xTextTransform = -220;
-        const yTransform = -10;
-        const yTextTransform = 35;
-        const height = 60;
-        const width = 210;
+        /* define the style for the boxes */
+        const style: TransitionTextStyle = {
+            xTransform : -225,
+            xTextTransform : -220,
+            yTransform : -10,
+            yTextTransform : 35,
+            height : 60,
+            width : 210,
+        };
 
         if (floorStart == selectedFloorIndex) {
-            return (
-                <a key={"transition_" + transition.startTranNode.id}>
-                    <rect x={transition.startTranNode.coordinate.x + xTransform}
-                          y={transition.startTranNode.coordinate.y + yTransform} height={height}
-                          width={width}
-                          className={"floorLinkRect"}/>
-                    <text x={transition.startTranNode.coordinate.x + xTextTransform}
-                          y={transition.startTranNode.coordinate.y + yTextTransform}
-                          className={"floorLinkText"}>
-                        {"Go to " + transition!.endTranNode.floor}</text>
-                </a>
-
-            );
+            return drawTransitionTextTo(transition.startTranNode, transition.endTranNode, style);
         } else if (floorEnd == selectedFloorIndex) {
-            return (
-                <a key={"transition_" + transition.startTranNode.id}>
-                    <rect x={transition.endTranNode.coordinate.x + xTransform}
-                          y={transition.endTranNode.coordinate.y + yTransform} height={height}
-                          width={width}
-                          className={"floorLinkRect"}/>
-                    <text x={transition.endTranNode.coordinate.x + xTextTransform}
-                          y={transition.endTranNode.coordinate.y + yTextTransform}
-                          className={"floorLinkText"}>
-                        {"From " + transition!.startTranNode.floor}</text>
-                </a>
-
-            );
+            return drawTransitionTextFrom(transition.startTranNode, transition.endTranNode, style);
         }
+        return <a>error: wrong floor</a>;
+    }
 
-        return <a>error</a>;
+    function drawTransitionTextTo(startNode: Node, endNode: Node, style: TransitionTextStyle) {
+        return (
+            <a key={"transition_" + startNode.id}>
+                <rect x={startNode.coordinate.x + style.xTransform}
+                      y={startNode.coordinate.y + style.yTransform}
+                      height={style.height}
+                      width={style.width}
+                      className={"floorLinkRect"}/>
+                <text x={startNode.coordinate.x + style.xTextTransform}
+                      y={startNode.coordinate.y + style.yTextTransform}
+                      className={"floorLinkText"}>
+                    {"Go to " + endNode.floor}</text>
+            </a>
 
+        );
+    }
+    function drawTransitionTextFrom(startNode: Node, endNode: Node, style: TransitionTextStyle) {
+        return (
+            <a key={"transition_" + startNode.id}>
+                <rect x={endNode.coordinate.x + style.xTransform}
+                      y={endNode.coordinate.y + style.yTransform}
+                      height={style.height}
+                      width={style.width}
+                      className={"floorLinkRect"}/>
+                <text x={endNode.coordinate.x + style.xTextTransform}
+                      y={endNode.coordinate.y + style.yTextTransform}
+                      className={"floorLinkText"}>
+                    {"From " + startNode.floor}</text>
+            </a>
+        );
     }
 
 
@@ -614,7 +631,7 @@ export function Map({
     }
 
     /**
-     * @param nodeClickedID - the id of the node clicked on the screen
+     * Formerly onNodeClick()
      *
      * This function fires when a node is clicked on the map.
      * if only one node is selected it turns that node green and notes the node as the starting node
@@ -623,49 +640,52 @@ export function Map({
      * if another node is selected while a path is draw it clears the path then sets the newly selected node
      * as the start node.
      *
+     * @param nodeClickedID - the id of the node clicked on the screen
      */
-    function onNodeClick(nodeClickedID: string) {
-        //find node obj in graph
-        const nodeClicked = graph?.idToNode(nodeClickedID);
-
-        if (nodeClicked == null) {
+    function markNodeOnClick(nodeClickedID: string) {
+        /* make sure the graph is ready */
+        if (graph == null) {
             console.error("Graph has not been created yet");
             return;
         }
 
-        //if no nodes selected
+        /* look up the node that was clicked */
+        const nodeClicked = graph.idToNode(nodeClickedID);
+        if (nodeClicked == null) {
+            console.error("Node " + nodeClickedID + " not found");
+            return;
+        }
+
+        /* if no node has been selected so far, set the start node */
         if (startNode == NULLNODE && endNode == NULLNODE) {
-            //set start node
             setStartNode(nodeClicked);
-            //debug
-            console.log("start selected");
-            console.log(startNode);
+            // debug prints
+            // console.log("start selected");
+            // console.log(startNode);
         }
-        //if start node has been selected
+
+        /* if just a start node has been selected, set the end node */
         else if (endNode == NULLNODE) {
-            //set end node
             setEndNode(nodeClicked);
-            //debug
-            console.log("end selected");
-            console.log(endNode);
-
+            // debug prints
+            // console.log("end selected");
+            // console.log(endNode);
         }
-        //if both nodes were selected
-        else {
 
-            //set new start node and clear end node
+        /* finally, if both nodes have already been selected, set a new start node and clear the end node */
+        else {
             setStartNode(nodeClicked);
             setEndNode(NULLNODE);
-
-            console.log("new path requested");
-            console.log(startNode);
-            console.log(endNode);
+            // debug prints
+            // console.log("new path requested");
+            // console.log(startNode);
+            // console.log(endNode);
         }
     }
 }
 
-/* Code is defined at the top of this file but runs here.*/
-updateGraph().then(() => {
+/* Code is defined at the top of this file but runs here. */
+createGraph().then(() => {
     //makeNodes().then();
     //makePath("CCONF003L1", "CHALL014L1").then();
     //resetSelectedNodes();
