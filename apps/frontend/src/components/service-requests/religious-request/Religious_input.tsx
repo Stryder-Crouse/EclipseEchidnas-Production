@@ -18,7 +18,7 @@ export default function Religious_input() {
     const [resetDropdownUrg, setResetDropdownUrg] = useState(false);
 
     //let locations : Node[];
-    let locationNames = ["test", "option 2", "another location"];
+    const locationNames = ["test", "option 2", "another location"];
 
     const religions = [
         "Buddhism",
@@ -126,7 +126,7 @@ export default function Religious_input() {
                                 resetOnSelect={false}
                                 inputCSS={"n/a"} selectCSS={"dropdown"}
                                 setResetDropdown={setResetDropdownUrg}/>
-                
+
                 <textarea placeholder={"Any extra notes?"}
                           className={"input-fields" /*className may need to be different to have a larger area*/}
                           onChange={(e) => setExtraInfo(e.target.value)}
@@ -134,10 +134,13 @@ export default function Religious_input() {
                           value={extraInfo}
                           required>
                 </textarea>
-                
+
                 <RequestButtons submit={handleSubmit}/>
                 {/*// this should technically take you to list of service request*/}
             </form>
+            <div className={"flex justify-center items-center my-1.5"}>
+                <p>Created By: Alana and Grace</p>
+            </div>
         </div>
     );
 

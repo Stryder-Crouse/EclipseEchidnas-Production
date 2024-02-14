@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {MedReq, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
-import AdminPageNavBar from "../../navigation-bar/AdminPageNavBar.tsx";
 import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 import {statusFilter} from "../serviceRequestInterface.ts";
 
@@ -18,27 +17,23 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
 
     //todo FNFN fix with proper population code
     useEffect(() => {
-        let queryDone = false;
 
-        if (!queryDone) {
+
+
             getEmployees().then(result => {
                 setMedEmployees(result);
             });
-            getMedRequests().then(result => {
+            getMedRequests(statusFilter).then(result => {
                 setMedRequestList(result);
             });
 
-        }
-        return () => {
-            queryDone = true;
-        };
 
 
-    }, []);
+
+    }, [statusFilter]);
 
     return (
         <div>
-            <AdminPageNavBar/>
 
             <div className={"request-table-container"}>
                 <div className={"table-container"}>
@@ -325,8 +320,9 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
 
 }
 
-async function getMedRequests() {
-    const requests = await axios.get<[MedReq[], ServiceRequest[]]>("/api/serviceRequests/medReq");
+async function getMedRequests(statusFilter:Status) {
+    const requests =
+        await axios.get<[MedReq[], ServiceRequest[]]>("/api/serviceRequests/medReq",{params: {status: statusFilter}});
 
     const medRequests: Array<[MedReq, ServiceRequest]> = [];
     for (let i = 0; i < requests.data[0].length; i++) {

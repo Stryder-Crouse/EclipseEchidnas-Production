@@ -1,7 +1,9 @@
 import express, {Router, Request, Response} from "express";
 //import { MedReq, Request } from "../algorithms/node.ts";
 import PrismaClient from "../bin/database-connection.ts";
-import {MedReq, OutsideTransport, ReligRequest, ServiceRequest} from "../algorithms/Requests/Request.ts";
+import {FlowReq, MedReq, OutsideTransport, priorities, sanReq, ServiceRequest,  ReligRequest} from "../algorithms/Requests/Request.ts";
+import Status from "../algorithms/Requests/Status.ts";
+import status from "../algorithms/Requests/Status.ts";
 // import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
 
 //import path from "path";
@@ -91,30 +93,72 @@ router.post("/medReq", async function (req: Request, res: Response) {
 
 //gets all requests from the database in the form of request objects
 router.get("/medReq", async function (req: Request, res: Response) {
-    try {
-        //try to send all the nodes to the client
+    const statusFilter:status = req.query.status as status;
+    console.log("pog");
+    console.log(statusFilter);
+    if(statusFilter == Status.Any){
+        try {
+            //try to send all the nodes to the client
 
-        const medReqs = await PrismaClient.medReq.findMany({
-            orderBy: {
-                genReqID: "asc", //order by service request id so the two arrays are parallel
-            }
-        });
+            const medReqs = await PrismaClient.medReq.findMany({
+                orderBy: {
+                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                }
+            });
 
-        const serviceReqs = await PrismaClient.serviceRequest.findMany({
-            orderBy: {
-                reqID: "asc", //order by service request id so the two arrays are parallel
-            },
-            where:{
-                reqType:"medication"
-            }
-        });
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"medication"
+                }
+            });
 
 
-        res.send([medReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
-        console.info("\nSuccessfully gave you all of the medical requests\n");
-    } catch (err) {
-        console.error("\nUnable to send requests\n");
+            res.send([medReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
+            console.info("\nSuccessfully gave you all of the medical requests\n");
+        } catch (err) {
+            console.error("\nUnable to send requests\n");
+        }
+
     }
+    else {
+        try {
+            //try to send all the nodes to the client
+
+            const medReqs = await PrismaClient.medReq.findMany({
+                orderBy: {
+                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    genReq:{
+                        status:statusFilter
+                    }
+
+                }
+            });
+
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"medication",
+                    status:statusFilter
+                }
+            });
+
+
+            res.send([medReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
+            console.info("\nSuccessfully gave you all of the medical requests\n");
+        } catch (err) {
+            console.error("\nUnable to send requests\n");
+        }
+    }
+
+
+
 });
 
 
@@ -124,6 +168,7 @@ router.get("/medReq", async function (req: Request, res: Response) {
 
 
 router.get("/serviceReq", async function (req: Request, res: Response) {
+
     try {
         //try to send all the nodes to the client
         //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
@@ -134,6 +179,94 @@ router.get("/serviceReq", async function (req: Request, res: Response) {
         res.sendStatus(400); // Send error
     }
 });
+
+
+router.get("/filterByStatus", async function (req: Request, res: Response) {
+    try {
+        const statusFilter:status = req.query.status as status;
+
+        console.log("statusfilter");
+        console.log(statusFilter);
+        //if no filter is applied to the service request, then send all the service requests
+        if(statusFilter == Status.Any) {
+                res.send( await PrismaClient.serviceRequest.findMany({
+                    orderBy: {
+                        reqID: "desc"
+                    }
+                }));
+
+            // {
+            //     include: {
+            //         outsideTransport: true,
+            //             sanReq: true,
+            //             flowReq: true,
+            //             medReq: true
+            //     }
+            // }
+        } else {            //otherwise... send only the service requests that have the desired status
+            res.send(await PrismaClient.serviceRequest.findMany({
+                where: {
+                    status: statusFilter        //filtering
+                },
+                orderBy: {
+                    reqID: "desc"
+                }
+            }));
+
+            console.log("Res: " + res); //debugging info
+        }
+
+        console.info("\nSuccessfully filtered requests\n"); //debugging info
+    } catch {
+        console.error("\nUnable to filter requests\n");
+        res.sendStatus(400); // Send error
+    }
+});
+
+
+router.get("/filterByPriority", async function (req: Request, res: Response) {
+    try {
+        //make sure we know what data is coming in (priority enum that was set by a filter)
+        const priorityFilter: priorities = req.query.priorities as priorities;
+        console.log("Priority Filter: " +priorityFilter);
+
+        if(priorityFilter == priorities.any)
+        {
+            //send them every service request since they do not care about the priority
+            res.send(await PrismaClient.serviceRequest.findMany( {
+                orderBy: {
+                    reqID: "asc"
+                }
+            }));
+        }
+        else
+        {
+            //send them their service requests with the correct priority
+            res.send(await PrismaClient.serviceRequest.findMany({
+                where: {
+                    //filter by the desired priority
+                    reqPriority: priorityFilter,
+                    //do not want completed requests cluttering up our page (completed requests could block the emergency reqs)
+                    NOT: [
+                        {
+                            status: status.Completed
+                        }
+                    ]
+                }
+            }));
+            console.log("Great Job, the priority has been filtered");
+        }
+
+
+    } catch {
+        console.log("Error Filtering by Priority");
+        res.sendStatus(400);
+    }
+});
+
+
+
+// ---------------------------------    Changing Service Req Fields    ---------------------------------
 
 
 //Changing the assigned user given a service request id and the new assigned user
@@ -236,13 +369,32 @@ router.post("/changePriority", async function (req: Request, res: Response){
     }
 });
 
+router.post("/removeRequest", async function (req: Request, res: Response) {
+    try {
+        const data: ServiceRequest = req.body;
+        await PrismaClient.serviceRequest.delete({
+            where: {
+                reqID: data.reqID
+            }
+        });
+        console.log("Successfully Destroyed Request");
+        res.sendStatus(200);
+    } catch {
+        console.log("Error removing request");
+        res.sendStatus(400);
+    }
+});
+
 
 // ---------------------------------    Outside Transport DB Interaction    ---------------------------------
 
 router.post("/outsideTransport", async function (req: Request, res: Response) {
+    const sentData:[ServiceRequest,OutsideTransport] = req.body;
+    console.log(sentData);
     try {
         //you need a service request to make an outside transportation request, so let the router know that you are receiving both
-        const sentData:[ServiceRequest,OutsideTransport] = req.body;
+        console.log("sds");
+        console.log(sentData[0]);
         const servReq = await PrismaClient.serviceRequest.create({
             data: {
                 reqType: sentData[0].reqType,
@@ -294,29 +446,268 @@ router.post("/outsideTransport", async function (req: Request, res: Response) {
     }
 });
 
+
+
+
 router.get("/outsideTransport", async function (req: Request, res: Response) {
+    const statusFilter:status = req.query.status as status;
+
+    if(statusFilter == Status.Any){
+
+        try {
+
+            const transportReq = await PrismaClient.outsideTransport.findMany({
+                orderBy: {
+                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                }
+
+            });
+
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"transportation"
+                }
+            });
+
+            //we display info from both the service req and the outside transportation req, so we send the person both DB objects
+            res.send([transportReq,serviceReqs]);
+            console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
+        } catch (err) {
+            console.error("\nUnable to send Requests\n");
+        }
+
+    }
+    else{
+        try {
+
+            const transportReq = await PrismaClient.outsideTransport.findMany({
+                orderBy: {
+                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    serviceReq:{
+                        status:statusFilter
+                    }
+
+                }
+            });
+
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"transportation",
+                    status:statusFilter
+                }
+            });
+
+            //we display info from both the service req and the outside transportation req, so we send the person both DB objects
+            res.send([transportReq,serviceReqs]);
+            console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
+        } catch (err) {
+            console.error("\nUnable to send Requests\n");
+        }
+
+    }
+
+
+
+});
+
+// ---------------------------------    Sanitation DB Interaction    ---------------------------------
+
+router.post("/sanReq", async function (req: Request, res: Response) {
+    try {
+        //you need a service request to make an Sanitation transportation request, so let the router know that you are receiving both
+        const sentData:[ServiceRequest,sanReq] = req.body;
+        const serviceReq = await PrismaClient.serviceRequest.create({
+            data: {
+                reqType: sentData[0].reqType,
+                reqPriority: sentData[0].reqPriority,
+                reqLocation: {
+                    connect: {
+                        nodeID: sentData[0].reqLocationID
+                    }
+                },
+                extraInfo: sentData[0].extraInfo,
+                status: sentData[0].status,
+                //connect the Employee field using the username as a foreign key
+                //assigned is the relation, so itt does not actually exist as data (data that
+                // will exist and connect is data you specify below)
+                assigned: {
+                    connectOrCreate: {
+                        //connectOrCreate makes you specify what data you will create with and also what you
+                        // want to connect to (needs to know both potential outcomes)
+                        create: {
+                            userName: "No one",
+                            firstName: "N/A",
+                            lastName: "N/A",
+                            designation: "N/A",
+                            isAdmin: true,
+                        },
+                        //second part of create or connect (the what-we-connect-to part)
+                        where: {
+                            userName: "No one"
+                        }
+                    }
+                }
+            }
+        });
+        console.log("Successfully saved Service Requirement");
+
+        await PrismaClient.sanReq.create({
+            data: {
+                serviceReqID: serviceReq.reqID,
+                type: sentData[1].type
+            }
+        });
+        console.log("Successfully saved the Sanitation Request");
+        res.sendStatus(200);
+    } catch {
+        console.error("Sanitation Request Failed");
+        res.sendStatus(400);
+    }
+});
+
+router.get("/sanReq", async function (req: Request, res: Response) {
+
+    const statusFilter:status = req.query.status as status;
+
+    if(statusFilter == Status.Any){
+        try {
+
+            const sanReq = await PrismaClient.sanReq.findMany({
+                orderBy: {
+                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                }
+            });
+
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"sanitation"
+                }
+            });
+
+            //we display info from both the service req and the sanitation req, so we send the person both DB objects
+            res.send([sanReq,serviceReqs]);
+            console.info("\nSuccessfully gave you all of the Sanitation Requests\n");
+        } catch (err) {
+            console.error("\nUnable to send Requests\n");
+        }
+    }
+    else{
+        try {
+
+            const sanReq = await PrismaClient.sanReq.findMany({
+                orderBy: {
+                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    serviceReq:{
+                        status:statusFilter
+                    }
+
+                }
+            });
+
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"sanitation",
+                    status:statusFilter
+                }
+            });
+
+            //we display info from both the service req and the sanitation req, so we send the person both DB objects
+            res.send([sanReq,serviceReqs]);
+            console.info("\nSuccessfully gave you all of the Sanitation Requests\n");
+        } catch (err) {
+            console.error("\nUnable to send Requests\n");
+        }
+    }
+});
+
+
+// ---------------------------------    Flower Request DB Interaction    ---------------------------------
+
+router.post("/flowReq", async function (req: Request, res: Response) {
+    //console.log(req.body);
+    //console.log("Flow Req Above");
+    const flowData:[ServiceRequest,FlowReq] = req.body;
+    console.info(flowData);
+
+    //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
     try {
 
-        const transportReq = await PrismaClient.outsideTransport.findMany({
-            orderBy: {
-                serviceReqID: "asc", //order by service request id so the two arrays are parallel
-            }
-        });
-
-        const serviceReqs = await PrismaClient.serviceRequest.findMany({
-            orderBy: {
-                reqID: "asc", //order by service request id so the two arrays are parallel
+        //create a service request in the database
+        const service = await PrismaClient.serviceRequest.create({
+            //data passed into post is array of 2 data types
+            // first data type is a service request, so all the data we want to create a service req in the table
+            // will be stored in the first spot of array (passed as a json through prisma client)
+            data: {
+                //ID is auto created
+                reqType: flowData[0].reqType,
+                reqPriority: flowData[0].reqPriority,
+                //connect the Node field using the node id as a foreign key
+                reqLocation: {
+                    connect : {
+                        nodeID: flowData[0].reqLocationID
+                    }
+                },
+                extraInfo: flowData[0].extraInfo,
+                status: flowData[0].status,
+                //connect the Employee field using the username as a foreign key
+                //assigned is the relation, so itt does not actually exist as data (data that
+                // will exist and connect is data you specify below)
+                assigned: {
+                    connectOrCreate: {
+                        //connectOrCreate makes you specify what data you will create with and also what you
+                        // want to connect to (needs to know both potential outcomes)
+                        create : {
+                            userName: "No one",
+                            firstName: "N/A",
+                            lastName: "N/A",
+                            designation: "N/A",
+                            isAdmin: true,
+                        },
+                        //second part of create or connect (the what-we-connect-to part)
+                        where : {
+                            userName: "No one"
+                        }
+                    }
+                }
             },
-            where:{
-                reqType:"outside transportation"
+        });
+        console.info("Successfully saved Req"); // Log that it was successful
+
+        //create a Flow Req (use data from the second element since we always put flow req data type in second)
+        await PrismaClient.flowReq.create({
+            data: {
+                flowType: flowData[1].flowType,
+                quantity: flowData[1].quantity,
+                sender: flowData[1].sender,
+                receiver: flowData[1].receiver,
+                message: flowData[1].message,
+                genReqID: service.reqID,
             }
         });
-
-        //we display info from both the service req and the outside transportation req, so we send the person both DB objects
-        res.send([transportReq,serviceReqs]);
-        console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
-    } catch (err) {
-        console.error("\nUnable to send Requests\n");
+        console.info("Successfully saved Flow Req"); // Log that it was successful
+        //sendback the id of the request
+        //console.info("HHH " +record.genReqID);
+        res.send(200);
+    } catch (error) {
+        // Log any failures
+        console.error(`Unable to save Flow Req`);
+        res.sendStatus(400); // Send error
     }
 });
 
@@ -405,5 +796,56 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
     }
 });
 
-export default router;
+router.get("/flowReq", async function (req: Request, res: Response) {
+    try {
+        //
+        const filterStatus = req.body.status;
 
+        if (filterStatus == "Any"){
+            //try to send all the nodes to the client
+            const flowReqs = await PrismaClient.flowReq.findMany({
+                orderBy: {
+                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                },
+            });
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"flower delivery",
+                }
+            });
+            res.send([flowReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
+            console.info("\nSuccessfully gave you all of the flower requests\n");
+        }
+        else{
+            //try to send all the nodes to the client
+            const flowReqs = await PrismaClient.flowReq.findMany({
+                orderBy: {
+                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where: {
+                    genReq:{
+                        status: filterStatus,
+                    }
+                }
+            });
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"flower delivery",
+                    status: filterStatus,
+                }
+            });
+            res.send([flowReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
+            console.info("\nSuccessfully gave you all of the flower requests\n");
+        }
+    } catch (err) {
+        console.error("\nUnable to send requests\n");
+    }
+});
+
+export default router;

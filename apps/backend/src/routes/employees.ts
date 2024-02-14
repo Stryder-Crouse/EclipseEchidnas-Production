@@ -28,6 +28,62 @@ router.post("/employee", async function (req: Request, res: Response) {
     }
 });
 
+//function to update an employee's info (pass in an Employee object)
+router.post("/updateEmployee", async function(req: Request, res: Response) {
+    //get the new employee info (new info is stored in an employee object)
+    const data: Employee = req.body;
+    //debug info
+    console.log("Updated Info");
+    console.log(data);
+
+    //query the database to update the desired employee
+    try {
+        await PrismaClient.employee.update({
+            where: {
+                userName: data.userName
+            },
+            data: {
+                //transfer all the info from the object into the database
+                firstName: data.firstName,
+                lastName: data.lastName,
+                designation: data.designation,
+                isAdmin: data.isAdmin
+            }
+        });
+        //debug info to let us know that the employee was successfully updated
+        console.log("Employee successfully updated");
+        res.sendStatus(200);
+    } catch {
+        //debug info to let us know that we failed to update the employee
+        console.log("Error with Updating an Employee (Check to see if the employee exists)");
+        res.sendStatus(400);
+    }
+});
+
+//function to delete employee (fire them) --- Pass a string (employee's username) to function
+router.post("/deleteEmployee", async function(req: Request, res: Response) {
+    console.log("req.body");
+    console.log(req.body);
+    try {
+        //get the user which the admin wants to fire
+        const data:string[] = req.body;
+
+        //query the database to delete the employee
+        await PrismaClient.employee.delete({
+            where: {
+                userName: data[0]          //employee's username is unique, so we must delete an employee by their username
+            }
+        });
+        //debug info to know that we successfully deleted the employee
+        console.log("Employee Successfully Fired!");
+        res.sendStatus(200);
+    } catch {
+        //debug info to know that we failed to delete the employee
+        console.log("Error with Firing the Employee (Check to see if the employee exists)");
+        res.sendStatus(400);
+    }
+});
+
 
 //gets all employees from the database in the form of employee objects
 router.get("/employees", async function (req: Request, res: Response) {

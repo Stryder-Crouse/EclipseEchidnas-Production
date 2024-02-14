@@ -13,7 +13,7 @@ export default function ServiceRequestInput() {
 
 
     //const [statusFilter , setStatusFilter ] = useState("");
-    const [curentServiceRequest , setCurentServiceRequest ] = useState(ReqTypes.medReq);
+    const [curentServiceRequest , setCurentServiceRequest ] = useState(ReqTypes.flowReq);
     console.log(curentServiceRequest);
 
     // useEffect(() => {
@@ -22,7 +22,7 @@ export default function ServiceRequestInput() {
     // }, []);
 
     return (
-        <div className="tabs-container">
+        <div className="tabs-container drop-shadow-lg">
             <ul className="tabs">
                 <li>
                     <a id={"button_" + ReqTypes.flowReq} title="Flower Request" className={"tabButton"} onClick={() => {
@@ -48,7 +48,7 @@ export default function ServiceRequestInput() {
                     </a>
                 </li>
                 <li>
-                    <a id={"button_" + ReqTypes.tranReq} title="Transportation Request" className={"tabButton"}
+                    <a id={"button_" + ReqTypes.tranReq} title="Transportation Request" className={"tabButton "}
                        onClick={() => {
                            setCurentServiceRequest(ReqTypes.tranReq);
                        }}>

@@ -26,7 +26,7 @@ function App() {
                     element: <ProtectedAdminMap/>,
                 },
                 {
-                    path: "/ServiceRequest",
+                    path: "/ProtectedServiceRequest",
                     element: <ProtectedServiceRequest/>,
                 },
                 {
@@ -34,7 +34,7 @@ function App() {
                     element: <ProtectedNodeEdgeTable/>,
                 },
                 {
-                    path: "/RequestList",
+                    path: "/ProtectedRequestList",
                     element: <ProtectedRequestList/>,
                 },
                 {
