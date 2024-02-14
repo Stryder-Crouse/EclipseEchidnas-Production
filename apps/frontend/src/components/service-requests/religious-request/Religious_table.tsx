@@ -54,9 +54,9 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                 <th>Request Type</th>
                                 <th>Priority</th>
                                 <th>Going To</th>
-                                <th>Medicine type</th>
-                                <th>Dosage</th>
-                                <th>Amount</th>
+                                <th>Patient Name</th>
+                                <th>Religion</th>
+                                <th>Service requested</th>
                                 <th>Status</th>
                                 <th>Employee</th>
                             </tr>
@@ -67,7 +67,7 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                 //ids are startingNodeInput and endingNodeInput
                                 religRequestList?.map((request, requestIndex) => {
                                     return (
-                                        <tr key={"Med_" + request[0].genReqID}>
+                                        <tr key={"Relig_" + request[0].genReqID}>
                                             <td className={"node-id"}>{request[1].reqType}</td>
                                             <td>
                                                 <select
@@ -95,7 +95,7 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                             <td>
                                                 <select
                                                     value={request[1].status}
-                                                    id={"medStatusDropdown" + request[1].reqID}
+                                                    id={"religStatusDropdown" + request[1].reqID}
                                                     onChange={
                                                         (event) => {
                                                             const eventHTML = event.target as HTMLSelectElement;
@@ -289,7 +289,7 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
         const religRequests = [...religRequestList]; //make a copy of the array to update
         const thisRequest = religRequests?.at(requestIndex);//use the copy to make changes
 
-        console.log("medRequests: " + religRequests);
+        console.log("religRequests: " + religRequests);
         //console.log("servReq: "+servReq);
         //console.log("thisReq: "+thisReq);
         console.log("thisRequest" + thisRequest);
@@ -328,16 +328,16 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
 }
 
 async function getReligRequests() {
-    const requests = await axios.get<[ReligRequest[], ServiceRequest[]]>("/api/serviceRequests/medReq");
+    const requests = await axios.get<[ReligRequest[], ServiceRequest[]]>("/api/serviceRequests/religiousRequest");
 
-    const medRequests: Array<[ReligRequest, ServiceRequest]> = [];
+    const religRequests: Array<[ReligRequest, ServiceRequest]> = [];
     for (let i = 0; i < requests.data[0].length; i++) {
-        medRequests.push([requests.data[0][i], requests.data[1][i]]);
+        religRequests.push([requests.data[0][i], requests.data[1][i]]);
 
     }
-    console.log(medRequests);
+    console.log(religRequests);
 
-    return medRequests;
+    return religRequests;
 
 }
 
