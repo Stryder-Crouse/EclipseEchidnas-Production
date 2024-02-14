@@ -74,17 +74,6 @@
   align-items: center;
 }
 
-.table-row-count {
-  font-size: 0.8rem;
-  font-weight: 700;
-  background-color: #f1f2f6;
-  padding: 0.5rem;
-  display: inline-flex;
-  align-items: center;
-  margin-left: 1rem;
-  border-radius: 0.5rem;
-}
-
 .table-title {
   display: flex;
   gap: 0.75rem;
@@ -123,35 +112,6 @@
   border-radius: 5px;
 }
 
-/** Styling on columns **/
-
-
-/** Importation and Exportation buttons **/
-.import-and-export {
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  gap: 1rem;
-
-}
-
-.export {
-  background-color: #0097a0;
-  border-radius: 0.5rem;
-  padding: 0.75rem;
-  color: #f1f1f1;
-  cursor: pointer;
-  font-weight: bold;
-    border-color: transparent;
-}
-
-.nodeEdge-container {
-  margin-top: 10rem;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 td {
     font-family: 'Work Sans', sans-serif;
-
 }
