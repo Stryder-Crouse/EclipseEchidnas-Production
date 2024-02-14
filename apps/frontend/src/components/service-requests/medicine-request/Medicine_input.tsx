@@ -4,6 +4,7 @@ import RequestButtons from "../../buttons/RequestButtons.tsx";
 
 import axios from "axios";
 import {MedReq, ReqTypes, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+//import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 
 export default function Medicine_input() {
     const [medRequestLocale, setMedRequestLocale] = useState("");
@@ -101,6 +102,14 @@ export default function Medicine_input() {
                             onChange={handleMedRequestLocaleInput}
                         />
                     </div>
+
+                    {/*<SimpleTextInput id={"medRequestType"} textContent={"Medicine Type"}*/}
+                    {/*                 divCSS={""} inputCSS={}*/}
+                    {/*                 inputStorage={} labelCSS={}*/}
+                    {/*                 placeHolderText={} setInputStorage={}>*/}
+
+                    {/*</SimpleTextInput>*/}
+
                     <div className={"grid justify-center items-center my-1.5"}>
                         <label form={"medRequestType"}>Medicine Type</label>
                         <input

@@ -11,7 +11,7 @@ import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataB
 
 
 
-const longNames:string[] = [];
+let longNames:string[] = [];
 
 
 export default function Sanitation_input() {
@@ -34,7 +34,13 @@ export default function Sanitation_input() {
         getLocations().then(
             (result)=>{
                 setLocations(result);
-                result.forEach((node)=>{ longNames.push(node.longName);});
+
+                const locationLongNames:string[] = [];
+
+                result.forEach((node)=>{ locationLongNames.push(node.longName);});
+
+                longNames=locationLongNames;
+
 
             });
 
