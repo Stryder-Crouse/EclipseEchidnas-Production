@@ -30,6 +30,7 @@ export type ReligRequest = {
     patientName: string;
     religion: string;
     reqDescription: string;
+    genReqID: number;
 };
 
 // ---------------------------------    ENUMS    ---------------------------------
