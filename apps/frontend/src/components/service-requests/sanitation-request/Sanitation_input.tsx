@@ -92,57 +92,59 @@ export default function Sanitation_input() {
 
 
     return (
-            <div
-                className={"justify-items-center text-2xl border-2 border-gray-400 rounded-2xl p-10 flex flex-col gap-5 rounded-2"}>
-                <p><b>Sanitation Requests</b></p>
-                <div className="form-group">
-                    <label className={"location"}>Location</label>
-                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"Location"} isSearchable={true}
-                                    populationArr={longNames} resetDropdown={resetDropdown}
-                                    setSelected={setSelected}
-                                    inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
-                                    selectCSS={""}
-                                    resetOnSelect={false} setResetDropdown={setResetDropdown}/>
-                </div>
-                <div className="form-group">
-                    <label className="label">What Happened: </label>
-                    <input
-                        value={type}
-                        onChange={(e) => {
-                            setType(e.target.value);
-                        }}
-                        type={"text"}
-                        className={"border-2 p-2 border-black rounded-2xl grow"}
-                    />
-                </div>
-                <div className="form-group">
-                    <label className={"Priority"}>Priority</label>
-                    <CreateDropdown
-                        dropBtnName={"Priority"}
-                        dropdownID={"Priority"}
-                        populationArr={priorityArr}
-                        isSearchable={false}
-                        resetOnSelect={false}
-                        resetDropdown={resetDropdownPriority}
-                        setResetDropdown={setResetDropdownPriority}
-                        setSelected={setPriorityIndex}
-                        selectCSS={""}
-                        inputCSS={""}
-                    />
+            <div className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
+                <form className={"px-1"}>
+                    <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Sanitation Request</h1> {/* Div Title */}
+                    <div className="grid justify-center items-center my-1.5">
+                        <label className={"location"}>Location</label>
+                        <CreateDropdown dropBtnName={"Locations"} dropdownID={"Location"} isSearchable={true}
+                                        populationArr={longNames} resetDropdown={resetDropdown}
+                                        setSelected={setSelected}
+                                        inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow "}
+                                        selectCSS={""}
+                                        resetOnSelect={false} setResetDropdown={setResetDropdown}/>
+                    </div>
+                    <div className="grid justify-center items-center my-1.5">
+                        <label className="label">What Happened: </label>
+                        <input
+                            value={type}
+                            onChange={(e) => {
+                                setType(e.target.value);
+                            }}
+                            type={"text"}
+                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                        />
+                    </div>
+                    <div className="grid justify-center items-center my-1.5">
+                        <label className={"Priority"}>Priority</label>
+                        <CreateDropdown
+                            dropBtnName={"Priority"}
+                            dropdownID={"Priority"}
+                            populationArr={priorityArr}
+                            isSearchable={false}
+                            resetOnSelect={false}
+                            resetDropdown={resetDropdownPriority}
+                            setResetDropdown={setResetDropdownPriority}
+                            setSelected={setPriorityIndex}
+                            selectCSS={""}
+                            inputCSS={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
+                        />
 
-                </div>
-                <div className="form-group">
-                    <label className="label">Extra Info: </label>
-                    <input
-                        value={extraInfo}
-                        onChange={(e) => {
-                            setExtraInfo(e.target.value);
-                        }}
-                        type={"text"}
-                        className={"border-2 p-10 border-black rounded-2xl grow"}
-                    />
-                </div>
-                <RequestButtons submit={submit}/>
+                    </div>
+                    <div className="grid justify-center items-center my-1.5">
+                        <label className="label" form={"additional"}>Extra Info: </label>
+                        <input
+                            id={"additional"}
+                            value={extraInfo}
+                            onChange={(e) => {
+                                setExtraInfo(e.target.value);
+                            }}
+                            type={"text"}
+                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                        />
+                    </div>
+                    <RequestButtons submit={submit}/>
+                </form>
             </div>
     );
 
