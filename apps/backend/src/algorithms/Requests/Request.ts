@@ -11,7 +11,6 @@ export type ServiceRequest = {
     reqID:number;
 
 };
-
 /** Type to store data specific to medication requests*/
 export type MedReq = {
     medType: string;
