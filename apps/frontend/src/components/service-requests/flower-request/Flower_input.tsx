@@ -45,9 +45,13 @@ export default function Flower_input() {
 
 
     return (
-        <div >
+        <div>
             {/* make your input form in here  */}
             Flower request input form HELLOOO
+
+            <div className={"flex justify-center items-center my-1.5"}>
+                <p>Created By: Shiivek and Szymon</p>
+            </div>
         </div>
     );
 

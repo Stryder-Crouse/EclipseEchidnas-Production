@@ -138,7 +138,9 @@ export default function Medicine_input() {
                         />
                     </div>
                     <RequestButtons submit={submit}/>
-                    {/*// this should technically take you to list of service request*/}
+                    <div className={"flex justify-center items-center my-1.5"}>
+                        <p>Created By: Alex and Antonio</p>
+                    </div>
                 </form>
             </div>
 

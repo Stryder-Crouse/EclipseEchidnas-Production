@@ -6,6 +6,7 @@ import {
     ServiceRequest
 } from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import axios from "axios";
+import RequestButtons from "../../buttons/RequestButtons.tsx";
 //import LocationsDropDown from "../../navigation-bar/LocationsDropDown.tsx";
 
 
@@ -112,7 +113,7 @@ export default function Transportation_Input() {
                     </div>
 
                     <div className={"grid justify-center items-center my-1.5"}> {/* Patient Name text input */}
-                        <label form={"priority"} className={"mb-1"}>Patient Name</label>
+                        <label form={"priority"} className={"mb-1"}>Patient Name:</label>
                         <input
                             className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             type={"text"}
@@ -124,7 +125,7 @@ export default function Transportation_Input() {
                     </div>
 
                     <div className={"grid justify-center items-center my-1.5"}> {/* Patient Room Input */}
-                        <label form={"room"} className={"mb-1"}>Room Number</label>
+                        <label form={"room"} className={"mb-1"}>Room Number:</label>
                         <input
                             className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             type={"text"}
@@ -136,7 +137,7 @@ export default function Transportation_Input() {
                     </div>
 
                     <div className={"grid justify-center items-center my-1.5 mb-2"}>{/* Destination Input */}
-                        <label form={"destination"} className={"mb-1"}>Destination</label>
+                        <label form={"destination"} className={"mb-1"}>Destination:</label>
                         <input
                             className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow "}
                             type={"text"}
@@ -176,16 +177,14 @@ export default function Transportation_Input() {
                     </div>
 
                     <div className={"flex justify-center items-center my-1.5"}>
-                        <button
-                            className={"p-1 w-24 bg-navStart text-ivoryWhite rounded-xl border border-black drop-shadow font-bold"}
-                            type={"button"}
-                            onClick={submit}
-                        >
-                            Submit
-                        </button>
+                        <RequestButtons submit={submit}/>
                     </div>
                 </div>
             </form>
+
+            <div className={"flex justify-center items-center my-1.5"}>
+                <p>Created By: Michael and Ryan</p>
+            </div>
         </div>
     );
 
