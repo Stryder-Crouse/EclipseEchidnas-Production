@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {ReligRequest, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
-import AdminPageNavBar from "../../navigation-bar/AdminPageNavBar.tsx";
+//import AdminPageNavBar from "../../navigation-bar/AdminPageNavBar.tsx";
 import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 import {statusFilter} from "../serviceRequestInterface.ts";
 
@@ -35,25 +35,19 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
 
     return (
         <div>
-            <AdminPageNavBar/>
 
-            <div className={"request-table-container"}>
-                <div className={"table-container"}>
-            <span className={"caption-container"}>
-              <span className={"table-title"}>Request Log</span>
-            </span>
-                    <div className={"table-wrapper"}>
+
                         <table className={"requestTable"} id={"request-table"}>
                             <thead>
-                            <tr>
-                                <th>Request Type</th>
-                                <th>Priority</th>
-                                <th>Going To</th>
-                                <th>Patient Name</th>
-                                <th>Religion</th>
-                                <th>Service requested</th>
-                                <th>Status</th>
-                                <th>Employee</th>
+                            <tr className={"tableTRHead"}>
+                                <th className={"tableTD"}>Request Type</th>
+                                <th className={"tableTD"}>Priority</th>
+                                <th className={"tableTD"}>Going To</th>
+                                <th className={"tableTD"}>Patient Name</th>
+                                <th className={"tableTD"}>Religion</th>
+                                <th className={"tableTD"}>Service requested</th>
+                                <th className={"tableTD"}>Status</th>
+                                <th className={"tableTD"}>Employee</th>
                             </tr>
                             </thead>
                             {/* populating here */}
@@ -62,9 +56,9 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                 //ids are startingNodeInput and endingNodeInput
                                 religRequestList?.map((request, requestIndex) => {
                                     return (
-                                        <tr key={"Relig_" + request[0].genReqID}>
-                                            <td className={"node-id"}>{request[1].reqType}</td>
-                                            <td>
+                                        <tr className={"tableTR"} key={"Relig_" + request[0].genReqID}>
+                                            <td className={"tableTD"}>{request[1].reqType}</td>
+                                            <td className={"tableTD"}>
                                                 <select
                                                     value={request[1].reqPriority}
                                                     id={"priorityDropdown" + request[1].reqID}
@@ -83,11 +77,11 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                                     </option>
                                                 </select>
                                             </td>
-                                            <td>{request[1].reqLocationID}</td>
-                                            <td>{request[0].patientName}</td>
-                                            <td>{request[0].religion}</td>
-                                            <td>{request[0].reqDescription}</td>
-                                            <td>
+                                            <td className={"tableTD"}>{request[1].reqLocationID}</td>
+                                            <td className={"tableTD"}>{request[0].patientName}</td>
+                                            <td className={"tableTD"}>{request[0].religion}</td>
+                                            <td className={"tableTD"}>{request[0].reqDescription}</td>
+                                            <td className={"tableTD"}>
                                                 <select
                                                     value={request[1].status}
                                                     id={"religStatusDropdown" + request[1].reqID}
@@ -110,7 +104,7 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                                     </option>
                                                 </select>
                                             </td>
-                                            <td>
+                                            <td className={"tableTD"}>
                                                 <select
                                                     value={request[1].assignedUName}
                                                     onChange={
@@ -134,10 +128,8 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                             }
                             </tbody>
                         </table>
-                    </div>
                 </div>
-            </div>
-        </div>
+
     );
 
     function renderEmployees(employee: Employee, religID: string) {
