@@ -86,17 +86,29 @@ function EmployeeTable() {
                     <div>
                         <label form={"employeeUsername"}>Username</label><br/>
                         <input type={"text"} placeholder={"Enter Username"} className={"inputText"}
-                               name={"employeeUsername"} required/>
+                               name={"employeeUsername"} required
+                               // onChange={(e)=>{
+                               //     setNewUserName(e.target.value);
+                               // }}
+                        />
                     </div>
                     <div>
                         <label form={"employeeFirst"}>First Name</label><br/>
                         <input type={"text"} placeholder={"Enter First Name"} className={"inputText"}
-                               name={"employeeFirst"} required/>
+                               name={"employeeFirst"} required
+                               // onChange={(e)=>{
+                               //     setNewFristName(e.target.value);
+                               // }}
+                        />
                     </div>
                     <div>
                         <label form={"employeeLast"}>Last Name</label><br/>
                         <input type={"text"} placeholder={"Enter Last Name"} className={"inputText"}
-                               name={"employeeFirst"} required/>
+                               name={"employeeFirst"} required
+                               // onChange={(e)=>{
+                               //     setNewLastName(e.target.value);
+                               // }}
+                        />
                     </div>
                     <div>
                         <label form={"designation"}>Designation</label><br/>
