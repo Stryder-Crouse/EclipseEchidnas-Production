@@ -39,6 +39,7 @@ export default function Religious_input() {
             patientName: nameP,
             religion: religions[religionDDIndx],
             reqDescription: service,
+            genReqID: -1,
         };
         const data1:ServiceRequest = {
             reqType: ReqTypes.religReq,
