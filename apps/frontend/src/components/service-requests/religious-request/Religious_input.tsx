@@ -74,73 +74,74 @@ export default function Religious_input() {
 
 
     return (
-        <div className={"servicePage grid"}>
-                <table>
-                    {/*th need to be in a table please change it later to a tag or b tag*/}
-                    <tbody>
-                    <tr>
-                        <th>Religious Service Request</th>
-                    </tr>
-                    </tbody>
-                </table>
-            <form className={"relig-service-form"}>
-                <label className={"formElement"}>Location of Service</label>
-                <input placeholder={"Room Name & Number"}
-                       type={"text"}
-                       className={"text-fields formElement"}
-                       id={"location"}
-                       value={location}
-                       onChange={(e) => setLocation(e.target.value)}
-                       required>
-                </input>
+        <div className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-2 align-self-center"}>
+            <form className={"p-1"}>
+                <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Religious Request</h1> {/* Div Title */}
 
-                <input placeholder={"Patient Name"}
-                       type={"text"}
-                       className={"input-fields"}
-                       id={"name"}
-                       value={nameP}
-                       onChange={(e) => setNameP(e.target.value)}
-                       required>
-                </input>
+                <div className={"grid justify-center items-center my-1.5 mb-1"}>
+                    <label form={"location"} className={"mb-1"}>Location of Service</label>
+                    <input placeholder={"Room Name & Number"}
+                           type={"text"}
+                           className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                           id={"location"}
+                           value={location}
+                           onChange={(e) => setLocation(e.target.value)}
+                           required>
+                    </input>
+                </div>
+                <div className={"grid justify-center items-center my-1.5 mb-1"}>
+                    <label form={"name"} className={"mb-1"}>Patient Name</label>
+                    <input placeholder={"Patient Name"}
+                           type={"text"}
+                           className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                           id={"name"}
+                           value={nameP}
+                           onChange={(e) => setNameP(e.target.value)}
+                           required>
+                    </input>
+                </div>
+                <div className={"grid justify-center items-center my-1.5 mb-1"}>
+                    <CreateDropdown dropBtnName={"Religion"} dropdownID={"ReligionID"} isSearchable={false}
+                                    populationArr={religions}
+                                    setSelected={setReligionDDIndx}
+                                    resetDropdown={resetDropdownRel}
+                                    resetOnSelect={false}
+                                    inputCSS={"n/a"} selectCSS={"dropdown"}
+                                    setResetDropdown={setResetDropdownRel}/>
+                </div>
+                <div className={"grid justify-center items-center my-1.5 mb-1"}>
+                    <textarea placeholder={"Describe the religious service to be performed here."}
+                              className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
+                              onChange={(e) => setService(e.target.value)}
+                              id={"service"}
+                              value={service}
+                              required>
+                    </textarea>
+                </div>
+                <div className={"grid justify-center items-center my-1.5 mb-1"}>
+                    <CreateDropdown dropBtnName={"Urgency"} dropdownID={"UrgencyID"} isSearchable={false}
+                                    populationArr={[Priority.low, Priority.normal, Priority.high, Priority.emergency]}
+                                    setSelected={setUrgencyDDIndx}
+                                    resetDropdown={resetDropdownUrg}
+                                    resetOnSelect={false}
+                                    inputCSS={"n/a"} selectCSS={"dropdown"}
+                                    setResetDropdown={setResetDropdownUrg}/>
+                </div>
+                <div className={"grid justify-center items-center my-1.5 mb-1"}>
+                    <textarea placeholder={"Any extra notes?"}
+                              className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
+                              onChange={(e) => setExtraInfo(e.target.value)}
+                              id={"service"}
+                              value={extraInfo}
+                              required>
+                    </textarea>
+                </div>
 
-                <CreateDropdown dropBtnName={"Religion"} dropdownID={"ReligionID"} isSearchable={false}
-                                populationArr={religions}
-                                setSelected={setReligionDDIndx}
-                                resetDropdown={resetDropdownRel}
-                                resetOnSelect={false}
-                                inputCSS={"n/a"} selectCSS={"dropdown"}
-                                setResetDropdown={setResetDropdownRel}/>
-
-                <textarea placeholder={"Describe the religious service to be performed here."}
-                          className={"input-fields" /*className may need to be different to have a larger area*/}
-                          onChange={(e) => setService(e.target.value)}
-                          id={"service"}
-                          value={service}
-                          required>
-                </textarea>
-
-                <CreateDropdown dropBtnName={"Urgency"} dropdownID={"UrgencyID"} isSearchable={false}
-                                populationArr={[Priority.low,Priority.normal,Priority.high,Priority.emergency]}
-                                setSelected={setUrgencyDDIndx}
-                                resetDropdown={resetDropdownUrg}
-                                resetOnSelect={false}
-                                inputCSS={"n/a"} selectCSS={"dropdown"}
-                                setResetDropdown={setResetDropdownUrg}/>
-
-                <textarea placeholder={"Any extra notes?"}
-                          className={"input-fields" /*className may need to be different to have a larger area*/}
-                          onChange={(e) => setExtraInfo(e.target.value)}
-                          id={"service"}
-                          value={extraInfo}
-                          required>
-                </textarea>
 
                 <RequestButtons submit={handleSubmit}/>
+                <p className={"flex justify-center items-center -mt-5"}>Created By: Alana and Grace</p>
                 {/*// this should technically take you to list of service request*/}
             </form>
-            <div className={"flex justify-center items-center my-1.5"}>
-                <p>Created By: Alana and Grace</p>
-            </div>
         </div>
     );
 
