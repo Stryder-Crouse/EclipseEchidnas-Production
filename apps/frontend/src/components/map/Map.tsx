@@ -547,11 +547,18 @@ export function Map({
                 <text x={startNode.coordinate.x + style.xTextTransform}
                       y={startNode.coordinate.y + style.yTextTransform}
                       className={"floorLinkText"}>
-                    {"Go to " + endNode.floor}</text>
+                    {"Go to Floor " + endNode.floor}</text>
             </a>
 
         );
     }
+
+    /**
+     * Draw the text box containing the instruction
+     * @param startNode
+     * @param endNode
+     * @param style
+     */
     function drawTransitionTextFrom(startNode: Node, endNode: Node, style: TransitionTextStyle) {
         return (
             <a key={"transition_" + startNode.id}>
@@ -563,15 +570,14 @@ export function Map({
                 <text x={endNode.coordinate.x + style.xTextTransform}
                       y={endNode.coordinate.y + style.yTextTransform}
                       className={"floorLinkText"}>
-                    {"From " + startNode.floor}</text>
+                    {"From Floor " + startNode.floor}</text>
             </a>
         );
     }
 
-
     /**
-     * sets the maps image based on selectedFloorIndex
-     * */
+     * Set the specific map image based on the specified floor index.
+     */
     function setMapImage(): string {
         switch (selectedFloorIndex) {
             case FloorToIndex.LowerLevel2:
@@ -626,6 +632,9 @@ export function Map({
         }
     }
 
+    /**
+     * Stop panning the map when the cursor leaves the area.
+     */
     function leftMapArea() {
         setCurrentlyPanning(false);
     }
@@ -659,27 +668,17 @@ export function Map({
         /* if no node has been selected so far, set the start node */
         if (startNode == NULLNODE && endNode == NULLNODE) {
             setStartNode(nodeClicked);
-            // debug prints
-            // console.log("start selected");
-            // console.log(startNode);
         }
 
         /* if just a start node has been selected, set the end node */
         else if (endNode == NULLNODE) {
             setEndNode(nodeClicked);
-            // debug prints
-            // console.log("end selected");
-            // console.log(endNode);
         }
 
         /* finally, if both nodes have already been selected, set a new start node and clear the end node */
         else {
             setStartNode(nodeClicked);
             setEndNode(NULLNODE);
-            // debug prints
-            // console.log("new path requested");
-            // console.log(startNode);
-            // console.log(endNode);
         }
     }
 }
