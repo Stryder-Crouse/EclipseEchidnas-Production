@@ -1,0 +1,93 @@
+
+/*.form-group {*/
+/*    margin-bottom: 20px;*/
+/*}*/
+
+/*.label {*/
+/*    margin-bottom: 8px;*/
+/*    font-weight: bold;*/
+/*    color: #333; !* Darker label text color *!*/
+/*}*/
+
+/*.input-field,*/
+/*.select-field,*/
+/*.textarea-field {*/
+/*    width: 100%;*/
+/*    padding: 10px;*/
+/*    border: 1px solid #ddd; !* Lighter border color *!*/
+/*    border-radius: 4px;*/
+/*    box-sizing: border-box;*/
+/*}*/
+
+/*.button {*/
+/*    padding: 10px;*/
+/*    background-color: #007bff;!* Complementary color *!*/
+/*    color: #fff;*/
+/*    border: none;*/
+/*    border-radius: 4px;*/
+/*    cursor: pointer;*/
+/*    transition: background-color 0.3s ease; !* Smooth transition *!*/
+/*    margin: auto;*/
+/*    display: block; !* Set to block to center the button horizontally *!*/
+/*}*/
+
+/*.button:hover {*/
+/*    background-color: #0056b3; !* Darker color on hover *!*/
+/*}*/
+
+/*.App h1 {*/
+/*    text-align: center;*/
+/*    margin-bottom: 10px; !* Adjust the margin as needed *!*/
+
+/*}*/
+/*.table-container {*/
+/*    border-radius: 2rem;*/
+/*    background-color: #fcfcfd;*/
+/*    padding: 1.5rem;*/
+/*    margin-top: 5rem;*/
+/*    font-family: 'Work Sans', sans-serif;*/
+/*    border: 2px solid #edeef1;*/
+/*    box-shadow: 0 4px 16px 0 rgba(148, 156, 169, 0.15);*/
+/*    text-align: center;*/
+/*    max-height: 30vh;*/
+/*    !** Flexbox centering Div **!*/
+/*    display: grid;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    width: 42vw;*/
+/*    overflow-y: auto;*/
+/*}*/
+
+/*.table-wrapper {*/
+
+/*    padding-bottom: 0.5rem;*/
+/*    max-height: 20vh;*/
+/*    align-items: center;*/
+/*    max-width: 50vw;*/
+/*}*/
+
+/*.App{*/
+/*    max-width: 50vw;*/
+/*}*/
+
+
+.App {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;}
+
+.label {
+    text-align: center;
+}
+
+input, select {
+    margin: 0 auto;
+}
