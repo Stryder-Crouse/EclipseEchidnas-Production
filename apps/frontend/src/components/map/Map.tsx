@@ -369,15 +369,14 @@ export function Map({
         createZoomEvent(viewbox, setViewbox, setZoomScale);
     }, [setViewbox, setZoomScale, viewbox, zoomScale]);
 
-
-    //the html returned from the component
+    /* THE THING YOU SEE */
     return (
+        /* overarching div with panning functionality */
         <div id={"map-test"}
              onMouseLeave={leftMapArea}
              onMouseDown={(e) => {
                  startPan(e);
              }}
-
              onMouseMove={(e) => {
                  whilePanning(e);
              }}
@@ -385,6 +384,7 @@ export function Map({
                  stopPan(e);
              }}
         >
+            {/* entire everything */}
             <svg
                 id="map"
                 className={"map-test"}
@@ -394,42 +394,35 @@ export function Map({
                     " " + viewbox.width.toString() + " " + viewbox.height.toString()}
             >
                 <use xmlnsXlink="http://www.w3.org/1999/xlink"></use>
+                {/* render the map image png */}
                 <image
                     width="5000"
                     height="3400"
                     href={setMapImage()}
                 ></image>
-
-                {
+                {   /* draw the edges on the map */
                     pathDrawnEdges.map((edge) => {
                         return drawEdge(edge);
-
                     })
                 }
-                {
-                    /**
-                     * creates the node objects on the map
-                     * */
+                {   /* draw the nodes on the map */
                     locations.map((node) => {
                         return drawNode(node);
                     })
                 }
-                {
+                {   /* draw the hover node info on the map */
                     locations.map((node) => {
                         return drawNodeInfo(node);
                     })
                 }
-                {
+                {   /* draw the transition text on the map */
                     pathFloorTransitions.map((transition) => {
                         return drawTransitionText(transition);
                     })
                 }
-
             </svg>
         </div>
     );
-
-
 
     /**
      * Graphically draw an edge.
@@ -438,19 +431,24 @@ export function Map({
     function drawEdge(edge: Edge) {
         /* draw the solid edge for everything */
         if (drawEntirePath) {
-            return <line key={"line_" + edge.id} className={"pathLineAll"}
-                         x1={edge.startNode.coordinate.x.toString()}
-                         y1={edge.startNode.coordinate.y.toString()}
-                         x2={edge.endNode.coordinate.x.toString()}
-                         y2={edge.endNode.coordinate.y.toString()}></line>;
+            return drawEdgeHTML(edge, "pathLineAll");
         }
 
         /* draw the moving, dotted edge for the pathfinding path */
-        return <line key={"line_" + edge.id} className={"pathLine"}
+        return drawEdgeHTML(edge, "pathLine");
+    }
+
+    /**
+     * Draw the edge's rendered HTML.
+     * @param edge the edge to draw
+     * @param edgeClass the type of the edge (dotted or solid)
+     */
+    function drawEdgeHTML(edge: Edge, edgeClass: string) {
+        return (<line key={"line_" + edge.id} className={edgeClass}
                      x1={edge.startNode.coordinate.x.toString()}
                      y1={edge.startNode.coordinate.y.toString()}
                      x2={edge.endNode.coordinate.x.toString()}
-                     y2={edge.endNode.coordinate.y.toString()}></line>;
+                     y2={edge.endNode.coordinate.y.toString()}></line>);
     }
 
     /**
@@ -463,26 +461,26 @@ export function Map({
 
         /* if the node is a start node, draw it green */
         if (node.id == startNode.id) {
-            return drawNodeGraphic(node, tag, "startSelected");
+            return drawNodeHTML(node, tag, "startSelected");
         }
 
         /* if the node is an end node, draw it red */
         else if (node.id == endNode.id) {
-            return drawNodeGraphic(node, tag, "endSelected");
+            return drawNodeHTML(node, tag, "endSelected");
         }
 
         /* if the node is a transition node, draw it orange */
         else if (inTransition(node.id)) {
-            return drawNodeGraphic(node, tag, "transitionNode");
+            return drawNodeHTML(node, tag, "transitionNode");
         }
 
         /* if we want to draw the whole path, draw it blue?? */
         else if (drawEntirePath) {
-            return drawNodeGraphic(node, tag, "normalNode");
+            return drawNodeHTML(node, tag, "normalNode");
         }
 
         /* finally, draw the node blue */
-        return drawNodeGraphic(node, tag, "normalNode");
+        return drawNodeHTML(node, tag, "normalNode");
     }
 
     /**
@@ -491,7 +489,7 @@ export function Map({
      * @param tagClass the tag, generally clickableAtag
      * @param nodeClass the class of the node
      */
-    function drawNodeGraphic(node: Node, tagClass: string, nodeClass: string) {
+    function drawNodeHTML(node: Node, tagClass: string, nodeClass: string) {
         return (
             <a key={node.id} id={node.id} className={tagClass}
                onClick={() => markNodeOnClick(node.id)}
@@ -528,7 +526,7 @@ export function Map({
         edgeConnections = edgeConnections.substring(0, edgeConnections.length - 2);
 
         /* draw the floating div */
-        return drawNodeInfoGraphic(node, connectedNode, edgeConnections);
+        return drawNodeInfoHTML(node, connectedNode, edgeConnections);
     }
 
     /**
@@ -537,7 +535,7 @@ export function Map({
      * @param connectedNode the node adjacent to node
      * @param edgeConnections the edges connected to node
      */
-    function drawNodeInfoGraphic(node: Node, connectedNode: Node, edgeConnections: string) {
+    function drawNodeInfoHTML(node: Node, connectedNode: Node, edgeConnections: string) {
         return (
             <foreignObject key={"nodeInfo_" + node.id} id={"nodeInfo_" + node.id}
                            className={"foreignObjectNode"} x={node.coordinate.x + 20} y={node.coordinate.y - 250}
