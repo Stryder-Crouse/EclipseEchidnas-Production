@@ -10,6 +10,7 @@ export type ServiceRequest = {
     status: string;
     assignedUName: string;
     reqID:number;
+
 };
 
 /** Type to store data specific to medication requests*/
@@ -53,5 +54,6 @@ export enum ReqTypes {
     flowReq = "flower delivery",
     sanReq = "sanitation",
     tranReq = "transportation",
-    outTransReq = "outside transportation"
+    outTransReq = "outside transportation",
+    serviceRequest ="service request"
 }
