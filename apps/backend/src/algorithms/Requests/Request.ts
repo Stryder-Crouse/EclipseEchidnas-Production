@@ -36,6 +36,13 @@ export type OutsideTransport = {
     serviceReqID: number;
 }
 
+export type sanReq = {
+    type: string;
+    serviceReqID: number;
+};
+
+
+
 // ---------------------------------    ENUMS    ---------------------------------
 
 

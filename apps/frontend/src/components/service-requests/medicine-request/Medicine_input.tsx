@@ -88,7 +88,7 @@ export default function Medicine_input() {
 
     return (
         <div>
-            <div className={"servicePage grid"}>
+            <div>
                 <table>
                     {/*th need to be in a table please change it later to a tag or b tag*/}
                     <tbody>
