@@ -102,7 +102,7 @@ const defaultFloor = FloorToIndex.LowerLevel1;
                     <Map startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
                          selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
                          drawEntirePath={drawEntirePath} setDrawEntirePath={setDrawEntirePath} locations={locations} setLocations={setLocations}
-                     setVeiwbox={setVeiwbox} setZoomScale={setZoomScale} veiwbox={veiwbox} zoomScale={zoomScale}/>
+                         setViewbox={setVeiwbox} setZoomScale={setZoomScale} viewbox={veiwbox} zoomScale={zoomScale}/>
                     <div className={"start-end-typing-navigation"}>
                         <label className={"mapSide-label"}>
                             START AT: <input type={"text"} id={"startingNodeInput"} className={"newMapPage-input-fields"}/>

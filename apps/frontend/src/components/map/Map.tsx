@@ -12,8 +12,6 @@ import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {AStar} from "../../../../backend/src/algorithms/Search/AStar.ts";
 import {Coordinate} from "../../../../backend/src/algorithms/Graph/Coordinate.ts";
 
-
-
 /**
  * @param startNodeID the ID of the starting node to path find from
  * @param endNodeID the ID of the goal node
@@ -22,94 +20,89 @@ import {Coordinate} from "../../../../backend/src/algorithms/Graph/Coordinate.ts
  *
  */
 
-
-
 //get graph from database
 let graph: Graph | null = null;
-
-
-
-
-const panSpeed=2;
-const zoomSpeed = 0.1;
-
+const panSpeed: number = 2;
+const zoomSpeed: number = 0.1;
 
 /**
  * gets the nodes and edges for the map and creates the graph for searching.
- * */
+ */
 async function updateGraph() {
-    //load edges and node from database
+    /* ask axios for nodes and edges */
     const edgesDB = await axios.get<EdgeDataBase[]>("/api/load-edges");
     const nodesDB = await axios.get<NodeDataBase[]>("/api/load-nodes");
 
+    /* allocate some space for the nodes and edges */
     const edges: Array<Edge> = [];
     const nodes: Array<Node> = [];
 
+    /* populate edges */
     edgesDB.data.forEach((edgeDB) => {
         edges.push(edgeDataBasetoEdge(edgeDB));
     });
 
+    /* populate nodes */
     nodesDB.data.forEach((nodeDB) => {
         nodes.push(nodeDataBaseToNode(nodeDB));
     });
 
+    /* generate a graph from the data */
     graph = new Graph(nodes, edges);
-    console.log(graph.getEdges());
+    // console.log(graph.getEdges());
 }
 
-function createZoomEvent(veiwbox:{x:number, y:number, width:number, height:number}
-                         , setVeiwbox:Dispatch<{x:number, y:number, width:number, height:number}>
-                         , setScale:Dispatch<number>){
+function createZoomEvent(viewbox: { x: number, y: number, width: number, height: number },
+                         setViewbox: Dispatch<{ x: number, y: number, width: number, height: number }>,
+                         setScale: Dispatch<number>) {
 
-    const svgElement =  document.getElementById("map")!;
-    const svgSize:{width:number,height:number} = {width:svgElement.clientWidth, height:svgElement.clientHeight};
+    const svgElement = document.getElementById("map")!;
+    const svgSize: { width: number, height: number } = {width: svgElement.clientWidth, height: svgElement.clientHeight};
 
 
-    document.getElementById("map-test")!.addEventListener("wheel", event =>{
+    document.getElementById("map-test")!.addEventListener("wheel", event => {
         event.preventDefault();
         const mouseX = event.offsetX; //in relation to the Div
         const mouseY = event.offsetY;
         //console.log("hihihhi");
         //console.log(mouseX,mouseY);
         const zoomAmount = event.deltaY;//how far was the wheel scrolled up/down in pixels
+        const inverseZoomAmount = -zoomAmount;
 
-        //calulate change in width and height of the box based on zoom direction
-        const changeInWidth = veiwbox.width * Math.sign(zoomAmount)*zoomSpeed;
-        const changeInHeight = veiwbox.height * Math.sign(zoomAmount)*zoomSpeed;
+        //calculate change in width and height of the box based on zoom direction
+        /* zoomAmount negated to follow conventional scrolling */
+        const changeInWidth = viewbox.width * Math.sign(inverseZoomAmount) * zoomSpeed;
+        const changeInHeight = viewbox.height * Math.sign(inverseZoomAmount) * zoomSpeed;
 
         //keep mouse in the center of the zoom and get new x and y
-        const newX = veiwbox.x +(changeInWidth*mouseX)/svgSize.width;
-        const newY = veiwbox.y +(changeInHeight*mouseY)/svgSize.height;
+        const newX = viewbox.x + (changeInWidth * mouseX) / svgSize.width;
+        const newY = viewbox.y + (changeInHeight * mouseY) / svgSize.height;
 
         //set scale for proper panning
-        setScale(svgSize.width/veiwbox.width);
-        //set new veiwbox
-        setVeiwbox({x: newX, y: newY,
-            width:veiwbox.width - changeInWidth,height:veiwbox.height - changeInHeight});
-
+        setScale(svgSize.width / viewbox.width);
+        //set new viewbox
+        setViewbox({
+            x: newX, y: newY,
+            width: viewbox.width - changeInWidth, height: viewbox.height - changeInHeight
+        });
     });
-
 }
 
-
-
-
-
 /**
- * sets the path to the path to be displaued on the page
+ * sets the path to the path to be displayed on the page
  * */
-function updatePathEdges(startingNode:Node,
-                         endingNode:Node,
-                         setPathEdges:Dispatch<SetStateAction<Edge[]>>,
-                         floorIndex:number,
-                         drawAllEdges:boolean,
-                         setPathFloorTransitionNodes:Dispatch<Array<{startTranNode:Node, endTranNode:Node} >>){
+function updatePathEdges(startingNode: Node,
+                         endingNode: Node,
+                         setPathEdges: Dispatch<SetStateAction<Edge[]>>,
+                         floorIndex: number,
+                         drawAllEdges: boolean,
+                         setPathFloorTransitionNodes: Dispatch<Array<{ startTranNode: Node, endTranNode: Node }>>) {
 
-    if(drawAllEdges){
+    if (drawAllEdges) {
         //set all edges that start and end on this floor to be drawn
-        const allFloorEdges:Array<Edge> = [];
-        graph?.getEdges().forEach((edge)=>{
-            if(floorToNumber(edge.startNode.floor) == floorIndex && floorToNumber(edge.endNode.floor) == floorIndex){
+        const allFloorEdges: Array<Edge> = [];
+        graph?.getEdges().forEach((edge) => {
+            if (floorToNumber(edge.startNode.floor) == floorIndex && floorToNumber(edge.endNode.floor) == floorIndex) {
                 allFloorEdges.push(edge);
             }
         });
@@ -117,23 +110,18 @@ function updatePathEdges(startingNode:Node,
         return;
     }
 
-
-    if(startingNode == NULLNODE || endingNode == NULLNODE){
+    if (startingNode == NULLNODE || endingNode == NULLNODE) {
         setPathEdges([]);
         setPathFloorTransitionNodes([]);
         return;
     }
-
-
-
 
     if (graph == null) {
         console.error("Graph has not been created yet - updatePathEdges");
         return;
     }
 
-
-    //the nodes in startNode and endNode ARE NOT CONNECTED to any edge so we need to get the same connected ones in the graph
+    //the nodes in startNode and endNode ARE NOT CONNECTED to any edge, so we need to get the same connected ones in the graph
     console.log("THIS IS START");
     console.log(startingNode);
     console.log("THIS IS END");
@@ -153,154 +141,146 @@ function updatePathEdges(startingNode:Node,
     }
 
     //get path on this floor
-    const pathEdges:Array<Edge> =[];
-    const pathTranistions:Array<{startTranNode:Node, endTranNode:Node} > =[];
+    const pathEdges: Array<Edge> = [];
+    const pathTransitions: Array<{ startTranNode: Node, endTranNode: Node }> = [];
 
-    for (let i = 0; i < rawpath.length -1; i++) {
+    for (let i = 0; i < rawpath.length - 1; i++) {
         const start = rawpath.at(i)!;
         const end = rawpath.at(i + 1)!;
 
         //edge starts and ends on this floor
         if (floorToNumber(start!.floor) == floorIndex && floorToNumber(end!.floor) == floorIndex) {
             //find edge that connects start and end node and add it
-            start!.edges.forEach((edge)=>{
-                if(edge.endNode==end){
+            start!.edges.forEach((edge) => {
+                if (edge.endNode == end) {
                     pathEdges.push(edge);
                 }
             });
         }
         //if edge leaves the current floor
-        else if (floorToNumber(start!.floor) == floorIndex){
-            //go forwards to find the tranistion node it ends at
-            const newTranistion:{startTranNode:Node, endTranNode:Node} = {startTranNode:start, endTranNode:end};
+        else if (floorToNumber(start!.floor) == floorIndex) {
+            //go forwards to find the transition node it ends at
+            const newTransition: { startTranNode: Node, endTranNode: Node } = {startTranNode: start, endTranNode: end};
 
             let currentNode = end;
 
-            while( i < rawpath.length -2){
+            while (i < rawpath.length - 2) {
                 currentNode = rawpath.at(i + 1)!;
                 const nextNode = rawpath.at(i + 2)!;
-                let connectingEdge:Edge = {endNode: end, id: "BAD", startNode: start, weight: 0};
-                //find edge to next node in tranistion
-                currentNode!.edges.forEach((edge)=>{
-                    if(edge.endNode==nextNode){
-                        connectingEdge=edge;
+                let connectingEdge: Edge = {endNode: end, id: "BAD", startNode: start, weight: 0};
+                //find edge to next node in transition
+                currentNode!.edges.forEach((edge) => {
+                    if (edge.endNode == nextNode) {
+                        connectingEdge = edge;
                     }
                 });
-                if(connectingEdge==NULLEDGE){
+                if (connectingEdge == NULLEDGE) {
                     console.error("connecting edge not found");
                     break;
                 }
 
-                //if edge has a floor tranistion weight then keep going if not break;
-                if(connectingEdge.weight==Graph.getElevatorAndStairsEdgeWeight()){
-                    newTranistion.endTranNode = nextNode;
-                }
-                else{
+                //if edge has a floor transition weight then keep going if not break;
+                if (connectingEdge.weight == Graph.getElevatorAndStairsEdgeWeight()) {
+                    newTransition.endTranNode = nextNode;
+                } else {
                     break;
                 }
 
                 i++;
             }
-
-
-            pathTranistions.push(newTranistion);
+            pathTransitions.push(newTransition);
         }
         //if edge ends at current floor
-        else if(floorToNumber(end!.floor) == floorIndex){
-            //go backwards to find the tranistion node it started from
-            const newTranistion:{startTranNode:Node, endTranNode:Node} = {startTranNode:start, endTranNode:end};
+        else if (floorToNumber(end!.floor) == floorIndex) {
+            //go backwards to find the transition node it started from
+            const newTransition: { startTranNode: Node, endTranNode: Node } = {startTranNode: start, endTranNode: end};
 
             let currentNode = start;
-            const startingI=i;
+            const startingI = i;
 
-            while( i > 0){
+            while (i > 0) {
                 currentNode = rawpath.at(i)!;
                 const prevNode = rawpath.at(i - 1)!;
-                let connectingEdge:Edge = NULLEDGE;
-                //find edge to next node in tranistion
-                currentNode!.edges.forEach((edge)=>{
-                    if(edge.endNode==prevNode){
-                        connectingEdge=edge;
+                let connectingEdge: Edge = NULLEDGE;
+                //find edge to next node in transition
+                currentNode!.edges.forEach((edge) => {
+                    if (edge.endNode == prevNode) {
+                        connectingEdge = edge;
                     }
                 });
-                if(connectingEdge==NULLEDGE){
+                if (connectingEdge == NULLEDGE) {
                     console.error("connecting edge not found");
                     break;
                 }
 
-                //if edge has a floor tranistion weight then keep going if not break;
-                if(connectingEdge.weight==Graph.getElevatorAndStairsEdgeWeight()){
-                    newTranistion.startTranNode = prevNode;
-                }
-                else{
+                //if edge has a floor transition weight then keep going if not break;
+                if (connectingEdge.weight == Graph.getElevatorAndStairsEdgeWeight()) {
+                    newTransition.startTranNode = prevNode;
+                } else {
                     break;
                 }
 
                 i++;
             }
 
-            //go back to starting i to advoid recaluations
-            i=startingI;
+            //go back to starting i to avoid recalculations
+            i = startingI;
 
-            pathTranistions.push(newTranistion);
+            pathTransitions.push(newTransition);
         }
     }
     console.log("edges on this floor");
     console.log(pathEdges);
-    console.log("tranisions on this floor");
-    console.log(pathTranistions);
-    setPathFloorTransitionNodes(pathTranistions);
+    console.log("transitions on this floor");
+    console.log(pathTransitions);
+    setPathFloorTransitionNodes(pathTransitions);
     setPathEdges(pathEdges);
 
 }
 
-
-
-//todo move this to a new file -stryder
-export interface MapStates{
-    startNode:Node;
+export interface MapStates {
+    startNode: Node;
     setStartNode: Dispatch<SetStateAction<Node>>;
-    endNode:Node;
+    endNode: Node;
     setEndNode: Dispatch<SetStateAction<Node>>;
-    selectedFloorIndex:FloorToIndex;
+    selectedFloorIndex: FloorToIndex;
     setSelectedFloorIndex: Dispatch<SetStateAction<FloorToIndex>>;
-    drawEntirePath:boolean;
+    drawEntirePath: boolean;
     setDrawEntirePath: Dispatch<SetStateAction<boolean>>;
-    locations:Node[];
-    setLocations:Dispatch<SetStateAction<Node[]>>;
-    veiwbox:{x:number, y:number, width:number, height:number},
-    setVeiwbox:Dispatch<SetStateAction<{x:number, y:number, width:number, height:number}>>
-    zoomScale:number,
-    setZoomScale:Dispatch<SetStateAction<number>>
+    locations: Node[];
+    setLocations: Dispatch<SetStateAction<Node[]>>;
+    viewbox: { x: number, y: number, width: number, height: number },
+    setViewbox: Dispatch<SetStateAction<{ x: number, y: number, width: number, height: number }>>
+    zoomScale: number,
+    setZoomScale: Dispatch<SetStateAction<number>>
 }
 
-export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNode,setEndNode:setEndNode
-                        ,selectedFloorIndex:selectedFloorIndex,
-                        drawEntirePath:drawEntirePath,
-                        locations:locations, veiwbox:veiwbox, setVeiwbox:setVeiwbox, zoomScale:zoomScale,
-                    setZoomScale:setZoomScale}:MapStates) {
+export function Map({
+                        startNode: startNode, setStartNode: setStartNode,
+                        endNode: endNode, setEndNode: setEndNode,
+                        selectedFloorIndex: selectedFloorIndex, drawEntirePath: drawEntirePath,
+                        locations: locations, viewbox: viewbox, setViewbox: setViewbox, zoomScale: zoomScale,
+                        setZoomScale: setZoomScale
+                    }: MapStates) {
 
-    //todo remove these
-    //console.log(setSelectedFloorIndex,setLocations);
-
+    /* when the page updates, update the edges */
     useEffect(() => {
-        updatePathEdges(startNode,endNode,setPathDrawnEdges,selectedFloorIndex,drawEntirePath,setPathFloorTransitions);
+        updatePathEdges(startNode, endNode, setPathDrawnEdges, selectedFloorIndex, drawEntirePath, setPathFloorTransitions);
     }, [drawEntirePath, endNode, selectedFloorIndex, startNode]);
 
-
-
+    /* some bs useStates */
     const [pathDrawnEdges, setPathDrawnEdges] = useState<Array<Edge>>([]);
     const [pathFloorTransitions, setPathFloorTransitions] =
-        useState<Array<{startTranNode:Node, endTranNode:Node} >>([]);
-    
+        useState<Array<{ startTranNode: Node, endTranNode: Node }>>([]);
+
 
     //panStates
     const [currentlyPanning, setCurrentlyPanning] =
         useState(false);
     const [startOfClick, setStartOfClick] =
-        useState<Coordinate>({x:0,y:0});
+        useState<Coordinate>({x: 0, y: 0});
     const [endOfClick, setEndOfClick] =
-        useState<Coordinate>({x:0,y:0});
+        useState<Coordinate>({x: 0, y: 0});
     // let endOfClick:Coordinate = {x:0,y:0};
     // let startOfClick:Coordinate = {x:0,y:0};
     // let scale:number =1;
@@ -308,28 +288,33 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
     useEffect(() => {
         //create event lisenter in raw js for zoom as reacts onWheel React event does not allow the preventDefault() option
         // to work, reacts dev solution was "just use non react event lisensers"
-        createZoomEvent(veiwbox,setVeiwbox,setZoomScale);
+        createZoomEvent(viewbox, setViewbox, setZoomScale);
 
-    }, [setVeiwbox, setZoomScale, veiwbox, zoomScale]);
-
+    }, [setViewbox, setZoomScale, viewbox, zoomScale]);
 
 
     //the html returned from the component
     return (
         <div id={"map-test"}
              onMouseLeave={leftMapArea}
-             onMouseDown={(e)=>{startPan(e);}}
+             onMouseDown={(e) => {
+                 startPan(e);
+             }}
 
-             onMouseMove={(e)=>{whilePanning(e);}}
-             onMouseUp={(e)=>{stopPan(e);}}
+             onMouseMove={(e) => {
+                 whilePanning(e);
+             }}
+             onMouseUp={(e) => {
+                 stopPan(e);
+             }}
         >
             <svg
                 id="map"
                 className={"map-test"}
                 version="1.1"
                 xmlns="http://www.w3.org/2000/svg"
-                viewBox={veiwbox.x.toString()+" "+veiwbox.y.toString()+
-                    " "+veiwbox.width.toString()+" "+veiwbox.height.toString()}
+                viewBox={viewbox.x.toString() + " " + viewbox.y.toString() +
+                    " " + viewbox.width.toString() + " " + viewbox.height.toString()}
             >
                 <use xmlnsXlink="http://www.w3.org/1999/xlink"></use>
                 <image
@@ -338,51 +323,47 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
                     href={setMapImage()}
                 ></image>
 
-
-
                 {
-                    pathDrawnEdges.map((edge)=>{
+                    pathDrawnEdges.map((edge) => {
                         return drawEdge(edge);
 
-                        })
+                    })
                 }
                 {
                     /**
                      * creates the node objects on the map
                      * */
-                    locations.map((node)=>{
+                    locations.map((node) => {
                         return drawNode(node);
                     })
                 }
                 {
-                    locations.map((node)=>{
+                    locations.map((node) => {
                         return drawNodeInfo(node);
                     })
                 }
                 {
-                    pathFloorTransitions.map((tranistion)=>{
-                        return drawTranistionText(tranistion);
+                    pathFloorTransitions.map((tranistion) => {
+                        return drawTransitionText(tranistion);
                     })
                 }
-
 
 
             </svg>
         </div>
     );
 
-    function drawEdge(edge:Edge){
-        if(drawEntirePath){
-            return <line key={"line_"+edge.id} className={"pathLineAll"}
+    function drawEdge(edge: Edge) {
+        if (drawEntirePath) {
+            return <line key={"line_" + edge.id} className={"pathLineAll"}
                          x1={edge.startNode.coordinate.x.toString()}
                          y1={edge.startNode.coordinate.y.toString()}
                          x2={edge.endNode.coordinate.x.toString()}
                          y2={edge.endNode.coordinate.y.toString()}></line>;
 
 
-        }
-        else{
-            return <line key={"line_"+edge.id} className={"pathLine"}
+        } else {
+            return <line key={"line_" + edge.id} className={"pathLine"}
                          x1={edge.startNode.coordinate.x.toString()}
                          y1={edge.startNode.coordinate.y.toString()}
                          x2={edge.endNode.coordinate.x.toString()}
@@ -390,31 +371,28 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
         }
     }
 
-    function drawNode(node:Node){
-
-        if(node.id==startNode.id){
+    function drawNode(node: Node) {
+        if (node.id == startNode.id) {
             return (
                 <a key={node.id} id={node.id} className={"clickableAtag"}
-                   onClick={()=> onNodeClick(node.id)}
-                   onMouseOver={()=> onNodeHover(node.id)}
-                   onMouseLeave={()=> onNodeLeave(node.id)}
+                   onClick={() => onNodeClick(node.id)}
+                   onMouseOver={() => onNodeHover(node.id)}
+                   onMouseLeave={() => onNodeLeave(node.id)}
                 >
                     <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"startSelected"}></circle>
                 </a>
             );
-        }
-        else if(node.id==endNode.id){
+        } else if (node.id == endNode.id) {
             return (
                 <a key={node.id} id={node.id} className={"clickableAtag"}
-                   onClick={()=> onNodeClick(node.id)}
-                   onMouseOver={()=> onNodeHover(node.id)}
-                   onMouseLeave={()=> onNodeLeave(node.id)}
+                   onClick={() => onNodeClick(node.id)}
+                   onMouseOver={() => onNodeHover(node.id)}
+                   onMouseLeave={() => onNodeLeave(node.id)}
                 >
                     <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"endSelected"}></circle>
                 </a>
             );
-        }
-        else if(inTranistion(node.id)){
+        } else if (inTransition(node.id)) {
 
             return (
                 <a key={node.id} id={node.id} className={"clickableAtag"}
@@ -425,9 +403,7 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
                     <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"transitionNode"}></circle>
                 </a>
             );
-        }
-        else if(drawEntirePath){
-
+        } else if (drawEntirePath) {
             // const height = 30;
             // const width = node.longName.length*12.5+10;
             //
@@ -436,36 +412,23 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
             // const yTranform = +15;
             // const yTextTranform = 35;
 
-
             return (
                 <a key={node.id} id={node.id} className={"clickableAtag"}
                    onClick={() => onNodeClick(node.id)}
                    onMouseOver={() => onNodeHover(node.id)}
                    onMouseLeave={() => onNodeLeave(node.id)}
                 >
-                    {/* todo maybe remove this text it looks bad and i think the other info show statifies the requerment*/}
+                    {/* removed some code here */}
                     <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"normalNode"}></circle>
-                    {/*<rect x={node.coordinate.x + xTranform}*/}
-                    {/*      y={node.coordinate.y + yTranform} height={height}*/}
-                    {/*      width={width}*/}
-                    {/*      className={"floorLinkRect"}/>*/}
-                    {/*<text x={node.coordinate.x + xTextTranform}*/}
-                    {/*      y={node.coordinate.y + yTextTranform}*/}
-                    {/*      className={"showAllText"}>*/}
-                    {/*    {node.longName}</text>*/}
                 </a>
             );
-        }
-        else {
-
-
-
+        } else {
 
             return (
                 <a key={node.id} id={node.id} className={"clickableAtag"}
                    onClick={() => onNodeClick(node.id)}
-                   onMouseOver={()=> onNodeHover(node.id)}
-                   onMouseLeave={()=> onNodeLeave(node.id)}
+                   onMouseOver={() => onNodeHover(node.id)}
+                   onMouseLeave={() => onNodeLeave(node.id)}
                 >
                     <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"normalNode"}></circle>
                 </a>
@@ -474,23 +437,35 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
 
     }
 
-    function drawNodeInfo(node:Node){
+    /**
+     * Draw the info of a node when it is highlighted.
+     * @param node
+     */
+    function drawNodeInfo(node: Node) {
+        /* make sure the graph exists before getting the nodes */
+        if (graph == null) {
+            return;
+        }
 
-
-
-        const connectedNode = graph?.idToNode(node.id);
-
+        /* grab the node that is connected */
+        const connectedNode = graph.idToNode(node.id);
         if (connectedNode == null || undefined) {
             console.error("could not find node " + node.id);
             return;
         }
 
+        /* generate the edges for this node */
         let edgeConnections: string = " ";
-
         connectedNode!.edges.forEach((edge) => {
             edgeConnections += edge.endNode.id + ", ";
         });
         edgeConnections = edgeConnections.substring(0, edgeConnections.length - 2);
+
+        /* draw the floating div */
+        return drawNodeGraphic(node, connectedNode, edgeConnections);
+    }
+
+    function drawNodeGraphic(node: Node, connectedNode: Node, edgeConnections: string) {
         return (
             <foreignObject key={"nodeInfo_" + node.id} id={"nodeInfo_" + node.id}
                            className={"foreignObjectNode"} x={node.coordinate.x + 20} y={node.coordinate.y - 250}
@@ -509,64 +484,64 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
                             <li><b>Floor: </b>{node.floor}</li>
                             <li><b>Heuristic: </b>{connectedNode.heuristic.toPrecision(3)}</li>
                             <li><b>Connected to: </b>{edgeConnections}</li>
-
                         </ul>
-
                     </span>
             </foreignObject>
-
         );
-
-
     }
 
-
-    function inTranistion(nodeID: string) {
-        let isATranistionNode = false;
-        pathFloorTransitions.forEach((tranistion) => {
-            if (tranistion.startTranNode.id == nodeID || tranistion.endTranNode.id == nodeID) {
-                isATranistionNode = true;
+    /**
+     * Find out if a given node is a transition node.
+     * @param nodeID string ID of node to check
+     */
+    function inTransition(nodeID: string) {
+        /* funny */
+        for (let i: number = 0; i < pathFloorTransitions.length; i++) {
+            if (pathFloorTransitions[i].startTranNode.id == nodeID ||
+                pathFloorTransitions[i].endTranNode.id == nodeID) {
+                return true;
             }
-        });
-
-        return isATranistionNode;
+        }
+        return false;
     }
 
+    function drawTransitionText(transition: { startTranNode: Node, endTranNode: Node }) {
 
-    function drawTranistionText(tranistion: { startTranNode: Node, endTranNode: Node }) {
+        const floorStart = floorToNumber(transition!.startTranNode.floor);
+        const floorEnd = floorToNumber(transition!.endTranNode.floor);
 
-        const floorStart = floorToNumber(tranistion!.startTranNode.floor);
-        const floorEnd = floorToNumber(tranistion!.endTranNode.floor);
-
-        const xTranform = -225;
-        const xTextTranform = -220;
-        const yTranform = -10;
-        const yTextTranform = 35;
+        const xTransform = -225;
+        const xTextTransform = -220;
+        const yTransform = -10;
+        const yTextTransform = 35;
         const height = 60;
         const width = 210;
 
         if (floorStart == selectedFloorIndex) {
             return (
-                <a key={"tranistion_" + tranistion.startTranNode.id}>
-                    <rect x={tranistion.startTranNode.coordinate.x + xTranform}
-                          y={tranistion.startTranNode.coordinate.y + yTranform} height={height}
+                <a key={"transition_" + transition.startTranNode.id}>
+                    <rect x={transition.startTranNode.coordinate.x + xTransform}
+                          y={transition.startTranNode.coordinate.y + yTransform} height={height}
                           width={width}
                           className={"floorLinkRect"}/>
-                    <text x={tranistion.startTranNode.coordinate.x + xTextTranform} y={tranistion.startTranNode.coordinate.y + yTextTranform}
+                    <text x={transition.startTranNode.coordinate.x + xTextTransform}
+                          y={transition.startTranNode.coordinate.y + yTextTransform}
                           className={"floorLinkText"}>
-                        {"Go to " + tranistion!.endTranNode.floor}</text>
+                        {"Go to " + transition!.endTranNode.floor}</text>
                 </a>
 
             );
         } else if (floorEnd == selectedFloorIndex) {
             return (
-                <a key={"tranistion_" + tranistion.startTranNode.id}>
-                    <rect x={tranistion.endTranNode.coordinate.x + xTranform} y={tranistion.endTranNode.coordinate.y + yTranform} height={height}
+                <a key={"transition_" + transition.startTranNode.id}>
+                    <rect x={transition.endTranNode.coordinate.x + xTransform}
+                          y={transition.endTranNode.coordinate.y + yTransform} height={height}
                           width={width}
                           className={"floorLinkRect"}/>
-                    <text x={tranistion.endTranNode.coordinate.x + xTextTranform} y={tranistion.endTranNode.coordinate.y + yTextTranform}
+                    <text x={transition.endTranNode.coordinate.x + xTextTransform}
+                          y={transition.endTranNode.coordinate.y + yTextTransform}
                           className={"floorLinkText"}>
-                        {"From " + tranistion!.startTranNode.floor}</text>
+                        {"From " + transition!.startTranNode.floor}</text>
                 </a>
 
             );
@@ -577,85 +552,66 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
     }
 
 
-
-
-
-
     /**
      * sets the maps image based on selectedFloorIndex
      * */
-    function setMapImage():string{
-
+    function setMapImage(): string {
         switch (selectedFloorIndex) {
             case FloorToIndex.LowerLevel2:
-
                 return "/src/images/maps/00_thelowerlevel2.png";
             case FloorToIndex.LowerLevel1:
-
                 return "/src/images/maps/00_thelowerlevel1.png";
             case FloorToIndex.Ground:
-
                 return "/src/images/maps/00_thegroundfloor.png";
             case FloorToIndex.Level1:
-
                 return "/src/images/maps/01_thefirstfloor.png";
             case FloorToIndex.Level2:
-
                 return "/src/images/maps/02_thesecondfloor.png";
             case FloorToIndex.Level3:
-
                 return "/src/images/maps/03_thethirdfloor.png";
             default:
-
                 return "/src/images/maps/00_thelowerlevel1.png";
         }
-
     }
 
-
-    function startPan(event:React.MouseEvent<HTMLDivElement,MouseEvent>){
+    function startPan(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         setCurrentlyPanning(true);
-        setStartOfClick({x:event.movementX, y:event.movementY});
+        setStartOfClick({x: event.movementX, y: event.movementY});
         //console.log("start");
         //console.log(startOfClick);
-
     }
 
-    function whilePanning(event:React.MouseEvent<HTMLDivElement,MouseEvent>){
-        if(currentlyPanning){
+    function whilePanning(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        if (currentlyPanning) {
             setEndOfClick({x: event.movementX, y: event.movementY});
             const movementX = ((startOfClick.x - endOfClick.x) / zoomScale) * panSpeed;
             const movementY = ((startOfClick.y - endOfClick.y) / zoomScale) * panSpeed;
-            setVeiwbox({
-                x: veiwbox.x + movementX, y: veiwbox.y + movementY,
-                width: veiwbox.width, height: veiwbox.height
+            setViewbox({
+                x: viewbox.x + movementX, y: viewbox.y + movementY,
+                width: viewbox.width, height: viewbox.height
             });
-
-
-
         }
     }
 
-
-    function stopPan(event:React.MouseEvent<HTMLDivElement,MouseEvent>){
-        if(currentlyPanning){
-            setEndOfClick({x:event.movementX, y:event.movementY});
+    function stopPan(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+        if (currentlyPanning) {
+            setEndOfClick({x: event.movementX, y: event.movementY});
             //console.log("start");
             //console.log(endOfClick);
-            const movementX = ((startOfClick.x - endOfClick.x)/zoomScale)*panSpeed;
-            const movementY = ((startOfClick.y - endOfClick.y)/zoomScale)*panSpeed;
-            setVeiwbox({x: veiwbox.x + movementX, y: veiwbox.y + movementY,
-                width:veiwbox.width,height:veiwbox.height});
+            const movementX = ((startOfClick.x - endOfClick.x) / zoomScale) * panSpeed;
+            const movementY = ((startOfClick.y - endOfClick.y) / zoomScale) * panSpeed;
+            setViewbox({
+                x: viewbox.x + movementX, y: viewbox.y + movementY,
+                width: viewbox.width, height: viewbox.height
+            });
             setCurrentlyPanning(false);
-            console.log("stoped pan");
+            // console.log("stoped pan");
         }
     }
 
-
-    function leftMapArea(){
+    function leftMapArea() {
         setCurrentlyPanning(false);
     }
-
 
     /**
      * @param nodeClickedID - the id of the node clicked on the screen
@@ -706,12 +662,9 @@ export function Map({startNode:startNode,setStartNode:setStartNode,endNode:endNo
             console.log(endNode);
         }
     }
-
-
-
 }
 
-//code below runs on page load
+/* Code is defined at the top of this file but runs here.*/
 updateGraph().then(() => {
     //makeNodes().then();
     //makePath("CCONF003L1", "CHALL014L1").then();
