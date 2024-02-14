@@ -230,16 +230,19 @@ export default function Flower_input() {
 
                         />
                     </div>
-
-                    <RequestButtons submit={submitForm}/>
-                </div>
+                    <div className={"grid justify-center items-center "}>
+                        <RequestButtons submit={submitForm}/>
+                        <p className={"flex justify-center items-center -mt-5"}>Created By: Shiivek and Syzmon</p>
+                    </div>
+                    </div>
             </form>
         </div>
 
-    );
+);
 
 
 }
+
 async function getLocations() {
     //load edges and node from database
     const nodesDB = await axios.get<NodeDataBase[]>("/api/load-nodes");
