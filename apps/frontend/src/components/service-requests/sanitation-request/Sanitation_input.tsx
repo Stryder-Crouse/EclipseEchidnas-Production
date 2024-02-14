@@ -45,7 +45,9 @@ export default function Sanitation_input() {
         async function submit() {
 
 
-        try {
+            console.log("hi");
+            console.log(selected);
+            console.log(locations);
             //Make a Service Request Data Type and then a Med Request Data Type
             // this is bc Front End will be confused if we pass it a bunch of data so use data structures
             const servReq : ServiceRequest = {
@@ -58,13 +60,17 @@ export default function Sanitation_input() {
                 reqPriority: priorityArr[priorityIndex]
             };
 
+            console.log(servReq);
+
             //Make a Med Req after the service req (Med req needs service req's id, so med req cannot be made before)
             const sanReqData: sanReq = {
                 serviceReqID: -1, // default is 0, but is always changed to the value of the newly created Service Req
                 type: type
             };
-            clear();
 
+            console.log(sanReqData);
+            clear();
+        try {
             //Post Med Req to DB (pass in objects of sanReq and ServiceRequest as an array)
             await axios.post("/api/serviceRequests/sanReq",
                 [servReq,sanReqData], {

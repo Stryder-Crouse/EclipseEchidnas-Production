@@ -17,23 +17,20 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
 
     //todo FNFN fix with proper population code
     useEffect(() => {
-        let queryDone = false;
 
-        if (!queryDone) {
+
+
             getEmployees().then(result => {
                 setMedEmployees(result);
             });
-            getMedRequests().then(result => {
+            getMedRequests(statusFilter).then(result => {
                 setMedRequestList(result);
             });
 
-        }
-        return () => {
-            queryDone = true;
-        };
 
 
-    }, []);
+
+    }, [statusFilter]);
 
     return (
         <div>
@@ -323,8 +320,9 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
 
 }
 
-async function getMedRequests() {
-    const requests = await axios.get<[MedReq[], ServiceRequest[]]>("/api/serviceRequests/medReq");
+async function getMedRequests(statusFilter:Status) {
+    const requests =
+        await axios.get<[MedReq[], ServiceRequest[]]>("/api/serviceRequests/medReq",{params: {status: statusFilter}});
 
     const medRequests: Array<[MedReq, ServiceRequest]> = [];
     for (let i = 0; i < requests.data[0].length; i++) {

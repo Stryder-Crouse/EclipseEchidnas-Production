@@ -93,30 +93,72 @@ router.post("/medReq", async function (req: Request, res: Response) {
 
 //gets all requests from the database in the form of request objects
 router.get("/medReq", async function (req: Request, res: Response) {
-    try {
-        //try to send all the nodes to the client
+    const statusFilter:status = req.query.status as status;
+    console.log("pog");
+    console.log(statusFilter);
+    if(statusFilter == Status.Any){
+        try {
+            //try to send all the nodes to the client
 
-        const medReqs = await PrismaClient.medReq.findMany({
-            orderBy: {
-                genReqID: "asc", //order by service request id so the two arrays are parallel
-            }
-        });
+            const medReqs = await PrismaClient.medReq.findMany({
+                orderBy: {
+                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                }
+            });
 
-        const serviceReqs = await PrismaClient.serviceRequest.findMany({
-            orderBy: {
-                reqID: "asc", //order by service request id so the two arrays are parallel
-            },
-            where:{
-                reqType:"medication"
-            }
-        });
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"medication"
+                }
+            });
 
 
-        res.send([medReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
-        console.info("\nSuccessfully gave you all of the medical requests\n");
-    } catch (err) {
-        console.error("\nUnable to send requests\n");
+            res.send([medReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
+            console.info("\nSuccessfully gave you all of the medical requests\n");
+        } catch (err) {
+            console.error("\nUnable to send requests\n");
+        }
+
     }
+    else {
+        try {
+            //try to send all the nodes to the client
+
+            const medReqs = await PrismaClient.medReq.findMany({
+                orderBy: {
+                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    genReq:{
+                        status:statusFilter
+                    }
+
+                }
+            });
+
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"medication",
+                    status:statusFilter
+                }
+            });
+
+
+            res.send([medReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
+            console.info("\nSuccessfully gave you all of the medical requests\n");
+        } catch (err) {
+            console.error("\nUnable to send requests\n");
+        }
+    }
+
+
+
 });
 
 
@@ -126,6 +168,7 @@ router.get("/medReq", async function (req: Request, res: Response) {
 
 
 router.get("/serviceReq", async function (req: Request, res: Response) {
+
     try {
         //try to send all the nodes to the client
         //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
@@ -403,6 +446,9 @@ router.post("/outsideTransport", async function (req: Request, res: Response) {
     }
 });
 
+
+
+
 router.get("/outsideTransport", async function (req: Request, res: Response) {
     const statusFilter:status = req.query.status as status;
 
@@ -528,29 +574,67 @@ router.post("/sanReq", async function (req: Request, res: Response) {
 });
 
 router.get("/sanReq", async function (req: Request, res: Response) {
-    try {
 
-        const sanReq = await PrismaClient.sanReq.findMany({
-            orderBy: {
-                serviceReqID: "asc", //order by service request id so the two arrays are parallel
-            }
-        });
+    const statusFilter:status = req.query.status as status;
 
-        const serviceReqs = await PrismaClient.serviceRequest.findMany({
-            orderBy: {
-                reqID: "asc", //order by service request id so the two arrays are parallel
-            },
-            where:{
-                reqType:"sanitation"
-            }
-        });
+    if(statusFilter == Status.Any){
+        try {
 
-        //we display info from both the service req and the sanitation req, so we send the person both DB objects
-        res.send([sanReq,serviceReqs]);
-        console.info("\nSuccessfully gave you all of the Sanitation Requests\n");
-    } catch (err) {
-        console.error("\nUnable to send Requests\n");
+            const sanReq = await PrismaClient.sanReq.findMany({
+                orderBy: {
+                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                }
+            });
+
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"sanitation"
+                }
+            });
+
+            //we display info from both the service req and the sanitation req, so we send the person both DB objects
+            res.send([sanReq,serviceReqs]);
+            console.info("\nSuccessfully gave you all of the Sanitation Requests\n");
+        } catch (err) {
+            console.error("\nUnable to send Requests\n");
+        }
     }
+    else{
+        try {
+
+            const sanReq = await PrismaClient.sanReq.findMany({
+                orderBy: {
+                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    serviceReq:{
+                        status:statusFilter
+                    }
+
+                }
+            });
+
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"sanitation",
+                    status:statusFilter
+                }
+            });
+
+            //we display info from both the service req and the sanitation req, so we send the person both DB objects
+            res.send([sanReq,serviceReqs]);
+            console.info("\nSuccessfully gave you all of the Sanitation Requests\n");
+        } catch (err) {
+            console.error("\nUnable to send Requests\n");
+        }
+    }
+
 });
 
 
