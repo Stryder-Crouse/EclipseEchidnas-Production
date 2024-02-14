@@ -5,9 +5,12 @@ import CSVIcon from "../../images/SideBar/table.png";
 import LogIcon from "../../images/SideBar/log-in.png";
 import MapIcon from "../../images/SideBar/map.png";
 import "../../css/route-css/EmployeeTable.css";
+import "../../css/route-css/EmployeeTableInput.css";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Employee} from "../../../../backend/src/algorithms/Employee/Employee.ts";
+import trashIcon from "../../images/Table Functions/trash.png";
+import editPen from "../../images/Table Functions/editPen.png";
 
 //TODO IMPLEMENT THESE BUTTONS TO POPULATE WITH EVERY ROW
 //import TrashIcon from "../../images/Table Functions/trash-2.png";
@@ -17,7 +20,12 @@ function EmployeeTable() {
     
     
     const [employees, setEmployees] = useState<Employee[]>([]);
-    
+
+    //employee creation
+    // const [newUserName, setNewUserName] = useState("");
+    // const [newFristName, setNewFristName] = useState("");
+    // const [newLastName, setNewLastName] = useState("");
+    // const [newDis, setNewUserName] = useState("");
     
     /* populate the requests */
     useEffect(()=>{
@@ -25,7 +33,7 @@ function EmployeeTable() {
     },[]);
     //table-id is request-table
     return (
-        <div className="flex h-lvh">
+        <div className="flex h-lvh flex-row">
             <div className="z-10">
                 <SideNavBarComponent>
                     <SideBarItem icon={MapIcon} text="Map" link="/TailwindMapPage"/>
@@ -41,40 +49,23 @@ function EmployeeTable() {
                 <div className="flex">
                     <span className={"employee-caption-container"}>
                         <span className={"employee-table-title"}>Employee Table</span>
-                        <button onClick={openForm} className="items- drop-shadow-lg transition-all hover:bg-navy w-48 text-white p-2 bg-navStart rounded-full h-min font-semibold ">Add Employee</button>
-
-                        {/* TODO ADD THIS FUNCTION INTO IT */}
-                            <div id={"addEmployeeForm"} className="hidden z-20">
-                                <form>
-                                    <label form={"employeeUsername"}>Username</label>
-                                    <input type={"text"} placeholder={"Enter Username"} name={"employeeUsername"} required/>
-
-                                    <label form={"employeeFirst"}>First Name</label>
-                                    <input type={"text"} placeholder={"Enter First Name"} name={"employeeFirst"} required/>
-
-                                    <label form={"employeeLast"}>Last Name</label>
-                                    <input type={"text"} placeholder={"Enter Last Name"} name={"employeeFirst"} required/>
-
-                                    <label form={"designation"}>Designation</label>
-                                    <input type={"text"} placeholder={"Enter Designation"} name={"designation"} required/>
-
-                                    <button type={"submit"}>Add Employee</button>
-                                    <button type={"button"} onClick={closeForm}>Close</button>
-                                </form>
-                            </div>
+                        <button onClick={openForm}
+                                className="items- drop-shadow-lg transition-all hover:bg-navy w-48 text-white p-2 bg-navStart rounded-full h-min font-semibold ">Add Employee</button>
                     </span>
                 </div>
 
 
-                <div className={"employee-table-wrapper"}>
-                    <table className={"requestTable"} id={"request-table"}>
+                <div>
+                    <table id={"request-table"}>
                         <thead>
-                        <tr>
-                            <th>User Name</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Designation</th>
-                            <th>Actions</th>
+                        <tr className={"tableTRHead"}>
+                            <th className={"tableTD"}>User Name</th>
+                            <th className={"tableTD"}>First Name</th>
+                            <th className={"tableTD"}>Last Name</th>
+                            <th className={"tableTD"}>Designation</th>
+                            <th className={"tableTD"}>Actions</th>
+                            <th className={"tableTD"}>Edit</th>
+                            <th className={"tableTD"}>Delete</th>
                         </tr>
                         </thead>
                         {/* populating here */}
@@ -88,6 +79,38 @@ function EmployeeTable() {
                     </table>
                 </div>
             </div>
+            {/*add employee form*/}
+            <div id={"addEmployeeForm"} className="employeeInputHidden">
+                <div><b>New Employee</b></div>
+                <form className={"formNewEmployee"}>
+                    <div>
+                        <label form={"employeeUsername"}>Username</label><br/>
+                        <input type={"text"} placeholder={"Enter Username"} className={"inputText"}
+                               name={"employeeUsername"} required/>
+                    </div>
+                    <div>
+                        <label form={"employeeFirst"}>First Name</label><br/>
+                        <input type={"text"} placeholder={"Enter First Name"} className={"inputText"}
+                               name={"employeeFirst"} required/>
+                    </div>
+                    <div>
+                        <label form={"employeeLast"}>Last Name</label><br/>
+                        <input type={"text"} placeholder={"Enter Last Name"} className={"inputText"}
+                               name={"employeeFirst"} required/>
+                    </div>
+                    <div>
+                        <label form={"designation"}>Designation</label><br/>
+                        <input type={"text"} placeholder={"Enter Designation"} className={"inputText"}
+                               name={"designation"} required/>
+                    </div>
+                    <div>
+                        <button type={"submit"} className={"submitButtonEmployee"}>Add Employee</button>
+                    </div>
+                    <div>
+                        <button type={"button"} onClick={closeForm}>Close</button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }
@@ -96,14 +119,24 @@ function EmployeeTable() {
  * Draw a table row.
  * @param employee the employee to draw.
  */
-function drawEmployeeRecord(employee:Employee){
+function drawEmployeeRecord(employee: Employee) {
     return (
-        <tr key={"Employee_" + employee.userName}>
-            <td className={"node-id"}>{employee.userName}</td>
-            <td>{employee.firstName}</td>
-            <td>{employee.lastName}</td>
-            <td>{employee.designation}</td>
-            <td>{employee.isAdmin}</td>
+        <tr className={"tableTR"} key={"Employee_" + employee.userName}>
+            <td className={"tableTD"}>{employee.userName}</td>
+            <td className={"tableTD"}>{employee.firstName}</td>
+            <td className={"tableTD"}>{employee.lastName}</td>
+            <td className={"tableTD"}>{employee.designation}</td>
+            <td className={"tableTD"}>{employee.isAdmin}</td>
+            <td className={"tableTD"}>
+                <button>
+                    <img src={trashIcon} alt={"Edit"} height={"30px"} width={"30px"}></img>
+                </button>
+            </td>
+            <td className={"tableTD"}>
+                <button>
+                    <img src={editPen} alt={"Edit"} height={"30px"} width={"30px"}></img>
+                </button>
+            </td>
         </tr>
     );
 }
@@ -115,7 +148,7 @@ function drawEmployeeRecord(employee:Employee){
 function openForm() {
     const openSesame = document.getElementById("addEmployeeForm");
     if (openSesame != null) {
-        openSesame.style.display= "block";
+        openSesame.setAttribute("class","employeeInputVisible");
     }
 }
 
@@ -125,7 +158,7 @@ function openForm() {
 function closeForm(): void {
     const close = document.getElementById("addEmployeeForm");
     if (close != null) {
-        close.style.display= "none";
+        close.setAttribute("class","employeeInputHidden");
     }
 }
 

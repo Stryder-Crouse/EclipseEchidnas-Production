@@ -57,3 +57,11 @@ export enum ReqTypes {
     outTransReq = "outside transportation",
     serviceRequest ="service request"
 }
+
+export enum priorities {
+    any = "Any",
+    low = "Low",
+    medium = "Medium",
+    high = "High",
+    emergency = "Emergency"
+}

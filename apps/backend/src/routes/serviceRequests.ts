@@ -1,7 +1,7 @@
-import express, {Router, Request, Response} from "express";
+import express, {Request, Response, Router} from "express";
 //import { MedReq, Request } from "../algorithms/node.ts";
 import PrismaClient from "../bin/database-connection.ts";
-import {MedReq, OutsideTransport, sanReq, ServiceRequest, FlowReq} from "../algorithms/Requests/Request.ts";
+import {FlowReq, MedReq, OutsideTransport, priorities, sanReq, ServiceRequest} from "../algorithms/Requests/Request.ts";
 import Status from "../algorithms/Requests/Status.ts";
 import status from "../algorithms/Requests/Status.ts";
 // import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
@@ -177,6 +177,47 @@ router.get("/filterByStatus", async function (req: Request, res: Response) {
     } catch {
         console.error("\nUnable to filter requests\n");
         res.sendStatus(400); // Send error
+    }
+});
+
+
+router.get("/filterByPriority", async function (req: Request, res: Response) {
+    try {
+        //make sure we know what data is coming in (priority enum that was set by a filter)
+        const priorityFilter: priorities = req.query.priorities as priorities;
+        console.log("Priority Filter: " +priorityFilter);
+
+        if(priorityFilter == priorities.any)
+        {
+            //send them every service request since they do not care about the priority
+            res.send(await PrismaClient.serviceRequest.findMany( {
+                orderBy: {
+                    reqID: "asc"
+                }
+            }));
+        }
+        else
+        {
+            //send them their service requests with the correct priority
+            res.send(await PrismaClient.serviceRequest.findMany({
+                where: {
+                    //filter by the desired priority
+                    reqPriority: priorityFilter,
+                    //do not want completed requests cluttering up our page (completed requests could block the emergency reqs)
+                    NOT: [
+                        {
+                            status: status.Completed
+                        }
+                    ]
+                }
+            }));
+            console.log("Great Job, the priority has been filtered");
+        }
+
+
+    } catch {
+        console.log("Error Filtering by Priority");
+        res.sendStatus(400);
     }
 });
 
