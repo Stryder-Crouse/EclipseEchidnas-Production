@@ -29,7 +29,7 @@
 
 .employeeTable {
     overflow-y:scroll;
-    max-height: 75vh;
+    max-height: 70vh;
 }
 
 .employee-table-wrapper {

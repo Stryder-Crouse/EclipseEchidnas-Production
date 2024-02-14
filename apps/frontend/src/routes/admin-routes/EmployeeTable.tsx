@@ -65,7 +65,7 @@ function EmployeeTable() {
                 </div>
 
 
-                <div>
+                <div className={"employeeTable"}>
                     <table id={"request-table"}>
                         <thead>
                         <tr className={"tableTRHead"}>
