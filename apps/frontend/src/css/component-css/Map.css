@@ -22,10 +22,11 @@
     stroke-width: 5;
 }
 
-.showAllText{
-    font: bold 20px "Courier New";
-    fill: white;
-}
+/*.showAllText{*/
+/*    font: bold 20px "Courier New";*/
+/*    fill: white;*/
+/*}*/
+/*todo ClnCSS*/
 
 .floorLinkRect{
     rx:5;
@@ -79,10 +80,11 @@
 }
 
 
-.heavy {
-    font: bold 50px sans-serif;
-    fill: white;
-}
+/*.heavy {*/
+/*    font: bold 50px sans-serif;*/
+/*    fill: white;*/
+/*}*/
+/*todo ClnCSS*/
 
 /*node info hoverOver*/
 
@@ -125,12 +127,13 @@
 
 
 
-.nameRect{
-    width:20px;
-    height: 20px;
-    fill: black;
+/*.nameRect{*/
+/*    width:20px;*/
+/*    height: 20px;*/
+/*    fill: black;*/
 
-}
+/*}*/
+/*todo ClnCSS*/
 
 
 @keyframes dash {

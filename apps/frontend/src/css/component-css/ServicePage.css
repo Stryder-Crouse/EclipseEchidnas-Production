@@ -10,21 +10,6 @@
     --text: #CEC0E0;
     --widget-background: #F1F1F1;
 }
-/*
-html {
-    font-family: 'Work Sans', sans-serif;
-}
-
-body {
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    padding: 16px;
-    background: rgb(255,255,255);
-    background: linear-gradient(135deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 0%, rgba(0,83,168,0.40662202380952384) 100%);
-} */
 
 * {
     margin: 0;
