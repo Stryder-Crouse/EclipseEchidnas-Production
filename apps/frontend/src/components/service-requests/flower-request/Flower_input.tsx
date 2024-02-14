@@ -126,8 +126,8 @@ export default function Flower_input() {
         <div className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
             <form className="p-2">
                 <div className="App">
-                    <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Flower Request </h1>
-                    <div className={"flex justify-center items-center my-1.5"}>
+                    <h1 className={"grid mb-3 justify-center font-bold text-xl"}>Flower Request </h1>
+                    <div className={"grid justify-center items-center my-1.5"}>
                         <label className="label" form={"senderName"}>Name </label>
                         <input
                             id={"senderName"}
@@ -138,7 +138,7 @@ export default function Flower_input() {
                         />
                     </div>
 
-                    <div className="flex justify-center items-center my-1.5">
+                    <div className="grid justify-center items-center my-1.5">
                         <label id="priorityType">Priority </label>
                         <select
                             id={"priorityType"}
@@ -154,7 +154,7 @@ export default function Flower_input() {
                         </select>
                     </div>
 
-                    <div className="flex justify-center items-center my-1.5">
+                    <div className="grid justify-center items-center my-1.5">
 
                         <label className="label">Location </label>
                         <CreateDropdown dropBtnName={"Locations"} dropdownID={"Location"} isSearchable={true}
@@ -172,7 +172,7 @@ export default function Flower_input() {
                         {/*/>*/}
                     </div>
 
-                    <div className="flex justify-center items-center my-1.5">
+                    <div className="grid justify-center items-center my-1.5">
                         <label className="label" id={"flowertype"}>Flower Name </label>
                         <input
                             id={"flowertype"}
@@ -183,7 +183,7 @@ export default function Flower_input() {
                         />
                     </div>
 
-                    <div className="flex justify-center items-center my-1.5">
+                    <div className="grid justify-center items-center my-1.5">
                         <label className="label" form={"flowerquantity"}>Flower Quantity </label>
                         <input
                             id={"flowerquantity"}
@@ -193,7 +193,7 @@ export default function Flower_input() {
                             onChange={handleFlowerQuantity}
                         />
                     </div>
-                    <div className="flex justify-center items-center my-1.5">
+                    <div className="grid justify-center items-center my-1.5">
                         <label className="label" form={"flowerrecipient"}>Flower Recipient </label>
                         <input
                             id={"flowerrecipient"}
@@ -204,7 +204,7 @@ export default function Flower_input() {
                         />
                     </div>
 
-                    <div className="flex justify-center items-center my-1.5">
+                    <div className="grid justify-center items-center my-1.5">
                         <label className="label" form={"statusTime"}>Status </label>
                         <select
                             id={"statusTime"}
@@ -219,7 +219,7 @@ export default function Flower_input() {
                         </select>
                     </div>
 
-                    <div className="flex justify-center items-center my-1.5">
+                    <div className="grid justify-center items-center my-1.5">
                         <label className="label" form={"additionalNotes"}> Message </label>
                         <input
                             id={"additionalNotes"}
