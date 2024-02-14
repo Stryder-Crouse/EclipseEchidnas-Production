@@ -30,11 +30,19 @@ function App() {
                     element: <ProtectedServiceRequest/>,
                 },
                 {
+                    path:"/ServiceRequest",
+                    element:<ProtectedServiceRequest/>,
+                },
+                {
                     path: "/NodeEdgeTable",
                     element: <ProtectedNodeEdgeTable/>,
                 },
                 {
                     path: "/ProtectedRequestList",
+                    element: <ProtectedRequestList/>,
+                },
+                {
+                    path: "/RequestList",
                     element: <ProtectedRequestList/>,
                 },
                 {

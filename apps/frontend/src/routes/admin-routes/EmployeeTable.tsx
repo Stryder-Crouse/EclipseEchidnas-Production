@@ -65,7 +65,7 @@ function EmployeeTable() {
                 </div>
 
 
-                <div>
+                <div className={"employeeTable"}>
                     <table id={"request-table"}>
                         <thead>
                         <tr className={"tableTRHead"}>
@@ -293,6 +293,7 @@ function EmployeeTable() {
     /**
      * Draw a table row.
      * @param employee the employee to draw.
+     * @param employeeIndex
      */
     function drawEmployeeRecord(employee: Employee , employeeIndex:number) {
         return (

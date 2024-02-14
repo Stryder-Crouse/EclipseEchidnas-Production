@@ -16,15 +16,20 @@
     border: 2px solid #edeef1;
     box-shadow: 0 4px 16px 0 rgba(148, 156, 169, 0.15);
     text-align: center;
-    max-height: 100vh;
+    max-height: 90vh;
 
     /** Flexbox centering Div **/
 
-
+    overflow: hidden;
     justify-content: center;
     margin: auto;
 
 
+}
+
+.employeeTable {
+    overflow-y:scroll;
+    max-height: 70vh;
 }
 
 .employee-table-wrapper {

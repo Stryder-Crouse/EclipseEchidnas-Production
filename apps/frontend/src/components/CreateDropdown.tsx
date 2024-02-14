@@ -14,7 +14,7 @@ export interface DropdownProps{
 }
 
 export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populationArr, setSelected, resetDropdown,
-                                   setResetDropdown, inputCSS, resetOnSelect,selectCSS}: DropdownProps) {
+                                   setResetDropdown, inputCSS, resetOnSelect}: DropdownProps) {
 
     //every time this is reloaded, check to see if we need to reset the value of the dropdown
     //if so, reset based on the two implementations, one searchable and one not
@@ -90,7 +90,7 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
     } else {
         return (
             <div className="dropdown">
-                <select id={dropdownID} className={selectCSS} name={dropBtnName} onChange={e => {
+                <select id={dropdownID} className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"} name={dropBtnName} onChange={e => {
                     setValueCorrectly(e.target.selectedIndex - 1);
                     /*accounts for the extra unselectable option with the placeholder text*/
                 }}>
