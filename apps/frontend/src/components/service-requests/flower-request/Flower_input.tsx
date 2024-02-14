@@ -106,7 +106,6 @@ export default function Flower_input() {
 
     return(
         <div>
-            <>
                 <div className="App">
                     <h1>Flower Request </h1>
                     <div className={"form-group"}>
@@ -126,7 +125,7 @@ export default function Flower_input() {
                             name={"priorityType"}
                             value={priority}
                             onChange={handlePriority}
-                            className={"px-10 gap-5 py-5 flex flex-col rounded-2 border-white"}
+                            className={"border-2 p-2 border-black rounded-2xl grow"}
                         >
                             <option value="low">Low</option>
                             <option value="medium">Medium</option>
@@ -178,7 +177,7 @@ export default function Flower_input() {
                         <label className="label">Status </label>
                         <select
                             value={status}
-                            className={"px-10 gap-5 py-5 flex flex-col rounded-2 border-white"}
+                            className={"border-2 p-2 border-black rounded-2xl grow"}
                             onChange={handleStatus}
                         >
                             <option value="unassigned">Unassigned</option>
@@ -201,7 +200,7 @@ export default function Flower_input() {
 
                     <RequestButtons submit={submitForm}/>
                 </div>
-            </>
+
         </div>
 
     );
