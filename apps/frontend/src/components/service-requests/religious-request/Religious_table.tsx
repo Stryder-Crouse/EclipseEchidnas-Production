@@ -20,23 +20,18 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
 
     //todo FNFN fix with proper population code
     useEffect(() => {
-        let queryDone = false;
 
-        if (!queryDone) {
             getEmployees().then(result => {
                 setReligEmployees(result);
             });
-            getReligRequests().then(result => {
+            getReligRequests(statusFilter).then(result => {
                 setReligRequestList(result);
             });
 
-        }
-        return () => {
-            queryDone = true;
-        };
 
 
-    }, []);
+
+    }, [statusFilter]);
 
     return (
         <div>
@@ -327,8 +322,9 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
 
 }
 
-async function getReligRequests() {
-    const requests = await axios.get<[ReligRequest[], ServiceRequest[]]>("/api/serviceRequests/religiousRequest");
+async function getReligRequests(statusFilter:Status) {
+    const requests =
+        await axios.get<[ReligRequest[], ServiceRequest[]]>("/api/serviceRequests/religiousRequest",{params: {status: statusFilter}});
 
     const religRequests: Array<[ReligRequest, ServiceRequest]> = [];
     for (let i = 0; i < requests.data[0].length; i++) {

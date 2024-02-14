@@ -771,29 +771,68 @@ router.post('/religiousRequest', async function(req:Request, res:Response) {
 });
 
 router.get("/religiousRequest", async function (req: Request, res: Response) {
-    try {
 
-        const religReq = await PrismaClient.religiousReq.findMany({
-            orderBy: {
-                genReqID: "asc", //order by service request id so the two arrays are parallel
-            }
-        });
+    const statusFilter:status = req.query.status as status;
 
-        const serviceReqs = await PrismaClient.serviceRequest.findMany({
-            orderBy: {
-                reqID: "asc", //order by service request id so the two arrays are parallel
-            },
-            where:{
-                reqType:"religious"
-            }
-        });
+    if(statusFilter == Status.Any){
+        try {
 
-        //we display info from both the service req and the outside transportation req, so we send the person both DB objects
-        res.send([religReq,serviceReqs]);
-        console.info("\nSuccessfully gave you all of the Religious Requests\n");
-    } catch (err) {
-        console.error("\nUnable to send Requests\n");
+            const religReq = await PrismaClient.religiousReq.findMany({
+                orderBy: {
+                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                }
+            });
+
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"religious"
+                }
+            });
+
+            //we display info from both the service req and the outside transportation req, so we send the person both DB objects
+            res.send([religReq,serviceReqs]);
+            console.info("\nSuccessfully gave you all of the Religious Requests\n");
+        } catch (err) {
+            console.error("\nUnable to send Requests\n");
+        }
     }
+    else{
+        try {
+
+            const religReq = await PrismaClient.religiousReq.findMany({
+                orderBy: {
+                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    genReq:{
+                        status:statusFilter
+                    }
+
+                }
+            });
+
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"religious",
+                    status:statusFilter
+                }
+            });
+
+            //we display info from both the service req and the outside transportation req, so we send the person both DB objects
+            res.send([religReq,serviceReqs]);
+            console.info("\nSuccessfully gave you all of the Religious Requests\n");
+        } catch (err) {
+            console.error("\nUnable to send Requests\n");
+        }
+    }
+
+
 });
 
 router.get("/flowReq", async function (req: Request, res: Response) {
