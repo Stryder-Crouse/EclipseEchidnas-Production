@@ -6,6 +6,7 @@ import {
     ServiceRequest
 } from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import axios from "axios";
+import RequestButtons from "../../buttons/RequestButtons.tsx";
 //import LocationsDropDown from "../../navigation-bar/LocationsDropDown.tsx";
 
 
@@ -83,14 +84,14 @@ export default function Transportation_Input() {
 
     return (
 
-        <div className={"min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
+        <div className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
 
             <form className={"p-1"}>
 
                 <h1 className={"flex mb-3 justify-center font-bold text-xl"}>External Patient
                     Transportation</h1> {/* Div Title */}
 
-                <div className={"px-10"}>
+                <div className={""}>
 
                     <div className={"flex justify-center items-center my-1.5"}> {/* Priority Dropdown */}
                         {/*<label
@@ -111,7 +112,8 @@ export default function Transportation_Input() {
                         </select>
                     </div>
 
-                    <div className={"flex justify-center items-center my-1.5"}> {/* Patient Name text input */}
+                    <div className={"grid justify-center items-center my-1.5"}> {/* Patient Name text input */}
+                        <label form={"priority"} className={"mb-1"}>Patient Name:</label>
                         <input
                             className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             type={"text"}
@@ -122,7 +124,8 @@ export default function Transportation_Input() {
                         />
                     </div>
 
-                    <div className={"flex justify-center items-center my-1.5"}> {/* Patient Room Input */}
+                    <div className={"grid justify-center items-center my-1.5"}> {/* Patient Room Input */}
+                        <label form={"room"} className={"mb-1"}>Room Number:</label>
                         <input
                             className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             type={"text"}
@@ -133,9 +136,10 @@ export default function Transportation_Input() {
                         />
                     </div>
 
-                    <div className={"flex justify-center items-center my-1.5"}>{/* Destination Input */}
+                    <div className={"grid justify-center items-center my-1.5 mb-2"}>{/* Destination Input */}
+                        <label form={"destination"} className={"mb-1"}>Destination:</label>
                         <input
-                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow "}
                             type={"text"}
                             value={destination}
                             placeholder={"Destination: "}
@@ -144,7 +148,7 @@ export default function Transportation_Input() {
                         />
                     </div>
 
-                    <div className={"flex justify-center items-center my-1.5"}>{/* Mode of Transportation Input */}
+                    <div className={"grid justify-center items-center my-1.5 mb-2"}>{/* Mode of Transportation Input */}
                         {/*<label
                             htmlFor={"modeTransport"}
                         >Mode of Transportation: </label>*/}
@@ -162,7 +166,7 @@ export default function Transportation_Input() {
                         </select>
                     </div>
 
-                    <div className={"flex justify-center items-center my-1.5"}> {/* Additional notes textbox */}
+                    <div className={"grid justify-center items-center my-1.5 mb-2"}> {/* Additional notes textbox */}
                         <textarea
                             className={"p-1 min-h-full h-20 w-60 bg-white text-black rounded-xl border border-black drop-shadow align-text-top"}
                             id={"additional"}
@@ -172,14 +176,9 @@ export default function Transportation_Input() {
                         />
                     </div>
 
-                    <div className={"flex justify-center items-center my-1.5"}>
-                        <button
-                            className={"p-1 bg-navStart text-ivoryWhite rounded-xl border border-black drop-shadow font-bold"}
-                            type={"button"}
-                            onClick={submit}
-                        >
-                            Submit
-                        </button>
+                    <div className={"grid justify-center items-center "}>
+                        <RequestButtons submit={submit}/>
+                        <p className={"flex justify-center items-center -mt-5"}>Created By: Michael and Ryan</p>
                     </div>
                 </div>
             </form>

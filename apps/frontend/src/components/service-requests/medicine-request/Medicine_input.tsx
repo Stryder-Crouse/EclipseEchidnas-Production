@@ -1,6 +1,5 @@
 /** importations **/
 import React, {ChangeEvent, useState} from "react";
-import "../../../css/route-css/medicineRequest.css";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 
 import axios from "axios";
@@ -87,32 +86,25 @@ export default function Medicine_input() {
     }
 
     return (
-        <div>
-            <div>
-                <table>
-                    {/*th need to be in a table please change it later to a tag or b tag*/}
-                    <tbody>
-                    <tr>
-                        <th>Medicine Request</th>
-                    </tr>
-                    </tbody>
-                </table>
-
-                <form className={"medicine-form"}>
-                    <div className={"text-field"}>
+            <div className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-4 align-self-center"}>
+                <form className={"p-1"}>
+                    <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Medicine Request</h1>
+                    <div className={"grid justify-center items-center my-1.5"}>
+                        <label form={"medRequestLocal"}>To Room Number</label>
                         <input
-                            className={"input-fields"}
+                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             type={"text"}
                             id={"medRequestLocal"}
                             name={"medRequestLocal"}
-                            placeholder={"Location"}
+                            placeholder={"To Room Number"}
                             value={medRequestLocale}
                             onChange={handleMedRequestLocaleInput}
                         />
                     </div>
-                    <div className={"text-field"}>
+                    <div className={"grid justify-center items-center my-1.5"}>
+                        <label form={"medRequestType"}>Medicine Type</label>
                         <input
-                            className={"input-fields"}
+                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             type={"text"}
                             id={"medRequestType"}
                             name={"medRequestType"}
@@ -121,9 +113,10 @@ export default function Medicine_input() {
                             onChange={handleMedRequestTypeInput}
                         />
                     </div>
-                    <div className={"text-field"}>
+                    <div className={"grid justify-center items-center my-1.5"}>
+                        <label form={"medRequestDose"}>Medicine Dose</label>
                         <input
-                            className={"input-fields"}
+                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             type={"text"}
                             id={"medRequestDose"}
                             name={"medRequestDoses"}
@@ -132,11 +125,12 @@ export default function Medicine_input() {
                             onChange={handleMedRequestDoseInput}
                         />
                     </div>
-                    <div className={"text-field"}>
+                    <div className={"grid justify-center items-center my-1.5 mb-2"}>
+                        <label form={"medRequestDosage"}>Amount</label>
                         <input
-                            className={"input-fields"}
+                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                             type={"text"}
-                            id={"medRequestDose"}
+                            id={"medRequestDosage"}
                             name={"medRequestDoses"}
                             placeholder={"Medicine Dosage"}
                             value={medRequestDosage}
@@ -144,9 +138,11 @@ export default function Medicine_input() {
                         />
                     </div>
                     <RequestButtons submit={submit}/>
-                    {/*// this should technically take you to list of service request*/}
+                    <div className={"flex justify-center items-center my-1.5"}>
+                        <p>Created By: Alex and Antonio</p>
+                    </div>
                 </form>
             </div>
-        </div>
+
     );
 }

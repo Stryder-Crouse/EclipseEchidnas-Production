@@ -45,7 +45,9 @@ export default function Sanitation_input() {
         async function submit() {
 
 
-        try {
+            console.log("hi");
+            console.log(selected);
+            console.log(locations);
             //Make a Service Request Data Type and then a Med Request Data Type
             // this is bc Front End will be confused if we pass it a bunch of data so use data structures
             const servReq : ServiceRequest = {
@@ -58,13 +60,17 @@ export default function Sanitation_input() {
                 reqPriority: priorityArr[priorityIndex]
             };
 
+            console.log(servReq);
+
             //Make a Med Req after the service req (Med req needs service req's id, so med req cannot be made before)
             const sanReqData: sanReq = {
                 serviceReqID: -1, // default is 0, but is always changed to the value of the newly created Service Req
                 type: type
             };
-            clear();
 
+            console.log(sanReqData);
+            clear();
+        try {
             //Post Med Req to DB (pass in objects of sanReq and ServiceRequest as an array)
             await axios.post("/api/serviceRequests/sanReq",
                 [servReq,sanReqData], {
@@ -92,19 +98,20 @@ export default function Sanitation_input() {
 
 
     return (
-            <div
-                className={"justify-items-center text-2xl border-2 border-gray-400 rounded-2xl p-10 flex flex-col gap-5 rounded-2"}>
-                <p><b>Sanitation Requests</b></p>
-                <div className="form-group">
+        <div
+            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
+            <form className={"px-1"}>
+                <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Sanitation Request</h1> {/* Div Title */}
+                <div className="grid justify-center items-center my-1.5">
                     <label className={"location"}>Location</label>
                     <CreateDropdown dropBtnName={"Locations"} dropdownID={"Location"} isSearchable={true}
                                     populationArr={longNames} resetDropdown={resetDropdown}
                                     setSelected={setSelected}
-                                    inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
+                                    inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow "}
                                     selectCSS={""}
                                     resetOnSelect={false} setResetDropdown={setResetDropdown}/>
                 </div>
-                <div className="form-group">
+                <div className="grid justify-center items-center my-1.5">
                     <label className="label">What Happened: </label>
                     <input
                         value={type}
@@ -112,10 +119,10 @@ export default function Sanitation_input() {
                             setType(e.target.value);
                         }}
                         type={"text"}
-                        className={"border-2 p-2 border-black rounded-2xl grow"}
+                        className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                     />
                 </div>
-                <div className="form-group">
+                <div className="grid justify-center items-center my-1.5">
                     <label className={"Priority"}>Priority</label>
                     <CreateDropdown
                         dropBtnName={"Priority"}
@@ -127,23 +134,28 @@ export default function Sanitation_input() {
                         setResetDropdown={setResetDropdownPriority}
                         setSelected={setPriorityIndex}
                         selectCSS={""}
-                        inputCSS={""}
+                        inputCSS={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
                     />
 
                 </div>
-                <div className="form-group">
-                    <label className="label">Extra Info: </label>
+                <div className="grid justify-center items-center my-1.5">
+                    <label className="label" form={"additional"}>Extra Info: </label>
                     <input
+                        id={"additional"}
                         value={extraInfo}
                         onChange={(e) => {
                             setExtraInfo(e.target.value);
                         }}
                         type={"text"}
-                        className={"border-2 p-10 border-black rounded-2xl grow"}
+                        className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                     />
                 </div>
                 <RequestButtons submit={submit}/>
+            </form>
+            <div className={"flex justify-center items-center my-1.5"}>
+                <p>Created By: Antonio and Sameer</p>
             </div>
+        </div>
     );
 
 

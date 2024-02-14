@@ -1,15 +1,25 @@
 import React from "react";
 import {statusFilter} from "../serviceRequestInterface.ts";
 import {useState, useEffect} from "react";
-import {OutsideTransport} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import { OutsideTransport} from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import {ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import axios from "axios";
 import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
 import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
+import status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 
-async function getReqs() {
-    const res = await axios.get("api/serviceRequest/outsideTransport");
-    return res.data;
+async function getReqs(statusFilter: status) {
+    const res =
+        await axios.get<[OutsideTransport[],ServiceRequest[]]>
+        ("api/serviceRequests/outsideTransport", {params: {status: statusFilter}});
+    const requests: Array<[OutsideTransport, ServiceRequest]> = [];
+    for (let i = 0; i < res.data[0].length; i++) {
+        requests.push([res.data[0][i], res.data[1][i]]);
+
+    }
+    console.log(requests);
+
+    return requests;
 }
 
 async function getEmployees() {
@@ -31,14 +41,14 @@ export default function Transportation_table({statusFilter:statusFilter}:statusF
             getEmployees().then(result => {
                 setTransportEmployees(result);
             });
-            getReqs().then(result => {
+            getReqs(statusFilter).then(result => {
                 setReqList(result);
             });
         }
         return () => {
             queryDone = true;
         };
-    },[]);
+    },[statusFilter]);
 
     function renderEmployees(employee:Employee, transportID:string) {
         return (
@@ -174,15 +184,15 @@ export default function Transportation_table({statusFilter:statusFilter}:statusF
             <table>
                 <thead>
                 <tr className={"tableTRHead"}>
-                    <th className={"tableTD"}>Request ID:</th>
-                    <th className={"tableTD"}>Priority Level:</th>
-                    <th className={"tableTD"}>Status:</th>
-                    <th className={"tableTD"}>Assigned Employee:</th>
-                    <th className={"tableTD"}>Patient Name:</th>
-                    <th className={"tableTD"}>Patient Room:</th>
-                    <th className={"tableTD"}>Destination:</th>
-                    <th className={"tableTD"}>Mode of Transportation</th>
-                    <th className={"tableTD"}>Additional Notes:</th>
+                    <th className={"tableTD"}>ID</th>
+                    <th className={"tableTD"}>Priority</th>
+                    <th className={"tableTD"}>Status</th>
+                    <th className={"tableTD"}>Assigned Employee</th>
+                    <th className={"tableTD"}>Patient Name</th>
+                    <th className={"tableTD"}>Patient Room</th>
+                    <th className={"tableTD"}>Destination</th>
+                    <th className={"tableTD"}>Transportation Mode</th>
+                    <th className={"tableTD"}>Additional</th>
                 </tr>
                 </thead>
                 <tbody>

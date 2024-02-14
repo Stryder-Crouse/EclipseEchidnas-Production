@@ -4,7 +4,6 @@
 export type ServiceRequest = {
     reqType: string;
     reqPriority: string;
-//  reqLocationID: string; //should be a fk to a node
     reqLocationID: string;
     extraInfo: string;
     status: string;
@@ -36,12 +35,16 @@ export type OutsideTransport = {
     serviceReqID: number;
 }
 
+export type ReligRequest = {
+    patientName: string;
+    religion: string;
+    reqDescription: string;
+    genReqID: number;
+};
 export type sanReq = {
     type: string;
     serviceReqID: number;
 };
-
-
 
 // ---------------------------------    ENUMS    ---------------------------------
 
@@ -55,4 +58,12 @@ export enum ReqTypes {
     tranReq = "transportation",
     outTransReq = "outside transportation",
     serviceRequest ="service request"
+}
+
+export enum priorities {
+    any = "Any",
+    low = "Low",
+    medium = "Medium",
+    high = "High",
+    emergency = "Emergency"
 }

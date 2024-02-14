@@ -26,12 +26,20 @@ function App() {
                     element: <ProtectedAdminMap/>,
                 },
                 {
-                    path: "/ServiceRequest",
+                    path: "/ProtectedServiceRequest",
                     element: <ProtectedServiceRequest/>,
+                },
+                {
+                    path:"/ServiceRequest",
+                    element:<ProtectedServiceRequest/>,
                 },
                 {
                     path: "/NodeEdgeTable",
                     element: <ProtectedNodeEdgeTable/>,
+                },
+                {
+                    path: "/ProtectedRequestList",
+                    element: <ProtectedRequestList/>,
                 },
                 {
                     path: "/RequestList",

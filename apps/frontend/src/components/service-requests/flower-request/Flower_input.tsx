@@ -71,7 +71,7 @@ export default function Flower_input() {
             } catch(error){
                 throw new Error("Error with sending flower request");
             }
-            
+
 
             clear();
 

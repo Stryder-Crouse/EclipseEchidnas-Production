@@ -21,7 +21,7 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
             getEmployees().then(result=> {
                 setSanEmployees(result);
             });
-            getSanRequests().then(result=> {
+            getSanRequests(statusFilter).then(result=> {
                 setSanRequestList(result);
             });
 
@@ -31,7 +31,7 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
         };
 
 
-    },[]);
+    },[statusFilter]);
 
     return (
         <div>
@@ -39,7 +39,7 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
             <table className={"requestTable"} id={"request-table"}>
                 <thead>
                 <tr className={"tableTRHead"}>
-                    <th className={"tableTD"}>Service Request ID</th>
+                    <th className={"tableTD"}>ID</th>
                     <th className={"tableTD"}>Request Type</th>
                     <th className={"tableTD"}>Priority</th>
                     <th className={"tableTD"}>Going To</th>
@@ -297,8 +297,9 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
 
 }
 
-async function getSanRequests() {
-    const requests = await axios.get<[sanReq[], ServiceRequest[]]>("/api/serviceRequests/sanReq");
+async function getSanRequests(statusFilter:Status) {
+    const requests =
+        await axios.get<[sanReq[], ServiceRequest[]]>("/api/serviceRequests/sanReq", {params: {status: statusFilter}});
 
     const sanRequests: Array<[sanReq, ServiceRequest]> = [];
     for (let i = 0; i < requests.data[0].length; i++) {
