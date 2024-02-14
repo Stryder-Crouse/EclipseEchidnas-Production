@@ -176,15 +176,12 @@ export default function Transportation_Input() {
                         />
                     </div>
 
-                    <div className={"flex justify-center items-center my-1.5"}>
+                    <div className={"grid justify-center items-center "}>
                         <RequestButtons submit={submit}/>
+                        <p className={"flex justify-center items-center -mt-5"}>Created By: Michael and Ryan</p>
                     </div>
                 </div>
             </form>
-
-            <div className={"flex justify-center items-center my-1.5"}>
-                <p>Created By: Michael and Ryan</p>
-            </div>
         </div>
     );
 

@@ -293,6 +293,7 @@ function EmployeeTable() {
     /**
      * Draw a table row.
      * @param employee the employee to draw.
+     * @param employeeIndex
      */
     function drawEmployeeRecord(employee: Employee , employeeIndex:number) {
         return (
