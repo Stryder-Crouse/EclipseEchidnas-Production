@@ -5,14 +5,15 @@ import axios from "axios";
 import { HTMLInputElement } from "happy-dom";
 
 function ImportExportButtons() {
+
   //todo clean up - stryder
   async function inputFiles() {
     //Get node file
     const inputNode = document.createElement("input");
     inputNode.type = "file";
     inputNode.accept = "text/csv"; //only take csv files
-    let nodeFile: HTMLInputElement;
-    let nodeFileString: string;
+    let nodeFile: File;
+    let nodeFileString:string;
     inputNode.onchange = (e) => {
       nodeFile = (e.target as HTMLInputElement).files[0];
 
@@ -37,8 +38,8 @@ function ImportExportButtons() {
     const inputEdge = document.createElement("input");
     inputEdge.type = "file";
     inputEdge.accept = "text/csv"; //only take csv files
-    let edgeFile: HTMLInputElement;
-    let edgeFileString: HTMLInputElement;
+    let edgeFile: File;
+    let edgeFileString:string;
     inputEdge.onchange = async (e) => {
       edgeFile = (e.target as HTMLInputElement).files[0];
       console.log("file type edge");
@@ -69,6 +70,21 @@ function ImportExportButtons() {
           throw new Error("Error with loading Nodes");
         }
       };
+
+      //todo may do this properly
+        // let fileData =new FormData();
+        // fileData.append("file",nodeFile);
+        // fileData.append("file",edgeFile);
+        // //send edge and node file to back end
+        //   try {
+        //     await axios.post("/api/loadCSVFile", fileData, {
+        //       headers: {
+        //           "Content-Type": "multipart/form-data",
+        //       },
+        //     });
+        //   } catch (err) {
+        //     throw new Error("Error with loading Nodes");
+        //   }
     };
     //click input for the user
     inputEdge.click();
