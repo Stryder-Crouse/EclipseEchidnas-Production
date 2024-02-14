@@ -46,9 +46,11 @@ const employee7: Employee = {userName:"admin_white", lastName:"White", firstName
 const employee8: Employee = {userName:"janitor_harris", lastName:"Harris", firstName:"Michael", designation: Roles.janitor, isAdmin:false};
 const employee9: Employee = {userName:"doctor_jackson", lastName:"Jackson", firstName:"Emma", designation: Roles.doctor, isAdmin:false};
 const employee10: Employee = {userName:"nurse_brown", lastName:"Brown", firstName:"James", designation: Roles.nurse, isAdmin:false};
+const employee11: Employee = {userName:"flower_jackson", lastName:"Jackson", firstName:"Ryan", designation: Roles.flowerDeliverer, isAdmin:false};
+const employee12: Employee = {userName:"flower_marsh", lastName:"Marsh", firstName:"Randy", designation: Roles.flowerDeliverer, isAdmin:false};
 
 const employeeArray: Employee[] =
-    [employee1, employee2, employee3, employee4, employee5, employee6, employee7, employee8, employee9, employee10];
+    [employee1, employee2, employee3, employee4, employee5, employee6, employee7, employee8, employee9, employee10, employee11, employee12];
 
 edgeArray.forEach((edge) => {
   const newEdgeDB = edgeToEdgeDataBase(edge);
@@ -67,6 +69,8 @@ export default async function dbInit() {
     await PrismaClient.$transaction([
       PrismaClient.edgeDB.deleteMany(),
       PrismaClient.medReq.deleteMany(),
+      PrismaClient.sanReq.deleteMany(),
+      PrismaClient.outsideTransport.deleteMany(),
       PrismaClient.serviceRequest.deleteMany(),
       PrismaClient.nodeDB.deleteMany(),
       PrismaClient.employee.deleteMany(),

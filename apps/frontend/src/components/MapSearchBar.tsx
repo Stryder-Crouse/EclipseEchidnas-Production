@@ -17,7 +17,7 @@ export default function MapSearchBar({startNode:startNode,setStartNode:setStartN
 
 
     const [resetDropdown, setResetDropdown] = useState(false);
-    const [selected, setSelected] = useState("");
+    const [selected, setSelected] = useState(-1);
 
     const [selectedText, setSelectedText] = useState("Start Location");
 
@@ -27,12 +27,10 @@ export default function MapSearchBar({startNode:startNode,setStartNode:setStartN
     let selectedNode=NULLNODE;
         //todo change later
         //find the node by the long name
-        locations.forEach((node)=>{
-            if(node.longName==selected){
-                selectedNode=node;
-                setSelected("");
-            }
-        });
+        if (selected != -1) {
+            selectedNode = locations.at(selected)!;
+            setSelected(-1);
+        };
 
     if(selectedNode != NULLNODE){
         onLocationSelect(selectedNode,startNode,endNode,setStartNode,

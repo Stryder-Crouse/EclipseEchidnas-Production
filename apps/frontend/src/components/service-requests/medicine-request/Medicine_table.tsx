@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {MedReq, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
-import AdminPageNavBar from "../../navigation-bar/AdminPageNavBar.tsx";
 import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 import {statusFilter} from "../serviceRequestInterface.ts";
 
@@ -38,7 +37,6 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
 
     return (
         <div>
-            <AdminPageNavBar/>
 
             <div className={"request-table-container"}>
                 <div className={"table-container"}>

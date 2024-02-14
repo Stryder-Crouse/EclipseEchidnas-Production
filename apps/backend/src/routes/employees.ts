@@ -29,6 +29,32 @@ router.post("/employee", async function (req: Request, res: Response) {
 });
 
 
+router.post("/employee/updateEmployee", async function(req: Request, res: Response) {
+    const data: Employee = req.body;
+    console.log("Updated Info");
+    console.log(data);
+
+    try {
+        await PrismaClient.employee.update({
+            where: {
+                userName: data.userName
+            },
+            data: {
+                firstName: data.firstName,
+                lastName: data.lastName,
+                designation: data.designation,
+                isAdmin: data.isAdmin
+            }
+        });
+        console.log("Employee successfully updated");
+        res.sendStatus(200);
+    } catch {
+        console.log("Error with Updating an Employee");
+        res.sendStatus(400);
+    }
+});
+
+
 //gets all employees from the database in the form of employee objects
 router.get("/employees", async function (req: Request, res: Response) {
     try {
@@ -90,6 +116,33 @@ router.get("/employees/transport", async function (req: Request, res: Response) 
                         },
                         {
                             designation:"administrator"
+                        },
+                        {
+                            userName:"No one"
+                        }
+                    ]
+
+                }
+
+            }
+
+        )); //end res.send (this is what will be sent to the client)
+        console.info("\nSuccessfully gave you the the employees\n");
+    } catch (err) {
+        console.error("\nUnable to send employees\n");
+    }
+});
+
+//gets all employees with medicalRequest permissions
+router.get("/employees/flow", async function (req: Request, res: Response) {
+    try {
+
+        res.send(await PrismaClient.employee.findMany(
+            {
+                where:{
+                    OR:[
+                        {
+                            designation:"flower deliverer"
                         },
                         {
                             userName:"No one"
