@@ -62,14 +62,16 @@ router.post("/updateEmployee", async function(req: Request, res: Response) {
 
 //function to delete employee (fire them) --- Pass a string (employee's username) to function
 router.post("/deleteEmployee", async function(req: Request, res: Response) {
+    console.log("req.body");
+    console.log(req.body);
     try {
         //get the user which the admin wants to fire
-        const data:string = req.body;
+        const data:string[] = req.body;
 
         //query the database to delete the employee
         await PrismaClient.employee.delete({
             where: {
-                userName: data          //employee's username is unique, so we must delete an employee by their username
+                userName: data[0]          //employee's username is unique, so we must delete an employee by their username
             }
         });
         //debug info to know that we successfully deleted the employee

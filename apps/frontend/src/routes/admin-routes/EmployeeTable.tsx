@@ -17,6 +17,10 @@ import editPen from "../../images/Table Functions/editPen.png";
 //import TrashIcon from "../../images/Table Functions/trash-2.png";
 //import EditIcon from "../../images/Table Functions/pencil.png";
 
+
+const designations = [Roles.None,Roles.nurse,Roles.doctor,Roles.admin,
+    Roles.janitor,Roles.flowerDeliverer,Roles.religiousPersonnel];
+
 function EmployeeTable() {
     
     
@@ -26,10 +30,11 @@ function EmployeeTable() {
     const [newUserName, setNewUserName] = useState("");
     const [newFristName, setNewFristName] = useState("");
     const [newLastName, setNewLastName] = useState("");
-    const [newDesignation, setNewDesignation] = useState("");
-    const [newIsAdmin, setNewIsAdmin] = useState("");
+    const [newIsAdmin, setNewIsAdmin] = useState(false);
+    const [newDesignation, setNewDesignation] = useState(Roles.None);
+    // const [resetDesignation, setResetDesignation] = useState(false);
+    const [editIndex, setEditIndex] = useState(-1);
 
-    //use ref for checkbox
 
 
     /* populate the requests */
@@ -68,7 +73,7 @@ function EmployeeTable() {
                             <th className={"tableTD"}>First Name</th>
                             <th className={"tableTD"}>Last Name</th>
                             <th className={"tableTD"}>Designation</th>
-                            <th className={"tableTD"}>Actions</th>
+                            <th className={"tableTD"}>Is Admin</th>
                             <th className={"tableTD"}>Edit</th>
                             <th className={"tableTD"}>Delete</th>
                         </tr>
@@ -76,8 +81,8 @@ function EmployeeTable() {
                         {/* populating here */}
                         <tbody>
                         {
-                            employees.map((employee) => {
-                                return drawEmployeeRecord(employee);
+                            employees.map((employee, employeeIndex) => {
+                                return drawEmployeeRecord(employee,employeeIndex);
                             })
                         }
                         </tbody>
@@ -90,7 +95,7 @@ function EmployeeTable() {
                 <form className={"formNewEmployee"}>
                     <div>
                         <label form={"employeeUsername"}>Username</label><br/>
-                        <input type={"text"} placeholder={"Enter Username"} className={"inputText"}
+                        <input disabled={true} type={"text"} placeholder={"Enter Username"} className={"inputText"}
                                name={"employeeUsername"} required
                                value={newUserName}
                                onChange={(e) => {
@@ -120,13 +125,39 @@ function EmployeeTable() {
                     </div>
                     <div>
                         <label form={"designation"}>Designation</label><br/>
-                        <input type={"text"} placeholder={"Enter Designation"} className={"inputText"}
-                               name={"designation"} required
-                               value={newDesignation}
-                               onChange={(e) => {
-                                   setNewDesignation(e.target.value);
-                               }}
-                        />
+                        <select
+                            value={newDesignation}
+                            onChange={
+                                (e) => {
+                                    setNewDesignation(e.target.value as Roles);
+                                }
+                            }
+                        >
+                            {
+                                designations?.map((des)=>{
+                                    return (
+                                        <option
+                                            className={"statis-dropdown"}
+                                            value={des}
+                                            key={des+"_newEmployee"}
+                                        >
+                                            {des}
+                                        </option>
+                                    );
+                                })
+
+                            }
+                        </select>
+
+
+                        {/*<CreateDropdown dropBtnName={"Designation"} dropdownID={"employeeDesignation"}*/}
+                        {/*                isSearchable={false}*/}
+                        {/*                populationArr={designations} resetDropdown={resetDesignation}*/}
+                        {/*                setSelected={setNewDesignationIndex}*/}
+                        {/*                inputCSS={""}*/}
+                        {/*                selectCSS={"inputText"}*/}
+                        {/*                resetOnSelect={false} setResetDropdown={setResetDesignation}></CreateDropdown>*/}
+
                     </div>
                     <div>
                         <label form={"isAdmin"}>Is Admin</label><br/>
@@ -134,16 +165,16 @@ function EmployeeTable() {
                                name={"isAdmin"} required
                                  className={"inputText"}
                                id={"isAdminCheck"}
-                               value={newIsAdmin}
                                onChange={(e) => {
-                                       setNewIsAdmin(e.target.value);
+                                   console.log(e.target.checked);
+                                       setNewIsAdmin(e.target.checked);
                                }}
                         />
                     </div>
                     <div>
                         <button  type={"button"} className={"submitButtonEmployee"}
                         onClick={onSubmit}
-                        >Add Employee</button>
+                        >{formSubmitText()}</button>
                     </div>
                     <div>
                         <button type={"button"} className={"submitButtonEmployee"}onClick={closeForm}>Close</button>
@@ -153,92 +184,185 @@ function EmployeeTable() {
         </div>
     );
 
+    function formSubmitText(){
+        if(editIndex!=-1){
+            return "Update Employee";
+        }
+        return "Add Employeee";
+    }
+
     async function onSubmit() {
 
-        let isAdmin =false;
+        let isEditing = false;
 
-        if(newIsAdmin=="check"){
-            isAdmin=true;
+        if(editIndex!=-1){
+            isEditing=true;
         }
 
         const newEmployee: Employee = {
-            designation: Roles.admin,//todo change to drop down
+            designation: newDesignation ,
             firstName: newFristName,
-            isAdmin: isAdmin,
+            isAdmin: newIsAdmin,
             lastName: newLastName,
             userName: newUserName
         };
 
-        const newEmployees = [...employees];
-        newEmployees.push(newEmployee);
-        setEmployees(newEmployees);
-        const checkbox = document?.getElementById("isAdminCheck")as HTMLInputElement;
-        checkbox.checked=false;
-        setNewDesignation("");
-        setNewIsAdmin("");
-        setNewLastName("");
-        setNewFristName("");
-        setNewUserName("");
 
-        await axios.post("/api/employees/employee",
-            newEmployee, {
+        const newEmployees = [...employees];
+
+        //editing
+        if(isEditing){
+            newEmployees[editIndex]=newEmployee;
+        }
+        //creating
+        else{
+            newEmployees.push(newEmployee);
+        }
+
+        setEmployees(newEmployees);
+
+
+        closeForm();
+
+        if(isEditing) {
+
+            await axios.post("/api/employees/updateEmployee",
+                newEmployee, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+
+        }
+        else{
+            await axios.post("/api/employees/employee",
+                newEmployee, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+        }
+
+
+    }
+
+    function handleEdit(employee: Employee , employeeIndex:number){
+
+        if(employee.isAdmin) {
+            const checkbox = document?.getElementById("isAdminCheck") as HTMLInputElement;
+            checkbox.checked = true;
+        }
+        else{
+            const checkbox = document?.getElementById("isAdminCheck") as HTMLInputElement;
+            checkbox.checked = false;
+        }
+        setNewDesignation(employee.designation);
+        setNewIsAdmin(employee.isAdmin);
+        setNewLastName(employee.lastName);
+        setNewFristName(employee.firstName);
+        setNewUserName(employee.userName);
+        setEditIndex(employeeIndex);
+
+
+        openForm();
+    }
+
+    async function handleDelete(employee: Employee) {
+        const newEmployees: Employee[] = [];
+
+        employees.forEach((employ) => {
+            if (employ.userName != employee.userName) {
+                newEmployees.push(employ);
+            }
+        });
+
+        setEmployees(newEmployees);
+
+        const data:string[] = [employee.userName];
+
+        await axios.post("/api/employees/deleteEmployee",
+            data, {
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
 
-        closeForm();
 
+    }
+
+    /**
+     * Draw a table row.
+     * @param employee the employee to draw.
+     */
+    function drawEmployeeRecord(employee: Employee , employeeIndex:number) {
+        return (
+            <tr className={"tableTR"} key={"Employee_" + employee.userName}>
+                <td className={"tableTD"}>{employee.userName}</td>
+                <td className={"tableTD"}>{employee.firstName}</td>
+                <td className={"tableTD"}>{employee.lastName}</td>
+                <td className={"tableTD"}>{employee.designation}</td>
+                <td className={"tableTD"}>{String(employee.isAdmin)}</td>
+                <td className={"tableTD"}>
+                    <button onClick={() => {
+                        handleEdit(employee, employeeIndex);
+                    }}>
+                        <img src={editPen} alt={"Edit"} height={"30px"} width={"30px"}></img>
+                    </button>
+                </td>
+
+                <td className={"tableTD"}>
+                    <button onClick={() => {
+                        handleDelete(employee).then();
+                    }}>
+                        <img src={trashIcon} alt={"Edit"} height={"30px"} width={"30px"}></img>
+                    </button>
+                </td>
+
+            </tr>
+        );
+    }
+
+    /**
+     * open the div add Employee Form
+     */
+    function openForm() {
+        const openSesame = document.getElementById("addEmployeeForm");
+        if (openSesame != null) {
+            openSesame.setAttribute("class","employeeInputVisible");
+
+
+        }
+    }
+
+
+
+    /**
+     * close the div add Employee Form
+     */
+    function closeForm(): void {
+        const close = document.getElementById("addEmployeeForm");
+        if (close != null) {
+            close.setAttribute("class","employeeInputHidden");
+
+            //clear form
+            const checkbox = document?.getElementById("isAdminCheck")as HTMLInputElement;
+            checkbox.checked=false;
+            setNewDesignation(Roles.None);
+            setNewIsAdmin(false);
+            setNewLastName("");
+            setNewFristName("");
+            setNewUserName("");
+            setEditIndex(-1);
+        }
     }
 
 }
 
-/**
- * Draw a table row.
- * @param employee the employee to draw.
- */
-function drawEmployeeRecord(employee: Employee) {
-    return (
-        <tr className={"tableTR"} key={"Employee_" + employee.userName}>
-        <td className={"tableTD"}>{employee.userName}</td>
-            <td className={"tableTD"}>{employee.firstName}</td>
-            <td className={"tableTD"}>{employee.lastName}</td>
-            <td className={"tableTD"}>{employee.designation}</td>
-            <td className={"tableTD"}>{employee.isAdmin}</td>
-            <td className={"tableTD"}>
-                <button>
-                    <img src={trashIcon} alt={"Edit"} height={"30px"} width={"30px"}></img>
-                </button>
-            </td>
-            <td className={"tableTD"}>
-                <button>
-                    <img src={editPen} alt={"Edit"} height={"30px"} width={"30px"}></img>
-                </button>
-            </td>
-        </tr>
-    );
-}
 
 
-/**
- * open the div add Employee Form
- */
-function openForm() {
-    const openSesame = document.getElementById("addEmployeeForm");
-    if (openSesame != null) {
-        openSesame.setAttribute("class","employeeInputVisible");
-    }
-}
 
-/**
- * close the div add Employee Form
- */
-function closeForm(): void {
-    const close = document.getElementById("addEmployeeForm");
-    if (close != null) {
-        close.setAttribute("class","employeeInputHidden");
-    }
-}
+
+
 
 
 
