@@ -12,8 +12,41 @@ import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {AStar} from "../../../../backend/src/algorithms/Search/AStar.ts";
 import {Coordinate} from "../../../../backend/src/algorithms/Graph/Coordinate.ts";
 
+export type MapStates = {
+    startNode: Node;
+    setStartNode: Dispatch<SetStateAction<Node>>;
+    endNode: Node;
+    setEndNode: Dispatch<SetStateAction<Node>>;
+    selectedFloorIndex: FloorToIndex;
+    setSelectedFloorIndex: Dispatch<SetStateAction<FloorToIndex>>;
+    drawEntirePath: boolean;
+    setDrawEntirePath: Dispatch<SetStateAction<boolean>>;
+    locations: Node[];
+    setLocations: Dispatch<SetStateAction<Node[]>>;
+    viewbox: Viewbox,
+    setViewbox: Dispatch<SetStateAction<Viewbox>>;
+    zoomScale: number,
+    setZoomScale: Dispatch<SetStateAction<number>>
+}
+
 /**
- * We NEED this, Stryder
+ * Type to hold the two nodes of a transition.
+ */
+type Transition = {
+    startTranNode: Node;
+    endTranNode: Node;
+}
+
+/**
+ * Type to hold edges and transitions for pathfinding
+ */
+type edgesAndTransitions = {
+    edges: Array<Edge>;
+    transitions: Array<Transition>;
+}
+
+/**
+ * Type to hold the style information for the floor-to-floor transition text
  */
 type TransitionTextStyle = {
     xTransform: number;
@@ -24,13 +57,23 @@ type TransitionTextStyle = {
     width: number;
 }
 
-//get graph from database
+/**
+ * Type to hold the information needed in a viewbox.
+ */
+export type Viewbox = {
+    x: number;
+    y: number;
+    width: number;
+    height: number
+}
+
+/** global variables */
 let graph: Graph | null = null;
 const panSpeed: number = 2;
 const zoomSpeed: number = 0.1;
 
 /**
- * Create the graph from nodes and edges gathered from the database.
+ * Create the global graph from nodes and edges gathered from the database.
  */
 async function createGraph() {
     /* ask axios for nodes and edges */
@@ -56,9 +99,13 @@ async function createGraph() {
     // console.log(graph.getEdges());
 }
 
-function createZoomEvent(viewbox: {x: number, y: number, width: number, height: number},
-                         setViewbox: Dispatch<{x: number, y: number, width: number, height: number}>,
-                         setScale: Dispatch<number>) {
+/**
+ * Enable zoom with MAGIC (a mouse event)
+ * @param viewbox a Viewbox that holds coordinate information
+ * @param setViewbox a Dispatch that transforms the coordinate information
+ * @param setScale a Dispatch that sets the map scale
+ */
+function createZoomEvent(viewbox: Viewbox, setViewbox: Dispatch<Viewbox>, setScale: Dispatch<number>) {
     /* grab the map and its current size */
     const svgElement = document.getElementById("map")!;
     const svgSize: { width: number, height: number } = {width: svgElement.clientWidth, height: svgElement.clientHeight};
@@ -90,71 +137,84 @@ function createZoomEvent(viewbox: {x: number, y: number, width: number, height: 
 
         // set new viewbox
         setViewbox({
-            x: newX, y: newY,
-            width: viewbox.width - changeInWidth, height: viewbox.height - changeInHeight
+            x: newX,
+            y: newY,
+            width: viewbox.width - changeInWidth,
+            height: viewbox.height - changeInHeight
         });
     });
 }
 
 /**
  * sets the path to the path to be displayed on the page
- * */
+ */
 function updatePathEdges(startingNode: Node,
                          endingNode: Node,
                          setPathEdges: Dispatch<SetStateAction<Edge[]>>,
                          floorIndex: number,
                          drawAllEdges: boolean,
-                         setPathFloorTransitionNodes: Dispatch<Array<{ startTranNode: Node, endTranNode: Node }>>) {
+                         setPathFloorTransitionNodes: Dispatch<Array<Transition>>) {
 
-    if (drawAllEdges) {
-        //set all edges that start and end on this floor to be drawn
-        const allFloorEdges: Array<Edge> = [];
-        graph?.getEdges().forEach((edge) => {
-            if (floorToNumber(edge.startNode.floor) == floorIndex && floorToNumber(edge.endNode.floor) == floorIndex) {
-                allFloorEdges.push(edge);
-            }
-        });
-        setPathEdges(allFloorEdges);
+    /* actually first: check if the graph is ready */
+    if (graph == null) {
+        console.error("Graph has not been created yet - updatePathEdges");
         return;
     }
 
+    /* first, check if we want to draw EVERY edge (for Wong) */
+    if (drawAllEdges) {
+        /* allocate some space for the edges on this floor */
+        const thisFloorEdges: Array<Edge> = [];
+
+        /* get the edges on this floor */
+        graph?.getEdges().forEach((edge) => {
+            if (floorToNumber(edge.startNode.floor) == floorIndex && floorToNumber(edge.endNode.floor) == floorIndex) {
+                thisFloorEdges.push(edge);
+            }
+        });
+
+        /* draw them */
+        setPathEdges(thisFloorEdges);
+        return;
+    }
+
+    /* next, if neither of the nodes are selected, stop drawing any edges */
     if (startingNode == NULLNODE || endingNode == NULLNODE) {
         setPathEdges([]);
         setPathFloorTransitionNodes([]);
         return;
     }
 
-    if (graph == null) {
-        console.error("Graph has not been created yet - updatePathEdges");
+    /* use a pathfinding algorithm to find the path to draw */
+    // TODO: select between three search algorithms: a*, bfs, dfs
+    const rawPath: Array<Node> | null = AStar(graph.idToNode(startingNode.id), graph.idToNode(endingNode.id), graph);
+    if (rawPath == null) {
+        console.error("no path could be found between " + startingNode?.id + " and " + endingNode?.id);
         return;
     }
 
-    //the nodes in startNode and endNode ARE NOT CONNECTED to any edge, so we need to get the same connected ones in the graph
-    console.log("THIS IS START");
-    console.log(startingNode);
-    console.log("THIS IS END");
-    console.log(endingNode);
+    /* calculate the edges and transitions just on this floor */
+    const floorEdgesAndTransitions: edgesAndTransitions = calculateFloorPath(rawPath, floorIndex);
 
-    //find path with bfs
-    const rawpath: Array<Node> | null = AStar(graph.idToNode(startingNode.id), graph.idToNode(endingNode.id), graph);
-    console.log("rawpath");
-    console.log(rawpath);
+    /* set the changes */
+    setPathFloorTransitionNodes(floorEdgesAndTransitions.transitions);
+    setPathEdges(floorEdgesAndTransitions.edges);
+}
 
-    //error is no path could be found
-    if (rawpath == null) {
-        console.error(
-            "no path could be found between " + startingNode?.id + " and " + endingNode?.id,
-        );
-        return;
-    }
-
-    //get path on this floor
+/**
+ * Find the subset of edges on a given path that exist on the current floor,
+ * while also including the edges that transition between floors.
+ * @param rawPath the raw path to search in
+ * @param floorIndex the floor to look at
+ */
+function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndTransitions {
+    /* find the subset of edges from that path on this floor */
     const pathEdges: Array<Edge> = [];
-    const pathTransitions: Array<{ startTranNode: Node, endTranNode: Node }> = [];
+    const pathTransitions: Array<Transition> = [];
 
-    for (let i = 0; i < rawpath.length - 1; i++) {
-        const start = rawpath.at(i)!;
-        const end = rawpath.at(i + 1)!;
+    for (let i = 0; i < rawPath.length - 1; i++) {
+        const start = rawPath.at(i)!;
+        const end = rawPath.at(i + 1)!;
 
         //edge starts and ends on this floor
         if (floorToNumber(start!.floor) == floorIndex && floorToNumber(end!.floor) == floorIndex) {
@@ -168,13 +228,13 @@ function updatePathEdges(startingNode: Node,
         //if edge leaves the current floor
         else if (floorToNumber(start!.floor) == floorIndex) {
             //go forwards to find the transition node it ends at
-            const newTransition: { startTranNode: Node, endTranNode: Node } = {startTranNode: start, endTranNode: end};
+            const newTransition: Transition = {startTranNode: start, endTranNode: end};
 
             let currentNode = end;
 
-            while (i < rawpath.length - 2) {
-                currentNode = rawpath.at(i + 1)!;
-                const nextNode = rawpath.at(i + 2)!;
+            while (i < rawPath.length - 2) {
+                currentNode = rawPath.at(i + 1)!;
+                const nextNode = rawPath.at(i + 2)!;
                 let connectingEdge: Edge = {endNode: end, id: "BAD", startNode: start, weight: 0};
                 //find edge to next node in transition
                 currentNode!.edges.forEach((edge) => {
@@ -201,14 +261,14 @@ function updatePathEdges(startingNode: Node,
         //if edge ends at current floor
         else if (floorToNumber(end!.floor) == floorIndex) {
             //go backwards to find the transition node it started from
-            const newTransition: { startTranNode: Node, endTranNode: Node } = {startTranNode: start, endTranNode: end};
+            const newTransition: Transition = {startTranNode: start, endTranNode: end};
 
             let currentNode = start;
             const startingI = i;
 
             while (i > 0) {
-                currentNode = rawpath.at(i)!;
-                const prevNode = rawpath.at(i - 1)!;
+                currentNode = rawPath.at(i)!;
+                const prevNode = rawPath.at(i - 1)!;
                 let connectingEdge: Edge = NULLEDGE;
                 //find edge to next node in transition
                 currentNode!.edges.forEach((edge) => {
@@ -237,31 +297,9 @@ function updatePathEdges(startingNode: Node,
             pathTransitions.push(newTransition);
         }
     }
-    console.log("edges on this floor");
-    console.log(pathEdges);
-    console.log("transitions on this floor");
-    console.log(pathTransitions);
-    setPathFloorTransitionNodes(pathTransitions);
-    setPathEdges(pathEdges);
-
+    return {edges:pathEdges, transitions:pathTransitions};
 }
 
-export interface MapStates {
-    startNode: Node;
-    setStartNode: Dispatch<SetStateAction<Node>>;
-    endNode: Node;
-    setEndNode: Dispatch<SetStateAction<Node>>;
-    selectedFloorIndex: FloorToIndex;
-    setSelectedFloorIndex: Dispatch<SetStateAction<FloorToIndex>>;
-    drawEntirePath: boolean;
-    setDrawEntirePath: Dispatch<SetStateAction<boolean>>;
-    locations: Node[];
-    setLocations: Dispatch<SetStateAction<Node[]>>;
-    viewbox: { x: number, y: number, width: number, height: number },
-    setViewbox: Dispatch<SetStateAction<{ x: number, y: number, width: number, height: number }>>
-    zoomScale: number,
-    setZoomScale: Dispatch<SetStateAction<number>>
-}
 
 export function Map({
                         startNode: startNode, setStartNode: setStartNode,
@@ -279,7 +317,7 @@ export function Map({
     /* some bs useStates */
     const [pathDrawnEdges, setPathDrawnEdges] = useState<Array<Edge>>([]);
     const [pathFloorTransitions, setPathFloorTransitions] =
-        useState<Array<{ startTranNode: Node, endTranNode: Node }>>([]);
+        useState<Array<Transition>>([]);
 
 
     //panStates
@@ -351,8 +389,8 @@ export function Map({
                     })
                 }
                 {
-                    pathFloorTransitions.map((tranistion) => {
-                        return drawTransitionText(tranistion);
+                    pathFloorTransitions.map((transition) => {
+                        return drawTransitionText(transition);
                     })
                 }
 
@@ -513,29 +551,45 @@ export function Map({
         return false;
     }
 
-    function drawTransitionText(transition: {startTranNode: Node, endTranNode: Node}) {
+    /**
+     * Draw the text that says "Go to Floor {floor}" and "From Floor {floor}"
+     * @param transition a Transition that holds the two nodes that we are transitioning between
+     */
+    function drawTransitionText(transition: Transition) {
         /* find the starting and ending floors */
         const floorStart = floorToNumber(transition!.startTranNode.floor);
         const floorEnd = floorToNumber(transition!.endTranNode.floor);
 
         /* define the style for the boxes */
         const style: TransitionTextStyle = {
-            xTransform : -225,
-            xTextTransform : -220,
-            yTransform : -10,
-            yTextTransform : 35,
-            height : 60,
-            width : 210,
+            xTransform: -375,
+            xTextTransform: -370,
+            yTransform: -10,
+            yTextTransform: 35,
+            height: 60,
+            width: 360,
         };
 
+        /* if we're on the floor that pathfinding started on */
         if (floorStart == selectedFloorIndex) {
             return drawTransitionTextTo(transition.startTranNode, transition.endTranNode, style);
-        } else if (floorEnd == selectedFloorIndex) {
+        }
+
+        /* if we're on the floor that pathfinding ends on */
+        else if (floorEnd == selectedFloorIndex) {
             return drawTransitionTextFrom(transition.startTranNode, transition.endTranNode, style);
         }
-        return <a>error: wrong floor</a>;
+
+        /* LOL */
+        return <a key={"error a tag"}>error: wrong floor</a>;
     }
 
+    /**
+     * Draw the text box containing the instruction of which floor you arrived from
+     * @param startNode the starting node from pathfinding
+     * @param endNode the ending node from pathfinding
+     * @param style the struct containing the style information
+     */
     function drawTransitionTextTo(startNode: Node, endNode: Node, style: TransitionTextStyle) {
         return (
             <a key={"transition_" + startNode.id}>
@@ -554,10 +608,10 @@ export function Map({
     }
 
     /**
-     * Draw the text box containing the instruction
-     * @param startNode
-     * @param endNode
-     * @param style
+     * Draw the text box containing the instruction of which floor you arrived from
+     * @param startNode the starting node from pathfinding
+     * @param endNode the ending node from pathfinding
+     * @param style the struct containing the style information
      */
     function drawTransitionTextFrom(startNode: Node, endNode: Node, style: TransitionTextStyle) {
         return (
