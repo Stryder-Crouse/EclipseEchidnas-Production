@@ -404,29 +404,72 @@ router.post("/outsideTransport", async function (req: Request, res: Response) {
 });
 
 router.get("/outsideTransport", async function (req: Request, res: Response) {
-    try {
+    const statusFilter:status = req.query.status as status;
 
-        const transportReq = await PrismaClient.outsideTransport.findMany({
-            orderBy: {
-                serviceReqID: "asc", //order by service request id so the two arrays are parallel
-            }
-        });
+    if(statusFilter == Status.Any){
 
-        const serviceReqs = await PrismaClient.serviceRequest.findMany({
-            orderBy: {
-                reqID: "asc", //order by service request id so the two arrays are parallel
-            },
-            where:{
-                reqType:"outside transportation"
-            }
-        });
+        try {
 
-        //we display info from both the service req and the outside transportation req, so we send the person both DB objects
-        res.send([transportReq,serviceReqs]);
-        console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
-    } catch (err) {
-        console.error("\nUnable to send Requests\n");
+            const transportReq = await PrismaClient.outsideTransport.findMany({
+                orderBy: {
+                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                }
+
+            });
+
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"transportation"
+                }
+            });
+
+            //we display info from both the service req and the outside transportation req, so we send the person both DB objects
+            res.send([transportReq,serviceReqs]);
+            console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
+        } catch (err) {
+            console.error("\nUnable to send Requests\n");
+        }
+
     }
+    else{
+        try {
+
+            const transportReq = await PrismaClient.outsideTransport.findMany({
+                orderBy: {
+                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    serviceReq:{
+                        status:statusFilter
+                    }
+
+                }
+            });
+
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where:{
+                    reqType:"transportation",
+                    status:statusFilter
+                }
+            });
+
+            //we display info from both the service req and the outside transportation req, so we send the person both DB objects
+            res.send([transportReq,serviceReqs]);
+            console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
+        } catch (err) {
+            console.error("\nUnable to send Requests\n");
+        }
+
+    }
+
+
+
 });
 
 // ---------------------------------    Sanitation DB Interaction    ---------------------------------
