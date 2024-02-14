@@ -1,7 +1,5 @@
 import axios from "axios";
-
 import {FloorToIndex, floorToNumber, Node, NULLNODE} from "../../../../backend/src/algorithms/Graph/Node.ts";
-
 import "../../css/component-css/Map.css";
 import {Edge, NULLEDGE} from "../../../../backend/src/algorithms/Graph/Edge.ts";
 import {Graph} from "../../../../backend/src/algorithms/Graph/Graph.ts";
@@ -12,7 +10,11 @@ import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {AStar} from "../../../../backend/src/algorithms/Search/AStar.ts";
 import {Coordinate} from "../../../../backend/src/algorithms/Graph/Coordinate.ts";
 
-export type MapStates = {
+/* - - - types - - - */
+/**
+ * Struct to hold every possible state of the map.
+ */
+export type MapState = {
     startNode: Node;
     setStartNode: Dispatch<SetStateAction<Node>>;
     endNode: Node;
@@ -67,11 +69,12 @@ export type Viewbox = {
     height: number
 }
 
-/** global variables */
+/* - - - global variables - - - */
 let graph: Graph | null = null;
 const panSpeed: number = 2;
 const zoomSpeed: number = 0.1;
 
+/* - - - functions - - - */
 /**
  * Create the global graph from nodes and edges gathered from the database.
  */
@@ -157,7 +160,7 @@ function updatePathEdges(startingNode: Node,
 
     /* actually first: check if the graph is ready */
     if (graph == null) {
-        console.error("Graph has not been created yet - updatePathEdges");
+        // console.error("Graph has not been created yet, but updatePathEdges was called");
         return;
     }
 
@@ -212,102 +215,131 @@ function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndT
     const pathEdges: Array<Edge> = [];
     const pathTransitions: Array<Transition> = [];
 
+    /* for every node in the path */
     for (let i = 0; i < rawPath.length - 1; i++) {
+        /* store this node and the next node */
         const start = rawPath.at(i)!;
         const end = rawPath.at(i + 1)!;
 
-        //edge starts and ends on this floor
+        /* if both nodes are on this floor */
         if (floorToNumber(start!.floor) == floorIndex && floorToNumber(end!.floor) == floorIndex) {
-            //find edge that connects start and end node and add it
+            /* find the edge that connects start to end and add it to pathEdges */
             start!.edges.forEach((edge) => {
                 if (edge.endNode == end) {
                     pathEdges.push(edge);
                 }
             });
         }
-        //if edge leaves the current floor
+
+        /* if start is on this floor, but end is on a different floor */
         else if (floorToNumber(start!.floor) == floorIndex) {
-            //go forwards to find the transition node it ends at
+            /* find which node on this floor causes the transition between floors */
             const newTransition: Transition = {startTranNode: start, endTranNode: end};
 
+            /* iterate forward through the path */
             let currentNode = end;
-
             while (i < rawPath.length - 2) {
                 currentNode = rawPath.at(i + 1)!;
                 const nextNode = rawPath.at(i + 2)!;
-                let connectingEdge: Edge = {endNode: end, id: "BAD", startNode: start, weight: 0};
-                //find edge to next node in transition
+
+                /* find edge between transition floors */
+                let connectingEdge: Edge = NULLEDGE;
                 currentNode!.edges.forEach((edge) => {
                     if (edge.endNode == nextNode) {
                         connectingEdge = edge;
                     }
                 });
+
+                /* if we didn't find it */
                 if (connectingEdge == NULLEDGE) {
-                    console.error("connecting edge not found");
+                    console.error("connecting edge between floor transition not found");
                     break;
                 }
 
-                //if edge has a floor transition weight then keep going if not break;
+                /* double check that the weight of the edge corresponds to a floor transition */
                 if (connectingEdge.weight == Graph.getElevatorAndStairsEdgeWeight()) {
                     newTransition.endTranNode = nextNode;
                 } else {
                     break;
                 }
 
+                /* ROFLMAO */
                 i++;
             }
+
+            /* we found the transition 😻 */
             pathTransitions.push(newTransition);
         }
-        //if edge ends at current floor
+
+        /* if instead end is on this floor, but start is on a different floor */
         else if (floorToNumber(end!.floor) == floorIndex) {
-            //go backwards to find the transition node it started from
+            /* find edge between transition floors */
             const newTransition: Transition = {startTranNode: start, endTranNode: end};
 
+            /* iterate backward through the path */
             let currentNode = start;
             const startingI = i;
-
             while (i > 0) {
                 currentNode = rawPath.at(i)!;
                 const prevNode = rawPath.at(i - 1)!;
+
+                /* find edge between transition floors */
                 let connectingEdge: Edge = NULLEDGE;
-                //find edge to next node in transition
                 currentNode!.edges.forEach((edge) => {
                     if (edge.endNode == prevNode) {
                         connectingEdge = edge;
                     }
                 });
+
+                /* if we didn't find it */
                 if (connectingEdge == NULLEDGE) {
                     console.error("connecting edge not found");
                     break;
                 }
 
-                //if edge has a floor transition weight then keep going if not break;
+                /* double check that the weight of the edge corresponds to a floor transition */
                 if (connectingEdge.weight == Graph.getElevatorAndStairsEdgeWeight()) {
                     newTransition.startTranNode = prevNode;
                 } else {
                     break;
                 }
 
+                /* ROFLMAO 2 */
                 i++;
             }
 
-            //go back to starting i to avoid recalculations
-            i = startingI;
-
+            /* we found the transition 😻 */
+            i = startingI; //go back to starting i to avoid recalculations
             pathTransitions.push(newTransition);
         }
     }
-    return {edges:pathEdges, transitions:pathTransitions};
+
+    /* caught gooning in 3840x2160 */
+    return {edges: pathEdges, transitions: pathTransitions};
 }
 
-
+/**
+ * Draw the map to the screen.
+ * @param startNode part of a MapState
+ * @param setStartNode part of a MapState
+ * @param endNode part of a MapState
+ * @param setEndNode part of a MapState
+ * @param selectedFloorIndex part of a MapState
+ * @param drawEntirePath part of a MapState
+ * @param locations part of a MapState
+ * @param viewbox part of a MapState
+ * @param setViewbox part of a MapState
+ * @param zoomScale part of a MapState
+ * @param setZoomScale part of a MapState
+ */
 export function Map({
                         startNode: startNode, setStartNode: setStartNode,
                         endNode: endNode, setEndNode: setEndNode,
-                        selectedFloorIndex: selectedFloorIndex, drawEntirePath: drawEntirePath,
-                        locations: locations, viewbox: viewbox, setViewbox: setViewbox, zoomScale: zoomScale,
-                        setZoomScale: setZoomScale
-                    }: MapStates) {
+                        selectedFloorIndex: selectedFloorIndex,
+                        drawEntirePath: drawEntirePath, locations: locations,
+                        viewbox: viewbox, setViewbox: setViewbox,
+                        zoomScale: zoomScale, setZoomScale: setZoomScale
+                    }: MapState) {
 
     /* when the page updates, update the edges */
     useEffect(() => {
@@ -318,24 +350,23 @@ export function Map({
     const [pathDrawnEdges, setPathDrawnEdges] = useState<Array<Edge>>([]);
     const [pathFloorTransitions, setPathFloorTransitions] =
         useState<Array<Transition>>([]);
-
-
-    //panStates
     const [currentlyPanning, setCurrentlyPanning] =
         useState(false);
     const [startOfClick, setStartOfClick] =
         useState<Coordinate>({x: 0, y: 0});
     const [endOfClick, setEndOfClick] =
         useState<Coordinate>({x: 0, y: 0});
-    // let endOfClick:Coordinate = {x:0,y:0};
-    // let startOfClick:Coordinate = {x:0,y:0};
-    // let scale:number =1;
 
+
+    /*
+     * Create the event listener in raw JavaScript for zooming in and out,
+     * as React's onWheel React event does not allow
+     * the preventDefault() option to work.
+     *
+     * React-Dev's solution was "just use non react event listeners."
+     */
     useEffect(() => {
-        //create event listener in raw js for zoom as reacts onWheel React event does not allow the preventDefault() option
-        // to work, reacts dev solution was "just use non react event listeners"
         createZoomEvent(viewbox, setViewbox, setZoomScale);
-
     }, [setViewbox, setZoomScale, viewbox, zoomScale]);
 
 
@@ -394,98 +425,87 @@ export function Map({
                     })
                 }
 
-
             </svg>
         </div>
     );
 
+
+
+    /**
+     * Graphically draw an edge.
+     * @param edge the edge to draw
+     */
     function drawEdge(edge: Edge) {
+        /* draw the solid edge for everything */
         if (drawEntirePath) {
             return <line key={"line_" + edge.id} className={"pathLineAll"}
                          x1={edge.startNode.coordinate.x.toString()}
                          y1={edge.startNode.coordinate.y.toString()}
                          x2={edge.endNode.coordinate.x.toString()}
                          y2={edge.endNode.coordinate.y.toString()}></line>;
-
-
-        } else {
-            return <line key={"line_" + edge.id} className={"pathLine"}
-                         x1={edge.startNode.coordinate.x.toString()}
-                         y1={edge.startNode.coordinate.y.toString()}
-                         x2={edge.endNode.coordinate.x.toString()}
-                         y2={edge.endNode.coordinate.y.toString()}></line>;
         }
+
+        /* draw the moving, dotted edge for the pathfinding path */
+        return <line key={"line_" + edge.id} className={"pathLine"}
+                     x1={edge.startNode.coordinate.x.toString()}
+                     y1={edge.startNode.coordinate.y.toString()}
+                     x2={edge.endNode.coordinate.x.toString()}
+                     y2={edge.endNode.coordinate.y.toString()}></line>;
     }
 
+    /**
+     * Graphically draw a node.
+     * @param node the node to draw
+     */
     function drawNode(node: Node) {
+        /* symbols */
+        const tag: string = "clickableAtag";
+
+        /* if the node is a start node, draw it green */
         if (node.id == startNode.id) {
-            return (
-                <a key={node.id} id={node.id} className={"clickableAtag"}
-                   onClick={() => markNodeOnClick(node.id)}
-                   onMouseOver={() => onNodeHover(node.id)}
-                   onMouseLeave={() => onNodeLeave(node.id)}
-                >
-                    <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"startSelected"}></circle>
-                </a>
-            );
-        } else if (node.id == endNode.id) {
-            return (
-                <a key={node.id} id={node.id} className={"clickableAtag"}
-                   onClick={() => markNodeOnClick(node.id)}
-                   onMouseOver={() => onNodeHover(node.id)}
-                   onMouseLeave={() => onNodeLeave(node.id)}
-                >
-                    <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"endSelected"}></circle>
-                </a>
-            );
-        } else if (inTransition(node.id)) {
-
-            return (
-                <a key={node.id} id={node.id} className={"clickableAtag"}
-                   onClick={() => markNodeOnClick(node.id)}
-                   onMouseOver={() => onNodeHover(node.id)}
-                   onMouseLeave={() => onNodeLeave(node.id)}
-                >
-                    <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"transitionNode"}></circle>
-                </a>
-            );
-        } else if (drawEntirePath) {
-            // const height = 30;
-            // const width = node.longName.length*12.5+10;
-            //
-            // const xTranform = -width/2;
-            // const xTextTranform = -width/2+5;
-            // const yTranform = +15;
-            // const yTextTranform = 35;
-
-            return (
-                <a key={node.id} id={node.id} className={"clickableAtag"}
-                   onClick={() => markNodeOnClick(node.id)}
-                   onMouseOver={() => onNodeHover(node.id)}
-                   onMouseLeave={() => onNodeLeave(node.id)}
-                >
-                    {/* removed some code here */}
-                    <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"normalNode"}></circle>
-                </a>
-            );
-        } else {
-
-            return (
-                <a key={node.id} id={node.id} className={"clickableAtag"}
-                   onClick={() => markNodeOnClick(node.id)}
-                   onMouseOver={() => onNodeHover(node.id)}
-                   onMouseLeave={() => onNodeLeave(node.id)}
-                >
-                    <circle cx={node.coordinate.x} cy={node.coordinate.y} className={"normalNode"}></circle>
-                </a>
-            );
+            return drawNodeGraphic(node, tag, "startSelected");
         }
 
+        /* if the node is an end node, draw it red */
+        else if (node.id == endNode.id) {
+            return drawNodeGraphic(node, tag, "endSelected");
+        }
+
+        /* if the node is a transition node, draw it orange */
+        else if (inTransition(node.id)) {
+            return drawNodeGraphic(node, tag, "transitionNode");
+        }
+
+        /* if we want to draw the whole path, draw it blue?? */
+        else if (drawEntirePath) {
+            return drawNodeGraphic(node, tag, "normalNode");
+        }
+
+        /* finally, draw the node blue */
+        return drawNodeGraphic(node, tag, "normalNode");
+    }
+
+    /**
+     * Draw the node's rendered HTML.
+     * @param node the node to draw
+     * @param tagClass the tag, generally clickableAtag
+     * @param nodeClass the class of the node
+     */
+    function drawNodeGraphic(node: Node, tagClass: string, nodeClass: string) {
+        return (
+            <a key={node.id} id={node.id} className={tagClass}
+               onClick={() => markNodeOnClick(node.id)}
+               onMouseOver={() => onNodeHover(node.id)}
+               onMouseLeave={() => onNodeLeave(node.id)}
+            >
+                <circle cx={node.coordinate.x} cy={node.coordinate.y} className={nodeClass}></circle>
+            </a>
+        );
     }
 
     /**
      * Draw the info of a node when it is highlighted.
-     * @param node
+     * @param node the node to draw
      */
     function drawNodeInfo(node: Node) {
         /* make sure the graph exists before getting the nodes */
@@ -508,10 +528,16 @@ export function Map({
         edgeConnections = edgeConnections.substring(0, edgeConnections.length - 2);
 
         /* draw the floating div */
-        return drawNodeGraphic(node, connectedNode, edgeConnections);
+        return drawNodeInfoGraphic(node, connectedNode, edgeConnections);
     }
 
-    function drawNodeGraphic(node: Node, connectedNode: Node, edgeConnections: string) {
+    /**
+     * Return the actual div to render for drawNodeInfo
+     * @param node the node to print info for
+     * @param connectedNode the node adjacent to node
+     * @param edgeConnections the edges connected to node
+     */
+    function drawNodeInfoGraphic(node: Node, connectedNode: Node, edgeConnections: string) {
         return (
             <foreignObject key={"nodeInfo_" + node.id} id={"nodeInfo_" + node.id}
                            className={"foreignObjectNode"} x={node.coordinate.x + 20} y={node.coordinate.y - 250}
@@ -572,12 +598,12 @@ export function Map({
 
         /* if we're on the floor that pathfinding started on */
         if (floorStart == selectedFloorIndex) {
-            return drawTransitionTextTo(transition.startTranNode, transition.endTranNode, style);
+            return drawTransitionTextToHTML(transition.startTranNode, transition.endTranNode, style);
         }
 
         /* if we're on the floor that pathfinding ends on */
         else if (floorEnd == selectedFloorIndex) {
-            return drawTransitionTextFrom(transition.startTranNode, transition.endTranNode, style);
+            return drawTransitionTextFromHTML(transition.startTranNode, transition.endTranNode, style);
         }
 
         /* LOL */
@@ -590,7 +616,7 @@ export function Map({
      * @param endNode the ending node from pathfinding
      * @param style the struct containing the style information
      */
-    function drawTransitionTextTo(startNode: Node, endNode: Node, style: TransitionTextStyle) {
+    function drawTransitionTextToHTML(startNode: Node, endNode: Node, style: TransitionTextStyle) {
         return (
             <a key={"transition_" + startNode.id}>
                 <rect x={startNode.coordinate.x + style.xTransform}
@@ -613,7 +639,7 @@ export function Map({
      * @param endNode the ending node from pathfinding
      * @param style the struct containing the style information
      */
-    function drawTransitionTextFrom(startNode: Node, endNode: Node, style: TransitionTextStyle) {
+    function drawTransitionTextFromHTML(startNode: Node, endNode: Node, style: TransitionTextStyle) {
         return (
             <a key={"transition_" + startNode.id}>
                 <rect x={endNode.coordinate.x + style.xTransform}
@@ -651,13 +677,19 @@ export function Map({
         }
     }
 
+    /**
+     * Initiate map viewbox panning.
+     * @param event the mouse event that caused the panning
+     */
     function startPan(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         setCurrentlyPanning(true);
         setStartOfClick({x: event.movementX, y: event.movementY});
-        //console.log("start");
-        //console.log(startOfClick);
     }
 
+    /**
+     * Transform the map's viewbox while it is panning.
+     * @param event the mouse event that caused the panning
+     */
     function whilePanning(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         if (currentlyPanning) {
             setEndOfClick({x: event.movementX, y: event.movementY});
@@ -670,19 +702,14 @@ export function Map({
         }
     }
 
+    /**
+     * Stop panning the map for a general mouse event.
+     * @param event the mouse event that caused the map to stop panning
+     */
     function stopPan(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         if (currentlyPanning) {
-            setEndOfClick({x: event.movementX, y: event.movementY});
-            //console.log("start");
-            //console.log(endOfClick);
-            const movementX = ((startOfClick.x - endOfClick.x) / zoomScale) * panSpeed;
-            const movementY = ((startOfClick.y - endOfClick.y) / zoomScale) * panSpeed;
-            setViewbox({
-                x: viewbox.x + movementX, y: viewbox.y + movementY,
-                width: viewbox.width, height: viewbox.height
-            });
+            whilePanning(event);
             setCurrentlyPanning(false);
-            // console.log("stoped pan");
         }
     }
 
