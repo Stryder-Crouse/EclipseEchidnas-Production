@@ -35,13 +35,13 @@ export default function Religious_input() {
         "Other"];
     async function handleSubmit() {
         //send to backend
-        const data0: ReligRequest = {
+        const data1: ReligRequest = {
             patientName: nameP,
             religion: religions[religionDDIndx],
             reqDescription: service,
             genReqID: -1,
         };
-        const data1:ServiceRequest = {
+        const data0:ServiceRequest = {
             reqType: ReqTypes.religReq,
             reqPriority: locationNames[urgencyDDIndx],
             reqLocationID: location,
