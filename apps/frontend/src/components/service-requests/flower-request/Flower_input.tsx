@@ -35,6 +35,7 @@ export default function Flower_input() {
 
     },[]);
         async function submitForm() {
+            // console.log("\n\n\n\n\n\n\nGOT HERE\n\n\n\n\n\n\n\n");
             const serviceRequest: ServiceRequest = {
                 reqType: "flower delivery",
                 reqLocationID: locations[selected].nodeID,
@@ -160,6 +161,7 @@ export default function Flower_input() {
                                         inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
                                         selectCSS={""}
                                         resetOnSelect={false} setResetDropdown={setResetDropdown}/>
+
                         {/*<input*/}
                         {/*    value={location}*/}
                         {/*    type={"text"}*/}

@@ -81,7 +81,7 @@ import {FlowReq,ServiceRequest} from "../../../../../backend/src/algorithms/Requ
                                             //ids are startingNodeInput and endingNodeInput
                                             flowerRequest?.map((request) => {
                                                 return (
-                                                    <tr key={"Med_" + request[0].genReqID}>
+                                                    <tr key={"Flow_" + request[0].genReqID}>
                                                         <td className={"node-id"}>{request[1].reqType}</td>
                                                         <td>{request[1].reqLocationID}</td>
                                                         <td>{request[0].flowType}</td>
