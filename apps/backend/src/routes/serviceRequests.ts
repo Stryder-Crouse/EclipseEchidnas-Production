@@ -285,6 +285,22 @@ router.post("/changePriority", async function (req: Request, res: Response){
     }
 });
 
+router.post("/removeRequest", async function (req: Request, res: Response) {
+    try {
+        const data: ServiceRequest = req.body;
+        await PrismaClient.serviceRequest.delete({
+            where: {
+                reqID: data.reqID
+            }
+        });
+        console.log("Successfully Destroyed Request");
+        res.sendStatus(200);
+    } catch {
+        console.log("Error removing request");
+        res.sendStatus(400);
+    }
+});
+
 
 // ---------------------------------    Outside Transport DB Interaction    ---------------------------------
 
