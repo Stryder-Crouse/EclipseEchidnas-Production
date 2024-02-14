@@ -10,7 +10,7 @@ export default function ServiceRequest_Table({statusFilter:statusFilter}:statusF
     return (
         <div >
             {/* make your table in here  */}
-            Religious request table
+            Service request table
         </div>
     );
 
