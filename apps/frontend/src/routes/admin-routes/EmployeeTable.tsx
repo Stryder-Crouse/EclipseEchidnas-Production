@@ -8,9 +8,10 @@ import "../../css/route-css/EmployeeTable.css";
 import "../../css/route-css/EmployeeTableInput.css";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Employee} from "../../../../backend/src/algorithms/Employee/Employee.ts";
+import {Employee, Roles} from "../../../../backend/src/algorithms/Employee/Employee.ts";
 import trashIcon from "../../images/Table Functions/trash.png";
 import editPen from "../../images/Table Functions/editPen.png";
+
 
 //TODO IMPLEMENT THESE BUTTONS TO POPULATE WITH EVERY ROW
 //import TrashIcon from "../../images/Table Functions/trash-2.png";
@@ -22,11 +23,15 @@ function EmployeeTable() {
     const [employees, setEmployees] = useState<Employee[]>([]);
 
     //employee creation
-    // const [newUserName, setNewUserName] = useState("");
-    // const [newFristName, setNewFristName] = useState("");
-    // const [newLastName, setNewLastName] = useState("");
-    // const [newDis, setNewUserName] = useState("");
-    
+    const [newUserName, setNewUserName] = useState("");
+    const [newFristName, setNewFristName] = useState("");
+    const [newLastName, setNewLastName] = useState("");
+    const [newDesignation, setNewDesignation] = useState("");
+    const [newIsAdmin, setNewIsAdmin] = useState("");
+
+    //use ref for checkbox
+
+
     /* populate the requests */
     useEffect(()=>{
         getEmployees().then((result)=>setEmployees(result));
@@ -87,44 +92,105 @@ function EmployeeTable() {
                         <label form={"employeeUsername"}>Username</label><br/>
                         <input type={"text"} placeholder={"Enter Username"} className={"inputText"}
                                name={"employeeUsername"} required
-                               // onChange={(e)=>{
-                               //     setNewUserName(e.target.value);
-                               // }}
+                               value={newUserName}
+                               onChange={(e) => {
+                                   setNewUserName(e.target.value);
+                               }}
                         />
                     </div>
                     <div>
                         <label form={"employeeFirst"}>First Name</label><br/>
                         <input type={"text"} placeholder={"Enter First Name"} className={"inputText"}
                                name={"employeeFirst"} required
-                               // onChange={(e)=>{
-                               //     setNewFristName(e.target.value);
-                               // }}
+                               value={newFristName}
+                               onChange={(e) => {
+                                   setNewFristName(e.target.value);
+                               }}
                         />
                     </div>
                     <div>
                         <label form={"employeeLast"}>Last Name</label><br/>
                         <input type={"text"} placeholder={"Enter Last Name"} className={"inputText"}
                                name={"employeeFirst"} required
-                               // onChange={(e)=>{
-                               //     setNewLastName(e.target.value);
-                               // }}
+                               value={newLastName}
+                               onChange={(e) => {
+                                   setNewLastName(e.target.value);
+                               }}
                         />
                     </div>
                     <div>
                         <label form={"designation"}>Designation</label><br/>
                         <input type={"text"} placeholder={"Enter Designation"} className={"inputText"}
-                               name={"designation"} required/>
+                               name={"designation"} required
+                               value={newDesignation}
+                               onChange={(e) => {
+                                   setNewDesignation(e.target.value);
+                               }}
+                        />
                     </div>
                     <div>
-                        <button type={"submit"} className={"submitButtonEmployee"}>Add Employee</button>
+                        <label form={"isAdmin"}>Is Admin</label><br/>
+                        <input type={"checkbox"}
+                               name={"isAdmin"} required
+                                 className={"inputText"}
+                               id={"isAdminCheck"}
+                               value={newIsAdmin}
+                               onChange={(e) => {
+                                       setNewIsAdmin(e.target.value);
+                               }}
+                        />
                     </div>
                     <div>
-                        <button type={"button"} onClick={closeForm}>Close</button>
+                        <button  type={"button"} className={"submitButtonEmployee"}
+                        onClick={onSubmit}
+                        >Add Employee</button>
+                    </div>
+                    <div>
+                        <button type={"button"} className={"submitButtonEmployee"}onClick={closeForm}>Close</button>
                     </div>
                 </form>
             </div>
         </div>
     );
+
+    async function onSubmit() {
+
+        let isAdmin =false;
+
+        if(newIsAdmin=="check"){
+            isAdmin=true;
+        }
+
+        const newEmployee: Employee = {
+            designation: Roles.admin,//todo change to drop down
+            firstName: newFristName,
+            isAdmin: isAdmin,
+            lastName: newLastName,
+            userName: newUserName
+        };
+
+        const newEmployees = [...employees];
+        newEmployees.push(newEmployee);
+        setEmployees(newEmployees);
+        const checkbox = document?.getElementById("isAdminCheck")as HTMLInputElement;
+        checkbox.checked=false;
+        setNewDesignation("");
+        setNewIsAdmin("");
+        setNewLastName("");
+        setNewFristName("");
+        setNewUserName("");
+
+        await axios.post("/api/employees/employee",
+            newEmployee, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+        closeForm();
+
+    }
+
 }
 
 /**
@@ -134,7 +200,7 @@ function EmployeeTable() {
 function drawEmployeeRecord(employee: Employee) {
     return (
         <tr className={"tableTR"} key={"Employee_" + employee.userName}>
-            <td className={"tableTD"}>{employee.userName}</td>
+        <td className={"tableTD"}>{employee.userName}</td>
             <td className={"tableTD"}>{employee.firstName}</td>
             <td className={"tableTD"}>{employee.lastName}</td>
             <td className={"tableTD"}>{employee.designation}</td>
@@ -173,6 +239,8 @@ function closeForm(): void {
         close.setAttribute("class","employeeInputHidden");
     }
 }
+
+
 
 async function getEmployees()  {
     const employees = await axios.get<Employee[]>("/api/employees/employees");
