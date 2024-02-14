@@ -69,6 +69,7 @@ export default async function dbInit() {
     await PrismaClient.$transaction([
       PrismaClient.edgeDB.deleteMany(),
       PrismaClient.medReq.deleteMany(),
+      PrismaClient.sanReq.deleteMany(),
       PrismaClient.serviceRequest.deleteMany(),
       PrismaClient.nodeDB.deleteMany(),
       PrismaClient.employee.deleteMany(),

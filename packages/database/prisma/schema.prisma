@@ -77,9 +77,12 @@ model ServiceRequest {
   assignedUName String? @db.VarChar(256)
   reqPriority   String  @db.VarChar(256)
 
-  //not actually here
+  // not actually here
   medReq           MedReq?           @relation("genericRequest")
   outsideTransport outsideTransport? @relation("outsideTransport")
+  sanReq           SanReq?           @relation("sanReq")
+  // making new request table exsample
+  // flowReq      FlowerReq?   @relation("FlowerReq")
   flowReq          FlowReq?          @relation("FlowerReq")
   reqLocation      NodeDB            @relation("requestLocation", fields: [reqLocationID], references: [nodeID])
   assigned         Employee?         @relation("assignedEmployee", fields: [assignedUName], references: [userName])
@@ -107,4 +110,12 @@ model outsideTransport {
   serviceReqID       Int    @unique
 
   serviceReq ServiceRequest @relation("outsideTransport", fields: [serviceReqID], references: [reqID])
+}
+
+model SanReq {
+  sanReqID     Int    @id @unique @default(autoincrement())
+  type         String @db.VarChar(256)
+  serviceReqID Int    @unique
+
+  serviceReq ServiceRequest @relation("sanReq", fields: [serviceReqID], references: [reqID])
 }

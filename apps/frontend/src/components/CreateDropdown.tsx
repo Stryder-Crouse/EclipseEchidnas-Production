@@ -8,7 +8,7 @@ export interface DropdownProps{
     resetOnSelect: boolean,
     resetDropdown: boolean,
     setResetDropdown: React.Dispatch<React.SetStateAction<boolean>>,
-    setSelected:   React.Dispatch<React.SetStateAction<string>>,
+    setSelected:   React.Dispatch<React.SetStateAction<number>>,
     inputCSS:string,
     selectCSS:string
 }
@@ -16,7 +16,8 @@ export interface DropdownProps{
 export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populationArr, setSelected, resetDropdown,
                                    setResetDropdown, inputCSS, resetOnSelect,selectCSS}: DropdownProps) {
 
-
+    //every time this is reloaded, check to see if we need to reset the value of the dropdown
+    //if so, reset based on the two implementations, one searchable and one not
     if (resetDropdown) {
         const dropdownElement = document.getElementById(dropdownID);
         if (dropdownElement) {
@@ -28,12 +29,9 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
                 (dropdownElement as HTMLSelectElement).selectedIndex = 0;
             }
         }
-        setSelected(""); // Reset selected value
+        setSelected(-1); // Reset selected value
         setResetDropdown(false); // Stop it from continually resetting
     }
-
-
-// -----------------------------------------------------------------------------------------
 
     function resetInputBox(){
 
@@ -50,8 +48,8 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
     }
 
     function setValueCorrectly(index:number){
-        const value = populationArr[index];
-        setSelected(value);
+        //const value = populationArr[index];
+        setSelected(index);
         if(resetOnSelect){
             resetInputBox();
         }
@@ -62,7 +60,6 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
         for(let index = 0; index < populationArr.length; index++)
         {
             const arrVal = populationArr[index].toString();
-            //let textVal = value;
             if(arrVal == value)
             {
                 setValueCorrectly(index);
@@ -95,6 +92,7 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
             <div className="dropdown">
                 <select id={dropdownID} className={selectCSS} name={dropBtnName} onChange={e => {
                     setValueCorrectly(e.target.selectedIndex - 1);
+                    /*accounts for the extra unselectable option with the placeholder text*/
                 }}>
                     <option disabled={true} selected={true} className={"dropdown-content unselectable"}>{dropBtnName}</option>
                     {
