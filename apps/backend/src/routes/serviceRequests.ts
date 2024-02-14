@@ -2,6 +2,7 @@ import express, {Router, Request, Response} from "express";
 //import { MedReq, Request } from "../algorithms/node.ts";
 import PrismaClient from "../bin/database-connection.ts";
 import {MedReq, OutsideTransport, sanReq, ServiceRequest, FlowReq} from "../algorithms/Requests/Request.ts";
+import Status from "../algorithms/Requests/Status.ts";
 // import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
 
 //import path from "path";
@@ -134,6 +135,47 @@ router.get("/serviceReq", async function (req: Request, res: Response) {
         res.sendStatus(400); // Send error
     }
 });
+
+
+router.get("/serviceReq/filterByStatus", async function (req: Request, res: Response) {
+    try {
+        const statusFilter:string = req.body;
+        //if no filter is applied to the service request, then send all the service requests
+        if(statusFilter == Status.Any) {
+                res.send(PrismaClient.serviceRequest.findMany({         //todo BNBN (RYAN) --- update to include all service requests when done
+                include: {
+                    outsideTransport: true,
+                    sanReq: true,
+                    flowReq: true,
+                    medReq: true
+                }
+            }));
+        } else {            //otherwise... send only the service requests that have the desired status
+            res.send(PrismaClient.serviceRequest.findMany({         //todo BNBN (RYAN) --- update to include all service requests when done
+                where: {
+                    status: statusFilter        //filtering
+                },
+                include: {                              //packages service request table together with whatever other request table is applicable
+                    outsideTransport: true,             // (for instance, a service request and medical request will be put together to be displayed in frontend)
+                    sanReq: true,
+                    flowReq: true,
+                    medReq: true
+                }
+            }));
+
+            console.log("Res: " + res); //debugging info
+        }
+
+        console.info("\nSuccessfully filtered requests\n"); //debugging info
+    } catch {
+        console.error("\nUnable to filter requests\n");
+        res.sendStatus(400); // Send error
+    }
+});
+
+
+
+// ---------------------------------    Changing Service Req Fields    ---------------------------------
 
 
 //Changing the assigned user given a service request id and the new assigned user
@@ -530,5 +572,8 @@ router.get("/flowReq", async function (req: Request, res: Response) {
         console.error("\nUnable to send requests\n");
     }
 });
+
+
+
 
 export default router;
