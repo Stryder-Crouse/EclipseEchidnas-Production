@@ -225,6 +225,7 @@ ENV POSTGRES_CONTAINER=$POSTGRES_CONTAINER
 ENV POSTGRES_PORT=$POSTGRES_PORT
 ENV POSTGRES_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_CONTAINER}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=dev"
 
+
 # Run with CMD, since dev may want to use other commands
 CMD ["yarn", "turbo", "run", "dev", "--filter=backend"]
 

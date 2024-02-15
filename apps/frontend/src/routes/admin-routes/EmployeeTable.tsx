@@ -37,6 +37,8 @@ function EmployeeTable() {
 
 
 
+
+
     /* populate the requests */
     useEffect(()=>{
         getEmployees().then((result)=>setEmployees(result));
@@ -95,7 +97,7 @@ function EmployeeTable() {
                 <form className={"formNewEmployee"}>
                     <div>
                         <label form={"employeeUsername"}>Username</label><br/>
-                        <input disabled={true} type={"text"} placeholder={"Enter Username"} className={"inputText"}
+                        <input disabled={isCreating()} type={"text"} placeholder={"Enter Username"} className={"inputText"}
                                name={"employeeUsername"} required
                                value={newUserName}
                                onChange={(e) => {
@@ -184,6 +186,13 @@ function EmployeeTable() {
         </div>
     );
 
+
+    function isCreating(){
+        if(editIndex!=-1){
+            return true;
+        }
+        return false;
+    }
     function formSubmitText(){
         if(editIndex!=-1){
             return "Update Employee";

@@ -9,7 +9,7 @@ import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataB
 
 let longNames:string[] = [];
 
-const priority =[Priority.low, Priority.normal, Priority.high, Priority.emergency];
+const priorityLevels =[Priority.low, Priority.normal, Priority.high, Priority.emergency];
 export default function Religious_input() {
     const [service, setService] = useState("");
     const [nameP, setNameP] = useState("");
@@ -62,15 +62,16 @@ export default function Religious_input() {
         };
         const data0:ServiceRequest = {
             reqType: ReqTypes.religReq,
-            reqPriority: priority[urgencyDDIndx],
+            reqPriority: priorityLevels[urgencyDDIndx],
             reqLocationID: locations[selected].nodeID,
             extraInfo: extraInfo,
             status: Status.unassigned,
             assignedUName: "No one", //should not matter
             reqID: -1 //should not matter
         };
-
+        console.log("urg");
         console.log(urgencyDDIndx);
+        console.log(priorityLevels[urgencyDDIndx]);
 
         //clear fields
         setService("");
@@ -102,7 +103,7 @@ export default function Religious_input() {
                 <div className="grid justify-center items-center my-1.5">
 
                     <label className="label">Location </label>
-                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"Location___"} isSearchable={true}
+                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationReli"} isSearchable={true}
                                     populationArr={longNames} resetDropdown={resetDropdownLoc}
                                     setSelected={setSelected}
                                     inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
@@ -142,7 +143,7 @@ export default function Religious_input() {
                 {/* Urgency */}
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
                     <CreateDropdown dropBtnName={"Urgency"} dropdownID={"UrgencyID"} isSearchable={false}
-                                    populationArr={priority}
+                                    populationArr={priorityLevels}
                                     setSelected={setUrgencyDDIndx}
                                     resetDropdown={resetDropdownUrg}
                                     resetOnSelect={false}
