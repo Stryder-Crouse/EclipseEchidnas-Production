@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useState} from "react";
 import {
     OutsideTransport,
@@ -7,8 +7,12 @@ import {
 } from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import axios from "axios";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
+import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
+import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import {CreateDropdown} from "../../CreateDropdown.tsx";
 //import LocationsDropDown from "../../navigation-bar/LocationsDropDown.tsx";
 
+let longNames:string[] = [];
 
 export default function Transportation_Input() {
 
@@ -30,10 +34,29 @@ export default function Transportation_Input() {
 
     const [priority, setPriority] = useState(PriorityLevel.Unchosen);
     const [patientName, setPatientName] = useState('');
-    const [room, setRoom] = useState('');
+
+
     const [destination, setDestination] = useState('');
     const [modeTransport, setModeTransport] = useState(ModeTransport.Unchosen);
     const [additional, setAdditional] = useState('');
+
+    const [resetDropdown, setResetDropdown] = useState(false);
+    const [selected, setSelected] = useState(-1);
+    const [locations, setLocations] = useState<NodeDataBase[]>([]);
+
+    useEffect(()=>{
+        getLocations().then(
+            (result)=>{
+
+                const locationLongName:string[] = [];
+                setLocations(result);
+                result.forEach((node)=>{ locationLongName.push(node.longName);});
+                longNames=locationLongName;
+
+            });
+
+    },[]);
+
 
     async function submit() {
 
@@ -43,7 +66,7 @@ export default function Transportation_Input() {
             // this is bc Front End will beconfused if we pass it a bunch of data so use data structures
             const servReq : ServiceRequest = {
                 reqType: ReqTypes.tranReq,           //Set req type to med req automatically bc we only make med reqs
-                reqLocationID: room,    //Need to know location of where the service request needs to be
+                reqLocationID: locations[selected].nodeID,    //Need to know location of where the service request needs to be
                 extraInfo: additional,                      //no extra info is asked for a med req so just ignore (empty string)
                 assignedUName: "No one",            //upon creation, no employee is assigned
                 status: "Unassigned",             //upon creation, nobody is assigned, so set status to unassigned
@@ -76,7 +99,7 @@ export default function Transportation_Input() {
     function clear() {
         setPriority(PriorityLevel.Unchosen);
         setPatientName("");
-        setRoom("");
+        setResetDropdown(true);
         setDestination("");
         setModeTransport(ModeTransport.Unchosen);
         setAdditional("");
@@ -112,41 +135,34 @@ export default function Transportation_Input() {
                         </select>
                     </div>
 
-                    <div className={"grid justify-center items-center my-1.5"}> {/* Patient Name text input */}
-                        <label form={"priority"} className={"mb-1"}>Patient Name:</label>
-                        <input
-                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                            type={"text"}
-                            value={patientName}
-                            placeholder={"Patient Name: "}
-                            id={"patientName"}
-                            onChange={(e) => setPatientName(e.target.value)}
-                        />
+                    {/*patient name*/}
+                    <SimpleTextInput id={"patientName"} labelContent={"Patient Name:"} inputStorage={patientName}
+                                     setInputStorage={setPatientName}
+                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
+                                     placeHolderText={"Patient Name: "}>
+                    </SimpleTextInput>
+
+                    {/*room number*/}
+                    <div className="grid justify-center items-center my-1.5">
+
+                        <label className="label">Location </label>
+                        <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationTran"} isSearchable={true}
+                                        populationArr={longNames} resetDropdown={resetDropdown}
+                                        setSelected={setSelected}
+                                        inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
+                                        selectCSS={""}
+                                        resetOnSelect={false} setResetDropdown={setResetDropdown}/>
+
                     </div>
 
-                    <div className={"grid justify-center items-center my-1.5"}> {/* Patient Room Input */}
-                        <label form={"room"} className={"mb-1"}>Room Number:</label>
-                        <input
-                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                            type={"text"}
-                            value={room}
-                            placeholder={"Patient Room: "}
-                            id={"room"}
-                            onChange={(e) => setRoom(e.target.value)}
-                        />
-                    </div>
-
-                    <div className={"grid justify-center items-center my-1.5 mb-2"}>{/* Destination Input */}
-                        <label form={"destination"} className={"mb-1"}>Destination:</label>
-                        <input
-                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow "}
-                            type={"text"}
-                            value={destination}
-                            placeholder={"Destination: "}
-                            id={"destination"}
-                            onChange={(e) => setDestination(e.target.value)}
-                        />
-                    </div>
+                    {/*destination*/}
+                    <SimpleTextInput id={"destination"} labelContent={"Destination:"} inputStorage={destination}
+                                     setInputStorage={setDestination}
+                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
+                                     placeHolderText={"Destination: "}>
+                    </SimpleTextInput>
 
                     <div className={"grid justify-center items-center my-1.5 mb-2"}>{/* Mode of Transportation Input */}
                         {/*<label
@@ -186,4 +202,13 @@ export default function Transportation_Input() {
     );
 
 
+}
+
+
+
+
+async function getLocations() {
+    //load edges and node from database
+    const nodesDB = await axios.get<NodeDataBase[]>("/api/load-nodes");
+    return nodesDB.data;
 }

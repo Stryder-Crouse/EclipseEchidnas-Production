@@ -72,7 +72,7 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
     if(isSearchable){
         const datalistID = "datalistOf" + dropdownID;
         return (
-            <div className="dropdown">
+            <div  className="dropdown">
 
                 <input type="text" placeholder={dropBtnName} list={datalistID} id={dropdownID}
                        onChange={e => findValueIndex(e.target.value)}
@@ -81,7 +81,9 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
                 />
                 <datalist className="dropbtn" id={datalistID}>
                     {
-                        populationArr.map((option: string) => <option className={"dropdown-content"}>{option}</option>)
+                        populationArr.map((option: string) => <option
+                                                                      className={"dropdown-content"}>{option}</option>)
+                        //key={dropdownID+option}
                     }
                 </datalist>
 
@@ -96,7 +98,8 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
                 }}>
                     <option disabled={true} selected={true} className={"dropdown-content unselectable"}>{dropBtnName}</option>
                     {
-                        populationArr.map((option: string) => <option className={"dropdown-content"}>{option}</option>)
+                        populationArr.map((option: string) => <option  className={"dropdown-content"}>{option}</option>)
+                        //key={dropdownID+option+"s"}
                     }
                 </select>
 

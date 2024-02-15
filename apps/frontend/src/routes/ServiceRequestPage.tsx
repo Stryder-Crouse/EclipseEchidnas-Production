@@ -1,6 +1,6 @@
 /** importations **/
 import React from "react";
-import "../css/route-css/medicineRequest.css";
+
 import SideNavBarComponent, {SideBarItem} from "../components/SideNavBarComponent.tsx";
 
 import ServiceRequestInput from "../components/service-requests/ServiceRequestInput.tsx";

@@ -36,7 +36,7 @@ function RequestButtons({ submit }: RequestButtonsInterface) {
           </button>
           <br/>
           <div id={"popup"} className={"popup"}>
-              <h3>
+              <h3 className={"popup-words"}>
                   Successfully submitted!
               </h3>
           </div>

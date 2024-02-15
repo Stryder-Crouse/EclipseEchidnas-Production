@@ -263,7 +263,6 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
 
         } else {
 
-
             //todo visual error
             console.error("you cannot change the status of an unassigned request");
         }

@@ -32,7 +32,7 @@ x-db-loc: &db-loc
   POSTGRES_CONTAINER: database.cs.wpi.edu
   POSTGRES_PORT: &pg-port "5432"
   POSTGRES_SCHEMA: dev
-  POSTGRES_URL: jdbc:postgresql://database.cs.wpi.edu:5432/postgres?schema=dev
+  POSTGRES_URL: jdbc:postgresql://database.cs.wpi.edu:5432/teamedb?schema=dev
 
 # Running containers
 services:

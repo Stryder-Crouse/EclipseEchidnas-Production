@@ -1,29 +1,52 @@
 import express, { Router, Request, Response } from "express";
 import { Edge } from "../algorithms/Graph/Edge.ts";
 import { Node } from "../algorithms/Graph/Node.ts";
-import { readEdgeCSV, readNodeCSV } from "../algorithms/readCSV.ts";
+
 import {
-  NodeDataBase,
-  nodeDataBaseToNode,
-  nodeToNodeDataBase,
+    NodeDataBase,
+    nodeDataBaseToNode, nodeToNodeDataBase,
+
 } from "../DataBaseClasses/NodeDataBase.ts";
 import {
-  EdgeDataBase,
-  edgeDataBasetoEdge,
-  edgeToEdgeDataBase,
+    EdgeDataBase,
+    edgeDataBasetoEdge, edgeToEdgeDataBase,
+
 } from "../DataBaseClasses/EdgeDataBase.ts";
 import PrismaClient from "../bin/database-connection.ts";
 import { Graph } from "../algorithms/Graph/Graph.ts";
+
+
+import multer from "multer";
+import {readEdgeCSV, readNodeCSV} from "../algorithms/readCSV.ts";
+import fs from "fs";
+
 // import fs from "fs";
 // import * as path from "path";
 
 const router: Router = express.Router();
 
+const upload = multer({ dest: 'uploadedCSVs/' });
+
+
+
 //load recived cvs file into the database
-router.post("/", async function (req: Request, res: Response) {
-  const files: string[] = req.body;
-  const nodes: Array<Node> = readNodeCSV(files.at(0)!);
-  const edges: Array<Edge> = readEdgeCSV(files.at(1)!);
+router.route("/").post(upload.array("csv",2), async function (req: Request, res: Response) {
+
+    const nodeFile = req.files as Express.Multer.File[];
+
+    if (req.files == null) {
+        console.error("Bad");
+        return;
+    }
+    const nodesString = fs.readFileSync(nodeFile[0].path, "utf-8");
+    const edgeString = fs.readFileSync(nodeFile[1].path, "utf-8");
+    console.log("DATA");
+    console.log(nodesString);
+    console.log("DATA 2");
+    console.log(edgeString);
+
+  const nodes: Array<Node> = readNodeCSV(nodesString);
+  const edges: Array<Edge> = readEdgeCSV(edgeString);
 
   //convert to db node
   const edgeDBArray: EdgeDataBase[] = [];
@@ -49,6 +72,7 @@ router.post("/", async function (req: Request, res: Response) {
         PrismaClient.sanReq.deleteMany(),
         PrismaClient.religiousReq.deleteMany(),
         PrismaClient.outsideTransport.deleteMany(),
+        PrismaClient.flowReq.deleteMany(),
         PrismaClient.serviceRequest.deleteMany(),
         PrismaClient.nodeDB.deleteMany()
     ]);
