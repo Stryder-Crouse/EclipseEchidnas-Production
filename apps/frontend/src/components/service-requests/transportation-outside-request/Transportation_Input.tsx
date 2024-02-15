@@ -7,6 +7,7 @@ import {
 } from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import axios from "axios";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
+import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 //import LocationsDropDown from "../../navigation-bar/LocationsDropDown.tsx";
 
 
@@ -112,41 +113,29 @@ export default function Transportation_Input() {
                         </select>
                     </div>
 
-                    <div className={"grid justify-center items-center my-1.5"}> {/* Patient Name text input */}
-                        <label form={"priority"} className={"mb-1"}>Patient Name:</label>
-                        <input
-                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                            type={"text"}
-                            value={patientName}
-                            placeholder={"Patient Name: "}
-                            id={"patientName"}
-                            onChange={(e) => setPatientName(e.target.value)}
-                        />
-                    </div>
+                    {/*patient name*/}
+                    <SimpleTextInput id={"patientName"} labelContent={"Patient Name:"} inputStorage={patientName}
+                                     setInputStorage={setPatientName}
+                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
+                                     placeHolderText={"Patient Name: "}>
+                    </SimpleTextInput>
 
-                    <div className={"grid justify-center items-center my-1.5"}> {/* Patient Room Input */}
-                        <label form={"room"} className={"mb-1"}>Room Number:</label>
-                        <input
-                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                            type={"text"}
-                            value={room}
-                            placeholder={"Patient Room: "}
-                            id={"room"}
-                            onChange={(e) => setRoom(e.target.value)}
-                        />
-                    </div>
+                    {/*room number*/}
+                    <SimpleTextInput id={"room"} labelContent={"Room Number:"} inputStorage={room}
+                                     setInputStorage={setRoom}
+                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
+                                     placeHolderText={"Patient Room: "}>
+                    </SimpleTextInput>
 
-                    <div className={"grid justify-center items-center my-1.5 mb-2"}>{/* Destination Input */}
-                        <label form={"destination"} className={"mb-1"}>Destination:</label>
-                        <input
-                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow "}
-                            type={"text"}
-                            value={destination}
-                            placeholder={"Destination: "}
-                            id={"destination"}
-                            onChange={(e) => setDestination(e.target.value)}
-                        />
-                    </div>
+                    {/*destination*/}
+                    <SimpleTextInput id={"destination"} labelContent={"Destination:"} inputStorage={destination}
+                                     setInputStorage={setDestination}
+                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
+                                     placeHolderText={"Destination: "}>
+                    </SimpleTextInput>
 
                     <div className={"grid justify-center items-center my-1.5 mb-2"}>{/* Mode of Transportation Input */}
                         {/*<label
