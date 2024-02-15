@@ -357,7 +357,6 @@ export function Map({
     const [endOfClick, setEndOfClick] =
         useState<Coordinate>({x: 0, y: 0});
 
-
     /*
      * Create the event listener in raw JavaScript for zooming in and out,
      * as React's onWheel React event does not allow
