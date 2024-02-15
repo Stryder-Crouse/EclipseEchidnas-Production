@@ -9,7 +9,7 @@ import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataB
 
 let longNames:string[] = [];
 
-const priority =[Priority.low, Priority.normal, Priority.high, Priority.emergency];
+const priorityLevels =[Priority.low, Priority.normal, Priority.high, Priority.emergency];
 export default function Religious_input() {
     const [service, setService] = useState("");
     const [nameP, setNameP] = useState("");
@@ -62,14 +62,14 @@ export default function Religious_input() {
         };
         const data0:ServiceRequest = {
             reqType: ReqTypes.religReq,
-            reqPriority: priority[urgencyDDIndx],
+            reqPriority: priorityLevels[urgencyDDIndx],
             reqLocationID: locations[selected].nodeID,
             extraInfo: extraInfo,
             status: Status.unassigned,
             assignedUName: "No one", //should not matter
             reqID: -1 //should not matter
         };
-
+        console.log("urg");
         console.log(urgencyDDIndx);
 
         //clear fields
@@ -142,7 +142,7 @@ export default function Religious_input() {
                 {/* Urgency */}
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
                     <CreateDropdown dropBtnName={"Urgency"} dropdownID={"UrgencyID"} isSearchable={false}
-                                    populationArr={priority}
+                                    populationArr={priorityLevels}
                                     setSelected={setUrgencyDDIndx}
                                     resetDropdown={resetDropdownUrg}
                                     resetOnSelect={false}
