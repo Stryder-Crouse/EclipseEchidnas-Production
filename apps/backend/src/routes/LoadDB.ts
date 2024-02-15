@@ -72,6 +72,7 @@ export default async function dbInit() {
       PrismaClient.sanReq.deleteMany(),
       PrismaClient.religiousReq.deleteMany(),
       PrismaClient.outsideTransport.deleteMany(),
+      PrismaClient.flowReq.deleteMany(),
       PrismaClient.serviceRequest.deleteMany(),
       PrismaClient.nodeDB.deleteMany(),
       PrismaClient.employee.deleteMany(),

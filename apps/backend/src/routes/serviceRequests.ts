@@ -1,7 +1,16 @@
 import express, {Router, Request, Response} from "express";
 //import { MedReq, Request } from "../algorithms/node.ts";
 import PrismaClient from "../bin/database-connection.ts";
-import {FlowReq, MedReq, OutsideTransport, priorities, sanReq, ServiceRequest,  ReligRequest} from "../algorithms/Requests/Request.ts";
+import {
+    FlowReq,
+    MedReq,
+    OutsideTransport,
+    priorities,
+    sanReq,
+    ServiceRequest,
+    ReligRequest,
+    ReqTypes
+} from "../algorithms/Requests/Request.ts";
 import Status from "../algorithms/Requests/Status.ts";
 import status from "../algorithms/Requests/Status.ts";
 // import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
@@ -837,7 +846,9 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
 router.get("/flowReq", async function (req: Request, res: Response) {
     try {
         //
-        const filterStatus = req.body.status;
+        const filterStatus = req.body as status;
+        console.log("filter flow req");
+        console.log(filterStatus);
 
         if (filterStatus == "Any"){
             //try to send all the nodes to the client
@@ -851,7 +862,7 @@ router.get("/flowReq", async function (req: Request, res: Response) {
                     reqID: "asc", //order by service request id so the two arrays are parallel
                 },
                 where:{
-                    reqType:"flower delivery",
+                    reqType:ReqTypes.flowReq,
                 }
             });
             res.send([flowReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
@@ -874,7 +885,7 @@ router.get("/flowReq", async function (req: Request, res: Response) {
                     reqID: "asc", //order by service request id so the two arrays are parallel
                 },
                 where:{
-                    reqType:"flower delivery",
+                    reqType:ReqTypes.flowReq,
                     status: filterStatus,
                 }
             });
