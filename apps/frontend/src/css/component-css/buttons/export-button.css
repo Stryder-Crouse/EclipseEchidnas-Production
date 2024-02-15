@@ -1,9 +1,8 @@
-/*.export {*/
-/*  background-color: transparent;*/
-/*  border: 1px solid #d3d3d3;*/
-/*  border-radius: 0.5rem;*/
-/*  padding: 0.5rem;*/
-/*  color: #111926;*/
-/*  cursor: pointer;*/
-/*}*/
-/*todo ClnCSS*/
+.export {
+  background-color: transparent;
+  border: 1px solid #d3d3d3;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  color: #111926;
+  cursor: pointer;
+}

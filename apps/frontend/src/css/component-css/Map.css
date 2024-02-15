@@ -22,12 +22,6 @@
     stroke-width: 5;
 }
 
-/*.showAllText{*/
-/*    font: bold 20px "Courier New";*/
-/*    fill: white;*/
-/*}*/
-/*todo ClnCSS*/
-
 .floorLinkRect{
     rx:5;
     fill: #062651;
@@ -79,13 +73,6 @@
   r: 15; /* radius of node */
 }
 
-
-/*.heavy {*/
-/*    font: bold 50px sans-serif;*/
-/*    fill: white;*/
-/*}*/
-/*todo ClnCSS*/
-
 /*node info hoverOver*/
 
 .foreignObjectNode{
@@ -124,16 +111,6 @@
     padding: 0;
     margin: 0;
 }
-
-
-
-/*.nameRect{*/
-/*    width:20px;*/
-/*    height: 20px;*/
-/*    fill: black;*/
-
-/*}*/
-/*todo ClnCSS*/
 
 
 @keyframes dash {
