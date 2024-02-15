@@ -1,6 +1,6 @@
 /** importations **/
 import React, { ChangeEvent, useState } from "react";
-import "../css/route-css/medicineRequest.css";
+
 import AdminPageNavBar from "../components/navigation-bar/AdminPageNavBar.tsx";
 import RequestButtons from "../components/buttons/RequestButtons.tsx";
 import ExitButton from "../components/buttons/ExitButton.tsx";
@@ -9,6 +9,8 @@ import axios from "axios";
 import {MedReq, ReqTypes, ServiceRequest} from "../../../backend/src/algorithms/Requests/Request.ts";
 
 export default function OLDServiceRequestPage() {
+
+
   const [medRequestLocale, setMedRequestLocale] = useState("");
   const [medRequestDoses, setMedRequestDose] = useState("");
   const [medRequestType, setMedRequestType] = useState("");
@@ -57,14 +59,6 @@ export default function OLDServiceRequestPage() {
     } catch {
         console.error("Error with trying to save Service Req in ServiceRequestPage.tsx");
     }
-
-
-
-
-
-
-
-
 
   }
 
