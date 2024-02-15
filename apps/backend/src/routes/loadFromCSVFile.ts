@@ -72,6 +72,7 @@ router.route("/").post(upload.array("csv",2), async function (req: Request, res:
         PrismaClient.sanReq.deleteMany(),
         PrismaClient.religiousReq.deleteMany(),
         PrismaClient.outsideTransport.deleteMany(),
+        PrismaClient.flowReq.deleteMany(),
         PrismaClient.serviceRequest.deleteMany(),
         PrismaClient.nodeDB.deleteMany()
     ]);

@@ -5,6 +5,7 @@ import RequestButtons from "../../buttons/RequestButtons.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import status from "../../../../../backend/src/algorithms/Requests/Status.ts";
+import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 
 
 let longNames:string[] = [];
@@ -104,13 +105,6 @@ export default function Flower_input() {
             setPriority(e.target.value);
         }
 
-        // function handleLocation(e: ChangeEvent<HTMLInputElement>) {
-        //     setLocation(e.target.value);
-        // }
-
-        function handleFlowerType(e: ChangeEvent<HTMLInputElement>) {
-            setFlowerType(e.target.value);
-        }
 
         function handleFlowerQuantity(e: ChangeEvent<HTMLInputElement>) {
                 setFlowerQuantity(e.target.value);
@@ -174,16 +168,12 @@ export default function Flower_input() {
                         {/*/>*/}
                     </div>
 
-                    <div className="grid justify-center items-center my-1.5">
-                        <label className="label" id={"flowertype"}>Flower Name </label>
-                        <input
-                            id={"flowertype"}
-                            value={flowerType}
-                            type={"text"}
-                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                            onChange={handleFlowerType}
-                        />
-                    </div>
+                    <SimpleTextInput id={"flowertype"} labelContent={"Flower Name "} inputStorage={flowerType}
+                                     setInputStorage={setFlowerType}
+                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
+                                     placeHolderText={""}>
+                    </SimpleTextInput>
 
                     <div className="grid justify-center items-center my-1.5">
                         <label className="label" form={"flowerquantity"}>Flower Quantity </label>
