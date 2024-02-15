@@ -91,7 +91,7 @@ export default function Medicine_input() {
 
 
                     <SimpleTextInput id={"medRequestDose"} labelContent={"Medicine Dose"} inputStorage={medRequestDoses}
-                                     setInputStorage={setMedRequestDosage}
+                                     setInputStorage={setMedRequestDose}
                                      inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                      divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
                                      placeHolderText={""}>
