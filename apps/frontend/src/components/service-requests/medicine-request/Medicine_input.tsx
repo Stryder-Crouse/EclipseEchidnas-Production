@@ -98,7 +98,7 @@ export default function Medicine_input() {
                     <div className="grid justify-center items-center my-1.5">
 
                         <label className="label">Location </label>
-                        <CreateDropdown dropBtnName={"Locations"} dropdownID={"Location"} isSearchable={true}
+                        <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationMed"} isSearchable={true}
                                         populationArr={longNames} resetDropdown={resetDropdown}
                                         setSelected={setSelected}
                                         inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}

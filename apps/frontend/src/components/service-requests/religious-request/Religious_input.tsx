@@ -71,6 +71,7 @@ export default function Religious_input() {
         };
         console.log("urg");
         console.log(urgencyDDIndx);
+        console.log(priorityLevels[urgencyDDIndx]);
 
         //clear fields
         setService("");
@@ -102,7 +103,7 @@ export default function Religious_input() {
                 <div className="grid justify-center items-center my-1.5">
 
                     <label className="label">Location </label>
-                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"Location___"} isSearchable={true}
+                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationReli"} isSearchable={true}
                                     populationArr={longNames} resetDropdown={resetDropdownLoc}
                                     setSelected={setSelected}
                                     inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
