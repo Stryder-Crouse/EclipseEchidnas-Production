@@ -145,12 +145,6 @@ export default function Flower_input() {
                                         selectCSS={""}
                                         resetOnSelect={false} setResetDropdown={setResetDropdown}/>
 
-                        {/*<input*/}
-                        {/*    value={location}*/}
-                        {/*    type={"text"}*/}
-                        {/*    className={"border-2 p-2 border-black rounded-2xl grow"}*/}
-                        {/*    onChange={handleLocation}*/}
-                        {/*/>*/}
                     </div>
 
                     <SimpleTextInput id={"flowertype"} labelContent={"Flower Name"} inputStorage={flowerType}

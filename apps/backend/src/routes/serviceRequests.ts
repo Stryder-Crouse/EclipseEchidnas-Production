@@ -846,7 +846,7 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
 router.get("/flowReq", async function (req: Request, res: Response) {
     try {
         //
-        const filterStatus = req.body as status;
+        const filterStatus:status = req.query.status as status;
         console.log("filter flow req");
         console.log(filterStatus);
 
