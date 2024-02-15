@@ -1,19 +1,19 @@
 import React, {useState, useEffect,  ChangeEvent} from 'react';
 import axios from "axios";
-import {FlowReq, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import {FlowReq, ReqTypes, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 
 
-const longNames:string[] = [];
+let longNames:string[] = [];
 
 export default function Flower_input() {
     const [sender,setSender] = useState("");
     const [priority,setPriority] = useState("low");
     //const [location,setLocation] = useState("");
     const [flowerType,setFlowerType] = useState("");
-    const [flowerQuantity,setFlowerQuantity] = useState(1);
+    const [flowerQuantity,setFlowerQuantity] = useState("");
     const [flowerRecipient,setFlowerRecipient] = useState("");
     const [extraInfo,setExtraInfo] = useState("");
     const [status,setStatus] = useState("unassigned");
@@ -27,8 +27,11 @@ export default function Flower_input() {
     useEffect(()=>{
         getLocations().then(
             (result)=>{
+
+                const locationLongName:string[] = [];
                 setLocations(result);
-                result.forEach((node)=>{ longNames.push(node.longName);});
+                result.forEach((node)=>{ locationLongName.push(node.longName);});
+                longNames=locationLongName;
 
             });
 
@@ -36,7 +39,7 @@ export default function Flower_input() {
         async function submitForm() {
             // console.log("\n\n\n\n\n\n\nGOT HERE\n\n\n\n\n\n\n\n");
             const serviceRequest: ServiceRequest = {
-                reqType: "flower delivery",
+                reqType: ReqTypes.flowReq,
                 reqLocationID: locations[selected].nodeID,
                 extraInfo: extraInfo,
                 status: status,
@@ -45,9 +48,14 @@ export default function Flower_input() {
                 reqID: -1,
             };
 
+            if(Number.isNaN(parseInt(flowerQuantity))){
+                console.log("amount is not a number");
+                return;
+            }
+
             const flowerRequest: FlowReq = {
                 flowType: flowerType,
-                quantity: flowerQuantity,
+                quantity: parseInt(flowerQuantity),
                 sender: sender,
                 receiver: flowerRecipient,
                 message: message,
@@ -81,7 +89,7 @@ export default function Flower_input() {
             setSender('');
             setPriority('');
             setFlowerType('');
-            setFlowerQuantity(1);
+            setFlowerQuantity('');
             setFlowerRecipient('');
             setResetDropdown(true);
             setStatus('');
@@ -106,7 +114,7 @@ export default function Flower_input() {
         }
 
         function handleFlowerQuantity(e: ChangeEvent<HTMLInputElement>) {
-            setFlowerQuantity(e.target.valueAsNumber);
+                setFlowerQuantity(e.target.value);
         }
         function handleFlowerRecipient(e: ChangeEvent<HTMLInputElement>) {
             setFlowerRecipient(e.target.value);
