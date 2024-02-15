@@ -26,7 +26,7 @@ function SimpleTextInput({
                    }: textInput) {
     return (
         <div className={divCSS}>
-            <label className={labelCSS} htmlFor={id}>{labelContent}</label><br/>
+            <label className={labelCSS} htmlFor={id}>{labelContent}</label>
             <input className={inputCSS} type="text" id={id} name={id} value={inputStorage} placeholder={placeHolderText}
                    onChange={(e) => {
 

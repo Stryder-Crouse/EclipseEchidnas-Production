@@ -1,9 +1,10 @@
 /** importations **/
-import React, {ChangeEvent, useState} from "react";
+import React, { useState} from "react";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 
 import axios from "axios";
 import {MedReq, ReqTypes, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 //import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 
 export default function Medicine_input() {
@@ -66,86 +67,43 @@ export default function Medicine_input() {
         setMedRequestDose("");
     }
 
-    /**
-     *
-     * Getting Request Location in String
-     */
-    function handleMedRequestLocaleInput(e: ChangeEvent<HTMLInputElement>) {
-        setMedRequestLocale(e.target.value);
-    }
-
-    function handleMedRequestDoseInput(e: ChangeEvent<HTMLInputElement>) {
-        setMedRequestDose(e.target.value);
-    }
-
-    function handleMedRequestDosageInput(e: ChangeEvent<HTMLInputElement>) {
-        setMedRequestDosage(e.target.value);
-    }
-
-    function handleMedRequestTypeInput(e: ChangeEvent<HTMLInputElement>) {
-        setMedRequestType(e.target.value);
-    }
 
     return (
             <div className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-4 align-self-center"}>
                 <form className={"p-1"}>
                     <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Medicine Request</h1>
-                    <div className={"grid justify-center items-center my-1.5"}>
-                        <label form={"medRequestLocal"}>To Room Number</label>
-                        <input
-                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                            type={"text"}
-                            id={"medRequestLocal"}
-                            name={"medRequestLocal"}
-                            placeholder={"To Room Number"}
-                            value={medRequestLocale}
-                            onChange={handleMedRequestLocaleInput}
-                        />
-                    </div>
 
-                    {/*<SimpleTextInput id={"medRequestType"} textContent={"Medicine Type"}*/}
-                    {/*                 divCSS={""} inputCSS={}*/}
-                    {/*                 inputStorage={} labelCSS={}*/}
-                    {/*                 placeHolderText={} setInputStorage={}>*/}
+                    <SimpleTextInput id={"medRequestLocal"} labelContent={"To Room Number"} inputStorage={medRequestLocale}
+                                     setInputStorage={setMedRequestLocale}
+                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
+                                     placeHolderText={""}>
+                    </SimpleTextInput>
 
-                    {/*</SimpleTextInput>*/}
 
-                    <div className={"grid justify-center items-center my-1.5"}>
-                        <label form={"medRequestType"}>Medicine Type</label>
-                        <input
-                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                            type={"text"}
-                            id={"medRequestType"}
-                            name={"medRequestType"}
-                            placeholder={"Medicine Type"}
-                            value={medRequestType}
-                            onChange={handleMedRequestTypeInput}
-                        />
-                    </div>
-                    <div className={"grid justify-center items-center my-1.5"}>
-                        <label form={"medRequestDose"}>Medicine Dose</label>
-                        <input
-                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                            type={"text"}
-                            id={"medRequestDose"}
-                            name={"medRequestDoses"}
-                            placeholder={"Medicine Doses"}
-                            value={medRequestDoses}
-                            onChange={handleMedRequestDoseInput}
-                        />
-                    </div>
-                    <div className={"grid justify-center items-center my-1.5 mb-2"}>
-                        <label form={"medRequestDosage"}>Amount</label>
-                        <input
-                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                            type={"text"}
-                            id={"medRequestDosage"}
-                            name={"medRequestDoses"}
-                            placeholder={"Medicine Dosage"}
-                            value={medRequestDosage}
-                            onChange={handleMedRequestDosageInput}
-                        />
-                    </div>
+
+                    <SimpleTextInput id={"medRequestType"} labelContent={"Medicine Type"} inputStorage={medRequestType}
+                                     setInputStorage={setMedRequestType}
+                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
+                                     placeHolderText={""}>
+                    </SimpleTextInput>
+
+
+                    <SimpleTextInput id={"medRequestDose"} labelContent={"Medicine Dose"} inputStorage={medRequestDoses}
+                                     setInputStorage={setMedRequestDosage}
+                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
+                                     placeHolderText={""}>
+                    </SimpleTextInput>
+
+                    <SimpleTextInput id={"medRequestDosage"} labelContent={"Amount"} inputStorage={medRequestDosage}
+                                     setInputStorage={setMedRequestDosage}
+                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
+                                     placeHolderText={""}>
+                    </SimpleTextInput>
+
                     <RequestButtons submit={submit}/>
                     <div className={"flex justify-center items-center my-1.5"}>
                         <p>Created By: Alex and Antonio</p>

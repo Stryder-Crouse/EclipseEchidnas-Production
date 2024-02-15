@@ -97,25 +97,12 @@ export default function Flower_input() {
             setExtraInfo('');
         }
         // Optionally, you can reset the form fields after submission
-        function handleSender(e: ChangeEvent<HTMLInputElement>) {
-            setSender(e.target.value);
-        }
 
         function handlePriority(e: ChangeEvent<HTMLSelectElement>) {
             setPriority(e.target.value);
         }
 
 
-        function handleFlowerQuantity(e: ChangeEvent<HTMLInputElement>) {
-                setFlowerQuantity(e.target.value);
-        }
-        function handleFlowerRecipient(e: ChangeEvent<HTMLInputElement>) {
-            setFlowerRecipient(e.target.value);
-        }
-
-        function handleMessage(e: ChangeEvent<HTMLInputElement>) {
-            setMessage(e.target.value);
-        }
 
 
     return(
@@ -123,16 +110,14 @@ export default function Flower_input() {
             <form className="p-2">
                 <div className="App">
                     <h1 className={"grid mb-3 justify-center font-bold text-xl"}>Flower Request </h1>
-                    <div className={"grid justify-center items-center my-1.5"}>
-                        <label className="label" form={"senderName"}>Name </label>
-                        <input
-                            id={"senderName"}
-                            value={sender}
-                            type={"text"}
-                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                            onChange={handleSender}
-                        />
-                    </div>
+
+                    <SimpleTextInput id={"senderName"} labelContent={"Name"} inputStorage={sender}
+                                     setInputStorage={setSender}
+                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
+                                     placeHolderText={""}>
+                    </SimpleTextInput>
+
 
                     <div className="grid justify-center items-center my-1.5">
                         <label id="priorityType">Priority </label>
@@ -168,47 +153,36 @@ export default function Flower_input() {
                         {/*/>*/}
                     </div>
 
-                    <SimpleTextInput id={"flowertype"} labelContent={"Flower Name "} inputStorage={flowerType}
+                    <SimpleTextInput id={"flowertype"} labelContent={"Flower Name"} inputStorage={flowerType}
                                      setInputStorage={setFlowerType}
                                      inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                      divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
                                      placeHolderText={""}>
                     </SimpleTextInput>
 
-                    <div className="grid justify-center items-center my-1.5">
-                        <label className="label" form={"flowerquantity"}>Flower Quantity </label>
-                        <input
-                            id={"flowerquantity"}
-                            value={flowerQuantity}
-                            type={"text"}
-                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                            onChange={handleFlowerQuantity}
-                        />
-                    </div>
-                    <div className="grid justify-center items-center my-1.5">
-                        <label className="label" form={"flowerrecipient"}>Flower Recipient </label>
-                        <input
-                            id={"flowerrecipient"}
-                            value={flowerRecipient}
-                            type={"text"}
-                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                            onChange={handleFlowerRecipient}
-                        />
-                    </div>
+                    <SimpleTextInput id={"flowerquantity"} labelContent={"Flower Quantity"} inputStorage={flowerQuantity}
+                                     setInputStorage={setFlowerQuantity}
+                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
+                                     placeHolderText={""}>
+                    </SimpleTextInput>
+
+                    <SimpleTextInput id={"flowerrecipient"} labelContent={"Flower Recipient"} inputStorage={flowerRecipient}
+                                     setInputStorage={setFlowerRecipient}
+                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
+                                     placeHolderText={""}>
+                    </SimpleTextInput>
 
 
+                    <SimpleTextInput id={"additionalNotes"} labelContent={"Message"} inputStorage={message}
+                                     setInputStorage={setMessage}
+                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
+                                     placeHolderText={""}>
+                    </SimpleTextInput>
 
-                    <div className="grid justify-center items-center my-1.5">
-                        <label className="label" form={"additionalNotes"}> Message </label>
-                        <input
-                            id={"additionalNotes"}
-                            value={message}
-                            type={"text"}
-                            className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                            onChange={handleMessage}
 
-                        />
-                    </div>
                     <div className={"grid justify-center items-center "}>
                         <RequestButtons submit={submitForm}/>
                         <p className={"flex justify-center items-center -mt-5"}>Created By: Shiivek and Syzmon</p>
