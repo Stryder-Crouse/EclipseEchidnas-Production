@@ -4,6 +4,7 @@ import {FlowReq, ReqTypes, ServiceRequest} from "../../../../../backend/src/algo
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 
 
 let longNames:string[] = [];
@@ -16,7 +17,6 @@ export default function Flower_input() {
     const [flowerQuantity,setFlowerQuantity] = useState("");
     const [flowerRecipient,setFlowerRecipient] = useState("");
     const [extraInfo,setExtraInfo] = useState("");
-    const [status,setStatus] = useState("unassigned");
     const [message,setMessage] = useState("");
 
     const [resetDropdown, setResetDropdown] = useState(false);
@@ -42,7 +42,7 @@ export default function Flower_input() {
                 reqType: ReqTypes.flowReq,
                 reqLocationID: locations[selected].nodeID,
                 extraInfo: extraInfo,
-                status: status,
+                status: status.Unassigned,
                 assignedUName: "",
                 reqPriority: priority,
                 reqID: -1,
@@ -92,7 +92,6 @@ export default function Flower_input() {
             setFlowerQuantity('');
             setFlowerRecipient('');
             setResetDropdown(true);
-            setStatus('');
             setMessage('');
             setExtraInfo('');
         }
@@ -118,10 +117,6 @@ export default function Flower_input() {
         }
         function handleFlowerRecipient(e: ChangeEvent<HTMLInputElement>) {
             setFlowerRecipient(e.target.value);
-        }
-
-        function handleStatus(e: ChangeEvent<HTMLSelectElement>) {
-            setStatus(e.target.value);
         }
 
         function handleMessage(e: ChangeEvent<HTMLInputElement>) {
@@ -211,20 +206,7 @@ export default function Flower_input() {
                         />
                     </div>
 
-                    <div className="grid justify-center items-center my-1.5">
-                        <label className="label" form={"statusTime"}>Status </label>
-                        <select
-                            id={"statusTime"}
-                            value={status}
-                            className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
-                            onChange={handleStatus}
-                        >
-                            <option value="unassigned">Unassigned</option>
-                            <option value="assigned">Assigned</option>
-                            <option value="inprogress">In Progress</option>
-                            <option value="completed">Completed</option>
-                        </select>
-                    </div>
+
 
                     <div className="grid justify-center items-center my-1.5">
                         <label className="label" form={"additionalNotes"}> Message </label>
