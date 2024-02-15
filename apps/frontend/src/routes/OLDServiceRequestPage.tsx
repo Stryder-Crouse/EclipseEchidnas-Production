@@ -1,6 +1,6 @@
 /** importations **/
 import React, { ChangeEvent, useState } from "react";
-import "../css/route-css/medicineRequest.css";
+
 import AdminPageNavBar from "../components/navigation-bar/AdminPageNavBar.tsx";
 import RequestButtons from "../components/buttons/RequestButtons.tsx";
 import ExitButton from "../components/buttons/ExitButton.tsx";

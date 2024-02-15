@@ -1,5 +1,4 @@
 import React, {useState, useEffect,  ChangeEvent} from 'react';
-import '../../../css/route-css/Flower_input.css';
 import axios from "axios";
 import {FlowReq, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
