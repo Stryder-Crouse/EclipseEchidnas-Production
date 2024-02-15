@@ -17,44 +17,35 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
 
     //todo FNFN fix with proper population code
     useEffect(() => {
-        let queryDone = false;
 
-        if (!queryDone) {
+
+
             getEmployees().then(result => {
                 setMedEmployees(result);
             });
-            getMedRequests().then(result => {
+            getMedRequests(statusFilter).then(result => {
                 setMedRequestList(result);
             });
 
-        }
-        return () => {
-            queryDone = true;
-        };
 
 
-    }, []);
+
+    }, [statusFilter]);
 
     return (
         <div>
 
-            <div className={"request-table-container"}>
-                <div className={"table-container"}>
-            <span className={"caption-container"}>
-              <span className={"table-title"}>Request Log</span>
-            </span>
-                    <div className={"table-wrapper"}>
                         <table className={"requestTable"} id={"request-table"}>
                             <thead>
-                            <tr>
-                                <th>Request Type</th>
-                                <th>Priority</th>
-                                <th>Going To</th>
-                                <th>Medicine type</th>
-                                <th>Dosage</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                                <th>Employee</th>
+                            <tr className={"tableTRHead"}>
+                                <th className={"tableTD"}>Request Type</th>
+                                <th className={"tableTD"}>Priority</th>
+                                <th className={"tableTD"}>Going To</th>
+                                <th className={"tableTD"}>Medicine type</th>
+                                <th className={"tableTD"}>Dosage</th>
+                                <th className={"tableTD"}>Amount</th>
+                                <th className={"tableTD"}>Status</th>
+                                <th className={"tableTD"}>Employee</th>
                             </tr>
                             </thead>
                             {/* populating here */}
@@ -63,9 +54,9 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
                                 //ids are startingNodeInput and endingNodeInput
                                 medRequestList?.map((request, requestIndex) => {
                                     return (
-                                        <tr key={"Med_" + request[0].genReqID}>
-                                            <td className={"node-id"}>{request[1].reqType}</td>
-                                            <td>
+                                        <tr className={"tableTR"} key={"Med_" + request[0].genReqID}>
+                                            <td className={"tableTD"} >{request[1].reqType}</td>
+                                            <td className={"tableTD"}>
                                                 <select
                                                     value={request[1].reqPriority}
                                                     id={"priorityDropdown" + request[1].reqID}
@@ -84,11 +75,11 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
                                                     </option>
                                                 </select>
                                             </td>
-                                            <td>{request[1].reqLocationID}</td>
-                                            <td>{request[0].medType}</td>
-                                            <td>{request[0].dosage}</td>
-                                            <td>{request[0].numDoses.toString()}</td>
-                                            <td>
+                                            <td className={"tableTD"}>{request[1].reqLocationID}</td>
+                                            <td className={"tableTD"}>{request[0].medType}</td>
+                                            <td className={"tableTD"}>{request[0].dosage}</td>
+                                            <td className={"tableTD"}>{request[0].numDoses.toString()}</td>
+                                            <td className={"tableTD"}>
                                                 <select
                                                     value={request[1].status}
                                                     id={"medStatusDropdown" + request[1].reqID}
@@ -111,7 +102,7 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
                                                     </option>
                                                 </select>
                                             </td>
-                                            <td>
+                                            <td className={"tableTD"}>
                                                 <select
                                                     value={request[1].assignedUName}
                                                     onChange={
@@ -135,9 +126,8 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
                             }
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
+
+
         </div>
     );
 
@@ -273,7 +263,6 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
 
         } else {
 
-
             //todo visual error
             console.error("you cannot change the status of an unassigned request");
         }
@@ -323,8 +312,9 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
 
 }
 
-async function getMedRequests() {
-    const requests = await axios.get<[MedReq[], ServiceRequest[]]>("/api/serviceRequests/medReq");
+async function getMedRequests(statusFilter:Status) {
+    const requests =
+        await axios.get<[MedReq[], ServiceRequest[]]>("/api/serviceRequests/medReq",{params: {status: statusFilter}});
 
     const medRequests: Array<[MedReq, ServiceRequest]> = [];
     for (let i = 0; i < requests.data[0].length; i++) {

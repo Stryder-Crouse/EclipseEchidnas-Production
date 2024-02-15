@@ -67,10 +67,14 @@ router.route("/").post(upload.array("csv",2), async function (req: Request, res:
     //that rely on them e.g med request
     //empty out the Database
     await PrismaClient.$transaction([
-      PrismaClient.edgeDB.deleteMany(),
-      PrismaClient.medReq.deleteMany(),
+        PrismaClient.edgeDB.deleteMany(),
+        PrismaClient.medReq.deleteMany(),
+        PrismaClient.sanReq.deleteMany(),
+        PrismaClient.religiousReq.deleteMany(),
+        PrismaClient.outsideTransport.deleteMany(),
+        PrismaClient.flowReq.deleteMany(),
         PrismaClient.serviceRequest.deleteMany(),
-      PrismaClient.nodeDB.deleteMany(),
+        PrismaClient.nodeDB.deleteMany()
     ]);
     //add in all the Nodes and Edges that are in the sent above CSV file
     await PrismaClient.nodeDB.createMany({ data: nodeDBArray });

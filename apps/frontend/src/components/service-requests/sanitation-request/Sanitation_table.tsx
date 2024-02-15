@@ -21,7 +21,7 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
             getEmployees().then(result=> {
                 setSanEmployees(result);
             });
-            getSanRequests().then(result=> {
+            getSanRequests(statusFilter).then(result=> {
                 setSanRequestList(result);
             });
 
@@ -31,21 +31,21 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
         };
 
 
-    },[]);
+    },[statusFilter]);
 
     return (
         <div>
 
             <table className={"requestTable"} id={"request-table"}>
                 <thead>
-                <tr>
-                    <th>Service Request ID</th>
-                    <th>Request Type</th>
-                    <th>Priority</th>
-                    <th>Going To</th>
-                    <th>Why</th>
-                    <th>Status</th>
-                    <th>Employee</th>
+                <tr className={"tableTRHead"}>
+                    <th className={"tableTD"}>ID</th>
+                    <th className={"tableTD"}>Request Type</th>
+                    <th className={"tableTD"}>Priority</th>
+                    <th className={"tableTD"}>Going To</th>
+                    <th className={"tableTD"}>Why</th>
+                    <th className={"tableTD"}>Status</th>
+                    <th className={"tableTD"}>Employee</th>
                 </tr>
                 </thead>
                 {/* populating here */}
@@ -54,10 +54,10 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
                     //ids are startingNodeInput and endingNodeInput
                     sanRequestList?.map((request, requestIndex) => {
                         return (
-                            <tr key={"San_" + request[0].serviceReqID}>
-                                <td className={"node-id"}>{request[1].reqID}</td>
-                                <td>{request[1].reqType}</td>
-                                <td>
+                            <tr className={"tableTR"} key={"San_" + request[0].serviceReqID}>
+                                <td className={"tableTD"}>{request[1].reqID}</td>
+                                <td className={"tableTD"}>{request[1].reqType}</td>
+                                <td className={"tableTD"}>
                                     <select
                                         value={request[1].reqPriority}
                                         id={"priorityDropdown" + request[1].reqID}
@@ -76,9 +76,9 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
                                         </option>
                                     </select>
                                 </td>
-                                <td>{request[1].reqLocationID}</td>
-                                <td>{request[0].type}</td>
-                                <td>
+                                <td className={"tableTD"}>{request[1].reqLocationID}</td>
+                                <td className={"tableTD"}>{request[0].type}</td>
+                                <td className={"tableTD"}>
                                     <select
                                         value={request[1].status}
                                         id={"sanStatusDropdown" + request[1].reqID}
@@ -101,7 +101,7 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
                                         </option>
                                     </select>
                                 </td>
-                                <td>
+                                <td className={"tableTD"}>
                                     <select
                                         value={request[1].assignedUName}
                                         onChange={
@@ -297,8 +297,9 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
 
 }
 
-async function getSanRequests() {
-    const requests = await axios.get<[sanReq[], ServiceRequest[]]>("/api/serviceRequests/sanReq");
+async function getSanRequests(statusFilter:Status) {
+    const requests =
+        await axios.get<[sanReq[], ServiceRequest[]]>("/api/serviceRequests/sanReq", {params: {status: statusFilter}});
 
     const sanRequests: Array<[sanReq, ServiceRequest]> = [];
     for (let i = 0; i < requests.data[0].length; i++) {

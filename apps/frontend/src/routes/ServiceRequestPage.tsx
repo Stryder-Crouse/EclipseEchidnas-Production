@@ -1,6 +1,6 @@
 /** importations **/
 import React from "react";
-import "../css/route-css/medicineRequest.css";
+
 import SideNavBarComponent, {SideBarItem} from "../components/SideNavBarComponent.tsx";
 
 import ServiceRequestInput from "../components/service-requests/ServiceRequestInput.tsx";
@@ -17,7 +17,9 @@ export default function ServiceRequestPage() {
     <div className="flex h-lvh">
         <SideNavBarComponent>
             <SideBarItem icon={MapIcon} text="Map" link="/TailwindMapPage"/>
-            <SideBarItem icon={ServiceRequestIcon} text="Services" link="ServiceRequest"/>
+            <SideBarItem icon={ServiceRequestIcon} text="Services" link="/ServiceRequest"/>
+            {/*todo chris change this you what you want*/}
+            <SideBarItem icon={ServiceRequestIcon} text="Request List" link="/RequestList"/>
             <SideBarItem icon={EmployeeIcon} text="Employees" link="/EmployeeTable"/>
             <SideBarItem icon={CSVIcon} text=".CSV" link="/NodeEdgeTable"/>
             <hr className="my-3"/>

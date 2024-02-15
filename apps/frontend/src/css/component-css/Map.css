@@ -3,7 +3,6 @@
     width: 100%;
     height: 100%;
     position: absolute;
-
     background-color: #a0a7b1;
 }
 
@@ -21,11 +20,6 @@
 .pathLineAll {
     stroke: black;
     stroke-width: 5;
-}
-
-.showAllText{
-    font: bold 20px "Courier New";
-    fill: white;
 }
 
 .floorLinkRect{
@@ -79,12 +73,6 @@
   r: 15; /* radius of node */
 }
 
-
-.heavy {
-    font: bold 50px sans-serif;
-    fill: white;
-}
-
 /*node info hoverOver*/
 
 .foreignObjectNode{
@@ -122,15 +110,6 @@
     list-style-type: none; /* Removes bullets */
     padding: 0;
     margin: 0;
-}
-
-
-
-.nameRect{
-    width:20px;
-    height: 20px;
-    fill: black;
-
 }
 
 

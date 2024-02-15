@@ -4,19 +4,12 @@ import axios from "axios";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 
-
-
-
-
-
-
-const longNames:string[] = [];
-
+let longNames:string[] = [];
 
 export default function Sanitation_input() {
-
-    const [type,setType] = useState("");
+    const [typeA,setTypeA] = useState("");
     const [extraInfo,setExtraInfo] = useState("");
 
     const [resetDropdownPriority, setResetDropdownPriority] = useState(false);
@@ -29,23 +22,20 @@ export default function Sanitation_input() {
 
     const priorityArr = ["Low", "Medium", "High", "Emergency"];
 
-
     useEffect(()=>{
         getLocations().then(
             (result)=>{
                 setLocations(result);
-                result.forEach((node)=>{ longNames.push(node.longName);});
-
+                const locationLongNames:string[] = [];
+                result.forEach((node)=>{ locationLongNames.push(node.longName);});
+                longNames=locationLongNames;
             });
-
     },[]);
 
-
-
         async function submit() {
-
-
-        try {
+            console.log("hi");
+            console.log(selected);
+            console.log(locations);
             //Make a Service Request Data Type and then a Med Request Data Type
             // this is bc Front End will be confused if we pass it a bunch of data so use data structures
             const servReq : ServiceRequest = {
@@ -58,13 +48,17 @@ export default function Sanitation_input() {
                 reqPriority: priorityArr[priorityIndex]
             };
 
+            console.log(servReq);
+
             //Make a Med Req after the service req (Med req needs service req's id, so med req cannot be made before)
             const sanReqData: sanReq = {
                 serviceReqID: -1, // default is 0, but is always changed to the value of the newly created Service Req
-                type: type
+                type: typeA
             };
-            clear();
 
+            console.log(sanReqData);
+            clear();
+        try {
             //Post Med Req to DB (pass in objects of sanReq and ServiceRequest as an array)
             await axios.post("/api/serviceRequests/sanReq",
                 [servReq,sanReqData], {
@@ -73,49 +67,42 @@ export default function Sanitation_input() {
                     },
                 });
 
-
         } catch {
             console.error("Error with trying to save Service Req in ServiceRequestPage.tsx");
         }
-
-
     }
 
     function clear() {
-
-        setType("");
+        setTypeA("");
         setExtraInfo("");
         setResetDropdownPriority(true);
         setResetDropdown(true);
     }
 
-
-
     return (
-            <div
-                className={"justify-items-center text-2xl border-2 border-gray-400 rounded-2xl p-10 flex flex-col gap-5 rounded-2"}>
-                <p><b>Sanitation Requests</b></p>
-                <div className="form-group">
+        <div
+            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
+            <form className={"px-1"}>
+                <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Sanitation Request</h1> {/* Div Title */}
+                {/* Location */}
+                <div className="grid justify-center items-center my-1.5">
                     <label className={"location"}>Location</label>
                     <CreateDropdown dropBtnName={"Locations"} dropdownID={"Location"} isSearchable={true}
                                     populationArr={longNames} resetDropdown={resetDropdown}
                                     setSelected={setSelected}
-                                    inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
+                                    inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow "}
                                     selectCSS={""}
                                     resetOnSelect={false} setResetDropdown={setResetDropdown}/>
                 </div>
-                <div className="form-group">
-                    <label className="label">What Happened: </label>
-                    <input
-                        value={type}
-                        onChange={(e) => {
-                            setType(e.target.value);
-                        }}
-                        type={"text"}
-                        className={"border-2 p-2 border-black rounded-2xl grow"}
-                    />
-                </div>
-                <div className="form-group">
+                {/* Description */}
+                <SimpleTextInput id={"typeA"} labelContent={"Description"}
+                                 inputStorage={typeA} setInputStorage={setTypeA}
+                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
+                                 placeHolderText={""}>
+                </SimpleTextInput>
+                {/* Priority */}
+                <div className="grid justify-center items-center my-1.5">
                     <label className={"Priority"}>Priority</label>
                     <CreateDropdown
                         dropBtnName={"Priority"}
@@ -127,26 +114,23 @@ export default function Sanitation_input() {
                         setResetDropdown={setResetDropdownPriority}
                         setSelected={setPriorityIndex}
                         selectCSS={""}
-                        inputCSS={""}
-                    />
-
-                </div>
-                <div className="form-group">
-                    <label className="label">Extra Info: </label>
-                    <input
-                        value={extraInfo}
-                        onChange={(e) => {
-                            setExtraInfo(e.target.value);
-                        }}
-                        type={"text"}
-                        className={"border-2 p-10 border-black rounded-2xl grow"}
+                        inputCSS={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
                     />
                 </div>
+                {/* Extra notes */}
+                <SimpleTextInput id={"additional"} labelContent={"Extra info:"}
+                                 inputStorage={extraInfo} setInputStorage={setExtraInfo}
+                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
+                                 placeHolderText={""}>
+                </SimpleTextInput>
                 <RequestButtons submit={submit}/>
+            </form>
+            <div className={"flex justify-center items-center my-1.5"}>
+                <p>Created By: Antonio and Sameer</p>
             </div>
+        </div>
     );
-
-
 }
 
 async function getLocations() {

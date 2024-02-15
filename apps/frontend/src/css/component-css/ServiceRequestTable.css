@@ -1,0 +1,36 @@
+.medTable{
+
+
+    max-height: 100%;
+    min-width: 140px;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+    justify-content: left;
+    border-collapse: collapse;
+
+
+}
+
+.tableTRHead{
+    border:2px solid #D1D1D1;
+    background-color: #062651;
+    color:white;
+}
+
+.tableTR{
+    border:2px solid #D1D1D1;
+
+}
+
+.tableTR:nth-child(even){
+    border:2px solid #D1D1D1;
+    background-color: #E1E1E1;
+}
+
+.tableTD{
+    padding: 8px;
+    border:2px solid #D1D1D1;
+
+
+}

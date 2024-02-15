@@ -11,13 +11,19 @@ import status from "../../../../backend/src/algorithms/Requests/Status.ts";
 
 import Transportation_table from "./transportation-outside-request/Transportation_table.tsx";
 import Sanitation_table from "./sanitation-request/Sanitation_table.tsx";
+import ServiceRequest_Table from "./service-request/ServiceRequest_Table.tsx";
+
+
+
+const statuses = [status.Any,status.Unassigned,status.Assigned,status.InProgress,status.Completed];
+
 
 export default function ServiceRequestOutputTables() {
 
 
     const [statusFilter , setStatusFilter ] = useState(status.Any);
 
-    const [curentServiceRequest , setCurentServiceRequest ] = useState(ReqTypes.medReq);
+    const [curentServiceRequest , setCurentServiceRequest ] = useState(ReqTypes.serviceRequest);
     console.log(curentServiceRequest);
     console.log(setStatusFilter);
 
@@ -29,6 +35,13 @@ export default function ServiceRequestOutputTables() {
     return (
         <div className="tabs-container">
             <ul className="tabs">
+                <li>
+                    <a id={"button_" + ReqTypes.flowReq} title="Flower Request" className={"tabButton"} onClick={() => {
+                        setCurentServiceRequest(ReqTypes.serviceRequest);
+                    }}>
+                        Service Requests
+                    </a>
+                </li>
                 <li>
                     <a id={"button_" + ReqTypes.flowReq} title="Flower Request" className={"tabButton"} onClick={() => {
                         setCurentServiceRequest(ReqTypes.flowReq);
@@ -71,6 +84,36 @@ export default function ServiceRequestOutputTables() {
 
             </ul>
             <div className="tab-content-wrapper">
+
+                <div className={"filterDiv"}>
+                    <div className={"statusFilterDiv"}>
+                        <label form={"designation"}><b>Status</b></label><br/>
+                        <select
+                            value={statusFilter}
+                            onChange={
+                                (e) => {
+                                    setStatusFilter(e.target.value as status);
+                                }
+                            }
+                        >
+                            {
+                                statuses?.map((stat) => {
+                                    return (
+                                        <option
+                                            className={"statis-dropdown"}
+                                            value={stat}
+                                            key={stat + "_filterStatus"}
+                                        >
+                                            {stat}
+                                        </option>
+                                    );
+                                })
+
+                            }
+                        </select>
+                    </div>
+                </div>
+
                 {/* the content to be populated with each request*/}
                 {
                     generateSelectedTable()
@@ -79,10 +122,9 @@ export default function ServiceRequestOutputTables() {
         </div>
     );
 
-    function generateSelectedTable(){
+    function generateSelectedTable() {
         // For each div/request to overlay
-        switch(curentServiceRequest)
-        {
+        switch (curentServiceRequest) {
             case ReqTypes.flowReq:
                 return (<Flower_table statusFilter={statusFilter}/>);
             case ReqTypes.religReq:
@@ -93,8 +135,10 @@ export default function ServiceRequestOutputTables() {
                 return (<Transportation_table statusFilter={statusFilter}/>);
             case ReqTypes.sanReq:
                 return (<Sanitation_table statusFilter={statusFilter}/>);
+            case ReqTypes.serviceRequest:
+                return (<ServiceRequest_Table statusFilter={statusFilter}/>);
             default:
-                return(<div> bad state</div>);
+                return (<div> bad state</div>);
 
         }
 
