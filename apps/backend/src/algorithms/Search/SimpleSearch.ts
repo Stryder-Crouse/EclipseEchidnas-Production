@@ -3,7 +3,6 @@ import {Graph} from "../Graph/Graph.ts";
 import {IQueue} from "../Queue/IQueue.ts";
 
 /**
- *
  * Simple search algorithm to find a path from source to target on the passed
  * unweighted graph.
  *
@@ -11,7 +10,6 @@ import {IQueue} from "../Queue/IQueue.ts";
  * @param target the target node obj for the search
  * @param graph the graph which contains both nodes
  * @param frontier the stack or queue to perform either depth-first or breadth-first search
- *
  *
  * @returns  an array of node that stores the path from source to target if it exists or null
  *  if no such path exists in graph.

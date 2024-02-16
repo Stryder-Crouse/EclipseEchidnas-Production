@@ -1,33 +1,33 @@
-import { IQueue } from "./IQueue.ts";
+import {IQueue} from "./IQueue.ts";
 
 /*
  *  Absolutely miserable stack implementation
  *  Source: https://basarat.gitbook.io/algorithms/datastructures/queue
  */
 export class SimpleStack<T> implements IQueue<T> {
-  /* fields */
-  private storage: Array<T>;
+    /* fields */
+    private storage: Array<T>;
 
-  /* constructor */
-  public constructor() {
-    this.storage = new Array<T>();
-  }
+    /* constructor */
+    public constructor() {
+        this.storage = new Array<T>();
+    }
 
-  /* methods */
+    /* methods */
 
-  // push onto the queue daddy :sob:
-  public push(thing: T) {
-    this.storage.push(thing);
-    return;
-  }
+    // push onto the queue daddy :sob:
+    public push(thing: T) {
+        this.storage.push(thing);
+        return;
+    }
 
-  // pop from the queue 😠
-  public pop(): T | undefined {
-    return this.storage.pop();
-  }
+    // pop from the queue 😠
+    public pop(): T | undefined {
+        return this.storage.pop();
+    }
 
-  // is the queue not empty
-  public hasItems(): boolean {
-    return this.storage.length > 0;
-  }
+    // is the queue not empty
+    public hasItems(): boolean {
+        return this.storage.length > 0;
+    }
 }
