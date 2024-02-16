@@ -22,29 +22,31 @@ function DFS_trivial_path(): void {
     expect(test_path).toStrictEqual(expected_path);
 }
 
-function DFS_single_floor(): void {
+function DFS_one_to_ten(): void {
     /* make the tested and expected paths */
     const test_path: Array<Node> | null = DFS(graph.idToNode("1"), graph.idToNode("10"), graph);
     const expected_path: Array<Node> = new Array<Node>();
     expected_path.push(graph.idToNode("1")!);
+    expected_path.push(graph.idToNode("4")!);
+    expected_path.push(graph.idToNode("11")!);
+    expected_path.push(graph.idToNode("12")!);
+    expected_path.push(graph.idToNode("14")!);
+    expected_path.push(graph.idToNode("10")!);
+    /* it better match */
+    expect(test_path).toStrictEqual(expected_path);
+}
+
+function DFS_two_to_sixteen(): void {
+    /* make the tested and expected paths */
+    const test_path: Array<Node> | null = DFS(graph.idToNode("2"), graph.idToNode("16"), graph);
+    const expected_path: Array<Node> = new Array<Node>();
     expected_path.push(graph.idToNode("2")!);
     expected_path.push(graph.idToNode("5")!);
     expected_path.push(graph.idToNode("7")!);
     expected_path.push(graph.idToNode("8")!);
     expected_path.push(graph.idToNode("10")!);
-
-    /* it better match */
-    expect(test_path).toStrictEqual(expected_path);
-}
-
-function DFS_multiple_floors(): void {
-    /* make the tested and expected paths */
-    const test_path: Array<Node> | null = DFS(graph.idToNode("2"), graph.idToNode("16"), graph);
-    const expected_path: Array<Node> = new Array<Node>();
-    expected_path.push(graph.idToNode("2")!);
-    expected_path.push(graph.idToNode("1")!);
-    expected_path.push(graph.idToNode("4")!);
-    expected_path.push(graph.idToNode("11")!);
+    expected_path.push(graph.idToNode("14")!);
+    expected_path.push(graph.idToNode("12")!);
     expected_path.push(graph.idToNode("13")!);
     expected_path.push(graph.idToNode("15")!);
     expected_path.push(graph.idToNode("16")!);
@@ -55,5 +57,5 @@ function DFS_multiple_floors(): void {
 
 /* - - - test execution - - - */
 test("Test graph from node 1 to 1 (trivial)", DFS_trivial_path);
-test("Test graph from node 1 to 10 (same floor)", DFS_single_floor);
-test("Test graph from node 2 to 16 (multiple floors)", DFS_multiple_floors);
+test("Test graph from node 1 to 10 (was same floor for A*)", DFS_one_to_ten);
+test("Test graph from node 2 to 16 (was multiple floors for A*)", DFS_two_to_sixteen);
