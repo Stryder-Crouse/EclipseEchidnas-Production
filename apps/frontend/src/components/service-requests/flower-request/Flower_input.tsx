@@ -4,7 +4,7 @@ import {FlowReq, ReqTypes, ServiceRequest} from "../../../../../backend/src/algo
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
-import status from "../../../../../backend/src/algorithms/Requests/Status.ts";
+import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 
 
@@ -43,7 +43,7 @@ export default function Flower_input() {
                 reqType: ReqTypes.flowReq,
                 reqLocationID: locations[selected].nodeID,
                 extraInfo: extraInfo,
-                status: status.Unassigned,
+                status: Status.Unassigned,
                 assignedUName: "",
                 reqPriority: priority,
                 reqID: -1,

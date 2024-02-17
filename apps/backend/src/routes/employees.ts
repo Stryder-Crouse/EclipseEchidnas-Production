@@ -97,7 +97,7 @@ router.get("/employees", async function (req: Request, res: Response) {
     }
 });
 
-//gets all employees with medicalRequest permissions
+//gets all employees with medicineRequest permissions
 router.get("/employees/med", async function (req: Request, res: Response) {
     try {
 
@@ -163,7 +163,7 @@ router.get("/employees/transport", async function (req: Request, res: Response) 
     }
 });
 
-//gets all employees with medicalRequest permissions
+//gets all employees with flowerRequest permissions
 router.get("/employees/flow", async function (req: Request, res: Response) {
     try {
 
@@ -173,6 +173,37 @@ router.get("/employees/flow", async function (req: Request, res: Response) {
                     OR:[
                         {
                             designation:"flower deliverer"
+                        },
+                        {
+                            userName:"No one"
+                        }
+                    ]
+
+                }
+
+            }
+
+        )); //end res.send (this is what will be sent to the client)
+        console.info("\nSuccessfully gave you the the employees\n");
+    } catch (err) {
+        console.error("\nUnable to send employees\n");
+    }
+});
+
+//gets all employees with religiousRequest permissions
+router.get("/employees/rel", async function (req: Request, res: Response) {
+    try {
+        const typeOfReligiousPersonnel :string = req.body;
+
+        res.send(await PrismaClient.employee.findMany(
+            {
+                where:{
+                    OR:[
+                        {
+                            designation:typeOfReligiousPersonnel
+                        },
+                        { //always pull "religious personnel", no matter the religion
+                            designation:"religious personnel"
                         },
                         {
                             userName:"No one"

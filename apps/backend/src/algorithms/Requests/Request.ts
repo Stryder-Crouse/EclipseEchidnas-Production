@@ -60,7 +60,7 @@ export enum ReqTypes {
     serviceRequest ="service request"
 }
 
-export enum priorities {
+export enum Priorities {
     any = "Any",
     low = "Low",
     medium = "Medium",

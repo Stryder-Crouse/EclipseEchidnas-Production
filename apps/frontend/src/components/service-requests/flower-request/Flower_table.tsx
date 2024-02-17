@@ -2,7 +2,6 @@ import {statusFilter} from "../serviceRequestInterface.ts";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {FlowReq, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
-import status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
 // import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
@@ -330,7 +329,7 @@ export default function Flower_table({statusFilter: statusFilter}: statusFilter)
 
 }
 
-async function getflowerReq(statusFilter:status) {
+async function getflowerReq(statusFilter:Status) {
     const requests = await axios.get<[FlowReq[], ServiceRequest[]]>("/api/serviceRequests/flowReq",
         {params: {status: statusFilter}});
 
