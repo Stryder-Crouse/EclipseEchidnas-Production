@@ -317,7 +317,7 @@ export default function Flower_table({statusFilter: statusFilter}: statusFilter)
 
             }
             catch (e) {
-                console.error("faild to change user "+e);
+                console.error("failed to change user "+e);
             }
         }
 
@@ -346,6 +346,6 @@ async function getflowerReq(statusFilter:Status) {
 }
 
 async function getEmployees() {
-    const employees = await axios.get<Employee[]>("/api/employees/employees/med");
+    const employees = await axios.get<Employee[]>("/api/employees/employees/flow");
     return employees.data;
 }

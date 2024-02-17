@@ -130,6 +130,33 @@ router.get("/employees/med", async function (req: Request, res: Response) {
     }
 });
 
+//gets all employees with sanitationRequest permissions
+router.get("/employees/san", async function (req: Request, res: Response) {
+    try {
+
+        res.send(await PrismaClient.employee.findMany(
+            {
+                where:{
+                    OR:[
+                        {
+                            designation:"janitor"
+                        },
+                        {
+                            userName:"No one"
+                        }
+                    ]
+
+                }
+
+            }
+
+        )); //end res.send (this is what will be sent to the client)
+        console.info("\nSuccessfully gave you the the employees\n");
+    } catch (err) {
+        console.error("\nUnable to send employees\n");
+    }
+});
+
 //gets all employees with outsideTransport permissions
 router.get("/employees/transport", async function (req: Request, res: Response) {
     try {
