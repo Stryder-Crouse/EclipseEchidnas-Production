@@ -81,8 +81,8 @@ test("readCSV and Graph Creation", () => {
       "14,2215,1045,L1,45 Francis,HALL,Hallway 8 Floor L1,Hallway C008L1\r\n",
   );
 
-  //count number of edges
-  expect(graph.getEdges().length).toStrictEqual(14);
+  //updated to match graph update when we fixed the pathfinding bug after iteration 1
+  expect(graph.getEdges().length).toStrictEqual(28);
   // edges are bidirectional but this list only stores the minimum needed to create the graph
 });
 
