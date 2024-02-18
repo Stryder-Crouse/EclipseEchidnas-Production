@@ -26,6 +26,9 @@ const nodeInfoSVG = document.getElementById("nodeInfo_"+nodeID);
   else if (nodeCircle?.getAttribute("class") == "transitionNode") {
       nodeCircle.setAttribute("class", "transitionNodeHovered");
   }
+  else if (nodeCircle?.getAttribute("class") == "hallwayNodeVisible") {
+      nodeCircle.setAttribute("class", "hallwayNodeVisibleHovered");
+  }
 
 }
 
@@ -54,5 +57,8 @@ export function onNodeLeave(nodeID: string) {
   }
   else if (nodeCircle?.getAttribute("class") == "transitionNodeHovered") {
       nodeCircle.setAttribute("class", "transitionNode");
+  }
+  else if (nodeCircle?.getAttribute("class") == "hallwayNodeVisibleHovered") {
+      nodeCircle.setAttribute("class", "hallwayNodeVisible");
   }
 }

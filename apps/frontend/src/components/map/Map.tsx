@@ -1,5 +1,5 @@
 import axios from "axios";
-import {FloorToIndex, floorToNumber, Node, NULLNODE} from "../../../../backend/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, floorToNumber, Node, NodeType, NULLNODE} from "../../../../backend/src/algorithms/Graph/Node.ts";
 import "../../css/component-css/Map.css";
 import {Edge, NULLEDGE} from "../../../../backend/src/algorithms/Graph/Edge.ts";
 import {Graph} from "../../../../backend/src/algorithms/Graph/Graph.ts";
@@ -23,8 +23,7 @@ export type MapState = {
     setSelectedFloorIndex: Dispatch<SetStateAction<FloorToIndex>>;
     drawEntirePath: boolean;
     setDrawEntirePath: Dispatch<SetStateAction<boolean>>;
-    locations: Node[];
-    setLocations: Dispatch<SetStateAction<Node[]>>;
+    locationsWithHalls: Node[];
     viewbox: Viewbox,
     setViewbox: Dispatch<SetStateAction<Viewbox>>;
     zoomScale: number,
@@ -83,7 +82,7 @@ let previousSelectedLevel = FloorToIndex.LowerLevel1;
 async function createGraph() {
     /* ask axios for nodes and edges */
     const edgesDB = await axios.get<EdgeDataBase[]>("/api/load-edges");
-    const nodesDB = await axios.get<NodeDataBase[]>("/api/load-nodes");
+    const nodesDB = await axios.get<NodeDataBase[]>("/api/load-nodes/all");
 
     /* allocate some space for the nodes and edges */
     const edges: Array<Edge> = [];
@@ -340,7 +339,7 @@ export function Map({
                         startNode: startNode, setStartNode: setStartNode,
                         endNode: endNode, setEndNode: setEndNode,
                         selectedFloorIndex: selectedFloorIndex,
-                        drawEntirePath: drawEntirePath, locations: locations,
+                        drawEntirePath: drawEntirePath, locationsWithHalls: locationsWithHalls,
                         viewbox: viewbox, setViewbox: setViewbox,
                         zoomScale: zoomScale, setZoomScale: setZoomScale
                     }: MapState) {
@@ -415,12 +414,12 @@ export function Map({
                     })
                 }
                 {   /* draw the nodes on the map */
-                    locations.map((node) => {
+                    locationsWithHalls.map((node) => {
                         return drawNode(node);
                     })
                 }
                 {   /* draw the hover node info on the map */
-                    locations.map((node) => {
+                    locationsWithHalls.map((node) => {
                         return drawNodeInfo(node);
                     })
                 }
@@ -453,6 +452,7 @@ export function Map({
      * @param edgeClass the type of the edge (dotted or solid)
      */
     function drawEdgeHTML(edge: Edge, edgeClass: string) {
+
         return (<line key={"line_" + edge.id} className={edgeClass}
                       x1={edge.startNode.coordinate.x.toString()}
                       y1={edge.startNode.coordinate.y.toString()}
@@ -485,7 +485,20 @@ export function Map({
 
         /* if we want to draw the whole path, draw it blue?? */
         else if (drawEntirePath) {
+            //make hallways visable
+            if(node.nodeType == NodeType.HALL){
+                return drawNodeHTML(node, tag, "hallwayNodeVisible");
+            }
             return drawNodeHTML(node, tag, "normalNode");
+        }
+
+        //if node is a hallway
+        else if (node.nodeType == NodeType.HALL) {
+            //show hallway if in the path
+            if(inPathDrawnEdges(node.id)){
+                return drawNodeHTML(node, tag, "hallwayNodeVisible");
+            }
+            return drawNodeHTML(node, tag, "hallwayNodeHidden");
         }
 
         /* finally, draw the node blue */
@@ -620,6 +633,21 @@ export function Map({
         for (let i: number = 0; i < pathFloorTransitions.length; i++) {
             if (pathFloorTransitions[i].startTranNode.id == nodeID ||
                 pathFloorTransitions[i].endTranNode.id == nodeID) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Find out if a given node is in the drawn path.
+     * @param nodeID string ID of node to check
+     */
+    function inPathDrawnEdges(nodeID: string) {
+
+        for (let i: number = 0; i < pathDrawnEdges.length; i++) {
+            if (pathDrawnEdges[i].startNode.id == nodeID ||
+                pathDrawnEdges[i].endNode.id == nodeID) {
                 return true;
             }
         }

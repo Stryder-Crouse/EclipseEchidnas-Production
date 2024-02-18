@@ -100,8 +100,8 @@ const defaultFloor = FloorToIndex.LowerLevel1;
                 <div className={"mapSide"}>
                     <Map startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
                          selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
-                         drawEntirePath={drawEntirePath} setDrawEntirePath={setDrawEntirePath} locations={locations}
-                         setLocations={setLocations} setViewbox={setVeiwbox} viewbox={veiwbox} setZoomScale={setZoomScale}
+                         drawEntirePath={drawEntirePath} setDrawEntirePath={setDrawEntirePath} locationsWithHalls={locations}
+                          setViewbox={setVeiwbox} viewbox={veiwbox} setZoomScale={setZoomScale}
                          zoomScale={zoomScale}
                     />
                     <div className={"start-end-typing-navigation"}>
