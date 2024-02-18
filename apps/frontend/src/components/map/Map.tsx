@@ -74,6 +74,8 @@ let graph: Graph | null = null;
 const panSpeed: number = 2;
 const zoomSpeed: number = 0.1;
 
+let previousSelectedLevel = FloorToIndex.LowerLevel1;
+
 /* - - - functions - - - */
 /**
  * Create the global graph from nodes and edges gathered from the database.
@@ -103,7 +105,7 @@ async function createGraph() {
 }
 
 /**
- * Enable zoom with MAGIC (a mouse event)
+ * Enable zoom with a mouse event
  * @param viewbox a Viewbox that holds coordinate information
  * @param setViewbox a Dispatch that transforms the coordinate information
  * @param setScale a Dispatch that sets the map scale
@@ -148,6 +150,8 @@ function createZoomEvent(viewbox: Viewbox, setViewbox: Dispatch<Viewbox>, setSca
     });
 }
 
+
+
 /**
  * sets the path to the path to be displayed on the page
  */
@@ -164,7 +168,7 @@ function updatePathEdges(startingNode: Node,
         return;
     }
 
-    /* first, check if we want to draw EVERY edge (for Wong) */
+    /* first, check if we want to draw EVERY edge  */
     if (drawAllEdges) {
         /* allocate some space for the edges on this floor */
         const thisFloorEdges: Array<Edge> = [];
@@ -263,11 +267,11 @@ function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndT
                     break;
                 }
 
-                /* ROFLMAO */
+
                 i++;
             }
 
-            /* we found the transition 😻 */
+            /* we found the transition  */
             pathTransitions.push(newTransition);
         }
 
@@ -304,17 +308,17 @@ function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndT
                     break;
                 }
 
-                /* ROFLMAO 2 */
+
                 i++;
             }
 
-            /* we found the transition 😻 */
+            /* we found the transition  */
             i = startingI; //go back to starting i to avoid recalculations
             pathTransitions.push(newTransition);
         }
     }
 
-    /* caught gooning in 3840x2160 */
+
     return {edges: pathEdges, transitions: pathTransitions};
 }
 
@@ -346,7 +350,6 @@ export function Map({
         updatePathEdges(startNode, endNode, setPathDrawnEdges, selectedFloorIndex, drawEntirePath, setPathFloorTransitions);
     }, [drawEntirePath, endNode, selectedFloorIndex, startNode]);
 
-    /* some bs useStates */
     const [pathDrawnEdges, setPathDrawnEdges] = useState<Array<Edge>>([]);
     const [pathFloorTransitions, setPathFloorTransitions] =
         useState<Array<Transition>>([]);
@@ -356,6 +359,13 @@ export function Map({
         useState<Coordinate>({x: 0, y: 0});
     const [endOfClick, setEndOfClick] =
         useState<Coordinate>({x: 0, y: 0});
+
+
+    //set map to zoom level for each level. Only do this when a diffrent floor is selected
+    if(previousSelectedLevel!=selectedFloorIndex){
+        setViewBoxForLevel();
+        previousSelectedLevel=selectedFloorIndex;
+    }
 
     /*
      * Create the event listener in raw JavaScript for zooming in and out,
@@ -368,7 +378,7 @@ export function Map({
         createZoomEvent(viewbox, setViewbox, setZoomScale);
     }, [setViewbox, setZoomScale, viewbox, zoomScale]);
 
-    /* THE THING YOU SEE */
+    /* Main map html*/
     return (
         /* overarching div with panning functionality */
         <div id={"map-test"}
@@ -444,10 +454,10 @@ export function Map({
      */
     function drawEdgeHTML(edge: Edge, edgeClass: string) {
         return (<line key={"line_" + edge.id} className={edgeClass}
-                     x1={edge.startNode.coordinate.x.toString()}
-                     y1={edge.startNode.coordinate.y.toString()}
-                     x2={edge.endNode.coordinate.x.toString()}
-                     y2={edge.endNode.coordinate.y.toString()}></line>);
+                      x1={edge.startNode.coordinate.x.toString()}
+                      y1={edge.startNode.coordinate.y.toString()}
+                      x2={edge.endNode.coordinate.x.toString()}
+                      y2={edge.endNode.coordinate.y.toString()}></line>);
     }
 
     /**
@@ -489,6 +499,48 @@ export function Map({
      * @param nodeClass the class of the node
      */
     function drawNodeHTML(node: Node, tagClass: string, nodeClass: string) {
+
+        if(node.id == startNode.id) {
+            return(
+                <a key={node.id} id={node.id} className={tagClass}
+                   onClick={() => markNodeOnClick(node.id)}
+                   onMouseOver={() => onNodeHover(node.id)}
+                   onMouseLeave={() => onNodeLeave(node.id)}
+                >
+                    <circle cx={node.coordinate.x} cy={node.coordinate.y} className={nodeClass}></circle>
+                    <image
+                        x={node.coordinate.x - 25}
+                        y={node.coordinate.y - 50}
+                        width="50"
+                        height="50"
+                        href={"/src/images/MapFunctions/mapPinGreen.png"}
+                    ></image>
+
+                </a>
+            );
+        }
+        else if(node.id == endNode.id) {
+            return(
+                <a key={node.id} id={node.id} className={tagClass}
+                   onClick={() => markNodeOnClick(node.id)}
+                   onMouseOver={() => onNodeHover(node.id)}
+                   onMouseLeave={() => onNodeLeave(node.id)}
+                >
+                    <circle cx={node.coordinate.x} cy={node.coordinate.y} className={nodeClass}></circle>
+                    <image
+                        x={node.coordinate.x - 25}
+                        y={node.coordinate.y - 50}
+                        width="50"
+                        height="50"
+                        href={"/src/images/MapFunctions/mapPinRed.png"}
+                    ></image>
+
+                </a>
+            );
+        }
+
+
+
         return (
             <a key={node.id} id={node.id} className={tagClass}
                onClick={() => markNodeOnClick(node.id)}
@@ -564,7 +616,7 @@ export function Map({
      * @param nodeID string ID of node to check
      */
     function inTransition(nodeID: string) {
-        /* funny */
+
         for (let i: number = 0; i < pathFloorTransitions.length; i++) {
             if (pathFloorTransitions[i].startTranNode.id == nodeID ||
                 pathFloorTransitions[i].endTranNode.id == nodeID) {
@@ -603,7 +655,7 @@ export function Map({
             return drawTransitionTextFromHTML(transition.startTranNode, transition.endTranNode, style);
         }
 
-        /* LOL */
+
         return <a key={"error a tag"}>error: wrong floor</a>;
     }
 
@@ -671,6 +723,35 @@ export function Map({
                 return "/src/images/maps/03_thethirdfloor.png";
             default:
                 return "/src/images/maps/00_thelowerlevel1.png";
+        }
+    }
+
+    /**
+     * Set the specific view box based on the specified floor index.
+     */
+    function setViewBoxForLevel(){
+        switch (selectedFloorIndex) {
+            case FloorToIndex.LowerLevel2:
+                setViewbox({x:730, y:518,width:2719,height:2392});
+                break;
+            case FloorToIndex.LowerLevel1:
+                setViewbox({x:704, y:348,width:2236,height:1967});
+                break;
+            case FloorToIndex.Ground:
+                setViewbox({x:579, y:412,width:3161,height:2780});
+                break;
+            case FloorToIndex.Level1:
+                setViewbox({x:579, y:412,width:3161,height:2780});
+                break;
+            case FloorToIndex.Level2:
+                setViewbox({x:613, y:219,width:3129,height:2753});
+                break;
+            case FloorToIndex.Level3:
+                setViewbox({x:474, y:493,width:2946,height:2591});
+                break;
+            default:
+                setViewbox({x:474, y:493,width:2946,height:2591});
+                break;
         }
     }
 
