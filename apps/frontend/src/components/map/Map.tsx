@@ -103,7 +103,7 @@ async function createGraph() {
 }
 
 /**
- * Enable zoom with MAGIC (a mouse event)
+ * Enable zoom with a mouse event
  * @param viewbox a Viewbox that holds coordinate information
  * @param setViewbox a Dispatch that transforms the coordinate information
  * @param setScale a Dispatch that sets the map scale
@@ -164,7 +164,7 @@ function updatePathEdges(startingNode: Node,
         return;
     }
 
-    /* first, check if we want to draw EVERY edge (for Wong) */
+    /* first, check if we want to draw EVERY edge  */
     if (drawAllEdges) {
         /* allocate some space for the edges on this floor */
         const thisFloorEdges: Array<Edge> = [];
@@ -263,11 +263,11 @@ function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndT
                     break;
                 }
 
-                /* ROFLMAO */
+
                 i++;
             }
 
-            /* we found the transition 😻 */
+            /* we found the transition  */
             pathTransitions.push(newTransition);
         }
 
@@ -304,17 +304,17 @@ function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndT
                     break;
                 }
 
-                /* ROFLMAO 2 */
+
                 i++;
             }
 
-            /* we found the transition 😻 */
+            /* we found the transition  */
             i = startingI; //go back to starting i to avoid recalculations
             pathTransitions.push(newTransition);
         }
     }
 
-    /* caught gooning in 3840x2160 */
+
     return {edges: pathEdges, transitions: pathTransitions};
 }
 
@@ -346,7 +346,6 @@ export function Map({
         updatePathEdges(startNode, endNode, setPathDrawnEdges, selectedFloorIndex, drawEntirePath, setPathFloorTransitions);
     }, [drawEntirePath, endNode, selectedFloorIndex, startNode]);
 
-    /* some bs useStates */
     const [pathDrawnEdges, setPathDrawnEdges] = useState<Array<Edge>>([]);
     const [pathFloorTransitions, setPathFloorTransitions] =
         useState<Array<Transition>>([]);
@@ -444,10 +443,10 @@ export function Map({
      */
     function drawEdgeHTML(edge: Edge, edgeClass: string) {
         return (<line key={"line_" + edge.id} className={edgeClass}
-                     x1={edge.startNode.coordinate.x.toString()}
-                     y1={edge.startNode.coordinate.y.toString()}
-                     x2={edge.endNode.coordinate.x.toString()}
-                     y2={edge.endNode.coordinate.y.toString()}></line>);
+                      x1={edge.startNode.coordinate.x.toString()}
+                      y1={edge.startNode.coordinate.y.toString()}
+                      x2={edge.endNode.coordinate.x.toString()}
+                      y2={edge.endNode.coordinate.y.toString()}></line>);
     }
 
     /**
@@ -564,7 +563,7 @@ export function Map({
      * @param nodeID string ID of node to check
      */
     function inTransition(nodeID: string) {
-        /* funny */
+
         for (let i: number = 0; i < pathFloorTransitions.length; i++) {
             if (pathFloorTransitions[i].startTranNode.id == nodeID ||
                 pathFloorTransitions[i].endTranNode.id == nodeID) {
@@ -603,7 +602,7 @@ export function Map({
             return drawTransitionTextFromHTML(transition.startTranNode, transition.endTranNode, style);
         }
 
-        /* LOL */
+
         return <a key={"error a tag"}>error: wrong floor</a>;
     }
 
