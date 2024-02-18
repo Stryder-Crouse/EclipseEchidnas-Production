@@ -16,6 +16,11 @@ router.get("/", async function (req: Request, res: Response) {
         orderBy: {
           longName: "asc", //specify here that we are ordering the 'longName' field in ascending order (A->Z)
         },
+          // where:{
+          //   NOT:{
+          //       nodeType:NodeType.HALL
+          //   }
+          // }
 
       }),
     ); //end res.send (this is what will be sent to the client)
