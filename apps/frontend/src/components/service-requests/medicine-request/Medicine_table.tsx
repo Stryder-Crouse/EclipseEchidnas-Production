@@ -38,14 +38,15 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
                         <table className={"requestTable"} id={"request-table"}>
                             <thead>
                             <tr className={"tableTRHead"}>
+                                <th className={"tableTD"}>ID</th>
                                 <th className={"tableTD"}>Request Type</th>
+                                <th className={"tableTD"}>Status</th>
                                 <th className={"tableTD"}>Priority</th>
                                 <th className={"tableTD"}>Going To</th>
+                                <th className={"tableTD"}>Employee</th>
                                 <th className={"tableTD"}>Medicine type</th>
                                 <th className={"tableTD"}>Dosage</th>
                                 <th className={"tableTD"}>Amount</th>
-                                <th className={"tableTD"}>Status</th>
-                                <th className={"tableTD"}>Employee</th>
                             </tr>
                             </thead>
                             {/* populating here */}
@@ -55,31 +56,10 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
                                 medRequestList?.map((request, requestIndex) => {
                                     return (
                                         <tr className={"tableTR"} key={"Med_" + request[0].genReqID}>
-                                            <td className={"tableTD"} >{request[1].reqType}</td>
-                                            <td className={"tableTD"}>
-                                                <select
-                                                    value={request[1].reqPriority}
-                                                    id={"priorityDropdown" + request[1].reqID}
-                                                    onChange={
-                                                        (event) => {
-                                                            const eventHTML = event.target as HTMLSelectElement;
-                                                            onPriorityChange(eventHTML, requestIndex).then();/////todo RYAN (uncomment when done with function)
-                                                        }
-                                                    }
-                                                >
-                                                    <option className={"priorityDropdown"} value="Low">Low</option>
-                                                    <option className={"priorityDropdown"} value="Medium">Medium
-                                                    </option>
-                                                    <option className={"priorityDropdown"} value="High">High</option>
-                                                    <option className={"priorityDropdown"} value="Emergency">Emergency
-                                                    </option>
-                                                </select>
-                                            </td>
-                                            <td className={"tableTD"}>{request[1].reqLocationID}</td>
-                                            <td className={"tableTD"}>{request[0].medType}</td>
-                                            <td className={"tableTD"}>{request[0].dosage}</td>
-                                            <td className={"tableTD"}>{request[0].numDoses.toString()}</td>
-                                            <td className={"tableTD"}>
+                                            <td className={"tableTD"}>{request[1].reqID}</td>
+                                            <td className={"tableTD"}>{request[1].reqType}</td>
+                                            {/*type*/}
+                                            <td className={"tableTD"}> {/*status*/}
                                                 <select
                                                     value={request[1].status}
                                                     id={"medStatusDropdown" + request[1].reqID}
@@ -102,7 +82,26 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
                                                     </option>
                                                 </select>
                                             </td>
-                                            <td className={"tableTD"}>
+                                            <td className={"tableTD"}> {/*priority*/}
+                                                <select
+                                                    value={request[1].reqPriority}
+                                                    id={"priorityDropdown" + request[1].reqID}
+                                                    onChange={
+                                                        (event) => {
+                                                            const eventHTML = event.target as HTMLSelectElement;
+                                                            onPriorityChange(eventHTML, requestIndex).then();/////todo RYAN (uncomment when done with function)
+                                                        }
+                                                    }
+                                                >
+                                                    <option className={"priorityDropdown"} value="Low">Low</option>
+                                                    <option className={"priorityDropdown"} value="Medium">Medium
+                                                    </option>
+                                                    <option className={"priorityDropdown"} value="High">High</option>
+                                                    <option className={"priorityDropdown"} value="Emergency">Emergency
+                                                    </option>
+                                                </select>
+                                            </td>
+                                            <td className={"tableTD"}> {/*employee*/}
                                                 <select
                                                     value={request[1].assignedUName}
                                                     onChange={
@@ -119,6 +118,12 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
                                                     }
                                                 </select>
                                             </td>
+                                            <td className={"tableTD"}>{request[1].reqLocationID}</td> {/*location*/}
+                                            <td className={"tableTD"}>{request[0].medType}</td>
+                                            <td className={"tableTD"}>{request[0].dosage}</td>
+                                            <td className={"tableTD"}>{request[0].numDoses.toString()}</td>
+
+
                                         </tr>
 
                                     );
