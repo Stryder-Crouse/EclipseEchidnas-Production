@@ -1,18 +1,19 @@
-import {useNavigate} from "react-router-dom";
+//import {useNavigate} from "react-router-dom";
 import React from "react";
 import {useState} from "react";
-//import UsernameAlert from "./UsernameAlert.tsx";
 import PasswordAlert from "./PasswordAlert.tsx";
 import "../../css/route-css/LoginPage.css";
 import Logo from "../../images/Brigham_and_Womens_Hospital_logo.svg.png";
 import SimpleTextInput from "../inputComponents/SimpleTextInput.tsx";
+import { Auth0Error } from "auth0-js";
+import {webAuth} from "../../../auth0.service.ts";
 
 function LoginForm() {
-    //Create username and password variables to store inputs
-    const [username, setUsername] = useState(""); //Variable for Username
+    //Create email and password variables to store inputs
+    const [email, setEmail] = useState(""); //Variable for email
     const [password, setPassword] = useState(""); //Variable for Password
     const [showPassword, setShowPassword] = useState(false); //Boolean for if password is shown or not
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
 
     /**
      * Assigns input to the password variable, and if empty displays alert (alert currently not working, alternative implemented but hope to use in future)
@@ -32,11 +33,19 @@ function LoginForm() {
      */
     function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
-        if (username === "admin" && password === "admin") {
-            navigate("/AdminMapPage");
-            //to get map to load properly on adminMapPage
-            window.location.reload();
-        }
+        webAuth.login({
+            email: email,
+            password: password,
+            realm: 'Username-Password-Authentication',
+            redirectUri: 'http://localhost:3000/AdminMapPage',
+            responseType: 'token'
+        }, function(error: Auth0Error | null, result) {
+            if(error) {
+                console.log(error);
+                return;
+            }
+            console.log(result);
+        });
     }
 
     return (
@@ -54,11 +63,11 @@ function LoginForm() {
                 </div>
 
                 <div>
-                    <SimpleTextInput id={"userName"} labelContent={"Username: "} inputStorage={username}
-                                     setInputStorage={setUsername}
+                    <SimpleTextInput id={"email"} labelContent={"Email: "} inputStorage={email}
+                                     setInputStorage={setEmail}
                                      inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                      divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
-                                     placeHolderText={"Username: "}>
+                                     placeHolderText={"Email: "}>
                     </SimpleTextInput>
                 </div>
 

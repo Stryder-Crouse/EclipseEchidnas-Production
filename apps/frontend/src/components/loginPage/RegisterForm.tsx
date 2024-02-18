@@ -1,29 +1,45 @@
 import React from "react";
 import {useState} from "react";
 import SimpleTextInput from "../inputComponents/SimpleTextInput.tsx";
-import {Employee, Roles} from "../../../../backend/src/algorithms/Employee/Employee.ts";
+//import {Employee, Roles} from "../../../../backend/src/algorithms/Employee/Employee.ts";
 import Logo from "../../images/Brigham_and_Womens_Hospital_logo.svg.png";
+import {webAuth} from "../../../auth0.service.ts";
+import { Auth0Error } from "auth0-js";
 
 export default function RegisterForm() {
-    const[email, setEmail] = useState("");
-    const[password, setPassword] = useState("");
-    const[username, setUsername] = useState("");
-    const[firstName, setFirstName] = useState("");
-    const[lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
 
     function handleSubmit() {
 
-        const employee : Employee = {
+        /**const employee: Employee = {
             userName: username,
             firstName: firstName,
             lastName: lastName,
             designation: Roles.None,
             isAdmin: false,
-        };
-        return employee;
+        };*/
+        webAuth.signup(
+            {
+                email: email,
+                password: password,
+                connection: "Username-Password-Authentication"
+            },
+            function(error: Auth0Error | null, result) {
+                if(error) {
+                    console.log(error);
+                    return;
+                }
+
+                console.log(result);
+            }
+        );
     }
 
-    return(
+    return (
         <div>
 
             <form
