@@ -1,10 +1,10 @@
 import {IQueue} from "./IQueue.ts";
 
 /*
- *  Absolutely miserable queue implementation
+ *  Absolutely miserable stack implementation
  *  Source: https://basarat.gitbook.io/algorithms/datastructures/queue
  */
-export class SimpleQueue<T> implements IQueue<T> {
+export class SimpleStack<T> implements IQueue<T> {
     /* fields */
     private storage: Array<T>;
 
@@ -23,7 +23,7 @@ export class SimpleQueue<T> implements IQueue<T> {
 
     // pop from the queue 😠
     public pop(): T | undefined {
-        return this.storage.shift();
+        return this.storage.pop();
     }
 
     // is the queue not empty
