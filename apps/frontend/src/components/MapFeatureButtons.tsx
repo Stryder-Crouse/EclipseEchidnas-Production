@@ -17,13 +17,17 @@ export type zoomAndMapStates = {
     setZoomScale: Dispatch<SetStateAction<number>>,
     setStartNode: Dispatch<SetStateAction<Node>>
     setEndNode: Dispatch<SetStateAction<Node>>
+    drawEntirePathOptions:boolean[]
+    setDrawEntirePathOptions:Dispatch<SetStateAction<boolean[]>>
 }
 export default function MapFeatureButtons({
                                               drawEntirePath: drawEntirePath,
                                               setDrawEntirePath: setDrawEntirePath,
                                               viewbox: viewbox,
                                               setViewbox: setViewbox,
-                                              setZoomScale: setZoomScale, setStartNode, setEndNode
+                                              setZoomScale: setZoomScale, setStartNode, setEndNode,
+                                              drawEntirePathOptions,
+                                              setDrawEntirePathOptions
                                           }: zoomAndMapStates) {
     /**
      * Handle when the all edges toggle is pressed.
@@ -35,6 +39,20 @@ export default function MapFeatureButtons({
             setDrawEntirePath(false);
         }
     }
+
+    /**
+     * Handle when the all edges toggle is pressed.
+     */
+    // function setCheckBoxToggles() {
+    //
+    //     const nodeCheckBox = document?.getElementById("isAdminCheck") as HTMLInputElement;
+    //     if(drawEntirePathOptions[0]){
+    //
+    //     }
+    //     else{
+    //
+    //     }
+    // }
 
     /**
      * Handle zooming the map using the on-screen buttons.
@@ -69,25 +87,57 @@ export default function MapFeatureButtons({
     /* what you see is what you get */
     return (
         <div className="grid z-10 fixed bottom-5 right-5">
-            <button className="bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg" onClick={handleAllEdgesToggle}>
+            <button className="bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10" onClick={handleAllEdgesToggle}>
                 <img src={EyeIcon} alt={"See All Locations and Paths"}/>
             </button>
-            <button className="bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg"
+            <button className="bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10"
                     onClick={() => {
                         setStartNode(NULLNODE);
                         setEndNode(NULLNODE);
                     }}>
                 <img src={RefreshIcon} alt={"Refresh"}/>
             </button>
+
+            {/*PLACE HOLDER*/}
+            <div>
+                <b>Place Holder</b><br/>
+                <label htmlFor={"toggleNodes"}>Show Nodes</label><br/>
+                <input type={"checkbox"} name={"toggleNodes"} id={"toggleNodes"}
+                       onChange={(e) => {
+                           const newDrawEntirePathOptions = [...drawEntirePathOptions];
+                           newDrawEntirePathOptions[0] = e.target.checked;
+                           console.log(e.target.checked);
+                           setDrawEntirePathOptions(newDrawEntirePathOptions);
+                       }}
+                ></input><br/>
+                <label htmlFor={"toggleEdges"}>Show Edges</label><br/>
+                <input type={"checkbox"} name={"toggleEdges"}  id={"toggleEdges"}
+                       onChange={(e) => {
+                    const newDrawEntirePathOptions = [...drawEntirePathOptions];
+                    newDrawEntirePathOptions[1] = e.target.checked;
+                    console.log(e.target.checked);
+                    setDrawEntirePathOptions(newDrawEntirePathOptions);
+                }}></input><br/>
+                <label htmlFor={"toggleLocationNames"}>Show Location Names</label><br/>
+                <input type={"checkbox"} name={"toggleLocationNames"} id={"toggleLocationNames"}
+                       onChange={(e) => {
+                           const newDrawEntirePathOptions = [...drawEntirePathOptions];
+                           newDrawEntirePathOptions[2] = e.target.checked;
+                           console.log(e.target.checked);
+                           setDrawEntirePathOptions(newDrawEntirePathOptions);
+                       }}></input>
+
+            </div>
+
             <div className="grid ">
-                <button className="bg-ivoryWhite p-2 drop-shadow-lg rounded-t-md"
+                <button className="bg-ivoryWhite p-2 drop-shadow-lg rounded-t-md w-10"
                         onClick={() => {
                             zoomMap(1);
                         }}
                 >
                     <img src={ZoomInIcon} alt={"Zoom In"}/>
                 </button>
-                <button className="bg-ivoryWhite p-2 drop-shadow-lg rounded-b-md "
+                <button className="bg-ivoryWhite p-2 drop-shadow-lg rounded-b-md w-10"
                         onClick={() => {
                             zoomMap(-1);
                         }}

@@ -24,7 +24,10 @@ function TailwindMapPage() {
     const [endNode, setEndNode] = useState(NULLNODE);
 
     const [selectedFloorIndex, setSelectedFloorIndex] = useState(defaultFloor);
+
     const [drawEntirePath, setDrawEntirePath] = useState(false);
+    const [drawEntirePathOptions, setDrawEntirePathOptions] =
+        useState([true,true,true]);
 
     const [locations, setLocations] = useState([] as Array<Node>);
     const [locationsWithHalls, setLocationsWithHalls] = useState([] as Array<Node>);
@@ -69,7 +72,8 @@ function TailwindMapPage() {
                 <MapFeatureButtons viewbox={viewbox} setViewbox={setViewbox}
                                    setDrawEntirePath={setDrawEntirePath} drawEntirePath={drawEntirePath}
                                    setZoomScale={setZoomScale} setEndNode={setEndNode}
-                                   setStartNode={setStartNode}/>
+                                   setStartNode={setStartNode} drawEntirePathOptions={drawEntirePathOptions}
+                                   setDrawEntirePathOptions={setDrawEntirePathOptions}/>
             </div>
             <Map startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
                  selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
