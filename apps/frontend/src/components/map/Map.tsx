@@ -32,6 +32,7 @@ export type MapState = {
     setViewbox: Dispatch<SetStateAction<Viewbox>>;
     zoomScale: number,
     setZoomScale: Dispatch<SetStateAction<number>>
+    drawEntirePathOptions:boolean[]
 }
 
 /**
@@ -375,6 +376,7 @@ export function Map({
                         pathFindingType:pathFindingType,
                         viewbox: viewbox, setViewbox: setViewbox,
                         zoomScale: zoomScale, setZoomScale: setZoomScale
+                        ,drawEntirePathOptions
                     }: MapState) {
 
 
@@ -454,11 +456,17 @@ export function Map({
                         return drawNode(node);
                     })
                 }
+                { // draw location names when needed
+                    locationsWithHalls.map((node)=>{
+                        return drawNodeLocationName(node);
+                    })
+                }
                 {   /* draw the hover node info on the map */
                     locationsWithHalls.map((node) => {
                         return drawNodeInfo(node);
                     })
                 }
+
                 {   /* draw the transition text on the map */
                     pathFloorTransitions.map((transition) => {
                         return drawTransitionText(transition);
@@ -473,8 +481,17 @@ export function Map({
      * @param edge the edge to draw
      */
     function drawEdge(edge: Edge) {
+
+
+
         /* draw the solid edge for everything */
         if (drawEntirePath) {
+
+            //if user has elected not to draw the edges
+            if(!drawEntirePathOptions[1]){
+                return;
+            }
+
             return drawEdgeHTML(edge, "pathLineAll");
         }
 
@@ -504,6 +521,11 @@ export function Map({
         /* symbols */
         const tag: string = "clickableAtag";
 
+        //if all nodes should not be drawn
+        if(!drawEntirePathOptions[0] && drawEntirePath){
+            return;
+        }
+
         /* if the node is a start node, draw it green */
         if (node.id == startNode.id) {
             return drawNodeHTML(node, tag, "startSelected");
@@ -521,7 +543,7 @@ export function Map({
 
         /* if we want to draw the whole path, draw it blue?? */
         else if (drawEntirePath) {
-            //make hallways visable
+            //make hallways visable with diffrent cloor to other nodes
             if(node.nodeType == NodeType.HALL){
                 return drawNodeHTML(node, tag, "hallwayNodeVisible");
             }
@@ -658,6 +680,22 @@ export function Map({
                     </span>
             </foreignObject>
         );
+    }
+
+
+    function drawNodeLocationName(node: Node){
+        if(drawEntirePathOptions[2] && drawEntirePath && node.nodeType!=NodeType.HALL){
+            return (
+                <foreignObject key={"nodeLongName_" + node.id} id={"nodeLongName_" + node.id}
+                               className={"foreignObjectNodeLongName"}
+                               x={node.coordinate.x+10} y={node.coordinate.y -10}
+                >
+                    <text className={"nodeLongNameText"}>{node.longName}</text>
+                </foreignObject>
+
+            );
+        }
+        return;
     }
 
     /**

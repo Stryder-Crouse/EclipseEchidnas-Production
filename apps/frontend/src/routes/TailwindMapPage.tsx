@@ -27,7 +27,7 @@ function TailwindMapPage() {
 
     const [drawEntirePath, setDrawEntirePath] = useState(false);
     const [drawEntirePathOptions, setDrawEntirePathOptions] =
-        useState([true,true,true]);
+        useState([true,true,false]);
 
     const [locations, setLocations] = useState([] as Array<Node>);
     const [locationsWithHalls, setLocationsWithHalls] = useState([] as Array<Node>);
@@ -80,7 +80,7 @@ function TailwindMapPage() {
                  drawEntirePath={drawEntirePath} setDrawEntirePath={setDrawEntirePath} locationsWithHalls={locationsWithHalls}
                  pathFindingType={pathFindingType}
                   setViewbox={setViewbox} viewbox={viewbox} setZoomScale={setZoomScale}
-                 zoomScale={zoomScale}
+                 zoomScale={zoomScale} drawEntirePathOptions={drawEntirePathOptions}
             />
         </div>
     );

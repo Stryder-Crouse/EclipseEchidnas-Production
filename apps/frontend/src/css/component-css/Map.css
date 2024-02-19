@@ -149,6 +149,27 @@
 }
 
 
+.foreignObjectNodeLongName {
+    /*this is effectivly a max width*/
+    width: 150px;
+    /*this is effectivly a max height*/
+    height: 80px;
+}
+
+.nodeLongNameText {
+    background-color: rgba(6, 38, 81, 0.85);
+    color: #fff;
+    font-size: 15px;
+    text-align: left;
+    padding: 5px;
+    border-radius: 6px;
+
+    position: absolute;
+    z-index: 5;
+}
+
+
+
 @keyframes dash {
 
     to {

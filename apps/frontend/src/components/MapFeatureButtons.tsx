@@ -41,20 +41,6 @@ export default function MapFeatureButtons({
     }
 
     /**
-     * Handle when the all edges toggle is pressed.
-     */
-    // function setCheckBoxToggles() {
-    //
-    //     const nodeCheckBox = document?.getElementById("isAdminCheck") as HTMLInputElement;
-    //     if(drawEntirePathOptions[0]){
-    //
-    //     }
-    //     else{
-    //
-    //     }
-    // }
-
-    /**
      * Handle zooming the map using the on-screen buttons.
      * @param direction the direction (in or out) to zoom
      */
@@ -103,15 +89,19 @@ export default function MapFeatureButtons({
                 <b>Place Holder</b><br/>
                 <label htmlFor={"toggleNodes"}>Show Nodes</label><br/>
                 <input type={"checkbox"} name={"toggleNodes"} id={"toggleNodes"}
+                       checked={drawEntirePathOptions[0]}
                        onChange={(e) => {
                            const newDrawEntirePathOptions = [...drawEntirePathOptions];
                            newDrawEntirePathOptions[0] = e.target.checked;
                            console.log(e.target.checked);
                            setDrawEntirePathOptions(newDrawEntirePathOptions);
                        }}
+
+
                 ></input><br/>
                 <label htmlFor={"toggleEdges"}>Show Edges</label><br/>
                 <input type={"checkbox"} name={"toggleEdges"}  id={"toggleEdges"}
+                       checked={drawEntirePathOptions[1]}
                        onChange={(e) => {
                     const newDrawEntirePathOptions = [...drawEntirePathOptions];
                     newDrawEntirePathOptions[1] = e.target.checked;
@@ -120,6 +110,7 @@ export default function MapFeatureButtons({
                 }}></input><br/>
                 <label htmlFor={"toggleLocationNames"}>Show Location Names</label><br/>
                 <input type={"checkbox"} name={"toggleLocationNames"} id={"toggleLocationNames"}
+                       checked={drawEntirePathOptions[2]}
                        onChange={(e) => {
                            const newDrawEntirePathOptions = [...drawEntirePathOptions];
                            newDrawEntirePathOptions[2] = e.target.checked;
