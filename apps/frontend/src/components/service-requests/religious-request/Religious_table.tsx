@@ -40,14 +40,15 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                         <table className={"requestTable"} id={"request-table"}>
                             <thead>
                             <tr className={"tableTRHead"}>
+                                <th className={"tableTD"}>ID</th>
                                 <th className={"tableTD"}>Request Type</th>
+                                <th className={"tableTD"}>Status</th>
                                 <th className={"tableTD"}>Priority</th>
+                                <th className={"tableTD"}>Employee</th>
                                 <th className={"tableTD"}>Going To</th>
                                 <th className={"tableTD"}>Patient Name</th>
                                 <th className={"tableTD"}>Religion</th>
                                 <th className={"tableTD"}>Service requested</th>
-                                <th className={"tableTD"}>Status</th>
-                                <th className={"tableTD"}>Employee</th>
                             </tr>
                             </thead>
                             {/* populating here */}
@@ -57,31 +58,9 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                 religRequestList?.map((request, requestIndex) => {
                                     return (
                                         <tr className={"tableTR"} key={"Relig_" + request[0].genReqID}>
+                                            <td className={"tableTD"}>{request[1].reqID}</td>
                                             <td className={"tableTD"}>{request[1].reqType}</td>
-                                            <td className={"tableTD"}>
-                                                <select
-                                                    value={request[1].reqPriority}
-                                                    id={"priorityDropdown" + request[1].reqID}
-                                                    onChange={
-                                                        (event) => {
-                                                            const eventHTML = event.target as HTMLSelectElement;
-                                                            onPriorityChange(eventHTML, requestIndex).then();/////todo RYAN (uncomment when done with function)
-                                                        }
-                                                    }
-                                                >
-                                                    <option className={"priorityDropdown"} value="Low">Low</option>
-                                                    <option className={"priorityDropdown"} value="Medium">Medium
-                                                    </option>
-                                                    <option className={"priorityDropdown"} value="High">High</option>
-                                                    <option className={"priorityDropdown"} value="Emergency">Emergency
-                                                    </option>
-                                                </select>
-                                            </td>
-                                            <td className={"tableTD"}>{request[1].reqLocationID}</td>
-                                            <td className={"tableTD"}>{request[0].patientName}</td>
-                                            <td className={"tableTD"}>{request[0].religion}</td>
-                                            <td className={"tableTD"}>{request[0].reqDescription}</td>
-                                            <td className={"tableTD"}>
+                                            <td className={"tableTD"}> {/*status*/}
                                                 <select
                                                     value={request[1].status}
                                                     id={"religStatusDropdown" + request[1].reqID}
@@ -104,6 +83,25 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                                     </option>
                                                 </select>
                                             </td>
+                                            <td className={"tableTD"}> {/*priority*/}
+                                                <select
+                                                    value={request[1].reqPriority}
+                                                    id={"priorityDropdown" + request[1].reqID}
+                                                    onChange={
+                                                        (event) => {
+                                                            const eventHTML = event.target as HTMLSelectElement;
+                                                            onPriorityChange(eventHTML, requestIndex).then();/////todo RYAN (uncomment when done with function)
+                                                        }
+                                                    }
+                                                >
+                                                    <option className={"priorityDropdown"} value="Low">Low</option>
+                                                    <option className={"priorityDropdown"} value="Medium">Medium
+                                                    </option>
+                                                    <option className={"priorityDropdown"} value="High">High</option>
+                                                    <option className={"priorityDropdown"} value="Emergency">Emergency
+                                                    </option>
+                                                </select>
+                                            </td>
                                             <td className={"tableTD"}>
                                                 <select
                                                     value={request[1].assignedUName}
@@ -121,6 +119,11 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                                     }
                                                 </select>
                                             </td>
+                                            <td className={"tableTD"}>{request[1].reqLocationID}</td>
+                                            {/*location*/}
+                                            <td className={"tableTD"}>{request[0].patientName}</td>
+                                            <td className={"tableTD"}>{request[0].religion}</td>
+                                            <td className={"tableTD"}>{request[0].reqDescription}</td>
                                         </tr>
 
                                     );
@@ -128,7 +131,7 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                             }
                             </tbody>
                         </table>
-                </div>
+        </div>
 
     );
 
