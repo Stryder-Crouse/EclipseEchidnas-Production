@@ -26,6 +26,8 @@ export default function Medicine_input() {
     const [selected, setSelected] = useState(-1);
     const [locations, setLocations] = useState<NodeDataBase[]>([]);
 
+    const [extraInfo, setExtraInfo] = useState("");
+
     useEffect(()=>{
         getLocations().then(
             (result)=>{
@@ -129,6 +131,15 @@ export default function Medicine_input() {
                                      divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
                                      placeHolderText={""}>
                     </SimpleTextInput>
+                    <div className={"grid justify-center items-center my-1.5 mb-1"}>
+                    <textarea placeholder={"Extra Info: "}
+                              className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
+                              onChange={(e) => setExtraInfo(e.target.value)}
+                              id={"service"}
+                              value={extraInfo}
+                              required>
+                    </textarea>
+                    </div>
 
                     <RequestButtons submit={submit}/>
                     <div className={"flex justify-center items-center my-1.5"}>

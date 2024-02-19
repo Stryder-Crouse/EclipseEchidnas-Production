@@ -154,14 +154,16 @@ export default function Flower_input() {
                                      placeHolderText={""}>
                     </SimpleTextInput>
 
-                    <SimpleTextInput id={"flowerquantity"} labelContent={"Flower Quantity"} inputStorage={flowerQuantity}
+                    <SimpleTextInput id={"flowerquantity"} labelContent={"Flower Quantity"}
+                                     inputStorage={flowerQuantity}
                                      setInputStorage={setFlowerQuantity}
                                      inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                      divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
                                      placeHolderText={""}>
                     </SimpleTextInput>
 
-                    <SimpleTextInput id={"flowerrecipient"} labelContent={"Flower Recipient"} inputStorage={flowerRecipient}
+                    <SimpleTextInput id={"flowerrecipient"} labelContent={"Flower Recipient"}
+                                     inputStorage={flowerRecipient}
                                      setInputStorage={setFlowerRecipient}
                                      inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                      divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
@@ -181,11 +183,20 @@ export default function Flower_input() {
                         <RequestButtons submit={submitForm}/>
                         <p className={"flex justify-center items-center -mt-5"}>Created By: Shiivek and Syzmon</p>
                     </div>
+                    <div className={"grid justify-center items-center my-1.5 mb-1"}>
+                    <textarea placeholder={"Extra Notes"}
+                              className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
+                              onChange={(e) => setExtraInfo(e.target.value)}
+                              id={"service"}
+                              value={extraInfo}
+                              required>
+                    </textarea>
                     </div>
+                </div>
             </form>
         </div>
 
-);
+    );
 
 
 }
