@@ -1,16 +1,20 @@
 import React from "react";
 import {createBrowserRouter, RouterProvider, Outlet} from "react-router-dom";
-import ProtectedAdminMap from "./components/protected-pages/ProtectedAdminMap.tsx";
-import ProtectedServiceRequest from "./components/protected-pages/ProtectedServiceRequest.tsx";
-import ProtectedRequestList from "./components/protected-pages/ProtectedRequestList.tsx";
-import ProtectedNodeEdgeTable from "./components/protected-pages/ProtectedNodeEdgeTable.tsx";
+//import ProtectedAdminMap from "./components/protected-pages/ProtectedAdminMap.tsx";
+//import ProtectedServiceRequest from "./components/protected-pages/ProtectedServiceRequest.tsx";
+//import ProtectedRequestList from "./components/protected-pages/ProtectedRequestList.tsx";
+//import ProtectedNodeEdgeTable from "./components/protected-pages/ProtectedNodeEdgeTable.tsx";
 //import GuestMap from "./routes/guest-routes/GuestMap.tsx";
-import ProtectedEmployeeTable from "./components/protected-pages/ProtectedEmployeeTable.tsx";
+//import ProtectedEmployeeTable from "./components/protected-pages/ProtectedEmployeeTable.tsx";
 
 import TailwindMapPage from "./routes/TailwindMapPage.tsx";
 import TestServiceReqPage from "./routes/TestServiceReqPage.tsx";
 import LoginPage from "./routes/LoginPage.tsx";
 import RegisterPage from "./routes/RegisterPage.tsx";
+import ServiceRequestPage from "./routes/ServiceRequestPage.tsx";
+import NodeEdgeTablePage from "./routes/admin-routes/NodeEdgeTablePage.tsx";
+import RequestList from "./routes/admin-routes/RequestList.tsx";
+import EmployeeTable from "./routes/admin-routes/EmployeeTable.tsx";
 
 function App() {
     const router = createBrowserRouter([
@@ -25,27 +29,27 @@ function App() {
                 },
                 {
                     path: "/AdminMapPage",
-                    element: <ProtectedAdminMap/>,
+                    element: <TailwindMapPage/>, //todo FNFN switch back to protected when that works (same for all bellow) and uncomment the imports up top
                 },
                 {
                     path: "/ProtectedServiceRequest",
-                    element: <ProtectedServiceRequest/>,
+                    element: <ServiceRequestPage/>, //Here
                 },
                 {
                     path:"/ServiceRequest",
-                    element:<ProtectedServiceRequest/>,
+                    element:<ServiceRequestPage/>, //Here
                 },
                 {
                     path: "/NodeEdgeTable",
-                    element: <ProtectedNodeEdgeTable/>,
+                    element: <NodeEdgeTablePage/>,//Here
                 },
                 {
                     path: "/ProtectedRequestList",
-                    element: <ProtectedRequestList/>,
+                    element: <RequestList/>,
                 },
                 {
                     path: "/RequestList",
-                    element: <ProtectedRequestList/>,
+                    element: <RequestList/>, //Here
                 },
                 {
                     path: "/GuestMap",
@@ -53,7 +57,7 @@ function App() {
                 },
                 {
                     path:"/EmployeeTable",
-                    element: <ProtectedEmployeeTable/>,
+                    element: <EmployeeTable/>, //Here
                 },
                 {
                     path: "/TailwindMapPage",

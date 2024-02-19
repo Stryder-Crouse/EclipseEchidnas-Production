@@ -13,7 +13,8 @@ export default function RegisterForm() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
 //
-    function handleSubmit() {
+    function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+        e.preventDefault();
 
         /**const employee: Employee = {
             userName: username,
@@ -22,6 +23,10 @@ export default function RegisterForm() {
             designation: Roles.None,
             isAdmin: false,
         };*/
+
+        //todo BNBN uncomment the above declaration of Employee (only commented because it would give an error that
+        // employee is never used) and send to the database
+
         webAuth.signup(
             {
                 email: email,
@@ -37,6 +42,8 @@ export default function RegisterForm() {
                 console.log(result);
             }
         );
+
+        window.location.href="http://localhost:3000/AdminMapPage";
     }
 
     return (

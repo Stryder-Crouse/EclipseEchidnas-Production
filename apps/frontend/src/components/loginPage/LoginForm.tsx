@@ -1,22 +1,36 @@
 //import {useNavigate} from "react-router-dom";
 import React from "react";
 import {useState} from "react";
-import PasswordAlert from "./PasswordAlert.tsx";
 import "../../css/route-css/LoginPage.css";
 import Logo from "../../images/Brigham_and_Womens_Hospital_logo.svg.png";
-import SimpleTextInput from "../inputComponents/SimpleTextInput.tsx";
-import { Auth0Error } from "auth0-js";
+import {Auth0Error} from "auth0-js";
 import {webAuth} from "../../../auth0.service.ts";
+//import IncorrectAlert from "./IncorrectAlert.tsx";
+import EmailAlert from "./EmailAlert.tsx";
+import PasswordAlert from "./PasswordAlert.tsx";
 
 function LoginForm() {
     //Create email and password variables to store inputs
     const [email, setEmail] = useState(""); //Variable for email
     const [password, setPassword] = useState(""); //Variable for Password
     const [showPassword, setShowPassword] = useState(false); //Boolean for if password is shown or not
+    const [incorrect, setIncorrect] = useState(false);
+
     //const navigate = useNavigate();
 
     /**
-     * Assigns input to the password variable, and if empty displays alert (alert currently not working, alternative implemented but hope to use in future)
+     * Assigns input to the email variable, and if empty displays alert
+     * @param email Value entered into the email textbox
+     */
+    function handleEmail(email: string) {
+        setEmail(email);
+        if (email === "") {
+            return <EmailAlert/>;
+        }
+    }
+
+    /**
+     * Assigns input to the password variable, and if empty displays alert
      * @param password Value entered into the password textbox
      */
     function handlePassword(password: string) {
@@ -39,10 +53,9 @@ function LoginForm() {
             realm: 'Username-Password-Authentication',
             redirectUri: 'http://localhost:3000/AdminMapPage',
             responseType: 'token'
-        }, function(error: Auth0Error | null, result) {
-            if(error) {
-                console.log(error);
-                return;
+        }, function (error: Auth0Error | null, result) {
+            if (error) {
+                setIncorrect(true);
             }
             console.log(result);
         });
@@ -62,13 +75,30 @@ function LoginForm() {
                     />
                 </div>
 
-                <div>
-                    <SimpleTextInput id={"email"} labelContent={"Email: "} inputStorage={email}
-                                     setInputStorage={setEmail}
-                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
-                                     placeHolderText={"Email: "}>
-                    </SimpleTextInput>
+
+                {incorrect ? ( //If the entered username or password are incorrect, shows error message
+                    <div className={"flex justify-center w-full mt-1.5"}>
+                        <div
+                            className={"w-48 my-1.5 p-1 text-black text-xs bg-red-200 rounded-lg border border-black drop-shadow"}
+                        >
+                            Incorrect Username or Password
+                        </div>
+                    </div>
+                ) : null}
+
+                <div className={"grid justify-center items-center my-1.5"}>
+                    <label
+                        className={"mb-1"}
+                        htmlFor={"email"}>
+                        Email:
+                    </label>
+                    <input //Textbox to enter Password
+                        className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                        id="email"
+                        value={email}
+                        placeholder={"Email: "}
+                        onChange={(e) => handleEmail(e.target.value)}
+                    />
                 </div>
 
                 <div className={"grid justify-center items-center my-1.5"}>
