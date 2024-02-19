@@ -3,7 +3,7 @@ import {FloorToIndex, floorToNumber, Node, NodeType, NULLNODE} from "../../../..
 import "../../css/component-css/Map.css";
 import {Edge, NULLEDGE} from "../../../../backend/src/algorithms/Graph/Edge.ts";
 import {Graph} from "../../../../backend/src/algorithms/Graph/Graph.ts";
-import {onNodeHover, onNodeLeave,} from "../../event-logic/circleNodeEventHandlers.ts";
+import {onNodeHover, onNodeLeave, onNodeRightClick,} from "../../event-logic/circleNodeEventHandlers.ts";
 import {NodeDataBase, nodeDataBaseToNode,} from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import {EdgeDataBase, edgeDataBasetoEdge,} from "../../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
@@ -12,6 +12,7 @@ import {SearchContext} from "../../../../backend/src/algorithms/Search/Strategy/
 import {AStarStrategy} from "../../../../backend/src/algorithms/Search/Strategy/AStarStrategy.ts";
 import {BFSStrategy} from "../../../../backend/src/algorithms/Search/Strategy/BFSStrategy.ts";
 import {DFSStrategy} from "../../../../backend/src/algorithms/Search/Strategy/DFSStrategy.ts";
+import {ServiceRequest} from "../../../../backend/src/algorithms/Requests/Request.ts";
 
 /* - - - types - - - */
 /**
@@ -80,6 +81,8 @@ const zoomSpeed: number = 0.1;
 
 let previousSelectedLevel = FloorToIndex.LowerLevel1;
 
+const nodeIDtoServiceRequest:Map<string,ServiceRequest[]> = new Map<string, ServiceRequest[]>();
+
 /* - - - functions - - - */
 /**
  * Create the global graph from nodes and edges gathered from the database.
@@ -106,6 +109,32 @@ async function createGraph() {
     /* construct a graph from the data */
     graph = new Graph(nodes, edges);
     // console.log(graph.getEdges());
+}
+
+
+async function getNodeServiceRequests(){
+
+    //setup map with empty strings for every node
+
+    graph?.getNodes().forEach((node)=>{
+        nodeIDtoServiceRequest.set(node.id,[]);
+    });
+
+
+    //get all service requests
+    const serviceRequestsRes =
+        await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq");
+    const serviceRequests =serviceRequestsRes.data;
+
+    //add service requests to graph
+    serviceRequests.forEach((request)=>{
+        if(nodeIDtoServiceRequest.get(request.reqLocationID)!=undefined){
+            nodeIDtoServiceRequest.get(request.reqLocationID)?.push(request);
+        }
+    });
+
+
+
 }
 
 /**
@@ -368,7 +397,7 @@ function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndT
  * @param zoomScale part of a MapState
  * @param setZoomScale part of a MapState
  */
-export function Map({
+export function HospitalMap({
                         startNode: startNode, setStartNode: setStartNode,
                         endNode: endNode, setEndNode: setEndNode,
                         selectedFloorIndex: selectedFloorIndex,
@@ -466,7 +495,11 @@ export function Map({
                         return drawNodeInfo(node);
                     })
                 }
-
+                {
+                    locationsWithHalls.map((node)=>{
+                        return drawNodeServiceRequests(node);
+                    })
+                }
                 {   /* draw the transition text on the map */
                     pathFloorTransitions.map((transition) => {
                         return drawTransitionText(transition);
@@ -577,6 +610,10 @@ export function Map({
                    onClick={() => markNodeOnClick(node.id)}
                    onMouseOver={() => onNodeHover(node.id)}
                    onMouseLeave={() => onNodeLeave(node.id)}
+                   onContextMenu={(e)=>{
+                       e.preventDefault();
+                       onNodeRightClick(node.id);
+                   }}
                 >
                     <circle cx={node.coordinate.x} cy={node.coordinate.y} className={nodeClass}></circle>
                     <image
@@ -596,6 +633,10 @@ export function Map({
                    onClick={() => markNodeOnClick(node.id)}
                    onMouseOver={() => onNodeHover(node.id)}
                    onMouseLeave={() => onNodeLeave(node.id)}
+                   onContextMenu={(e)=>{
+                       e.preventDefault();
+                       onNodeRightClick(node.id);
+                   }}
                 >
                     <circle cx={node.coordinate.x} cy={node.coordinate.y} className={nodeClass}></circle>
                     <image
@@ -617,6 +658,10 @@ export function Map({
                onClick={() => markNodeOnClick(node.id)}
                onMouseOver={() => onNodeHover(node.id)}
                onMouseLeave={() => onNodeLeave(node.id)}
+               onContextMenu={(e)=>{
+                   e.preventDefault();
+                   onNodeRightClick(node.id);
+               }}
             >
                 <circle cx={node.coordinate.x} cy={node.coordinate.y} className={nodeClass}></circle>
             </a>
@@ -628,8 +673,8 @@ export function Map({
      * @param node the node to draw
      */
     function drawNodeInfo(node: Node) {
-        /* make sure the graph exists before getting the nodes */
-        if (graph == null) {
+        /* make sure the graph and serviceRequest map exists before getting the nodes */
+        if (graph == null || nodeIDtoServiceRequest == null) {
             return;
         }
 
@@ -660,7 +705,8 @@ export function Map({
     function drawNodeInfoHTML(node: Node, connectedNode: Node, edgeConnections: string) {
         return (
             <foreignObject key={"nodeInfo_" + node.id} id={"nodeInfo_" + node.id}
-                           className={"foreignObjectNode"} x={node.coordinate.x + 20} y={node.coordinate.y - 250}
+                           className={"foreignObjectNode"} x={node.coordinate.x + 20}
+                           y={node.coordinate.y - 250}
             >
                     <span className={"spanNodeInfo"}>
                         <ul className={"ulNodeinfo"}>
@@ -683,6 +729,57 @@ export function Map({
     }
 
 
+    function drawNodeServiceRequests(node: Node) {
+
+        if (nodeIDtoServiceRequest.get(node.id) == undefined) {
+            return;
+        }
+        //if no service requests dont draw anything expect skeliton so that the hover event still works
+        if(nodeIDtoServiceRequest.get(node.id)!.length==0){
+            return (
+                <foreignObject key={"nodeService_" + node.id} id={"nodeService_" + node.id}
+                               className={"foreignObjectNode"} x={0}
+                               y={0}
+                >
+                    <span className={"spanNodeInfo"}>
+
+                    </span>
+                </foreignObject>
+            );
+        }
+
+        return (
+            <foreignObject key={"nodeService_" + node.id} id={"nodeService_" + node.id}
+                           className={"foreignObjectNode"} x={node.coordinate.x - 420}
+                           y={node.coordinate.y-250}
+            >
+                    <span className={"spanNodeInfo"}>
+                        <ul className={"ulNodeinfo"}>
+                            <li><b>Service Requests</b></li>
+                            {
+                                nodeIDtoServiceRequest.get(node.id)?.map((request) => {
+                                        return (
+                                            <li>
+                                                <ul className={"ulNodeRequestInfo"}>
+                                                    <li><b>ID: </b>{request.reqID}</li>
+                                                    <li><b>Type: </b>{request.reqType}</li>
+                                                    <li><b>Status: </b>{request.status}</li>
+                                                    <li><b>Priority: </b>{request.reqPriority}</li>
+                                                    <li><b>Assigned User: </b>{request.assignedUName}</li>
+                                                </ul>
+                                            </li>
+                                        );
+                                    }
+                                )
+
+                            }
+                        </ul>
+                    </span>
+            </foreignObject>
+        );
+    }
+
+
     function drawNodeLocationName(node: Node){
         if(drawEntirePathOptions[2] && drawEntirePath && node.nodeType!=NodeType.HALL){
             return (
@@ -697,6 +794,9 @@ export function Map({
         }
         return;
     }
+
+
+
 
     /**
      * Find out if a given node is a transition node.
@@ -946,7 +1046,5 @@ export function Map({
 
 /* Code is defined at the top of this file but runs here. */
 createGraph().then(() => {
-    //makeNodes().then();
-    //makePath("CCONF003L1", "CHALL014L1").then();
-    //resetSelectedNodes();
+    getNodeServiceRequests().then();
 });

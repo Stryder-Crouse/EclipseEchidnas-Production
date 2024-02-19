@@ -4,7 +4,7 @@ import ZoomInIcon from "../images/MapFunctions/plus.png";
 import ZoomOutIcon from "../images/MapFunctions/minus.png";
 import {Dispatch, SetStateAction} from "react";
 import {Node, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
-import {Viewbox} from "./map/Map.tsx";
+import {Viewbox} from "./map/HospitalMap.tsx";
 
 /**
  * Type to hold all applicable states on the Tailwind map page wrapper.
