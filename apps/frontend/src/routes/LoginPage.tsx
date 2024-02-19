@@ -1,14 +1,13 @@
 /** importations **/
-import LoginForm from "../components/loginPage/LoginForm.tsx";
+import Transportation_Input
+    from "../components/service-requests/transportation-outside-request/Transportation_Input.tsx";
 
 /**
  * Create login page for staff/admin
  */
 export default function WelcomePage() {
 
-    return (
-        <div className={"flex items-center justify-center bg-navy min-h-screen min-w-screen"}>
-            <LoginForm/>
-        </div>
-    );
+  return (
+    <Transportation_Input/>
+  );
 }
