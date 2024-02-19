@@ -47,6 +47,7 @@ export default function Flower_input() {
                 assignedUName: "",
                 reqPriority: priority,
                 reqID: -1,
+                time: new Date()
             };
 
             if(Number.isNaN(parseInt(flowerQuantity))){

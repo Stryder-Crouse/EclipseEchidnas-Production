@@ -2,7 +2,7 @@ import app from "../app.ts";
 import http from "http";
 import { AddressInfo } from "net";
 import { createHttpTerminator } from "http-terminator";
-//import dbInit from "../routes/LoadDB.ts";
+import dbInit from "../routes/LoadDB.ts";
 
 // Attempt a database connection
 console.info("Connecting to database...");
@@ -120,4 +120,4 @@ function onListening(): void {
   console.log("Startup complete");
 }
 
-//dbInit().then();
+dbInit().then();
