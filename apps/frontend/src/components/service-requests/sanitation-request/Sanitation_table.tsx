@@ -41,11 +41,11 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
                 <tr className={"tableTRHead"}>
                     <th className={"tableTD"}>ID</th>
                     <th className={"tableTD"}>Request Type</th>
-                    <th className={"tableTD"}>Priority</th>
-                    <th className={"tableTD"}>Going To</th>
-                    <th className={"tableTD"}>Why</th>
                     <th className={"tableTD"}>Status</th>
+                    <th className={"tableTD"}>Priority</th>
                     <th className={"tableTD"}>Employee</th>
+                    <th className={"tableTD"}>Going To</th>
+                    <th className={"tableTD"}>Description</th>
                 </tr>
                 </thead>
                 {/* populating here */}
@@ -57,27 +57,6 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
                             <tr className={"tableTR"} key={"San_" + request[0].serviceReqID}>
                                 <td className={"tableTD"}>{request[1].reqID}</td>
                                 <td className={"tableTD"}>{request[1].reqType}</td>
-                                <td className={"tableTD"}>
-                                    <select
-                                        value={request[1].reqPriority}
-                                        id={"priorityDropdown" + request[1].reqID}
-                                        onChange={
-                                            (event) => {
-                                                const eventHTML = event.target as HTMLSelectElement;
-                                                onPriorityChange(eventHTML, requestIndex).then();
-                                            }
-                                        }
-                                    >
-                                        <option className={"priorityDropdown"} value="Low">Low</option>
-                                        <option className={"priorityDropdown"} value="Medium">Medium
-                                        </option>
-                                        <option className={"priorityDropdown"} value="High">High</option>
-                                        <option className={"priorityDropdown"} value="Emergency">Emergency
-                                        </option>
-                                    </select>
-                                </td>
-                                <td className={"tableTD"}>{request[1].reqLocationID}</td>
-                                <td className={"tableTD"}>{request[0].type}</td>
                                 <td className={"tableTD"}>
                                     <select
                                         value={request[1].status}
@@ -103,6 +82,25 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
                                 </td>
                                 <td className={"tableTD"}>
                                     <select
+                                        value={request[1].reqPriority}
+                                        id={"priorityDropdown" + request[1].reqID}
+                                        onChange={
+                                            (event) => {
+                                                const eventHTML = event.target as HTMLSelectElement;
+                                                onPriorityChange(eventHTML, requestIndex).then();
+                                            }
+                                        }
+                                    >
+                                        <option className={"priorityDropdown"} value="Low">Low</option>
+                                        <option className={"priorityDropdown"} value="Medium">Medium
+                                        </option>
+                                        <option className={"priorityDropdown"} value="High">High</option>
+                                        <option className={"priorityDropdown"} value="Emergency">Emergency
+                                        </option>
+                                    </select>
+                                </td>
+                                <td className={"tableTD"}>
+                                    <select
                                         value={request[1].assignedUName}
                                         onChange={
                                             (event) => {
@@ -121,6 +119,8 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
                                         }
                                     </select>
                                 </td>
+                                <td className={"tableTD"}>{request[1].reqLocationID}</td>
+                                <td className={"tableTD"}>{request[0].type}</td>
                             </tr>
 
                         );
