@@ -142,7 +142,7 @@ export default function Religious_input() {
                 </div>
                 {/* Urgency */}
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
-                    <CreateDropdown dropBtnName={"Urgency"} dropdownID={"UrgencyID"} isSearchable={false}
+                    <CreateDropdown dropBtnName={"Priority "} dropdownID={"UrgencyID"} isSearchable={false}
                                     populationArr={priorityLevels}
                                     setSelected={setUrgencyDDIndx}
                                     resetDropdown={resetDropdownUrg}

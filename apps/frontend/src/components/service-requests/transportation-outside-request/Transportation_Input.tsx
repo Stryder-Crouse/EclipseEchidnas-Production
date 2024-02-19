@@ -129,7 +129,7 @@ export default function Transportation_Input() {
                             id={"priority"}
                             onChange={(e) => setPriority(e.target.value as PriorityLevel)}
                         >
-                            <option value={PriorityLevel.Unchosen}>Priority:</option>
+                            <option value={PriorityLevel.Unchosen}>Priority </option>
                             <option value={PriorityLevel.Low}>Low</option>
                             <option value={PriorityLevel.Medium}>Medium</option>
                             <option value={PriorityLevel.High}>High</option>
