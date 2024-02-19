@@ -8,14 +8,20 @@ export type ServiceRequest = {
     extraInfo: string;
     status: string;
     assignedUName: string;
+    time: Date | null;
     reqID:number;
 
 };
 /** Type to store data specific to medication requests*/
 export type MedReq = {
-    medType: string;
-    dosage: string;
-    numDoses: number;
+    medName: string;
+    medStrength: string;
+    quantity: number;
+    medForm: string;
+    medSig: string;
+    patientName: string;
+    patientDOB: Date;
+    patientMedReqNum: number;
     genReqID: number;
 };
 

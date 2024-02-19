@@ -20,152 +20,6 @@ import Status from "../algorithms/Requests/Status.ts";
 
 const router: Router = express.Router();
 
-// ---------------------------------    Med Request DB Interaction    ---------------------------------
-
-//posts one new medicine request from the user to the database
-//the new medReq and the new serviceRequest both get their own auto-generated ID
-router.post("/medReq", async function (req: Request, res: Response) {
-    //console.log(req.body);
-    //console.log("Med Req Above");
-    const sentData: [ServiceRequest, MedReq] = req.body;
-    console.info(sentData);
-
-    //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
-    try {
-
-        //create a service request in the database
-        const service = await PrismaClient.serviceRequest.create({
-            //data passed into post is array of 2 data types
-            // first data type is a service request, so all the data we want to create a service req in the table
-            // will be stored in the first spot of array (passed as a json through prisma client)
-            data: {
-                //ID is auto created
-                reqType: sentData[0].reqType,
-                reqPriority: sentData[0].reqPriority,
-                //connect the Node field using the node id as a foreign key
-                reqLocation: {
-                    connect: {
-                        nodeID: sentData[0].reqLocationID
-                    }
-                },
-                extraInfo: sentData[0].extraInfo,
-                status: sentData[0].status,
-                //connect the Employee field using the username as a foreign key
-                //assigned is the relation, so itt does not actually exist as data (data that
-                // will exist and connect is data you specify below)
-                assigned: {
-                    connectOrCreate: {
-                        //connectOrCreate makes you specify what data you will create with and also what you
-                        // want to connect to (needs to know both potential outcomes)
-                        create: {
-                            userName: "No one",
-                            firstName: "N/A",
-                            lastName: "N/A",
-                            designation: "N/A",
-                            isAdmin: true,
-                        },
-                        //second part of create or connect (the what-we-connect-to part)
-                        where: {
-                            userName: "No one"
-                        }
-                    }
-                }
-            },
-        });
-        console.info("Successfully saved Req"); // Log that it was successful
-
-        //create a Med Req (use data from the second element since we always put med req data type in second)
-        await PrismaClient.medReq.create({
-            data: {
-                dosage: sentData[1].dosage,
-                medType: sentData[1].medType,
-                numDoses: sentData[1].numDoses,
-                genReqID: service.reqID,
-            }
-        });
-        console.info("Successfully saved Med Req"); // Log that it was successful
-        //sendback the id of the request
-        //console.info("HHH " +record.genReqID);
-        res.send(200);
-    } catch (error) {
-        // Log any failures
-        console.error(`Unable to save Med Req`);
-        res.sendStatus(400); // Send error
-    }
-});
-
-//posts multiple medication requests to the database
-// each request gets its own auto-generated ID
-//router.post("/post-all", async function (req: Request, res: Response) {});
-
-//gets all medicine requests from the database in the form of request objects
-router.get("/medReq", async function (req: Request, res: Response) {
-    const statusFilter: Status = req.query.status as Status;
-    console.log("pog");
-    console.log(statusFilter);
-    if (statusFilter == Status.Any) {
-        try {
-            //try to send all the nodes to the client
-
-            const medReqs = await PrismaClient.medReq.findMany({
-                orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
-                }
-            });
-
-            const serviceReqs = await PrismaClient.serviceRequest.findMany({
-                orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
-                },
-                where: {
-                    reqType: "medication"
-                }
-            });
-
-
-            res.send([medReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
-            console.info("\nSuccessfully gave you all of the medical requests\n");
-        } catch (err) {
-            console.error("\nUnable to send requests\n");
-        }
-
-    } else {
-        try {
-            //try to send all the nodes to the client
-
-            const medReqs = await PrismaClient.medReq.findMany({
-                orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
-                },
-                where: {
-                    genReq: {
-                        status: statusFilter
-                    }
-
-                }
-            });
-
-            const serviceReqs = await PrismaClient.serviceRequest.findMany({
-                orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
-                },
-                where: {
-                    reqType: "medication",
-                    status: statusFilter
-                }
-            });
-
-
-            res.send([medReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
-            console.info("\nSuccessfully gave you all of the medical requests\n");
-        } catch (err) {
-            console.error("\nUnable to send requests\n");
-        }
-    }
-
-
-});
-
 // ---------------------------------    General Service Request DB Interaction    ---------------------------------
 
 // return all the general service requests in the database
@@ -182,22 +36,29 @@ router.get("/serviceReq", async function (req: Request, res: Response) {
     }
 });
 
-//return the general service requests filtered by status, priority, or employee
+//return the general service requests filtered by status, priority, employee, location, and/or type
 router.get("/serviceReq/filter", async function (req: Request, res: Response) {
     try {
+        //req should be something like {params: {status: "Unassigned", priority:"Low", employee:"all", location:"all", type:"all"}}
         const statusFilter: Status = req.query.status as Status;
         const priorityFilter: Priorities = req.query.priority as Priorities;
         const emplFilter: string = req.query.employee as string;
+        const locFilter: string = req.query.location as string;
+        const typeFilter: string = req.query.type as string;
 
         console.log("statusfilter: \n" + statusFilter);
         console.log("priorityFilter: \n" + priorityFilter);
         console.log("emplFilter: \n" + emplFilter);
+        console.log("locFilter: \n" + locFilter);
+        console.log("typeFilter: \n" + typeFilter);
 
         //make a local type that potentially has one field for each filter
         type WhereCondition = {
             status?: string;
             reqPriority?: string;
             assignedUName?: string;
+            recLocationID?: string;
+            type?: string;
         };
 
         //make an instance of the type with no fields for now. This ensures that if no filter
@@ -209,12 +70,20 @@ router.get("/serviceReq/filter", async function (req: Request, res: Response) {
             whereCondition.status = statusFilter;
         }
         //if there is a priority filter, add it to the whereCondition
-        if(priorityFilter != null && priorityFilter == Priorities.any){
+        if(priorityFilter != null && priorityFilter != Priorities.any){
             whereCondition.reqPriority = priorityFilter;
         }
-        //if there is a employee filter, add it to the whereCondition
+        //if there is an employee filter, add it to the whereCondition
         if(emplFilter != null && emplFilter != "" && emplFilter.toLowerCase() != "any"){
             whereCondition.assignedUName = emplFilter;
+        }
+        //if there is a location filter, add it to the whereCondition
+        if(locFilter != null && locFilter != "" && locFilter.toLowerCase() != "any"){
+            whereCondition.recLocationID = locFilter;
+        }
+        //if there is a type filter, add it to the whereCondition
+        if(typeFilter != null && typeFilter != "" && typeFilter.toLowerCase() != "any"){
+            whereCondition.type = typeFilter;
         }
 
         //send the request to the user with the specified conditions
@@ -229,8 +98,7 @@ router.get("/serviceReq/filter", async function (req: Request, res: Response) {
 
         console.info("\nSuccessfully filtered requests\n"); //debugging info
     } catch {
-        console.error("\nUnable to filter requests. Make sure to include status, priority, and employee in the req " +
-            "prop, even if you aren't using all of them\n");
+        console.error("\nUnable to filter requests.\n");
         res.sendStatus(400); // Send error
     }
 });
@@ -354,6 +222,159 @@ router.post("/removeRequest", async function (req: Request, res: Response) {
 });
 
 
+// ---------------------------------    Med Request DB Interaction    ---------------------------------
+
+//posts one new medicine request from the user to the database
+//the new medReq and the new serviceRequest both get their own auto-generated ID
+router.post("/medReq", async function (req: Request, res: Response) {
+    //console.log(req.body);
+    //console.log("Med Req Above");
+    const sentData: [ServiceRequest, MedReq] = req.body;
+    console.info(sentData);
+
+    //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
+    try {
+        const date = new Date();
+        //create a service request in the database
+        const service = await PrismaClient.serviceRequest.create({
+            //data passed into post is array of 2 data types
+            // first data type is a service request, so all the data we want to create a service req in the table
+            // will be stored in the first spot of array (passed as a json through prisma client)
+            data: {
+                //ID is auto created
+                reqType: sentData[0].reqType,
+                reqPriority: sentData[0].reqPriority,
+                //connect the Node field using the node id as a foreign key
+                reqLocation: {
+                    connect: {
+                        nodeID: sentData[0].reqLocationID
+                    }
+                },
+                extraInfo: sentData[0].extraInfo,
+                status: sentData[0].status,
+                //connect the Employee field using the username as a foreign key
+                //assigned is the relation, so itt does not actually exist as data (data that
+                // will exist and connect is data you specify below)
+                assigned: {
+                    connectOrCreate: {
+                        //connectOrCreate makes you specify what data you will create with and also what you
+                        // want to connect to (needs to know both potential outcomes)
+                        create: {
+                            userID:"0",
+                            userName: "No one",
+                            firstName: "N/A",
+                            lastName: "N/A",
+                            designation: "N/A",
+                            isAdmin: true,
+                        },
+                        //second part of create or connect (the what-we-connect-to part)
+                        where: {
+                            userName: "No one"
+                        }
+                    }
+                },
+                time: date
+            },
+        });
+        console.info("Successfully saved Req"); // Log that it was successful
+
+        //create a Med Req (use data from the second element since we always put med req data type in second)
+        await PrismaClient.medReq.create({
+            data: {
+                medStrength: sentData[1].medStrength,
+                medName: sentData[1].medName,
+                quantity: sentData[1].quantity,
+                genReqID: service.reqID,
+                patientName: sentData[1].patientName,
+                patientDOB: sentData[1].patientDOB,
+                patientMedRecNum: sentData[1].patientMedReqNum,
+                medForm: sentData[1].medForm,
+                medSig: sentData[1].medSig,
+            }
+        });
+        console.info("Successfully saved Med Req"); // Log that it was successful
+        //sendback the id of the request
+        //console.info("HHH " +record.genReqID);
+        res.send(200);
+    } catch (error) {
+        // Log any failures
+        console.error(`Unable to save Med Req`);
+        res.sendStatus(400); // Send error
+    }
+});
+
+//posts multiple medication requests to the database
+// each request gets its own auto-generated ID
+//router.post("/post-all", async function (req: Request, res: Response) {});
+
+//gets all medicine requests from the database in the form of request objects
+router.get("/medReq", async function (req: Request, res: Response) {
+    const statusFilter: Status = req.query.status as Status;
+    console.log("pog");
+    console.log(statusFilter);
+    if (statusFilter == Status.Any) {
+        try {
+            //try to send all the nodes to the client
+
+            const medReqs = await PrismaClient.medReq.findMany({
+                orderBy: {
+                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                }
+            });
+
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where: {
+                    reqType: "medication"
+                }
+            });
+
+
+            res.send([medReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
+            console.info("\nSuccessfully gave you all of the medical requests\n");
+        } catch (err) {
+            console.error("\nUnable to send requests\n");
+        }
+
+    } else {
+        try {
+            //try to send all the nodes to the client
+
+            const medReqs = await PrismaClient.medReq.findMany({
+                orderBy: {
+                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where: {
+                    genReq: {
+                        status: statusFilter
+                    }
+
+                }
+            });
+
+            const serviceReqs = await PrismaClient.serviceRequest.findMany({
+                orderBy: {
+                    reqID: "asc", //order by service request id so the two arrays are parallel
+                },
+                where: {
+                    reqType: "medication",
+                    status: statusFilter
+                }
+            });
+
+
+            res.send([medReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
+            console.info("\nSuccessfully gave you all of the medical requests\n");
+        } catch (err) {
+            console.error("\nUnable to send requests\n");
+        }
+    }
+
+
+});
+
 // ---------------------------------    Outside Transport DB Interaction    ---------------------------------
 
 router.post("/outsideTransport", async function (req: Request, res: Response) {
@@ -363,6 +384,7 @@ router.post("/outsideTransport", async function (req: Request, res: Response) {
         //you need a service request to make an outside transportation request, so let the router know that you are receiving both
         console.log("sds");
         console.log(sentData[0]);
+        const date = new Date();
         const servReq = await PrismaClient.serviceRequest.create({
             data: {
                 reqType: sentData[0].reqType,
@@ -382,6 +404,7 @@ router.post("/outsideTransport", async function (req: Request, res: Response) {
                         //connectOrCreate makes you specify what data you will create with and also what you
                         // want to connect to (needs to know both potential outcomes)
                         create: {
+                            userID:"0",
                             userName: "No one",
                             firstName: "N/A",
                             lastName: "N/A",
@@ -393,7 +416,8 @@ router.post("/outsideTransport", async function (req: Request, res: Response) {
                             userName: "No one"
                         }
                     }
-                }
+                },
+                time: date
             }
         });
         console.log("Successfully saved Service Requirement");
@@ -487,6 +511,7 @@ router.post("/sanReq", async function (req: Request, res: Response) {
     try {
         //you need a service request to make an Sanitation transportation request, so let the router know that you are receiving both
         const sentData: [ServiceRequest, sanReq] = req.body;
+        const date = new Date();
         const serviceReq = await PrismaClient.serviceRequest.create({
             data: {
                 reqType: sentData[0].reqType,
@@ -506,6 +531,7 @@ router.post("/sanReq", async function (req: Request, res: Response) {
                         //connectOrCreate makes you specify what data you will create with and also what you
                         // want to connect to (needs to know both potential outcomes)
                         create: {
+                            userID: "0",
                             userName: "No one",
                             firstName: "N/A",
                             lastName: "N/A",
@@ -517,7 +543,8 @@ router.post("/sanReq", async function (req: Request, res: Response) {
                             userName: "No one"
                         }
                     }
-                }
+                },
+                time: date
             }
         });
         console.log("Successfully saved Service Requirement");
@@ -610,7 +637,7 @@ router.post("/flowReq", async function (req: Request, res: Response) {
 
     //sets every part of node to whatever was entered while running (not during compile - point of promise/await)
     try {
-
+        const date = new Date();
         //create a service request in the database
         const service = await PrismaClient.serviceRequest.create({
             //data passed into post is array of 2 data types
@@ -636,6 +663,7 @@ router.post("/flowReq", async function (req: Request, res: Response) {
                         //connectOrCreate makes you specify what data you will create with and also what you
                         // want to connect to (needs to know both potential outcomes)
                         create: {
+                            userID:"0",
                             userName: "No one",
                             firstName: "N/A",
                             lastName: "N/A",
@@ -647,7 +675,8 @@ router.post("/flowReq", async function (req: Request, res: Response) {
                             userName: "No one"
                         }
                     }
-                }
+                },
+                time: date
             },
         });
         console.log("Successfully saved Req"); // Log that it was successful
@@ -729,7 +758,7 @@ router.get("/flowReq", async function (req: Request, res: Response) {
 // ---------------------------------    Relig Req DB Interaction    ---------------------------------
 router.post('/religiousRequest', async function (req: Request, res: Response) {
     try {
-
+        const date = new Date();
         const sentData: [ServiceRequest, ReligRequest] = req.body;
         const servReq = await PrismaClient.serviceRequest.create({
             data: {
@@ -750,6 +779,7 @@ router.post('/religiousRequest', async function (req: Request, res: Response) {
                         //connectOrCreate makes you specify what data you will create with and also what you
                         // want to connect to (needs to know both potential outcomes)
                         create: {
+                            userID:"0",
                             userName: "No one",
                             firstName: "N/A",
                             lastName: "N/A",
@@ -761,7 +791,8 @@ router.post('/religiousRequest', async function (req: Request, res: Response) {
                             userName: "No one"
                         }
                     }
-                }
+                },
+                time: date
             }
         });
         console.log("Successfully saved Service Requirement");
@@ -782,7 +813,6 @@ router.post('/religiousRequest', async function (req: Request, res: Response) {
         res.sendStatus(400);
     }
 });
-
 router.get("/religiousRequest", async function (req: Request, res: Response) {
 
     const statusFilter: Status = req.query.status as Status;
@@ -851,22 +881,29 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
         const statusFilter: Status = req.query.status as Status;
         const priorityFilter: Priorities = req.query.priority as Priorities;
         const emplFilter: string = req.query.employee as string;
+        const locFilter: string = req.query.location as string;
 
         console.log("statusfilter: \n" + statusFilter);
         console.log("priorityFilter: \n" + priorityFilter);
         console.log("emplFilter: \n" + emplFilter);
+        console.log("locFilter: \n" + locFilter);
 
         //make a local type that potentially has one field for each filter
         type WhereCondition = {
             status?: string;
             reqPriority?: string;
             assignedUName?: string;
+            reqLocationID?: string;
+            reqType: string;
         };
 
         //make an instance of the type with no fields for now. This ensures that if no filter
         //  is applied to the service request, all the service requests will be sent
-        const whereCondition :WhereCondition = {};
+        const whereCondition :WhereCondition = {
+            reqType: "religious"
+        };
 
+        
         //if there is a status filter, add it to the whereCondition
         if (statusFilter != null && statusFilter != Status.Any) {
             whereCondition.status = statusFilter;
@@ -875,9 +912,13 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
         if(priorityFilter != null && priorityFilter == Priorities.any){
             whereCondition.reqPriority = priorityFilter;
         }
-        //if there is a employee filter, add it to the whereCondition
+        //if there is an employee filter, add it to the whereCondition
         if(emplFilter != null && emplFilter != "" && emplFilter.toLowerCase() != "any"){
             whereCondition.assignedUName = emplFilter;
+        }
+        //if there is a location filter, add it to the whereCondition
+        if(locFilter != null && locFilter != "" && locFilter.toLowerCase() != "any"){
+            whereCondition.reqLocationID = locFilter;
         }
 
         //send the request to the user with the specified conditions
