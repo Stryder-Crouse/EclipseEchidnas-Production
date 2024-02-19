@@ -25,4 +25,7 @@ export class SearchContext {
     public search(source: Node, target: Node, graph: Graph): Array<Node> | null {
         return this.strategy.search(source, target, graph);
     }
+
+
+
 }

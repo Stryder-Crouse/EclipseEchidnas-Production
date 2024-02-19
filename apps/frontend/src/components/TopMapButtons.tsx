@@ -46,54 +46,105 @@ export default function TopMapButtons({setSelectedFloorIndex:setFloor,
                           setStartNode={setStartNode}
                           startNode={startNode}/>
 
-            <button
-                className="transition-all  hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"
-                onClick={() => {
-                    setFloor(FloorToIndex.LowerLevel2);
-                }}
-            >
-                Lower Level 2
-            </button>
+            <div className="ml-5 relative flex flex-col">
+                <button
+                    className="transition-all  hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"
+                    onClick={() => {
+                        setFloor(FloorToIndex.LowerLevel2);
+                    }}
+                >
+                    Lower Level 2
+                </button>
+                <button
+                    className="transition-all  hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"
+                    onClick={() => {
+                        console.log("hi");
+                    }}
+                >
+                    TEMP Exit
+                </button>
+            </div>
 
-            <button
-                className=" transition-all hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"
-                onClick={() => {
-                    setFloor(FloorToIndex.LowerLevel1);
-                }}
-            >
-                Lower Level 1
-            </button>
+            <div className="ml-5 relative flex flex-col">
+                <button
+                    className="transition-all  hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"
+                    onClick={() => {
+                        setFloor(FloorToIndex.LowerLevel1);
+                    }}
+                >
+                    Lower Level 1
+                </button>
+                <button
+                    className="transition-all  hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"
+                    onClick={() => {
+                        console.log("hi");
+                    }}
+                >
+                    TEMP Bathroom
+                </button>
+            </div>
 
-            <button
-                className="transition-all  hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"
-                onClick={() => {
-                    setFloor(FloorToIndex.Level1);
-                }}
-            >
-                Level 1
-            </button>
+            <div className="ml-5 relative flex flex-col">
+                <button
+                    className="transition-all  hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"
+                    onClick={() => {
+                        setFloor(FloorToIndex.Level1);
+                    }}
+                >
+                    Level 1
+                </button>
+                <button
+                    className="transition-all  hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"
+                    onClick={() => {
+                        console.log("hi");
+                    }}
+                >
+                    TEMP ER
+                </button>
+            </div>
 
-            <button
-                className="transition-all hover:bg-navy  w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"
-                onClick={() => {
-                    setFloor(FloorToIndex.Level2);
-                }}
-            >
-                Level 2
-            </button>
+            <div className="ml-5 relative flex flex-col">
+                <button
+                    className="transition-all  hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"
+                    onClick={() => {
+                        setFloor(FloorToIndex.Level2);
+                    }}
+                >
+                    Level 2
+                </button>
+                <button
+                    className="transition-all  hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"
+                    onClick={() => {
+                        console.log("hi");
+                    }}
+                >
+                    TEMP Elevator
+                </button>
+            </div>
 
-            <button
-                className="transition-all hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"
-                onClick={() => {
-                    setFloor(FloorToIndex.Level3);
-                }}
-            >
-                Level 3
-            </button>
+            <div className="ml-5 relative flex flex-col">
+                <button
+                    className="transition-all  hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"
+                    onClick={() => {
+                        setFloor(FloorToIndex.Level3);
+                    }}
+                >
+                    Level 1
+                </button>
+                <button
+                    className="transition-all  hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"
+                    onClick={() => {
+                        console.log("hi");
+                    }}
+                >
+                    Stairs
+                </button>
+            </div>
 
 
             <CreateDropdown
-                dropBtnName={"PLACEHOLDER SEARCH TYPE"} dropdownID={"Search Type"} populationArr={searchOptions} isSearchable={false}
+                dropBtnName={"PLACEHOLDER SEARCH TYPE"} dropdownID={"Search Type"} populationArr={searchOptions}
+                isSearchable={false}
                 resetOnSelect={false} resetDropdown={resetDropdown}
                 setResetDropdown={setResetDropdown} setSelected={setSelectedAlgoIndex}
                 inputCSS={""}
