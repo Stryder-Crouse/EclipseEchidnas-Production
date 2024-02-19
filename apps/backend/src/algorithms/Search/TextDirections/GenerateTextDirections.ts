@@ -21,6 +21,7 @@ export enum Directions {
 export function generateTextDirections(path: Array<Node> | null): Array<string> | null {
     /* Cool */
     const directions: Array<string> = new Array<string>();
+    directions.push("Starting at "+path![0].longName);
 
     /* typescript in the hood be like 😂 */
     if (path == null) {
@@ -65,6 +66,9 @@ export function generateTextDirections(path: Array<Node> | null): Array<string> 
             directions.push(determineTurn(path[i - 1], path[i], path[i + 1]));
         }
     }
+
+
+    directions.push("You have arrived");
 
     /* HAHAHAHAH LMAOOOOO */
     return directions;

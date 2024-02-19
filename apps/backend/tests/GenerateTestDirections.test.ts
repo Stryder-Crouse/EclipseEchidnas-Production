@@ -24,6 +24,7 @@ const graph: Graph = new Graph(nodes, edges);
  */
 function newNodeWithCoordinate(coordinate: Coordinate) {
     return <Node>{
+        longName:"test",
         coordinate: coordinate,
     };
 }
@@ -124,8 +125,10 @@ function generateTextDirections_two_right_turns(): void {
     const test_path: Array<Node> | null = AStar(graph.idToNode("1"), graph.idToNode("7"), graph);
     const test_directions: Array<string> | null =  generateTextDirections(test_path);
     const expected_directions: Array<string> = new Array<string>();
+    expected_directions.push("Starting at Anesthesia Conf Floor L1");
     expected_directions.push(Directions.BEAR_RIGHT);
     expected_directions.push(Directions.RIGHT);
+    expected_directions.push("You have arrived");
 
     /* it better match */
     expect(test_directions).toStrictEqual(expected_directions);
