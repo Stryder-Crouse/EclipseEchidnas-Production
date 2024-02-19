@@ -1,4 +1,4 @@
-/** importations **/
+/** importations
 import React, {useEffect, useState} from "react";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 
@@ -90,7 +90,7 @@ export default function Medicine_input() {
 
 
     return (
-            <div className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-4 align-self-center"}>
+            <div className={"min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-4 align-self-center absolute flex items-center justify-center "}>
                 <form className={"p-1"}>
                     <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Medicine Request</h1>
 
@@ -144,5 +144,5 @@ async function getLocations() {
     //load edges and node from database
     const nodesDB = await axios.get<NodeDataBase[]>("/api/load-nodes");
     return nodesDB.data;
-}
+} **/
 

@@ -9,6 +9,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        teal: '#0097A0',
         navStart: '#024C96',
         navy: '#012d5A',
         ivoryWhite: '#f1f1f1',
