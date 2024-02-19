@@ -6,11 +6,17 @@ import {ReligRequest, ReqTypes, ServiceRequest} from "../../../../../backend/src
 import axios from "axios";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import {closeCard} from "../../service-request-cards/ReligionRequestCard.tsx";
+
+
 
 let longNames:string[] = [];
 
 const priorityLevels =[Priority.low, Priority.normal, Priority.high, Priority.emergency];
-export default function Religious_input() {
+export default function Religious_input({
+    setIsPopupOpen
+                                        }: closeCard) {
+
     const [service, setService] = useState("");
     const [nameP, setNameP] = useState("");
 
@@ -121,6 +127,10 @@ export default function Religious_input() {
         }
     }
 
+    function closeReligiousForm(event: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) {
+        event.preventDefault();
+        setIsPopupOpen(false);
+    }
     return (
         <div
             className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-2 align-self-center"}>
@@ -195,8 +205,12 @@ export default function Religious_input() {
                     </h3>
                 </div>
             </form>
-            <div className={"flex justify-center items-center my-1.5"}>
-                <p className={"flex justify-center items-center -mt-5"}>Created By: Alana and Grace</p>
+            <div className={"grid justify-center items-center m-auto my-1.5 mb-5"}>
+                <button onClick={(event) => closeReligiousForm(event)} className={
+                    "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 -mt-5"}>
+                    Close
+                </button>
+                <p className={"flex justify-center items-center mt-5"}>Created By: Alana and Grace</p>
             </div>
         </div>
     );

@@ -1,3 +1,5 @@
+
+/**
 import React, {useState} from "react";
 import "../../css/component-css/ServicePage.css";
 import {ReqTypes} from "../../../../backend/src/algorithms/Requests/Request.ts";
@@ -69,7 +71,7 @@ export default function ServiceRequestInput() {
 
             </ul>
             <div className="tab-content-wrapper">
-                {/* the content to be populated with each request */}
+
                 {
                     generateSelectedTable()
                 }
@@ -99,4 +101,4 @@ export default function ServiceRequestInput() {
     }
 
 
-}
+} **/

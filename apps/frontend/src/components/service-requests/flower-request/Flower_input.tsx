@@ -6,11 +6,14 @@ import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
+import {closeFlowerCard} from "../../service-request-cards/FlowerRequestCard.tsx";
 
 
 let longNames:string[] = [];
 
-export default function Flower_input() {
+export default function Flower_input({
+    setIsPopupOpen
+                                     }: closeFlowerCard) {
     const [sender,setSender] = useState("");
     const [priority,setPriority] = useState("low");
     //const [location,setLocation] = useState("");
@@ -128,7 +131,10 @@ export default function Flower_input() {
         }
 
 
-
+    function closeFlowerForm(event: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) {
+        event.preventDefault();
+        setIsPopupOpen(false);
+    }
 
     return(
         <div
@@ -212,8 +218,12 @@ export default function Flower_input() {
                     </div>
 
             </form>
-            <div className={"flex justify-center items-center my-1.5"}>
-                <p className={"flex justify-center items-center -mt-5"}>Created By: Shiivek and Syzmon</p>
+            <div className={"grid justify-center items-center m-auto my-1.5 mb-5"}>
+                <button onClick={(event) => closeFlowerForm(event)} className={
+                    "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 -mt-5"}>
+                    Close
+                </button>
+                <p className={"flex justify-center items-center mt-5"}>Created By: Shiivek and Syzmon</p>
             </div>
         </div>
 

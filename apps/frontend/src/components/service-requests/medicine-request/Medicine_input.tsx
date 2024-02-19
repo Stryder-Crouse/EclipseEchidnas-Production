@@ -7,11 +7,14 @@ import {MedReq, ReqTypes, ServiceRequest} from "../../../../../backend/src/algor
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import {closeMedicineCard} from "../../service-request-cards/MedicineRequestCard.tsx";
 //import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 
 let longNames:string[] = [];
 
-export default function Medicine_input() {
+export default function Medicine_input({
+    setIsPopupOpen
+                                       }:closeMedicineCard) {
 
     const [medRequestDoses, setMedRequestDose] = useState("");
     const [medRequestType, setMedRequestType] = useState("");
@@ -113,7 +116,10 @@ export default function Medicine_input() {
         setMedRequestDose("");
     }
 
-
+    function closeMedicineForm(event: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) {
+        event.preventDefault();
+        setIsPopupOpen(false);
+    }
     return (
         <div
             className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-4 align-self-center"}>
@@ -163,8 +169,12 @@ export default function Medicine_input() {
                     </h3>
                 </div>
             </form>
-            <div className={"flex justify-center items-center my-1.5"}>
-                <p>Created By: Alex and Antonio</p>
+            <div className={"grid justify-center items-center m-auto my-1.5 mb-5"}>
+                <button onClick={(event) => closeMedicineForm(event)} className={
+                    "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 -mt-5"}>
+                    Close
+                </button>
+                <p className={"flex justify-center items-center mt-5"}>Created By: Alex and Antonio</p>
             </div>
         </div>
 
