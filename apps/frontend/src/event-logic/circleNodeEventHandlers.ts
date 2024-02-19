@@ -93,6 +93,18 @@ export function onNodeRightClick(nodeID: string) {
 
     //if node info is already toggled to Permanent hide it
     if (nodeInfo!.getAttribute("class") == "spanNodeInfoVisiblePermanent") {
+
+        //clean up event liseners
+        nodeInfo!.removeEventListener("wheel",(e)=>{
+            e.stopPropagation();
+        });
+
+        nodeServiceInfo!.removeEventListener("wheel",(e)=>{
+            e.stopPropagation();
+        });
+
+
+
         nodeInfoSVG?.setAttribute("class", "foreignObjectNode");
         nodeInfo?.setAttribute("class", "spanNodeInfo");
         nodeServiceInfoSVG?.setAttribute("class", "foreignObjectNode");
@@ -100,7 +112,19 @@ export function onNodeRightClick(nodeID: string) {
     }
     //else set to Permanent
     else {
-        console.log("fired");
+
+        //add onWheel event lissener to prevent propogration as they are brocken in react natively
+        //https://github.com/facebook/react/issues/14856
+        //https://stackoverflow.com/questions/57358640/cancel-wheel-event-with-e-preventdefault-in-react-event-bubbling
+
+        nodeInfo!.addEventListener("wheel",(e)=>{
+            e.stopPropagation();
+        });
+
+        nodeServiceInfo!.addEventListener("wheel",(e)=>{
+            e.stopPropagation();
+        });
+
         nodeInfo?.setAttribute("class", "spanNodeInfoVisiblePermanent");
         nodeServiceInfo?.setAttribute("class", "spanNodeInfoVisiblePermanent");
     }

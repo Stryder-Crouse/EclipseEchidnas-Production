@@ -707,8 +707,13 @@ export function HospitalMap({
             <foreignObject key={"nodeInfo_" + node.id} id={"nodeInfo_" + node.id}
                            className={"foreignObjectNode"} x={node.coordinate.x + 20}
                            y={node.coordinate.y - 250}
+
+
+
             >
-                    <span className={"spanNodeInfo"}>
+                    <span className={"spanNodeInfo"}
+                          onMouseDown={(e)=>{e.stopPropagation(); }}
+                    >
                         <ul className={"ulNodeinfo"}>
                             <li><b>ID: </b>{node.id}</li>
                             <li>
@@ -752,8 +757,11 @@ export function HospitalMap({
             <foreignObject key={"nodeService_" + node.id} id={"nodeService_" + node.id}
                            className={"foreignObjectNode"} x={node.coordinate.x - 420}
                            y={node.coordinate.y-250}
+
             >
-                    <span className={"spanNodeInfo"}>
+                    <span className={"spanNodeInfo"}
+                          onMouseDown={(e)=>{e.stopPropagation(); }}
+                    >
                         <ul className={"ulNodeinfo"}>
                             <li><b>Service Requests</b></li>
                             {
