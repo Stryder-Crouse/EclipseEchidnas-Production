@@ -185,6 +185,8 @@ router.get("/serviceReq", async function (req: Request, res: Response) {
         //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
         res.send(await PrismaClient.serviceRequest.findMany()); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you all of the requests\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
     } catch (err) {
         console.error("\nUnable to send requests\n");
         res.sendStatus(400); // Send error
