@@ -193,7 +193,7 @@ export default function Transportation_table({statusFilter:statusFilter}:statusF
                     <th className={"tableTD"}>Destination</th>
                     <th className={"tableTD"}>Patient Name</th>
                     <th className={"tableTD"}>Transportation Mode</th>
-                    <th className={"tableTD"}>Additional</th>
+                    <th className={"tableTD"}>Extra Notes</th>
                 </tr>
                 </thead>
                 <tbody>

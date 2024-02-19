@@ -47,7 +47,7 @@ export default function Flower_table({statusFilter: statusFilter}: statusFilter)
                     <th className={"tableTD"}>Flower Quantity</th>
                     <th className={"tableTD"}>Flower Recepient</th>
                     <th className={"tableTD"}>Message</th>
-
+                    <th className={"tableTD"}>Extra Notes</th>
                 </tr>
                 </thead>
                 {/* populating here */}
@@ -125,12 +125,14 @@ export default function Flower_table({statusFilter: statusFilter}: statusFilter)
                                     </select>
                                 </td>
 
-                                <td className={"tableTD"}>{request[1].reqLocationID}</td> {/*location*/}
+                                <td className={"tableTD"}>{request[1].reqLocationID}</td>
+                                {/*location*/}
                                 <td className={"tableTD"}>{request[0].sender}</td>
                                 <td className={"tableTD"}>{request[0].flowType}</td>
                                 <td className={"tableTD"}>{request[0].quantity.toString()}</td>
                                 <td className={"tableTD"}>{request[0].receiver}</td>
                                 <td className={"tableTD"}>{request[0].message}</td>
+                                <td className={"tableTD"}>{request[1].extraInfo}</td>
                             </tr>
 
                         );

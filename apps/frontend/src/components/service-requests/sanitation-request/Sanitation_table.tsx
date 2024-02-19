@@ -46,6 +46,7 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
                     <th className={"tableTD"}>Employee</th>
                     <th className={"tableTD"}>Going To</th>
                     <th className={"tableTD"}>Description</th>
+                    <th className={"tableTD"}>Extra Notes</th>
                 </tr>
                 </thead>
                 {/* populating here */}
@@ -121,6 +122,7 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
                                 </td>
                                 <td className={"tableTD"}>{request[1].reqLocationID}</td>
                                 <td className={"tableTD"}>{request[0].type}</td>
+                                <td className={"tableTD"}>{request[1].extraInfo}</td>
                             </tr>
 
                         );

@@ -49,6 +49,7 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                 <th className={"tableTD"}>Patient Name</th>
                                 <th className={"tableTD"}>Religion</th>
                                 <th className={"tableTD"}>Service requested</th>
+                                <th className={"tableTD"}>Extra Notes</th>
                             </tr>
                             </thead>
                             {/* populating here */}
@@ -124,6 +125,7 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                             <td className={"tableTD"}>{request[0].patientName}</td>
                                             <td className={"tableTD"}>{request[0].religion}</td>
                                             <td className={"tableTD"}>{request[0].reqDescription}</td>
+                                            <td className={"tableTD"}>{request[1].extraInfo}</td>
                                         </tr>
 
                                     );

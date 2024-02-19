@@ -47,6 +47,7 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
                                 <th className={"tableTD"}>Medicine type</th>
                                 <th className={"tableTD"}>Dosage</th>
                                 <th className={"tableTD"}>Amount</th>
+                                <th className={"tableTD"}>Extra Notes</th>
                             </tr>
                             </thead>
                             {/* populating here */}
@@ -118,12 +119,12 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
                                                     }
                                                 </select>
                                             </td>
-                                            <td className={"tableTD"}>{request[1].reqLocationID}</td> {/*location*/}
+                                            <td className={"tableTD"}>{request[1].reqLocationID}</td>
+                                            {/*location*/}
                                             <td className={"tableTD"}>{request[0].medType}</td>
                                             <td className={"tableTD"}>{request[0].dosage}</td>
                                             <td className={"tableTD"}>{request[0].numDoses.toString()}</td>
-
-
+                                            <td className={"tableTD"}>{request[1].extraInfo}</td>
                                         </tr>
 
                                     );

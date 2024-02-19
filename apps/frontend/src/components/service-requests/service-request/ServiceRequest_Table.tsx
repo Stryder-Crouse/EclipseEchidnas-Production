@@ -53,6 +53,7 @@ export default function ServiceRequest_Table({statusFilter:statusFilter}:statusF
                     <th className={"tableTD"}>Priority</th>
                     <th className={"tableTD"}>Employee Assigned</th>
                     <th className={"tableTD"}>Location ID</th>
+                    <th className={"tableTD"}>Extra Notes</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -116,6 +117,7 @@ export default function ServiceRequest_Table({statusFilter:statusFilter}:statusF
                                     </select>
                                 </th>
                                 <th className={"tableTD"}>{request.reqLocationID}</th>
+                                <td className={"tableTD"}>{request.extraInfo}</td>
                             </tr>
                         );
                     })
