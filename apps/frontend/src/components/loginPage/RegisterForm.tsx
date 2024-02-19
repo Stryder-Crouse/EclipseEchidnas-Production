@@ -25,6 +25,8 @@ export default function RegisterForm() {
             isAdmin: false,
         };
 
+        //backend functionality for new employees
+        //this will map to our backend and register a new account with Auth0
         axios.post("/api/employees/employee", employee, {
             headers: {
                 "Content-Type": "application/json",
