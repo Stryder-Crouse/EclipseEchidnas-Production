@@ -20,6 +20,9 @@ export default function Sanitation_input() {
 
     const [locations, setLocations] = useState<NodeDataBase[]>([]);
 
+    let interID = setInterval(fadeEffect, 100);
+    clearInterval(interID);
+
     const priorityArr = ["Low", "Medium", "High", "Emergency"];
 
     useEffect(()=>{
@@ -67,8 +70,31 @@ export default function Sanitation_input() {
                     },
                 });
 
+            show();
         } catch {
             console.error("Error with trying to save Service Req in ServiceRequestPage.tsx");
+        }
+    }
+
+    function show() {
+        const tag: HTMLElement = document.getElementById("popup") as HTMLElement;
+        tag.style.opacity = "1";
+        interID = setInterval(fadeEffect, 100);
+    }
+
+    function fadeEffect() {
+        const target = document.getElementById("popup") as HTMLElement;
+        let opacity = target.style.opacity;
+        if(Number(opacity) >= 0.97) {
+            opacity = (Number(opacity) - 0.001).toString();
+            target.style.opacity = opacity;
+        } else if (Number(opacity) > 0) {
+            opacity = (Number(opacity) - 0.1).toString();
+            target.style.opacity = opacity;
+        }
+
+        if(Number(opacity) < 0) {
+            clearInterval(interID);
         }
     }
 
@@ -116,6 +142,7 @@ export default function Sanitation_input() {
                         selectCSS={""}
                         inputCSS={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
                     />
+
                 </div>
                 {/* Extra notes */}
                 <SimpleTextInput id={"additional"} labelContent={"Extra info:"}
@@ -125,6 +152,11 @@ export default function Sanitation_input() {
                                  placeHolderText={""}>
                 </SimpleTextInput>
                 <RequestButtons submit={submit}/>
+                <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
+                    <h3>
+                        Successfully submitted!
+                    </h3>
+                </div>
             </form>
             <div className={"flex justify-center items-center my-1.5"}>
                 <p>Created By: Antonio and Sameer</p>
