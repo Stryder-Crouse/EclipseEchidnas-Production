@@ -17,7 +17,6 @@
     "@auth0/auth0-react": "^2.1.1",
     "@popperjs/core": "^2.11.8",
     "@tanstack/react-table": "^8.9.3",
-    "auth0-js": "^9.24.1",
     "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
     "common": "workspace:*",
@@ -36,7 +35,6 @@
     "sort-by": "^1.2.0"
   },
   "devDependencies": {
-    "@types/auth0-js": "^9.21.5",
     "@types/bootstrap": "^5.2.6",
     "@types/multer": "^1",
     "@types/node": "^20.2.5",
