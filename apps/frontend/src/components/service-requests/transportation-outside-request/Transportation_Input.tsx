@@ -44,6 +44,9 @@ export default function Transportation_Input() {
     const [selected, setSelected] = useState(-1);
     const [locations, setLocations] = useState<NodeDataBase[]>([]);
 
+    let interID = setInterval(fadeEffect, 100);
+    clearInterval(interID);
+
     useEffect(()=>{
         getLocations().then(
             (result)=>{
@@ -89,11 +92,33 @@ export default function Transportation_Input() {
                     },
                 });
 
-
+            show();
         } catch {
             console.error("Error with trying to save Service Req in ServiceRequestPage.tsx");
         }
 
+    }
+
+    function show() {
+        const tag: HTMLElement = document.getElementById("popup") as HTMLElement;
+        tag.style.opacity = "1";
+        interID = setInterval(fadeEffect, 100);
+    }
+
+    function fadeEffect() {
+        const target = document.getElementById("popup") as HTMLElement;
+        let opacity = target.style.opacity;
+        if(Number(opacity) >= 0.97) {
+            opacity = (Number(opacity) - 0.001).toString();
+            target.style.opacity = opacity;
+        } else if (Number(opacity) > 0) {
+            opacity = (Number(opacity) - 0.1).toString();
+            target.style.opacity = opacity;
+        }
+
+        if(Number(opacity) < 0) {
+            clearInterval(interID);
+        }
     }
 
     function clear() {
@@ -109,12 +134,11 @@ export default function Transportation_Input() {
 
         <div className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
 
-            <form className={"p-1"}>
+            <form className={"p-2"}>
 
                 <h1 className={"flex mb-3 justify-center font-bold text-xl"}>External Patient
                     Transportation</h1> {/* Div Title */}
 
-                <div className={""}>
 
                     <div className={"flex justify-center items-center my-1.5"}> {/* Priority Dropdown */}
                         {/*<label
@@ -192,19 +216,23 @@ export default function Transportation_Input() {
                         />
                     </div>
 
-                    <div className={"grid justify-center items-center "}>
-                        <RequestButtons submit={submit}/>
-                        <p className={"flex justify-center items-center -mt-5"}>Created By: Michael and Ryan</p>
+
+                    <RequestButtons submit={submit}/>
+                    <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
+                        <h3>
+                            Successfully submitted!
+                        </h3>
                     </div>
-                </div>
+
             </form>
+            <div className={"flex justify-center items-center my-1.5"}>
+                <p className={"flex justify-center items-center -mt-5"}>Created By: Michael and Ryan</p>
+            </div>
         </div>
     );
 
 
 }
-
-
 
 
 async function getLocations() {
