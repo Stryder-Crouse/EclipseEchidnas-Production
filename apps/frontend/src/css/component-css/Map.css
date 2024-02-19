@@ -137,16 +137,70 @@
     padding: 5px;
     border-radius: 6px;
 
+    width: 400px;
+    max-height: 1200px;
+    overflow: auto;
+
     /* Position the tooltip text - see examples below! */
     position: absolute;
     z-index: 5;
 }
+
+.spanNodeInfoVisiblePermanent {
+    visibility: visible;
+
+    background-color: rgba(0, 59, 63, 1);
+    color: #fff;
+    font-size: 30px;
+    text-align: left;
+    padding: 5px;
+    border-radius: 6px;
+
+    width: 400px;
+    max-height: 1200px;
+    overflow: auto;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 5;
+}
+
+
 
 .ulNodeinfo {
     list-style-type: none; /* Removes bullets */
     padding: 0;
     margin: 0;
 }
+
+.ulNodeRequestInfo {
+    list-style-type: none; /* Removes bullets */
+    padding: 5px;
+    margin-top: 10px;
+    border-radius: 6px;
+    background-color: rgba(6, 38, 81, 0.85);
+}
+
+
+.foreignObjectNodeLongName {
+    /*this is effectivly a max width*/
+    width: 150px;
+    /*this is effectivly a max height*/
+    height: 80px;
+}
+
+.nodeLongNameText {
+    background-color: rgba(6, 38, 81, 0.85);
+    color: #fff;
+    font-size: 15px;
+    text-align: left;
+    padding: 5px;
+    border-radius: 6px;
+
+    position: absolute;
+    z-index: 5;
+}
+
 
 
 @keyframes dash {

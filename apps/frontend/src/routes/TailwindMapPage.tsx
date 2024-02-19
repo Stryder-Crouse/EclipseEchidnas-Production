@@ -6,7 +6,7 @@ import CSVIcon from "../images/SideBar/table.png";
 import LogIcon from "../images/SideBar/log-in.png";
 import TopMapButtons from "../components/TopMapButtons.tsx";
 import MapFeatureButtons from "../components/MapFeatureButtons.tsx";
-import {Map} from "../components/map/Map.tsx";
+import {HospitalMap} from "../components/map/HospitalMap.tsx";
 import {multipleNodeDataBaseToNode, NodeDataBase} from "../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import axios from "axios";
 import {FloorToIndex, Node, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
@@ -24,7 +24,10 @@ function TailwindMapPage() {
     const [endNode, setEndNode] = useState(NULLNODE);
 
     const [selectedFloorIndex, setSelectedFloorIndex] = useState(defaultFloor);
+
     const [drawEntirePath, setDrawEntirePath] = useState(false);
+    const [drawEntirePathOptions, setDrawEntirePathOptions] =
+        useState([true,true,false]);
 
     const [locations, setLocations] = useState([] as Array<Node>);
     const [locationsWithHalls, setLocationsWithHalls] = useState([] as Array<Node>);
@@ -69,14 +72,15 @@ function TailwindMapPage() {
                 <MapFeatureButtons viewbox={viewbox} setViewbox={setViewbox}
                                    setDrawEntirePath={setDrawEntirePath} drawEntirePath={drawEntirePath}
                                    setZoomScale={setZoomScale} setEndNode={setEndNode}
-                                   setStartNode={setStartNode}/>
+                                   setStartNode={setStartNode} drawEntirePathOptions={drawEntirePathOptions}
+                                   setDrawEntirePathOptions={setDrawEntirePathOptions}/>
             </div>
-            <Map startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
-                 selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
-                 drawEntirePath={drawEntirePath} setDrawEntirePath={setDrawEntirePath} locationsWithHalls={locationsWithHalls}
-                 pathFindingType={pathFindingType}
-                  setViewbox={setViewbox} viewbox={viewbox} setZoomScale={setZoomScale}
-                 zoomScale={zoomScale}
+            <HospitalMap startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
+                         selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
+                         drawEntirePath={drawEntirePath} setDrawEntirePath={setDrawEntirePath} locationsWithHalls={locationsWithHalls}
+                         pathFindingType={pathFindingType}
+                         setViewbox={setViewbox} viewbox={viewbox} setZoomScale={setZoomScale}
+                         zoomScale={zoomScale} drawEntirePathOptions={drawEntirePathOptions}
             />
         </div>
     );
