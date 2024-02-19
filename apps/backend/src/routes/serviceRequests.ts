@@ -125,6 +125,8 @@ router.get("/medReq", async function (req: Request, res: Response) {
 
             res.send([medReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
             console.info("\nSuccessfully gave you all of the medical requests\n");
+            //send status unless 6 times bug occurs
+            res.sendStatus(200);
         } catch (err) {
             console.error("\nUnable to send requests\n");
         }
@@ -159,6 +161,8 @@ router.get("/medReq", async function (req: Request, res: Response) {
 
             res.send([medReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
             console.info("\nSuccessfully gave you all of the medical requests\n");
+            //send status unless 6 times bug occurs
+            res.sendStatus(200);
         } catch (err) {
             console.error("\nUnable to send requests\n");
         }
@@ -181,6 +185,8 @@ router.get("/serviceReq", async function (req: Request, res: Response) {
         //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
         res.send(await PrismaClient.serviceRequest.findMany()); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you all of the requests\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
     } catch (err) {
         console.error("\nUnable to send requests\n");
         res.sendStatus(400); // Send error
@@ -224,6 +230,8 @@ router.get("/filterByStatus", async function (req: Request, res: Response) {
         }
 
         console.info("\nSuccessfully filtered requests\n"); //debugging info
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
     } catch {
         console.error("\nUnable to filter requests\n");
         res.sendStatus(400); // Send error
@@ -245,6 +253,7 @@ router.get("/filterByPriority", async function (req: Request, res: Response) {
                     reqID: "asc"
                 }
             }));
+
         }
         else
         {
@@ -263,6 +272,9 @@ router.get("/filterByPriority", async function (req: Request, res: Response) {
             }));
             console.log("Great Job, the priority has been filtered");
         }
+
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
 
 
     } catch {
@@ -310,6 +322,8 @@ router.post("/changeUser", async function (req: Request, res: Response) {
         });
 
         console.info("Successfully changed assigned user");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
     } catch (error) {
         console.error("Unable to change assigned user");
         res.sendStatus(400); // Send error
@@ -340,6 +354,8 @@ router.post("/changeState", async function (req: Request, res: Response) {
             }
         });
         console.info("Successfully changed service request state");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
     } catch(error){
         console.error("Unable to change service request state");
         res.sendStatus(400); // Send error
@@ -370,6 +386,11 @@ router.post("/changePriority", async function (req: Request, res: Response){
                 reqPriority: newPriority,
             }
         });
+
+        console.log("changed prioity");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+
     } catch {
         console.error("Database issue with changing the Priority");
         res.sendStatus(400);
@@ -481,6 +502,8 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
 
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects
             res.send([transportReq,serviceReqs]);
+            //send status unless 6 times bug occurs
+            res.sendStatus(200);
             console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
         } catch (err) {
             console.error("\nUnable to send Requests\n");
@@ -514,6 +537,8 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
 
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects
             res.send([transportReq,serviceReqs]);
+            //send status unless 6 times bug occurs
+            res.sendStatus(200);
             console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
         } catch (err) {
             console.error("\nUnable to send Requests\n");
@@ -604,6 +629,8 @@ router.get("/sanReq", async function (req: Request, res: Response) {
 
             //we display info from both the service req and the sanitation req, so we send the person both DB objects
             res.send([sanReq,serviceReqs]);
+            //send status unless 6 times bug occurs
+            res.sendStatus(200);
             console.info("\nSuccessfully gave you all of the Sanitation Requests\n");
         } catch (err) {
             console.error("\nUnable to send Requests\n");
@@ -636,6 +663,8 @@ router.get("/sanReq", async function (req: Request, res: Response) {
 
             //we display info from both the service req and the sanitation req, so we send the person both DB objects
             res.send([sanReq,serviceReqs]);
+            //send status unless 6 times bug occurs
+            res.sendStatus(200);
             console.info("\nSuccessfully gave you all of the Sanitation Requests\n");
         } catch (err) {
             console.error("\nUnable to send Requests\n");
@@ -803,6 +832,8 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects
             res.send([religReq,serviceReqs]);
             console.info("\nSuccessfully gave you all of the Religious Requests\n");
+            //send status unless 6 times bug occurs
+            res.sendStatus(200);
         } catch (err) {
             console.error("\nUnable to send Requests\n");
         }
@@ -835,6 +866,8 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects
             res.send([religReq,serviceReqs]);
             console.info("\nSuccessfully gave you all of the Religious Requests\n");
+            //send status unless 6 times bug occurs
+            res.sendStatus(200);
         } catch (err) {
             console.error("\nUnable to send Requests\n");
         }
@@ -867,6 +900,8 @@ router.get("/flowReq", async function (req: Request, res: Response) {
             });
             res.send([flowReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
             console.info("\nSuccessfully gave you all of the flower requests\n");
+            //send status unless 6 times bug occurs
+            res.sendStatus(200);
         }
         else{
             //try to send all the nodes to the client
@@ -891,6 +926,8 @@ router.get("/flowReq", async function (req: Request, res: Response) {
             });
             res.send([flowReqs,serviceReqs]); //end res.send (this is what will be sent to the client)
             console.info("\nSuccessfully gave you all of the flower requests\n");
+            //send status unless 6 times bug occurs
+            res.sendStatus(200);
         }
     } catch (err) {
         console.error("\nUnable to send requests\n");
