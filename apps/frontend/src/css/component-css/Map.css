@@ -91,6 +91,24 @@
     r: 15; /* radius of node */
 }
 
+.hallwayNodeHidden {
+    r: 0; /* radius of node */
+}
+
+.hallwayNodeVisible {
+    fill: #4F5459;
+    stroke: #0F1011;
+    stroke-width: 2px;
+    r: 7; /* radius of node */
+}
+
+.hallwayNodeVisibleHovered {
+    fill: #4F5459;
+    stroke: #0F1011;
+    stroke-width: 3px;
+    r: 14; /* radius of node */
+}
+
 /*node info hoverOver*/
 
 .foreignObjectNode {

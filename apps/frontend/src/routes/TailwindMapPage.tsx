@@ -27,6 +27,8 @@ function TailwindMapPage() {
     const [drawEntirePath, setDrawEntirePath] = useState(false);
 
     const [locations, setLocations] = useState([] as Array<Node>);
+    const [locationsWithHalls, setLocationsWithHalls] = useState([] as Array<Node>);
+    const [pathFindingType, setPathFindingType] = useState("A*");
 
     const [viewbox, setViewbox] =
         useState<{ x: number, y: number, width: number, height: number }>({x: 940, y: 490, width: 2160, height: 1900});
@@ -35,15 +37,15 @@ function TailwindMapPage() {
 
     //useEffect for start up
     useEffect(() => {
-        let queryDone = false;
-        if (!queryDone) {
+
             getNodes(selectedFloorIndex).then(result => {
                 setLocations(result);
             });
-        }
-        return () => {
-            queryDone = true;
-        };
+        getNodesWithHallways(selectedFloorIndex).then(result=>{
+            setLocationsWithHalls(result);
+        });
+
+
     }, [selectedFloorIndex]);
 
 
@@ -62,7 +64,7 @@ function TailwindMapPage() {
 
                 <TopMapButtons setSelectedFloorIndex={setSelectedFloorIndex} endNode={endNode}
                                locations={locations} setEndNode={setEndNode} setStartNode={setStartNode}
-                               startNode={startNode}/>
+                               startNode={startNode} setPathFindingType={setPathFindingType}/>
 
                 <MapFeatureButtons viewbox={viewbox} setViewbox={setViewbox}
                                    setDrawEntirePath={setDrawEntirePath} drawEntirePath={drawEntirePath}
@@ -71,8 +73,9 @@ function TailwindMapPage() {
             </div>
             <Map startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
                  selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
-                 drawEntirePath={drawEntirePath} setDrawEntirePath={setDrawEntirePath} locations={locations}
-                 setLocations={setLocations} setViewbox={setViewbox} viewbox={viewbox} setZoomScale={setZoomScale}
+                 drawEntirePath={drawEntirePath} setDrawEntirePath={setDrawEntirePath} locationsWithHalls={locationsWithHalls}
+                 pathFindingType={pathFindingType}
+                  setViewbox={setViewbox} viewbox={viewbox} setZoomScale={setZoomScale}
                  zoomScale={zoomScale}
             />
         </div>
@@ -81,6 +84,13 @@ function TailwindMapPage() {
 
 async function getNodes(floor: number) {
     const res = await axios.get<NodeDataBase[]>("/api/load-nodes/floor", {params: {floor: floor}});
+    console.log("HHH " + res.config.params.floor);
+    return multipleNodeDataBaseToNode(res.data);
+
+}
+
+async function getNodesWithHallways(floor: number) {
+    const res = await axios.get<NodeDataBase[]>("/api/load-nodes/floorWithHalls", {params: {floor: floor}});
     console.log("HHH " + res.config.params.floor);
     return multipleNodeDataBaseToNode(res.data);
 
