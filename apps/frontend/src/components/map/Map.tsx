@@ -7,8 +7,11 @@ import {onNodeHover, onNodeLeave,} from "../../event-logic/circleNodeEventHandle
 import {NodeDataBase, nodeDataBaseToNode,} from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import {EdgeDataBase, edgeDataBasetoEdge,} from "../../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {AStar} from "../../../../backend/src/algorithms/Search/AStar.ts";
 import {Coordinate} from "../../../../backend/src/algorithms/Graph/Coordinate.ts";
+import {SearchContext} from "../../../../backend/src/algorithms/Search/Strategy/SearchContext.ts";
+import {AStarStrategy} from "../../../../backend/src/algorithms/Search/Strategy/AStarStrategy.ts";
+import {BFSStrategy} from "../../../../backend/src/algorithms/Search/Strategy/BFSStrategy.ts";
+import {DFSStrategy} from "../../../../backend/src/algorithms/Search/Strategy/DFSStrategy.ts";
 
 /* - - - types - - - */
 /**
@@ -24,6 +27,7 @@ export type MapState = {
     drawEntirePath: boolean;
     setDrawEntirePath: Dispatch<SetStateAction<boolean>>;
     locationsWithHalls: Node[];
+    pathFindingType:string;
     viewbox: Viewbox,
     setViewbox: Dispatch<SetStateAction<Viewbox>>;
     zoomScale: number,
@@ -109,7 +113,8 @@ async function createGraph() {
  * @param setViewbox a Dispatch that transforms the coordinate information
  * @param setScale a Dispatch that sets the map scale
  */
-function createZoomEvent(viewbox: Viewbox, setViewbox: Dispatch<Viewbox>, setScale: Dispatch<number>) {
+function createZoomEvent(viewbox: Viewbox, setViewbox: Dispatch<Viewbox>, setScale: Dispatch<number>
+                         ) {
     /* grab the map and its current size */
     const svgElement = document.getElementById("map")!;
     const svgSize: { width: number, height: number } = {width: svgElement.clientWidth, height: svgElement.clientHeight};
@@ -159,7 +164,8 @@ function updatePathEdges(startingNode: Node,
                          setPathEdges: Dispatch<SetStateAction<Edge[]>>,
                          floorIndex: number,
                          drawAllEdges: boolean,
-                         setPathFloorTransitionNodes: Dispatch<Array<Transition>>) {
+                         setPathFloorTransitionNodes: Dispatch<Array<Transition>>,
+                         pathFindingType:string) {
 
     /* actually first: check if the graph is ready */
     if (graph == null) {
@@ -192,8 +198,34 @@ function updatePathEdges(startingNode: Node,
     }
 
     /* use a pathfinding algorithm to find the path to draw */
-    // TODO: select between three search algorithms: a*, bfs, dfs
-    const rawPath: Array<Node> | null = AStar(graph.idToNode(startingNode.id), graph.idToNode(endingNode.id), graph);
+
+
+    let algo:SearchContext;
+    let rawPath: Array<Node> | null;
+
+    switch (pathFindingType){
+        case "A*":
+            algo = new SearchContext(new AStarStrategy());
+            rawPath = algo.search(graph.idToNode(startingNode.id)!, graph.idToNode(endingNode.id)!, graph);
+            break;
+        case "BFS":
+            algo = new SearchContext(new BFSStrategy());
+            rawPath = algo.search(graph.idToNode(startingNode.id)!, graph.idToNode(endingNode.id)!, graph);
+            break;
+        case "DFS":
+            algo = new SearchContext(new DFSStrategy());
+            rawPath = algo.search(graph.idToNode(startingNode.id)!, graph.idToNode(endingNode.id)!, graph);
+            break;
+
+        default:
+            algo = new SearchContext(new AStarStrategy());
+            rawPath = algo.search(graph.idToNode(startingNode.id)!, graph.idToNode(endingNode.id)!, graph);
+            break;
+
+    }
+
+
+
     if (rawPath == null) {
         console.error("no path could be found between " + startingNode?.id + " and " + endingNode?.id);
         return;
@@ -340,14 +372,18 @@ export function Map({
                         endNode: endNode, setEndNode: setEndNode,
                         selectedFloorIndex: selectedFloorIndex,
                         drawEntirePath: drawEntirePath, locationsWithHalls: locationsWithHalls,
+                        pathFindingType:pathFindingType,
                         viewbox: viewbox, setViewbox: setViewbox,
                         zoomScale: zoomScale, setZoomScale: setZoomScale
                     }: MapState) {
 
+
+
     /* when the page updates, update the edges */
     useEffect(() => {
-        updatePathEdges(startNode, endNode, setPathDrawnEdges, selectedFloorIndex, drawEntirePath, setPathFloorTransitions);
-    }, [drawEntirePath, endNode, selectedFloorIndex, startNode]);
+        updatePathEdges(startNode, endNode, setPathDrawnEdges, selectedFloorIndex, drawEntirePath,
+            setPathFloorTransitions, pathFindingType);
+    }, [drawEntirePath, endNode, selectedFloorIndex, startNode,pathFindingType]);
 
     const [pathDrawnEdges, setPathDrawnEdges] = useState<Array<Edge>>([]);
     const [pathFloorTransitions, setPathFloorTransitions] =

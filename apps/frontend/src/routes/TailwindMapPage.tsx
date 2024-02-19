@@ -28,6 +28,7 @@ function TailwindMapPage() {
 
     const [locations, setLocations] = useState([] as Array<Node>);
     const [locationsWithHalls, setLocationsWithHalls] = useState([] as Array<Node>);
+    const [pathFindingType, setPathFindingType] = useState("A*");
 
     const [viewbox, setViewbox] =
         useState<{ x: number, y: number, width: number, height: number }>({x: 940, y: 490, width: 2160, height: 1900});
@@ -63,7 +64,7 @@ function TailwindMapPage() {
 
                 <TopMapButtons setSelectedFloorIndex={setSelectedFloorIndex} endNode={endNode}
                                locations={locations} setEndNode={setEndNode} setStartNode={setStartNode}
-                               startNode={startNode}/>
+                               startNode={startNode} setPathFindingType={setPathFindingType}/>
 
                 <MapFeatureButtons viewbox={viewbox} setViewbox={setViewbox}
                                    setDrawEntirePath={setDrawEntirePath} drawEntirePath={drawEntirePath}
@@ -73,6 +74,7 @@ function TailwindMapPage() {
             <Map startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
                  selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
                  drawEntirePath={drawEntirePath} setDrawEntirePath={setDrawEntirePath} locationsWithHalls={locationsWithHalls}
+                 pathFindingType={pathFindingType}
                   setViewbox={setViewbox} viewbox={viewbox} setZoomScale={setZoomScale}
                  zoomScale={zoomScale}
             />
