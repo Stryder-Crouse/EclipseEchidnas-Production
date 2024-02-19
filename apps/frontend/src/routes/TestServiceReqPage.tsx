@@ -1,5 +1,4 @@
 import SideNavBarComponent, {SideBarItem} from "../components/SideNavBarComponent.tsx";
-import TopRequestButtons from "../components/TopRequestButtons.tsx";
 import MapIcon from "../images/SideBar/map.png";
 import ServiceRequestIcon from "../images/SideBar/requestIcon.png";
 import EmployeeIcon from "../images/SideBar/user.png";
@@ -23,8 +22,8 @@ function TestServiceReqPage() {
                     <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"}/>
                 </SideNavBarComponent>
             </div>
-            <div className="0">
-                <TopRequestButtons/>
+            <div className={"relative flex flex-wrap justify-center content-center"}>
+
             </div>
         </div>
     );
