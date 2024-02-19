@@ -1,10 +1,11 @@
 import React from "react";
 import {useState} from "react";
 import SimpleTextInput from "../inputComponents/SimpleTextInput.tsx";
-//import {Employee, Roles} from "../../../../backend/src/algorithms/Employee/Employee.ts";
+import {Employee, Roles} from "../../../../backend/src/algorithms/Employee/Employee.ts";
 import Logo from "../../images/Brigham_and_Womens_Hospital_logo.svg.png";
 import {webAuth} from "../../../auth0.service.ts";
 import { Auth0Error } from "auth0-js";
+import axios from "axios";
 
 export default function RegisterForm() {
     const [email, setEmail] = useState("");
@@ -16,16 +17,21 @@ export default function RegisterForm() {
     function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
 
-        /**const employee: Employee = {
+        const employee: Employee = {
             userName: username,
             firstName: firstName,
             lastName: lastName,
             designation: Roles.None,
             isAdmin: false,
-        };*/
+        };
 
-        //todo BNBN uncomment the above declaration of Employee (only commented because it would give an error that
-        // employee is never used) and send to the database
+        axios.post("/api/employees/employee", employee, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then();
+
+
 
         webAuth.signup(
             {

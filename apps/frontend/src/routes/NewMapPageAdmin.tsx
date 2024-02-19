@@ -65,10 +65,8 @@ const defaultFloor = FloorToIndex.LowerLevel1;
 
 
     return (
-        //TODO BNBN implement backend feature to populate SELECTS for each floor node/edge
         //located in div "sidenav" , id for each is under each select
 
-        //TODO BNBN implement toggle function to reset selected node
 
         <div className={"newMapPage-container"}>
             {/* where navbar needs to be */}
