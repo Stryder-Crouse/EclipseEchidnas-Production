@@ -11,11 +11,7 @@ import axios from "axios";
 import {Employee, Roles} from "../../../../backend/src/algorithms/Employee/Employee.ts";
 import trashIcon from "../../images/Table Functions/trash.png";
 import editPen from "../../images/Table Functions/editPen.png";
-
-
-//TODO IMPLEMENT THESE BUTTONS TO POPULATE WITH EVERY ROW
-//import TrashIcon from "../../images/Table Functions/trash-2.png";
-//import EditIcon from "../../images/Table Functions/pencil.png";
+import ExportImportButtonEmployee from "../../components/EmployeeTableButtons/ExportImportButtonEmployee.tsx";
 
 
 const designations = [Roles.None,Roles.nurse,Roles.doctor,Roles.admin,
@@ -57,6 +53,7 @@ function EmployeeTable() {
                     <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"}/>
                 </SideNavBarComponent>
             </div>
+            <ExportImportButtonEmployee/>
             <div className={"employee-table-container"}>
                 <div className="flex">
                     <span className={"employee-caption-container"}>
