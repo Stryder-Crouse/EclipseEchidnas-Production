@@ -6,8 +6,8 @@ import Logo from "../../images/Brigham_and_Womens_Hospital_logo.svg.png";
 import {Auth0Error} from "auth0-js";
 import {webAuth} from "../../../auth0.service.ts";
 //import IncorrectAlert from "./IncorrectAlert.tsx";
-import EmailAlert from "./EmailAlert.tsx";
-import PasswordAlert from "./PasswordAlert.tsx";
+//import EmailAlert from "./EmailAlert.tsx";
+//import PasswordAlert from "./PasswordAlert.tsx";
 
 function LoginForm() {
     //Create email and password variables to store inputs
@@ -15,6 +15,8 @@ function LoginForm() {
     const [password, setPassword] = useState(""); //Variable for Password
     const [showPassword, setShowPassword] = useState(false); //Boolean for if password is shown or not
     const [incorrect, setIncorrect] = useState(false);
+    const [emailMiss, setEmailMiss] = useState(false);
+    const [passMiss, setPassMiss] = useState(false);
 
     //const navigate = useNavigate();
 
@@ -25,8 +27,8 @@ function LoginForm() {
     function handleEmail(email: string) {
         setEmail(email);
         if (email === "") {
-            return <EmailAlert/>;
-        }
+            setEmailMiss(true);
+        } else setEmailMiss(false);
     }
 
     /**
@@ -36,8 +38,8 @@ function LoginForm() {
     function handlePassword(password: string) {
         setPassword(password);
         if (password === "") {
-            return <PasswordAlert/>;
-        }
+            setPassMiss(true);
+        } else setPassMiss(false);
     }
 
     /**
@@ -101,6 +103,16 @@ function LoginForm() {
                     />
                 </div>
 
+                {emailMiss ? ( //If the email is left empty, show error message
+                    <div className={"flex justify-center w-full mt-1.5"}>
+                        <div
+                            className={"w-44 my-1.5 p-1 text-black text-xs bg-red-200 rounded-lg border border-black drop-shadow"}
+                        >
+                            Email Missing. Email Required
+                        </div>
+                    </div>
+                ) : null}
+
                 <div className={"grid justify-center items-center my-1.5"}>
                     <label
                         className={"mb-1"}
@@ -116,6 +128,16 @@ function LoginForm() {
                         onChange={(e) => handlePassword(e.target.value)}
                     />
                 </div>
+
+                {passMiss ? ( //If the password is left empty, show error message
+                    <div className={"flex justify-center w-full mt-1.5"}>
+                        <div
+                            className={"flex justify-center w-56 my-1.5 p-1 text-black text-xs bg-red-200 rounded-lg border border-black drop-shadow"}
+                        >
+                            Password Missing. Password Required
+                        </div>
+                    </div>
+                ) : null}
 
                 {/*Button to toggle visbility of password on/off (defaults to off)*/}
                 <div className={"flex justify-center w-full my-1.5"}>
