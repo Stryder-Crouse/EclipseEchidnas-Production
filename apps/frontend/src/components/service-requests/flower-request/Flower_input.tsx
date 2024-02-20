@@ -4,13 +4,16 @@ import {FlowReq, ReqTypes, ServiceRequest} from "../../../../../backend/src/algo
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
-import status from "../../../../../backend/src/algorithms/Requests/Status.ts";
+import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
+import {closeFlowerCard} from "../../service-request-cards/FlowerRequestCard.tsx";
 
 
 let longNames:string[] = [];
 
-export default function Flower_input() {
+export default function Flower_input({
+    setIsPopupOpen
+                                     }: closeFlowerCard) {
     const [sender,setSender] = useState("");
     const [priority,setPriority] = useState("low");
     //const [location,setLocation] = useState("");
@@ -45,10 +48,11 @@ export default function Flower_input() {
                 reqType: ReqTypes.flowReq,
                 reqLocationID: locations[selected].nodeID,
                 extraInfo: extraInfo,
-                status: status.Unassigned,
+                status: Status.Unassigned,
                 assignedUName: "",
                 reqPriority: priority,
                 reqID: -1,
+                time: new Date()
             };
 
             if(Number.isNaN(parseInt(flowerQuantity))){
@@ -128,7 +132,10 @@ export default function Flower_input() {
         }
 
 
-
+    function closeFlowerForm(event: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) {
+        event.preventDefault();
+        setIsPopupOpen(false);
+    }
 
     return(
         <div
@@ -205,15 +212,20 @@ export default function Flower_input() {
 
 
                     <RequestButtons submit={submitForm}/>
-                    <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
-                        <h3>
-                            Successfully submitted!
-                        </h3>
-                    </div>
+
 
             </form>
-            <div className={"flex justify-center items-center my-1.5"}>
-                <p className={"flex justify-center items-center -mt-5"}>Created By: Shiivek and Syzmon</p>
+            <div className={"grid justify-center items-center m-auto my-1.5 mb-5"}>
+                <button onClick={(event) => closeFlowerForm(event)} className={
+                    "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-5"}>
+                    Close
+                </button>
+                <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
+                    <h3>
+                        Successfully submitted!
+                    </h3>
+                </div>
+                <p className={"flex justify-center items-center mt-5"}>Created By: Shiivek and Syzmon</p>
             </div>
         </div>
 

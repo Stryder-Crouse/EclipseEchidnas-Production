@@ -7,11 +7,14 @@ import {MedReq, ReqTypes, ServiceRequest} from "../../../../../backend/src/algor
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import {closeMedicineCard} from "../../service-request-cards/MedicineRequestCard.tsx";
 //import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 
 let longNames:string[] = [];
 
-export default function Medicine_input() {
+export default function Medicine_input({
+    setIsPopupOpen
+                                       }:closeMedicineCard) {
 
     const [medRequestDoses, setMedRequestDose] = useState("");
     const [medRequestType, setMedRequestType] = useState("");
@@ -56,14 +59,21 @@ export default function Medicine_input() {
                 assignedUName: "No one",            //upon creation, no employee is assigned
                 status: "Unassigned",             //upon creation, nobody is assigned, so set status to unassigned
                 reqID: -1,
-                reqPriority: "Low"
+                reqPriority: "Low",
+                time: null
             };
 
+            //TODO FNFN Create Inputs for new variables below: patientName, patientDOB, patientMedReqNum, medForm, medSig
             //Make a Med Req after the service req (Med req needs service req's id, so med req cannot be made before)
             const medReqData: MedReq = {
-                dosage: medRequestDosage,               //
-                medType: medRequestType,                //etc etc etc
-                numDoses: parseInt(medRequestDoses),    //
+                patientName: "CREATEINPUT",
+                patientDOB: new Date(),
+                patientMedReqNum: 0,
+                medForm: "CREATEINPUT",
+                medSig: "CREATEINPUT",
+                medStrength: medRequestDosage,               //
+                medName: medRequestType,                //etc etc etc
+                quantity: parseInt(medRequestDoses),    //
                 genReqID: -1,    // default is 0, but is always changed to the value of the newly created Service Req
             };
             clear();
@@ -113,7 +123,10 @@ export default function Medicine_input() {
         setMedRequestDose("");
     }
 
-
+    function closeMedicineForm(event: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) {
+        event.preventDefault();
+        setIsPopupOpen(false);
+    }
     return (
         <div
             className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-4 align-self-center"}>
@@ -157,14 +170,19 @@ export default function Medicine_input() {
                 </SimpleTextInput>
 
                 <RequestButtons submit={submit}/>
+
+            </form>
+            <div className={"grid justify-center items-center m-auto my-1.5 mb-5"}>
+                <button onClick={(event) => closeMedicineForm(event)} className={
+                    "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-5"}>
+                    Close
+                </button>
                 <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
                     <h3>
                         Successfully submitted!
                     </h3>
                 </div>
-            </form>
-            <div className={"flex justify-center items-center my-1.5"}>
-                <p>Created By: Alex and Antonio</p>
+                <p className={"flex justify-center items-center mt-5"}>Created By: Alex and Antonio</p>
             </div>
         </div>
 

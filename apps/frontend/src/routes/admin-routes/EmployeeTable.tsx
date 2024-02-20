@@ -15,7 +15,9 @@ import ExportImportButtonEmployee from "../../components/EmployeeTableButtons/Ex
 
 
 const designations = [Roles.None,Roles.nurse,Roles.doctor,Roles.admin,
-    Roles.janitor,Roles.flowerDeliverer,Roles.religiousPersonnel];
+    Roles.janitor,Roles.flowerDeliverer,Roles.religiousPersonnel,
+    Roles.buddhistPersonnel, Roles.catholicPersonnel, Roles.christianPersonnel, Roles.mormonPersonnel, Roles.protestantPersonnel,
+    Roles.jainPersonnel, Roles.jewishPersonnel, Roles.muslimPersonnel, Roles.sikhPersonnel, Roles.shintoPersonnel];
 
 function EmployeeTable() {
     
@@ -205,7 +207,10 @@ function EmployeeTable() {
             isEditing=true;
         }
 
+        //todo FNFN fix this so that it works with Auth0 (the Auth0 token should
+        // be the UserID) or remove it all together
         const newEmployee: Employee = {
+            userID: "ERROR",
             designation: newDesignation ,
             firstName: newFristName,
             isAdmin: newIsAdmin,

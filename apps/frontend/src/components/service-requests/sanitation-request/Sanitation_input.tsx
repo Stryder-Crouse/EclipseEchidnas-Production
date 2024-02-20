@@ -5,10 +5,13 @@ import RequestButtons from "../../buttons/RequestButtons.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
+import {closeSanitationCard} from "../../service-request-cards/SanitationRequestCard.tsx";
 
 let longNames:string[] = [];
 
-export default function Sanitation_input() {
+export default function Sanitation_input({
+    setIsPopupOpen
+                                         }: closeSanitationCard) {
     const [typeA,setTypeA] = useState("");
     const [extraInfo,setExtraInfo] = useState("");
 
@@ -48,7 +51,8 @@ export default function Sanitation_input() {
                 assignedUName: "No one",            //upon creation, no employee is assigned
                 status: "Unassigned",             //upon creation, nobody is assigned, so set status to unassigned
                 reqID:-1,
-                reqPriority: priorityArr[priorityIndex]
+                reqPriority: priorityArr[priorityIndex],
+                time: null
             };
 
             console.log(servReq);
@@ -105,6 +109,10 @@ export default function Sanitation_input() {
         setResetDropdown(true);
     }
 
+    function closeSanitationForm(event: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) {
+        event.preventDefault();
+        setIsPopupOpen(false);
+    }
     return (
         <div
             className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
@@ -152,14 +160,19 @@ export default function Sanitation_input() {
                                  placeHolderText={""}>
                 </SimpleTextInput>
                 <RequestButtons submit={submit}/>
+
+            </form>
+            <div className={"grid justify-center items-center m-auto my-1.5 mb-5"}>
+                <button onClick={(event) => closeSanitationForm(event)} className={
+                    "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-5"}>
+                    Close
+                </button>
                 <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
                     <h3>
                         Successfully submitted!
                     </h3>
                 </div>
-            </form>
-            <div className={"flex justify-center items-center my-1.5"}>
-                <p>Created By: Antonio and Sameer</p>
+                <p className={"flex justify-center items-center mt-5"}>Created By: Antonio and Sameer</p>
             </div>
         </div>
     );

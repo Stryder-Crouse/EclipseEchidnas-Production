@@ -12,6 +12,8 @@ import axios from "axios";
 import {FloorToIndex, Node, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
 import {useEffect, useState} from "react";
 
+
+
 /* Set the default floor to LL1 */
 const defaultFloor = FloorToIndex.LowerLevel1;
 
@@ -65,15 +67,23 @@ function TailwindMapPage() {
                     <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"}/>
                 </SideNavBarComponent>
 
-                <TopMapButtons setSelectedFloorIndex={setSelectedFloorIndex} endNode={endNode}
-                               locations={locations} setEndNode={setEndNode} setStartNode={setStartNode}
-                               startNode={startNode} setPathFindingType={setPathFindingType}/>
+                    <TopMapButtons
+                        setSelectedFloorIndex={setSelectedFloorIndex}
+                        endNode={endNode}
+                        locations={locations}
+                        setEndNode={setEndNode}
+                        setStartNode={setStartNode}
+                        startNode={startNode}
+                        setPathFindingType={setPathFindingType}
+                    />
 
-                <MapFeatureButtons viewbox={viewbox} setViewbox={setViewbox}
-                                   setDrawEntirePath={setDrawEntirePath} drawEntirePath={drawEntirePath}
-                                   setZoomScale={setZoomScale} setEndNode={setEndNode}
-                                   setStartNode={setStartNode} drawEntirePathOptions={drawEntirePathOptions}
-                                   setDrawEntirePathOptions={setDrawEntirePathOptions}/>
+                    <MapFeatureButtons viewbox={viewbox} setViewbox={setViewbox}
+                                       setDrawEntirePath={setDrawEntirePath} drawEntirePath={drawEntirePath}
+                                       setZoomScale={setZoomScale} setEndNode={setEndNode}
+                                       setStartNode={setStartNode} drawEntirePathOptions={drawEntirePathOptions}
+                                       setDrawEntirePathOptions={setDrawEntirePathOptions}/>
+
+
             </div>
             <HospitalMap startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
                          selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
