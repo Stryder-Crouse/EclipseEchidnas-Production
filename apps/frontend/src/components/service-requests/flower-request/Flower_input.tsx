@@ -7,7 +7,7 @@ import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataB
 import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import {closeFlowerCard} from "../../service-request-cards/FlowerRequestCard.tsx";
-
+import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";
 
 let longNames:string[] = [];
 
@@ -94,13 +94,13 @@ export default function Flower_input({
         }
 
     function show() {
-        const tag: HTMLElement = document.getElementById("popup") as HTMLElement;
+        const tag: HTMLElement = document.getElementById("flower-popup") as HTMLElement;
         tag.style.opacity = "1";
         interID = setInterval(fadeEffect, 100);
     }
 
     function fadeEffect() {
-        const target = document.getElementById("popup") as HTMLElement;
+        const target = document.getElementById("flower-popup") as HTMLElement;
         let opacity = target.style.opacity;
         if(Number(opacity) >= 0.97) {
             opacity = (Number(opacity) - 0.001).toString();
@@ -141,77 +141,77 @@ export default function Flower_input({
         <div
             className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
             <form className="p-2">
-                    <h1 className={"grid mb-3 justify-center font-bold text-xl"}>Flower Request </h1>
+                <h1 className={"grid mb-3 justify-center font-bold text-xl"}>Flower Request </h1>
 
-                    <SimpleTextInput id={"senderName"} labelContent={"Name"} inputStorage={sender}
-                                     setInputStorage={setSender}
-                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
-                                     placeHolderText={""}>
-                    </SimpleTextInput>
-
-
-                    <div className="grid justify-center items-center my-1.5">
-                        <label id="priorityType">Priority </label>
-                        <select
-                            id={"priorityType"}
-                            name={"priorityType"}
-                            value={priority}
-                            onChange={handlePriority}
-                            className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
-                        >
-                            <option value="low">Low</option>
-                            <option value="medium">Medium</option>
-                            <option value="high">High</option>
-                            <option value="emergency">Emergency</option>
-                        </select>
-                    </div>
-
-                    <div className="grid justify-center items-center my-1.5">
-
-                        <label className="label">Location </label>
-                        <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationFlow"} isSearchable={true}
-                                        populationArr={longNames} resetDropdown={resetDropdown}
-                                        setSelected={setSelected}
-                                        inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
-                                        selectCSS={""}
-                                        resetOnSelect={false} setResetDropdown={setResetDropdown}/>
-
-                    </div>
-
-                    <SimpleTextInput id={"flowertype"} labelContent={"Flower Name"} inputStorage={flowerType}
-                                     setInputStorage={setFlowerType}
-                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
-                                     placeHolderText={""}>
-                    </SimpleTextInput>
-
-                    <SimpleTextInput id={"flowerquantity"} labelContent={"Flower Quantity"}
-                                     inputStorage={flowerQuantity}
-                                     setInputStorage={setFlowerQuantity}
-                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
-                                     placeHolderText={""}>
-                    </SimpleTextInput>
-
-                    <SimpleTextInput id={"flowerrecipient"} labelContent={"Flower Recipient"}
-                                     inputStorage={flowerRecipient}
-                                     setInputStorage={setFlowerRecipient}
-                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
-                                     placeHolderText={""}>
-                    </SimpleTextInput>
+                <SimpleTextInput id={"senderName"} labelContent={"Name"} inputStorage={sender}
+                                 setInputStorage={setSender}
+                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
+                                 placeHolderText={""}>
+                </SimpleTextInput>
 
 
-                    <SimpleTextInput id={"additionalNotes"} labelContent={"Message"} inputStorage={message}
-                                     setInputStorage={setMessage}
-                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
-                                     placeHolderText={""}>
-                    </SimpleTextInput>
+                <div className="grid justify-center items-center my-1.5">
+                    <label id="priorityType">Priority </label>
+                    <select
+                        id={"priorityType"}
+                        name={"priorityType"}
+                        value={priority}
+                        onChange={handlePriority}
+                        className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
+                    >
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                        <option value="emergency">Emergency</option>
+                    </select>
+                </div>
+
+                <div className="grid justify-center items-center my-1.5">
+
+                    <label className="label">Location </label>
+                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationFlow"} isSearchable={true}
+                                    populationArr={longNames} resetDropdown={resetDropdown}
+                                    setSelected={setSelected}
+                                    inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
+                                    selectCSS={""}
+                                    resetOnSelect={false} setResetDropdown={setResetDropdown}/>
+
+                </div>
+
+                <SimpleTextInput id={"flowertype"} labelContent={"Flower Name"} inputStorage={flowerType}
+                                 setInputStorage={setFlowerType}
+                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
+                                 placeHolderText={""}>
+                </SimpleTextInput>
+
+                <SimpleTextInput id={"flowerquantity"} labelContent={"Flower Quantity"}
+                                 inputStorage={flowerQuantity}
+                                 setInputStorage={setFlowerQuantity}
+                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
+                                 placeHolderText={""}>
+                </SimpleTextInput>
+
+                <SimpleTextInput id={"flowerrecipient"} labelContent={"Flower Recipient"}
+                                 inputStorage={flowerRecipient}
+                                 setInputStorage={setFlowerRecipient}
+                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
+                                 placeHolderText={""}>
+                </SimpleTextInput>
 
 
-                    <RequestButtons submit={submitForm}/>
+                <SimpleTextInput id={"additionalNotes"} labelContent={"Message"} inputStorage={message}
+                                 setInputStorage={setMessage}
+                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
+                                 placeHolderText={""}>
+                </SimpleTextInput>
+
+
+                <RequestButtons submit={submitForm}/>
 
 
             </form>
@@ -220,12 +220,11 @@ export default function Flower_input({
                     "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-5"}>
                     Close
                 </button>
-                <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
-                    <h3>
-                        Successfully submitted!
-                    </h3>
-                </div>
+
                 <p className={"flex justify-center items-center mt-5"}>Created By: Shiivek and Syzmon</p>
+            </div>
+            <div id={"flower-popup"} className={"text-center flex justify-center m-auto opacity-0 "}>
+                <RequestSubmitToast/>
             </div>
         </div>
 
