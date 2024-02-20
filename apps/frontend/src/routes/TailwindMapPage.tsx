@@ -11,7 +11,7 @@ import {multipleNodeDataBaseToNode, NodeDataBase} from "../../../backend/src/Dat
 import axios from "axios";
 import {FloorToIndex, Node, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
 import {useEffect, useState} from "react";
-import AboutPageIcon from "../images/SideBar/users-round.png";
+import AboutPageIcon from "../images/SideBar/about-pageIcon.png";
 
 
 const defaultFloor = FloorToIndex.LowerLevel1;
@@ -60,10 +60,10 @@ function TailwindMapPage() {
                     <SideBarItem icon={ServiceRequestIcon} text="Services" link="ServiceRequest"/>
                     <SideBarItem icon={EmployeeIcon} text="Employees" link="/EmployeeTable"/>
                     <SideBarItem icon={CSVIcon} text=".CSV" link="/NodeEdgeTable"/>
-                    <SideBarItem icon={AboutPageIcon} text="About" link="/AboutPage"/>
                     <hr className="my-3"/>
                     {/*NEED THIS FIXED OR SUM */}
                     <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"}/>
+                    <SideBarItem icon={AboutPageIcon} text="About" link="/AboutPage"/>
                 </SideNavBarComponent>
 
 

@@ -6,6 +6,7 @@ import ServiceRequestIcon from "../../images/SideBar/requestIcon.png";
 import EmployeeIcon from "../../images/SideBar/user.png";
 import CSVIcon from "../../images/SideBar/table.png";
 import LogIcon from "../../images/SideBar/log-in.png";
+import AboutPageIcon from "../../images/SideBar/about-pageIcon.png";
 
 function RequestList() {
 
@@ -19,6 +20,7 @@ function RequestList() {
                 <hr className="my-3"/>
                 {/*NEED THIS FIXED OR SUM */}
                 <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"}/>
+                <SideBarItem icon={AboutPageIcon} text="About" link="/AboutPage"/>
             </SideNavBarComponent>
             <ServiceRequestOutputTables></ServiceRequestOutputTables>
         </div>

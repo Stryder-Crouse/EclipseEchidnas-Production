@@ -11,6 +11,7 @@ import axios from "axios";
 import {Employee, Roles} from "../../../../backend/src/algorithms/Employee/Employee.ts";
 import trashIcon from "../../images/Table Functions/trash.png";
 import editPen from "../../images/Table Functions/editPen.png";
+import AboutPageIcon from "../../images/SideBar/about-pageIcon.png";
 
 
 //TODO IMPLEMENT THESE BUTTONS TO POPULATE WITH EVERY ROW
@@ -53,6 +54,7 @@ function EmployeeTable() {
                     <hr className="my-3"/>
                     {/*NEED THIS FIXED OR SUM */}
                     <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"}/>
+                    <SideBarItem icon={AboutPageIcon} text="About" link="/AboutPage"/>
                 </SideNavBarComponent>
             </div>
             <div className={"employee-table-container"}>
@@ -177,7 +179,7 @@ function EmployeeTable() {
                         >{formSubmitText()}</button>
                     </div>
                     <div>
-                        <button type={"button"} className={"submitButtonEmployee"}onClick={closeForm}>Close</button>
+                        <button type={"button"} className={"submitButtonEmployee"} onClick={closeForm}>Close</button>
                     </div>
                 </form>
             </div>

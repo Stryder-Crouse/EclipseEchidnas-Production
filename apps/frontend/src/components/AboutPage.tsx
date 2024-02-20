@@ -4,7 +4,7 @@ import ServiceRequestIcon from "../images/SideBar/requestIcon.png";
 import EmployeeIcon from "../images/SideBar/user.png";
 import CSVIcon from "../images/SideBar/table.png";
 import LogIcon from "../images/SideBar/log-in.png";
-import AboutPageIcon from "../images/SideBar/users-round.png";
+import AboutPageIcon from "../images/SideBar/about-pageIcon.png";
 import SameerPic from "../images/Team/Sameer.png";
 import ChrisPic from "../images/Team/Chris.png";
 import MikePic from "../images/Team/Mike.png";
@@ -19,14 +19,6 @@ import StryderPic from "../images/Team/Stryder.png";
 import WongPic from "../images/Team/Wong.jpg";
 
 function AboutPage(){
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const myStyle = {
-            backgroundImage:
-                "url('https://lithespeed.com/wp-content/uploads/2021/04/testimonial-bg.jpg')",
-            height: "100vh",
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-        };
     return(
         <div className={"flex h-lvh flex-row"}>
             <div className="flex">
@@ -36,14 +28,14 @@ function AboutPage(){
                         <SideBarItem icon={ServiceRequestIcon} text="Services" link="ServiceRequest"/>
                         <SideBarItem icon={EmployeeIcon} text="Employees" link="/EmployeeTable"/>
                         <SideBarItem icon={CSVIcon} text=".CSV" link="/NodeEdgeTable"/>
-                        <SideBarItem icon={AboutPageIcon} text="About" link="/AboutPage"/>
                         <hr className="my-3"/>
                         <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"}/>
+                        <SideBarItem icon={AboutPageIcon} text="About" link="/AboutPage"/>
                     </SideNavBarComponent>
                 </div>
             </div>
             <div className="mt-7 flex flex-col m-auto">
-                <p className="mb-5 flex font-bold justify-center p-3 bg-white rounded-lg shadow dark:bg-gray-800">THE TEAM</p>
+                <p className="mb-5 flex font-bold justify-center p-3 bg-white rounded-lg shadow dark:bg-gray-800">ABOUT</p>
                 <div className="flex flex-row">
                     <div className="flex grid grid-cols-6 gap-4">
                         <ImageCard img={StryderPic} name={"Stryder Crouse"} role={"Team Lead"}>
@@ -121,6 +113,5 @@ export function ImageCard({img, name, role}: imageProps) {
 
     );
 }
-
 
 export default AboutPage;
