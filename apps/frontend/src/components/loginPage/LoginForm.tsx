@@ -3,8 +3,6 @@ import React from "react";
 import {useState} from "react";
 import "../../css/route-css/LoginPage.css";
 import Logo from "../../images/Brigham_and_Womens_Hospital_logo.svg.png";
-import {Auth0Error} from "auth0-js";
-import {webAuth} from "../../../auth0.service.ts";
 //import IncorrectAlert from "./IncorrectAlert.tsx";
 //import EmailAlert from "./EmailAlert.tsx";
 //import PasswordAlert from "./PasswordAlert.tsx";
@@ -49,18 +47,7 @@ function LoginForm() {
      */
     function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
-        webAuth.login({
-            email: email,
-            password: password,
-            realm: 'Username-Password-Authentication',
-            redirectUri: 'http://localhost:3000/AdminMapPage',
-            responseType: 'token'
-        }, function (error: Auth0Error | null, result) {
-            if (error) {
-                setIncorrect(true);
-            }
-            console.log(result);
-        });
+        setIncorrect(false);
     }
 
     return (

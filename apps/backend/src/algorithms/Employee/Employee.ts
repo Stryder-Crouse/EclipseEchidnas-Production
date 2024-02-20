@@ -1,7 +1,7 @@
 
 /** Type to store employees*/
 export type Employee = {
-    accessToken: string;
+    userID: string;
     userName: string;
     firstName: string;
     lastName: string;
@@ -11,12 +11,23 @@ export type Employee = {
 
 /** Enum to hold the possible roles staff members can have */
 export enum Roles {
-    nurse = "Nurse",
-    doctor = "Doctor",
-    admin = "Administrator",
-    janitor = "Janitor",
-    flowerDeliverer = "Flower Deliverer",
-    religiousPersonnel = "Religious Personnel",
-    None="None"
+    nurse = "nurse",
+    doctor = "doctor",
+    admin = "administrator",
+    janitor = "janitor",
+    flowerDeliverer = "flower deliverer",
+    religiousPersonnel = "religious personnel",
+    buddhistPersonnel = "Buddhist personnel",
+    catholicPersonnel = "Catholic personnel",
+    mormonPersonnel = "Mormon personnel",
+    christianPersonnel = "Christian (non-denominational) personnel",
+    protestantPersonnel = "Protestant personnel",
+    hinduPersonnel = "Hindu personnel",
+    muslimPersonnel = "Muslim personnel",
+    jainPersonnel = "Jain personnel",
+    jewishPersonnel = "Jewish personnel",
+    sikhPersonnel = "Sikh personnel",
+    shintoPersonnel = "Shinto personnel",
+    None = "None"
     //nurse_and_flower_deliverer = "nurse and flower deliverer"
 }

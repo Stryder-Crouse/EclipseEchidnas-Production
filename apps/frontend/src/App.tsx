@@ -9,13 +9,6 @@ import ProtectedEmployeeTable from "./components/protected-pages/ProtectedEmploy
 
 import TailwindMapPage from "./routes/TailwindMapPage.tsx";
 import TestServiceReqPage from "./routes/TestServiceReqPage.tsx";
-import LoginPage from "./routes/LoginPage.tsx";
-import RegisterPage from "./routes/RegisterPage.tsx";
-//import ServiceRequestPage from "./routes/ServiceRequestPage.tsx";
-//import NodeEdgeTablePage from "./routes/admin-routes/NodeEdgeTablePage.tsx";
-//import RequestList from "./routes/admin-routes/RequestList.tsx";
-//import EmployeeTable from "./routes/admin-routes/EmployeeTable.tsx";
-
 
 function App() {
     const router = createBrowserRouter([
@@ -30,19 +23,19 @@ function App() {
                 },
                 {
                     path: "/AdminMapPage",
-                    element: <ProtectedAdminMap/>, //todo FNFN switch back to protected when that works (same for all bellow) and uncomment the imports up top
+                    element: <ProtectedAdminMap/>,
                 },
                 {
                     path: "/ProtectedServiceRequest",
-                    element: <ProtectedServiceRequest/>, //Here
+                    element: <ProtectedServiceRequest/>,
                 },
                 {
                     path:"/ServiceRequest",
-                    element:<ProtectedServiceRequest/>, //Here
+                    element:<ProtectedServiceRequest/>,
                 },
                 {
                     path: "/NodeEdgeTable",
-                    element: <ProtectedNodeEdgeTable/>,//Here
+                    element: <ProtectedNodeEdgeTable/>,
                 },
                 {
                     path: "/ProtectedRequestList",
@@ -50,7 +43,7 @@ function App() {
                 },
                 {
                     path: "/RequestList",
-                    element: <ProtectedRequestList/>, //Here
+                    element: <ProtectedRequestList/>,
                 },
                 {
                     path: "/GuestMap",
@@ -58,7 +51,7 @@ function App() {
                 },
                 {
                     path:"/EmployeeTable",
-                    element: <ProtectedEmployeeTable/>, //Here
+                    element: <ProtectedEmployeeTable/>,
                 },
                 {
                     path: "/TailwindMapPage",
@@ -67,14 +60,6 @@ function App() {
                 {
                     path: "/TestServiceReqPage",
                         element: <TestServiceReqPage/>,
-                },
-                {
-                    path: "/LoginPage",
-                    element: <LoginPage/>,
-                },
-                {
-                    path: "/RegisterPage",
-                    element: <RegisterPage/>,
                 },
             ],
         },

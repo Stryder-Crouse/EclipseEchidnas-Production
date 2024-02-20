@@ -6,9 +6,8 @@ import {ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Req
 import axios from "axios";
 import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
 import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
-import status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 
-async function getReqs(statusFilter: status) {
+async function getReqs(statusFilter: Status) {
     const res =
         await axios.get<[OutsideTransport[],ServiceRequest[]]>
         ("api/serviceRequests/outsideTransport", {params: {status: statusFilter}});

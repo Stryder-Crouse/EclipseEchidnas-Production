@@ -6,11 +6,13 @@ import CSVIcon from "../images/SideBar/table.png";
 import LogIcon from "../images/SideBar/log-in.png";
 import TopMapButtons from "../components/TopMapButtons.tsx";
 import MapFeatureButtons from "../components/MapFeatureButtons.tsx";
-import {Map} from "../components/map/Map.tsx";
+import {HospitalMap} from "../components/map/HospitalMap.tsx";
 import {multipleNodeDataBaseToNode, NodeDataBase} from "../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import axios from "axios";
 import {FloorToIndex, Node, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
 import {useEffect, useState} from "react";
+
+
 
 /* Set the default floor to LL1 */
 const defaultFloor = FloorToIndex.LowerLevel1;
@@ -24,9 +26,14 @@ function TailwindMapPage() {
     const [endNode, setEndNode] = useState(NULLNODE);
 
     const [selectedFloorIndex, setSelectedFloorIndex] = useState(defaultFloor);
+
     const [drawEntirePath, setDrawEntirePath] = useState(false);
+    const [drawEntirePathOptions, setDrawEntirePathOptions] =
+        useState([true,true,false]);
 
     const [locations, setLocations] = useState([] as Array<Node>);
+    const [locationsWithHalls, setLocationsWithHalls] = useState([] as Array<Node>);
+    const [pathFindingType, setPathFindingType] = useState("A*");
 
     const [viewbox, setViewbox] =
         useState<{ x: number, y: number, width: number, height: number }>({x: 940, y: 490, width: 2160, height: 1900});
@@ -35,15 +42,15 @@ function TailwindMapPage() {
 
     //useEffect for start up
     useEffect(() => {
-        let queryDone = false;
-        if (!queryDone) {
+
             getNodes(selectedFloorIndex).then(result => {
                 setLocations(result);
             });
-        }
-        return () => {
-            queryDone = true;
-        };
+        getNodesWithHallways(selectedFloorIndex).then(result=>{
+            setLocationsWithHalls(result);
+        });
+
+
     }, [selectedFloorIndex]);
 
 
@@ -60,20 +67,30 @@ function TailwindMapPage() {
                     <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"}/>
                 </SideNavBarComponent>
 
-                <TopMapButtons setSelectedFloorIndex={setSelectedFloorIndex} endNode={endNode}
-                               locations={locations} setEndNode={setEndNode} setStartNode={setStartNode}
-                               startNode={startNode}/>
+                    <TopMapButtons
+                        setSelectedFloorIndex={setSelectedFloorIndex}
+                        endNode={endNode}
+                        locations={locations}
+                        setEndNode={setEndNode}
+                        setStartNode={setStartNode}
+                        startNode={startNode}
+                        setPathFindingType={setPathFindingType}
+                    />
 
-                <MapFeatureButtons viewbox={viewbox} setViewbox={setViewbox}
-                                   setDrawEntirePath={setDrawEntirePath} drawEntirePath={drawEntirePath}
-                                   setZoomScale={setZoomScale} setEndNode={setEndNode}
-                                   setStartNode={setStartNode}/>
+                    <MapFeatureButtons viewbox={viewbox} setViewbox={setViewbox}
+                                       setDrawEntirePath={setDrawEntirePath} drawEntirePath={drawEntirePath}
+                                       setZoomScale={setZoomScale} setEndNode={setEndNode}
+                                       setStartNode={setStartNode} drawEntirePathOptions={drawEntirePathOptions}
+                                       setDrawEntirePathOptions={setDrawEntirePathOptions}/>
+
+
             </div>
-            <Map startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
-                 selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
-                 drawEntirePath={drawEntirePath} setDrawEntirePath={setDrawEntirePath} locations={locations}
-                 setLocations={setLocations} setViewbox={setViewbox} viewbox={viewbox} setZoomScale={setZoomScale}
-                 zoomScale={zoomScale}
+            <HospitalMap startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
+                         selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
+                         drawEntirePath={drawEntirePath} setDrawEntirePath={setDrawEntirePath} locationsWithHalls={locationsWithHalls}
+                         pathFindingType={pathFindingType}
+                         setViewbox={setViewbox} viewbox={viewbox} setZoomScale={setZoomScale}
+                         zoomScale={zoomScale} drawEntirePathOptions={drawEntirePathOptions}
             />
         </div>
     );
@@ -81,6 +98,13 @@ function TailwindMapPage() {
 
 async function getNodes(floor: number) {
     const res = await axios.get<NodeDataBase[]>("/api/load-nodes/floor", {params: {floor: floor}});
+    console.log("HHH " + res.config.params.floor);
+    return multipleNodeDataBaseToNode(res.data);
+
+}
+
+async function getNodesWithHallways(floor: number) {
+    const res = await axios.get<NodeDataBase[]>("/api/load-nodes/floorWithHalls", {params: {floor: floor}});
     console.log("HHH " + res.config.params.floor);
     return multipleNodeDataBaseToNode(res.data);
 

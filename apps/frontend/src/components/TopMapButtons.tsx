@@ -1,6 +1,7 @@
 import MapSearchBar from "./MapSearchBar.tsx";
 import {FloorToIndex, Node} from "../../../backend/src/algorithms/Graph/Node.ts";
-import {Dispatch, SetStateAction} from "react";
+import {Dispatch, SetStateAction, useState} from "react";
+import {CreateDropdown} from "./CreateDropdown.tsx";
 
 
 export interface levelStates{
@@ -10,20 +11,49 @@ export interface levelStates{
     endNode:Node;
     setEndNode: Dispatch<SetStateAction<Node>>;
     locations:Node[];
+    setPathFindingType:Dispatch<SetStateAction<string>>;
 }
+
+
+
+const searchOptions:string[] = ["A*","BFS","DFS"];
+
 
 export default function TopMapButtons({setSelectedFloorIndex:setFloor,
                                           startNode:startNode,
                                           setStartNode:setStartNode,
                                       endNode:endNode,
                                           setEndNode:setEndNode,
-                                          locations:locations
+                                          locations:locations,
+                                        setPathFindingType:setPathFindingType
                                       }:levelStates) {
+
+    const [selectedAlgoIndex, setSelectedAlgoIndex] =useState(-1);
+
+
+    const [resetDropdown, setResetDropdown] = useState(false);
+
+
+    if(selectedAlgoIndex!=-1){
+        setPathFindingType(searchOptions[selectedAlgoIndex]);
+        setSelectedAlgoIndex(-1);
+    }
+
     return (
         <div className="z-10 max-h-10 flex mt-5 justify-content-center">
-            <MapSearchBar endNode={endNode} locations={locations} setEndNode={setEndNode}
-                          setStartNode={setStartNode}
-                          startNode={startNode}/>
+            <div className={"flex flex-col"}>
+                <MapSearchBar endNode={endNode} locations={locations} setEndNode={setEndNode}
+                              setStartNode={setStartNode}
+                              startNode={startNode}/>
+                <div className={"ml-5 mt-1"}>
+                    <CreateDropdown
+                        dropBtnName={"PLACEHOLDER SEARCH TYPE"} dropdownID={"Search Type"} populationArr={searchOptions} isSearchable={false}
+                        resetOnSelect={false} resetDropdown={resetDropdown}
+                        setResetDropdown={setResetDropdown} setSelected={setSelectedAlgoIndex}
+                        inputCSS={""}
+                        selectCSS={"transition-all hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}></CreateDropdown>
+                </div>
+            </div>
 
             <button
                 className="transition-all  hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"

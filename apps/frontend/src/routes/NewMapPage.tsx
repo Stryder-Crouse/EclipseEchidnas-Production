@@ -1,133 +1,137 @@
-import {Map} from "../components/map/Map.tsx";
+//import {Map} from "../components/map/Map.tsx";
 import "../css/route-css/newMapPage.css";
-import axios from "axios";
-import {multipleNodeDataBaseToNode, NodeDataBase} from "../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+// import axios from "axios";
+// import {multipleNodeDataBaseToNode, NodeDataBase} from "../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+//
+// import {useEffect, useState} from "react";
+// import { FloorToIndex, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
+//
+// import {Node} from "../../../backend/src/algorithms/Graph/Node.ts";
+//
+// import {onNodeHover, onNodeLeave} from "../event-logic/circleNodeEventHandlers.ts";
+// import NavBar from "../components/navigation-bar/GuestNavBar.tsx";
 
-import {useEffect, useState} from "react";
-import { FloorToIndex, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
 
-import {Node} from "../../../backend/src/algorithms/Graph/Node.ts";
-
-import {onNodeHover, onNodeLeave} from "../event-logic/circleNodeEventHandlers.ts";
-import NavBar from "../components/navigation-bar/GuestNavBar.tsx";
-
-
-const defaultFloor = FloorToIndex.LowerLevel1;
+//const defaultFloor = FloorToIndex.LowerLevel1;
 
  function NewMapPage() {
 
-    const [startNode, setStartNode] = useState(NULLNODE);
-    const [endNode, setEndNode] = useState(NULLNODE);
+     return <div></div>;
 
-    const [selectedFloorIndex, setSelectedFloorIndex] = useState(defaultFloor);
-    const [drawEntirePath, setDrawEntirePath] = useState(false);
-
-    const [locations, setLocations] = useState([] as Array<Node>);
-
-     const [veiwbox, setVeiwbox] =
-         useState<{x:number, y:number, width:number, height:number}>({x:940,y:490, width:2160, height:1900});
-     const [zoomScale, setZoomScale] = useState(1);
-
-
-
-    //useEffect for start up
-    useEffect(() => {
-        let queryDone = false;
-
-        if (!queryDone) {
-            getNodes(selectedFloorIndex).then(result=>{ setLocations(result);});
-        }
-        return ()=>{
-            queryDone = true;
-        };
-
-    }, [selectedFloorIndex]);
-
-     const handleNodeClick = (node: Node) => {
-
-         if(startNode == NULLNODE && endNode == NULLNODE){
-             document.getElementById("startingNodeInput")?.setAttribute("value", node.longName);
-             setStartNode(node);
-         }
-         else if (endNode == NULLNODE){
-             document.getElementById("endingNodeInput")?.setAttribute("value", node.longName);
-             setEndNode(node);
-
-         }
-         else{
-             document.getElementById("startingNodeInput")?.setAttribute("value", node.longName);
-             document.getElementById("endingNodeInput")?.setAttribute("value", "");
-            setStartNode(node);
-            setEndNode(NULLNODE);
-         }
-
-
-     };
-
-
-    return (
-        //located in div "sidenav" , id for each is under each select
-
-
-        <div className={"newMapPage-container"}>
-            {/* where navbar needs to be */}
-            <div>
-                <NavBar selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}/>
-            </div>
-            <div className={"wholeNewMapPageBody"}>
-                <div className={"sidenav"}>
-                    <div className={"sidenav-elements"}>
-                        <div className={"populatingNodes"} id={"populating-nodes"}>
-                            {/* THIS IS BEING POPULATED BY DATABASE */}
-                            {
-                                //id's are startingNodeInput and endingNodeInput
-                                locations.map((node) => {
-                                    return (
-                                            <div key={"Location"+node.id} className={"level-location"}
-                                                 onClick={() => handleNodeClick(node)}
-                                                 onMouseOver={()=> onNodeHover(node.id)}
-                                                 onMouseLeave={()=> onNodeLeave(node.id)}
-
-                                            >{node.longName}</div>
-
-                                    );
-                                })
-                            }
-                        </div>
-                    </div>
-                </div>
-                <div className={"mapSide"}>
-                    <Map startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
-                         selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
-                         drawEntirePath={drawEntirePath} setDrawEntirePath={setDrawEntirePath} locations={locations} setLocations={setLocations}
-                         setViewbox={setVeiwbox} setZoomScale={setZoomScale} viewbox={veiwbox} zoomScale={zoomScale}/>
-                    <div className={"start-end-typing-navigation"}>
-                        <label className={"mapSide-label"}>
-                            START AT: <input type={"text"} id={"startingNodeInput"} className={"newMapPage-input-fields"}/>
-                        </label>
-                        <label className={"mapSide-label"}>
-                            END AT: <input type={"text"} id={"endingNodeInput"} className={"newMapPage-input-fields"}/>
-                        </label>
-
-                        <button className={"reset-location-button"}>Reset Locations</button>
-                        <button className={"go-button"}>GO!</button>
-                        {/* implement go button */}
-                        {/* NEED TO CONNECT THIS TO NODES */}
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-
-    );
-
-    async function getNodes(floor:number){
-        const res =await axios.get<NodeDataBase[]>("/api/load-nodes/floor", {params: {floor: floor}});
-        console.log("HHH "+res.config.params.floor);
-        return multipleNodeDataBaseToNode(res.data);
-
-    }
+    // const [startNode, setStartNode] = useState(NULLNODE);
+    // const [endNode, setEndNode] = useState(NULLNODE);
+    //
+    // const [selectedFloorIndex, setSelectedFloorIndex] = useState(defaultFloor);
+    // const [drawEntirePath, setDrawEntirePath] = useState(false);
+    //
+    // const [locations, setLocations] = useState([] as Array<Node>);
+    //
+    //  const [veiwbox, setVeiwbox] =
+    //      useState<{x:number, y:number, width:number, height:number}>({x:940,y:490, width:2160, height:1900});
+    //  const [zoomScale, setZoomScale] = useState(1);
+    //
+    //
+    //
+    // //useEffect for start up
+    // useEffect(() => {
+    //     let queryDone = false;
+    //
+    //     if (!queryDone) {
+    //         getNodes(selectedFloorIndex).then(result=>{ setLocations(result);});
+    //     }
+    //     return ()=>{
+    //         queryDone = true;
+    //     };
+    //
+    // }, [selectedFloorIndex]);
+    //
+    //  const handleNodeClick = (node: Node) => {
+    //
+    //      if(startNode == NULLNODE && endNode == NULLNODE){
+    //          document.getElementById("startingNodeInput")?.setAttribute("value", node.longName);
+    //          setStartNode(node);
+    //      }
+    //      else if (endNode == NULLNODE){
+    //          document.getElementById("endingNodeInput")?.setAttribute("value", node.longName);
+    //          setEndNode(node);
+    //
+    //      }
+    //      else{
+    //          document.getElementById("startingNodeInput")?.setAttribute("value", node.longName);
+    //          document.getElementById("endingNodeInput")?.setAttribute("value", "");
+    //         setStartNode(node);
+    //         setEndNode(NULLNODE);
+    //      }
+    //
+    //
+    //  };
+    //
+    //
+    // return (
+    //     //TODO BNBN implement backend feature to populate SELECTS for each floor node/edge
+    //     //located in div "sidenav" , id for each is under each select
+    //
+    //     //TODO BNBN implement toggle function to reset selected node
+    //
+    //     <div className={"newMapPage-container"}>
+    //         {/* where navbar needs to be */}
+    //         <div>
+    //             <NavBar selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}/>
+    //         </div>
+    //         <div className={"wholeNewMapPageBody"}>
+    //             <div className={"sidenav"}>
+    //                 <div className={"sidenav-elements"}>
+    //                     <div className={"populatingNodes"} id={"populating-nodes"}>
+    //                         {/* THIS IS BEING POPULATED BY DATABASE */}
+    //                         {
+    //                             //id's are startingNodeInput and endingNodeInput
+    //                             locations.map((node) => {
+    //                                 return (
+    //                                         <div key={"Location"+node.id} className={"level-location"}
+    //                                              onClick={() => handleNodeClick(node)}
+    //                                              onMouseOver={()=> onNodeHover(node.id)}
+    //                                              onMouseLeave={()=> onNodeLeave(node.id)}
+    //
+    //                                         >{node.longName}</div>
+    //
+    //                                 );
+    //                             })
+    //                         }
+    //                     </div>
+    //                 </div>
+    //             </div>
+    //             <div className={"mapSide"}>
+    //                 <Map startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
+    //                      selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
+    //                      drawEntirePath={drawEntirePath} setDrawEntirePath={setDrawEntirePath} locationsWithHalls={locations}
+    //                      setViewbox={setVeiwbox} setZoomScale={setZoomScale} viewbox={veiwbox} zoomScale={zoomScale}/>
+    //                 <div className={"start-end-typing-navigation"}>
+    //                     <label className={"mapSide-label"}>
+    //                         START AT: <input type={"text"} id={"startingNodeInput"} className={"newMapPage-input-fields"}/>
+    //                     </label>
+    //                     <label className={"mapSide-label"}>
+    //                         END AT: <input type={"text"} id={"endingNodeInput"} className={"newMapPage-input-fields"}/>
+    //                     </label>
+    //
+    //                     <button className={"reset-location-button"}>Reset Locations</button>
+    //                     <button className={"go-button"}>GO!</button>
+    //                     {/* implement go button */}
+    //                     {/* BNBN NEED TO CONNECT THIS TO NODES */}
+    //                 </div>
+    //             </div>
+    //         </div>
+    //
+    //     </div>
+    //
+    //
+    // );
+    //
+    // async function getNodes(floor:number){
+    //     const res =await axios.get<NodeDataBase[]>("/api/load-nodes/floor", {params: {floor: floor}});
+    //     console.log("HHH "+res.config.params.floor);
+    //     return multipleNodeDataBaseToNode(res.data);
+    //
+    // }
 
     // async function populateNodes(floor: number) {
     //
