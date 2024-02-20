@@ -134,6 +134,20 @@ function generateTextDirections_two_right_turns(): void {
     expect(test_directions).toStrictEqual(expected_directions);
 }
 
+function generateTextDirections_long_path(): void {
+    /* make the tested and expected paths */
+    const test_path: Array<Node> | null = AStar(graph.idToNode("7"), graph.idToNode("16"), graph);
+    const test_directions: Array<string> | null =  generateTextDirections(test_path);
+    const expected_directions: Array<string> = new Array<string>();
+    expected_directions.push("Starting at Anesthesia Conf Floor L1");
+    expected_directions.push(Directions.BEAR_RIGHT);
+    expected_directions.push(Directions.RIGHT);
+    expected_directions.push("You have arrived");
+
+    /* it better match */
+    expect(test_directions).toStrictEqual(expected_directions);
+}
+
 /* - - - test execution - - - */
 /* findDeviation */
 test("Test a straight line going in the negative y direction (up)", findDeviation_straight_line_vertical_negative);
@@ -148,6 +162,8 @@ test("Test a rotated right angle going left and up", findDeviation_rotated_right
 
 /* generateTextDirections */
 test("Simple test path with two right turns", generateTextDirections_two_right_turns);
+
+test("long path", generateTextDirections_long_path);
 
 
 
