@@ -209,6 +209,15 @@ export default function Flower_input({
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
                                  placeHolderText={""}>
                 </SimpleTextInput>
+                <div className={"grid justify-center items-center my-1.5 mb-1"}>
+                        <textarea placeholder={"Extra Notes"}
+                                  className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
+                                  onChange={(e) => setExtraInfo(e.target.value)}
+                                  id={"service"}
+                                  value={extraInfo}
+                                  required>
+                        </textarea>
+                </div>
 
 
                 <RequestButtons submit={submitForm}/>
