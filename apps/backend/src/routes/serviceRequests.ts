@@ -923,8 +923,9 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
             reqType: string;
         };
 
-        //make an instance of the type with no fields for now. This ensures that if no filter
-        //  is applied to the service request, all the service requests will be sent
+        //make an instance of the type with one field that filters by religious requests
+        // and no other fields. This ensures that if no filter is applied to the service request,
+        // all the service requests will be sent
         const whereCondition :WhereCondition = {
             reqType: "religious"
         };
