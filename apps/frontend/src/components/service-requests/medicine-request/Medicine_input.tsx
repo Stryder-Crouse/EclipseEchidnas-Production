@@ -32,6 +32,8 @@ export default function Medicine_input({
     let interID = setInterval(fadeEffect, 100);
     clearInterval(interID);
 
+    const [extraInfo, setExtraInfo] = useState("");
+
     useEffect(()=>{
         getLocations().then(
             (result)=>{
@@ -147,7 +149,7 @@ export default function Medicine_input({
                 </div>
 
 
-                <SimpleTextInput id={"medRequestType"} labelContent={"Medicine Type"} inputStorage={medRequestType}
+                <SimpleTextInput id={"medRequestType"} labelContent={"Medicine Name"} inputStorage={medRequestType}
                                  setInputStorage={setMedRequestType}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
@@ -155,19 +157,28 @@ export default function Medicine_input({
                 </SimpleTextInput>
 
 
-                <SimpleTextInput id={"medRequestDose"} labelContent={"Medicine Dose"} inputStorage={medRequestDoses}
+                <SimpleTextInput id={"medRequestDose"} labelContent={"Medicine Strength"} inputStorage={medRequestDoses}
                                  setInputStorage={setMedRequestDose}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
                                  placeHolderText={""}>
                 </SimpleTextInput>
 
-                <SimpleTextInput id={"medRequestDosage"} labelContent={"Amount"} inputStorage={medRequestDosage}
-                                 setInputStorage={setMedRequestDosage}
-                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
-                                 placeHolderText={""}>
-                </SimpleTextInput>
+                    <SimpleTextInput id={"medRequestDosage"} labelContent={"Amount"} inputStorage={medRequestDosage}
+                                     setInputStorage={setMedRequestDosage}
+                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
+                                     placeHolderText={""}>
+                    </SimpleTextInput>
+                    <div className={"grid justify-center items-center my-1.5 mb-1"}>
+                    <textarea placeholder={"Extra Info: "}
+                              className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
+                              onChange={(e) => setExtraInfo(e.target.value)}
+                              id={"service"}
+                              value={extraInfo}
+                              required>
+                    </textarea>
+                    </div>
 
                 <RequestButtons submit={submit}/>
 

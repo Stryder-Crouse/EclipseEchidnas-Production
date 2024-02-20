@@ -181,7 +181,7 @@ export default function Religious_input({
                 </div>
                 {/* Urgency */}
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
-                    <CreateDropdown dropBtnName={"Urgency"} dropdownID={"UrgencyID"} isSearchable={false}
+                    <CreateDropdown dropBtnName={"Priority "} dropdownID={"UrgencyID"} isSearchable={false}
                                     populationArr={priorityLevels}
                                     setSelected={setUrgencyDDIndx}
                                     resetDropdown={resetDropdownUrg}
@@ -191,7 +191,7 @@ export default function Religious_input({
                 </div>
                 {/* Extra notes */}
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
-                    <textarea placeholder={"Any extra notes?"}
+                    <textarea placeholder={"Extra Info: "}
                               className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
                               onChange={(e) => setExtraInfo(e.target.value)}
                               id={"service"}
