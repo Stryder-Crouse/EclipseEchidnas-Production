@@ -3,7 +3,7 @@ import {Coordinate, euclideanDistance} from "../../Graph/Coordinate.ts";
 
 /* thresholds of turning */
 const BEAR_THRESHOLD: number = 22.5;
-const TURN_THRESHOLD: number = 45;
+const TURN_THRESHOLD: number = 70;
 
 /* self explanatory */
 export enum Directions {
@@ -36,13 +36,17 @@ export function generateTextDirections(path: Array<Node> | null): Array<string> 
         const turnAngle = findDeviation(path[i - 1], path[i], path[i + 1]);
 
 
-        if(path[i].nodeType==NodeType.ELEV){
-            directions.push(Directions.TAKE_ELEV);
+        if(path[i].nodeType==NodeType.ELEV ){
+            if(directions[directions.length - 1] != Directions.TAKE_ELEV) {
+                directions.push(Directions.TAKE_ELEV);
+            }
             continue;
         }
 
-        if(path[i].nodeType==NodeType.STAI){
-            directions.push(Directions.TAKE_STAI);
+        if(path[i].nodeType==NodeType.STAI ){
+            if(directions[directions.length - 1] != Directions.TAKE_STAI) {
+                directions.push(Directions.TAKE_STAI);
+            }
             continue;
         }
 
@@ -126,64 +130,43 @@ export function findDeviation(previous: Node, current: Node, next: Node) {
  * @return a "Directions" describing the direction
  */
 function determineTurn(previous: Node, current: Node, next: Node): Directions {
-    /* calculate displacement from previous to current */
-    const xDisplacement: number = next.coordinate.x - previous.coordinate.x;
-    const yDisplacement: number = next.coordinate.y - previous.coordinate.y;
 
-    /* check if we've mainly moved horizontally */
-    if (Math.abs(xDisplacement) > Math.abs(yDisplacement)) {
-        return leftOrRight(xDisplacement, current.coordinate.y, next.coordinate.y);
+    //effectily what this function does is check if current node is to the left or right
+    //of the vector line from prev to next
+    //this is done by calulating the z value of the cross product of the two vectors
+    //if its
+    // negative then the point is to the left
+    // postive then the point is to the right
+    // 0 then strait line
+
+    //swap y cordnaite sign for math to work properly
+    const prevToNextVector: Coordinate = {
+        x: next.coordinate.x - previous.coordinate.x,
+        y: -next.coordinate.y - -previous.coordinate.y
+    };
+
+    const currentVector: Coordinate = {
+        x: current.coordinate.x - previous.coordinate.x,
+        y: -current.coordinate.y - -previous.coordinate.y
+    };
+
+    const zValue = (prevToNextVector.x * currentVector.y) - (prevToNextVector.y * currentVector.x);
+
+    if(zValue>0){
+        //then point is on the right so its a left turn from current to get to next
+        return Directions.LEFT;
+    }
+    else if (zValue<0){
+        //then point is on the left so its a right turn from current to get to next
+        return Directions.RIGHT;
+    }
+    else{
+        return Directions.FORWARD;
     }
 
-    /* else, vertically */
-    else if (Math.abs(yDisplacement) > Math.abs(xDisplacement)) {
-        return leftOrRight(yDisplacement, current.coordinate.x, next.coordinate.x);
-    }
 
-    /* bad ending; they're equal */
-    else {
-        /* calculate displacement from previous to next */
-        const xAdvanceDisplacement: number = next.coordinate.x - previous.coordinate.x;
-        const yAdvanceDisplacement: number = next.coordinate.y - previous.coordinate.y;
-
-        /* horizontally */
-        if (Math.abs(xAdvanceDisplacement) > Math.abs(yAdvanceDisplacement)) {
-            return leftOrRight(xDisplacement, current.coordinate.y, next.coordinate.y);
-        }
-
-        /* else, vertically */
-        else if (Math.abs(yAdvanceDisplacement) > Math.abs(xAdvanceDisplacement)) {
-            return leftOrRight(yDisplacement, current.coordinate.x, next.coordinate.x);
-        }
-    }
-
-    /* yike */
-    console.error("going forward on a turn!!!!!");
-    return Directions.FORWARD;
 }
 
-/**
- * It's a helper function.
- * @param displacement real?
- * @param current he're were
- * @param next to go
- * @return left or right
- */
-function leftOrRight(displacement: number, current: number, next: number): Directions {
-    if (displacement > 0) {
-        if (current < next) {
-            return Directions.RIGHT;
-        } else {
-            return Directions.LEFT;
-        }
-    } else {
-        if (current > next) {
-            return Directions.RIGHT;
-        } else {
-            return Directions.LEFT;
-        }
-    }
-}
 
 
 

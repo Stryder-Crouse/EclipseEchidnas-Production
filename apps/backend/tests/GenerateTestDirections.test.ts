@@ -141,7 +141,9 @@ function generateTextDirections_long_path(): void {
     const expected_directions: Array<string> = new Array<string>();
     expected_directions.push("Starting at Anesthesia Conf Floor L1");
     expected_directions.push(Directions.BEAR_RIGHT);
-    expected_directions.push(Directions.RIGHT);
+    expected_directions.push(Directions.TAKE_ELEV);
+    expected_directions.push(Directions.BEAR_RIGHT);
+    expected_directions.push(Directions.TAKE_ELEV);
     expected_directions.push("You have arrived");
 
     /* it better match */
