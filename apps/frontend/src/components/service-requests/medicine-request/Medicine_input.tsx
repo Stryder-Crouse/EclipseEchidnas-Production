@@ -56,14 +56,21 @@ export default function Medicine_input() {
                 assignedUName: "No one",            //upon creation, no employee is assigned
                 status: "Unassigned",             //upon creation, nobody is assigned, so set status to unassigned
                 reqID: -1,
-                reqPriority: "Low"
+                reqPriority: "Low",
+                time: null
             };
 
+            //TODO FNFN Create Inputs for new variables below: patientName, patientDOB, patientMedReqNum, medForm, medSig
             //Make a Med Req after the service req (Med req needs service req's id, so med req cannot be made before)
             const medReqData: MedReq = {
-                dosage: medRequestDosage,               //
-                medType: medRequestType,                //etc etc etc
-                numDoses: parseInt(medRequestDoses),    //
+                patientName: "CREATEINPUT",
+                patientDOB: new Date(),
+                patientMedReqNum: 0,
+                medForm: "CREATEINPUT",
+                medSig: "CREATEINPUT",
+                medStrength: medRequestDosage,               //
+                medName: medRequestType,                //etc etc etc
+                quantity: parseInt(medRequestDoses),    //
                 genReqID: -1,    // default is 0, but is always changed to the value of the newly created Service Req
             };
             clear();

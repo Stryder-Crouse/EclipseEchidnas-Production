@@ -71,7 +71,8 @@ export default function Religious_input() {
             extraInfo: extraInfo,
             status: Status.unassigned,
             assignedUName: "No one", //should not matter
-            reqID: -1 //should not matter
+            reqID: -1, //should not matter
+            time: null
         };
         console.log("urg");
         console.log(urgencyDDIndx);
