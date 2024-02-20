@@ -29,11 +29,14 @@ function ExportImportButtonEmployee() {
     }
 
     async function exportEmployee() {
-        const employeesGet:Employee[] = await axios.get("/api/employees/employees");
+        const employeesGetRaw= await axios.get<Employee[]>("/api/employees/employees");
+        const employeesGet = employeesGetRaw.data;
+
 
         let EmployeeString = "";
 
         for (const employeesGetElement of employeesGet) {
+            EmployeeString += employeesGetElement.userID + ",";
             EmployeeString += employeesGetElement.userName + ",";
             EmployeeString += employeesGetElement.firstName + ",";
             EmployeeString += employeesGetElement.lastName + ",";
