@@ -1,15 +1,15 @@
-import {statusFilter} from "../serviceRequestInterface.ts";
-import React, {useEffect, useState} from "react";
 import axios from "axios";
+import {useState,useEffect} from "react";
 import {FlowReq, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
+import {requestFilters} from "../serviceRequestInterface.ts";
 // import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 // import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
 
 
-export default function Flower_table({statusFilter: statusFilter}: statusFilter) {
-    console.log(statusFilter);
+export default function Flower_table({statusFilter, priorityFilter}:requestFilters) {
+    console.log(statusFilter ,priorityFilter);
 
 
     const [flowerRequest, setFlowerRequest] =

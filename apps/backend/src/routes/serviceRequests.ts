@@ -783,15 +783,12 @@ router.get("/sanReq", async function (req: Request, res: Response) {
 
 router.get("/sanReq/filter", async function (req: Request, res: Response) {
     try {
-        const statusFilter: Status = req.query.status as Status;
-        const priorityFilter: Priorities = req.query.priority as Priorities;
+        let statusFilter: string = req.query.status as string;
+        let priorityFilter: string = req.query.priority as string;
         const emplFilter: string = req.query.employee as string;
         const locFilter: string = req.query.location as string;
 
-        console.log("statusfilter: \n" + statusFilter);
-        console.log("priorityFilter: \n" + priorityFilter);
-        console.log("emplFilter: \n" + emplFilter);
-        console.log("locFilter: \n" + locFilter);
+
 
         //make a local type that potentially has one field for each filter
         type WhereCondition = {
@@ -810,36 +807,113 @@ router.get("/sanReq/filter", async function (req: Request, res: Response) {
         };
 
 
+        // //if there is a status filter, add it to the whereCondition
+        // if (statusFilter != null &&  statusFilter != undefined &&statusFilter != Status.Any) {
+        //     whereCondition.status = statusFilter;
+        // }
+        // //if there is a priority filter, add it to the whereCondition
+        // if(priorityFilter != null && priorityFilter != Priorities.any){
+        //     whereCondition.reqPriority = priorityFilter;
+        // }
+        // //if there is an employee filter, add it to the whereCondition
+        // if(emplFilter != null && emplFilter != "" && emplFilter.toLowerCase() != "any"){
+        //     whereCondition.assignedUName = emplFilter;
+        // }
+        // //if there is a location filter, add it to the whereCondition
+        // if(locFilter != null && locFilter != "" && locFilter.toLowerCase() != "any"){
+        //     whereCondition.reqLocationID = locFilter;
+        // }
+
         //if there is a status filter, add it to the whereCondition
-        if (statusFilter != null && statusFilter != Status.Any) {
-            whereCondition.status = statusFilter;
-        }
-        //if there is a priority filter, add it to the whereCondition
-        if(priorityFilter != null && priorityFilter == Priorities.any){
-            whereCondition.reqPriority = priorityFilter;
-        }
-        //if there is an employee filter, add it to the whereCondition
-        if(emplFilter != null && emplFilter != "" && emplFilter.toLowerCase() != "any"){
-            whereCondition.assignedUName = emplFilter;
-        }
-        //if there is a location filter, add it to the whereCondition
-        if(locFilter != null && locFilter != "" && locFilter.toLowerCase() != "any"){
-            whereCondition.reqLocationID = locFilter;
+
+            if(statusFilter==Status.Any){
+                statusFilter="*";
+            }
+
+        if(priorityFilter==Priorities.any){
+            priorityFilter="*";
         }
 
+            whereCondition.status = statusFilter;
+
+
+
+            whereCondition.reqPriority = priorityFilter;
+
+
+            whereCondition.assignedUName = emplFilter;
+
+
+            whereCondition.reqLocationID = locFilter;
+
+
+        console.log("statusfilter: \n" + statusFilter);
+        console.log("priorityFilter: \n" + priorityFilter);
+        console.log("emplFilter: \n" + emplFilter);
+        console.log("locFilter: \n" + locFilter);
+            const sreviceRequest = await PrismaClient.serviceRequest.findMany({
+                orderBy:{
+                    reqID: "asc"
+                },
+                where: {
+                    AND:[
+                        {
+                            status:statusFilter
+                        },
+                        {
+                            reqPriority:priorityFilter
+                        },
+                        {
+                            assignedUName:emplFilter
+                        },
+                        {
+                            reqLocationID: locFilter
+                        },
+                        {
+                            reqType:"sanitation"
+                        }
+                    ]
+                }
+            });
+
+            const sanRequest = await PrismaClient.sanReq.findMany(
+                {
+                    orderBy:{
+                        serviceReqID: "asc"
+                    },
+                    where: {
+                        serviceReq:{
+                            AND:[
+                                {
+                                    status:statusFilter
+                                },
+                                {
+                                    reqPriority:priorityFilter
+                                },
+                                {
+                                    assignedUName:emplFilter
+                                },
+                                {
+                                    reqLocationID: locFilter
+                                },
+                                {
+                                    reqType:"sanitation"
+                                }
+                            ]
+                    }
+                    }
+                }
+            );
+
+            console.log();
+
         //send the request to the user with the specified conditions
-        res.send(await PrismaClient.serviceRequest.findMany({
-            where: whereCondition,
-            orderBy: {
-                reqID: "desc"
-            }
-        }));
+        res.status(200).send([sanRequest,sreviceRequest]);
 
         console.log("Res: " + res); //debugging info
 
         console.info("\nSuccessfully filtered requests\n"); //debugging info
         //send status unless 6 times bug occurs
-        res.sendStatus(200);
 
     } catch (err) {
         console.error("\nUnable to send requests\n");

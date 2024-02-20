@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {sanReq, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
-import {statusFilter} from "../serviceRequestInterface.ts";
+import {Priorities, sanReq, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import { requestFilters} from "../serviceRequestInterface.ts";
 import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
 import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 
 
-export default function Sanitation_table({statusFilter:statusFilter}:statusFilter) {
+export default function Sanitation_table({statusFilter, priorityFilter}:requestFilters) {
     console.log(statusFilter);
 
     const [sanRequestList, setSanRequestList] =
@@ -21,7 +21,7 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
             getEmployees().then(result=> {
                 setSanEmployees(result);
             });
-            getSanRequests(statusFilter).then(result=> {
+            getSanRequests(statusFilter, priorityFilter).then(result=> {
                 setSanRequestList(result);
             });
 
@@ -31,7 +31,7 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
         };
 
 
-    },[statusFilter]);
+    },[statusFilter, priorityFilter]);
 
     return (
         <div>
@@ -297,15 +297,20 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
 
 }
 
-async function getSanRequests(statusFilter:Status) {
+async function getSanRequests(statusFilter:Status, priorityFilter:Priorities) {
     const requests =
-        await axios.get<[sanReq[], ServiceRequest[]]>("/api/serviceRequests/sanReq", {params: {status: statusFilter}});
+        await axios.get<[sanReq[], ServiceRequest[]]>("/api/serviceRequests/sanReq/filter",
+            {params: {status: statusFilter, priority: priorityFilter,
+                    employee:"*", location:"*"
+                } });
 
     const sanRequests: Array<[sanReq, ServiceRequest]> = [];
     for (let i = 0; i < requests.data[0].length; i++) {
         sanRequests.push([requests.data[0][i], requests.data[1][i]]);
 
     }
+
+
     console.log("HI,HI");
     console.log(sanRequests);
 

@@ -1,5 +1,5 @@
 import React from "react";
-import {statusFilter} from "../serviceRequestInterface.ts";
+import {requestFilters} from "../serviceRequestInterface.ts";
 import {useState, useEffect} from "react";
 import { OutsideTransport} from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import {ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
@@ -27,8 +27,8 @@ async function getEmployees() {
     return employees.data;
 }
 
-export default function Transportation_table({statusFilter:statusFilter}:statusFilter) {
-    console.log(statusFilter);
+export default function Transportation_table({statusFilter, priorityFilter}:requestFilters) {
+    console.log(statusFilter,priorityFilter);
 
     const [reqList, setReqList] = useState<Array<[OutsideTransport, ServiceRequest]>>([]);
     const [transportEmployees, setTransportEmployees] = useState<Employee[]>([]);

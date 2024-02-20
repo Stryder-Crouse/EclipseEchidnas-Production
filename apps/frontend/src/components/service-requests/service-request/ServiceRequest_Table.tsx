@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {statusFilter} from "../serviceRequestInterface.ts";
 import "../../../css/component-css/ServiceRequestTable.css";
 import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 import {Priorities, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import axios from "axios";
 import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
+import {requestFilters} from "../serviceRequestInterface.ts";
 
 
 
@@ -18,8 +18,8 @@ import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.
 
 
 
-export default function ServiceRequest_Table({statusFilter:statusFilter}:statusFilter) {
-
+export default function ServiceRequest_Table({statusFilter, priorityFilter}:requestFilters) {
+    console.log(priorityFilter);
 
 
     //set the variable serviceRequests to the value returned when setServiceRequests is called

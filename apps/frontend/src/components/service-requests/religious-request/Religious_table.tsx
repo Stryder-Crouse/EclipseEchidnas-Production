@@ -4,13 +4,13 @@ import {ReligRequest, ServiceRequest} from "../../../../../backend/src/algorithm
 import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
 //import AdminPageNavBar from "../../navigation-bar/AdminPageNavBar.tsx";
 import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
-import {statusFilter} from "../serviceRequestInterface.ts";
+import {requestFilters} from "../serviceRequestInterface.ts";
 
 
 
 
-export default function Religious_table({statusFilter:statusFilter}:statusFilter) {
-    console.log(statusFilter);
+export default function Religious_table({statusFilter, priorityFilter}:requestFilters) {
+    console.log(statusFilter,priorityFilter);
 
     const [religRequestList, setReligRequestList] =
         useState<Array<[ReligRequest, ServiceRequest]>>([]);

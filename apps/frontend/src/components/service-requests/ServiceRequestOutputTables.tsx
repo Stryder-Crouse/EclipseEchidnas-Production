@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import "../../css/component-css/ServicePage.css";
-import {ReqTypes} from "../../../../backend/src/algorithms/Requests/Request.ts";
+import {ReqTypes, Priorities} from "../../../../backend/src/algorithms/Requests/Request.ts";
 
 //from https://github.com/frontend-joe/react-widgets for css
 
@@ -9,6 +9,7 @@ import Religious_table from "./religious-request/Religious_table.tsx";
 import Medicine_table from "./medicine-request/Medicine_table.tsx";
 import Status from "../../../../backend/src/algorithms/Requests/Status.ts";
 
+
 import Transportation_table from "./transportation-outside-request/Transportation_table.tsx";
 import Sanitation_table from "./sanitation-request/Sanitation_table.tsx";
 import ServiceRequest_Table from "./service-request/ServiceRequest_Table.tsx";
@@ -16,12 +17,14 @@ import ServiceRequest_Table from "./service-request/ServiceRequest_Table.tsx";
 
 
 const statuses = [Status.Any,Status.Unassigned,Status.Assigned,Status.InProgress,Status.Completed];
+const priority = [Priorities.any, Priorities.low, Priorities.medium, Priorities.high, Priorities.emergency];
 
 
 export default function ServiceRequestOutputTables() {
 
 
     const [statusFilter , setStatusFilter ] = useState(Status.Any);
+    const [priorityFilter , setPriorityFilter ] = useState(Priorities.any);
 
     const [curentServiceRequest , setCurentServiceRequest ] = useState(ReqTypes.serviceRequest);
     console.log(curentServiceRequest);
@@ -112,6 +115,32 @@ export default function ServiceRequestOutputTables() {
                             }
                         </select>
                     </div>
+                    <div className={"statusFilterDiv"}>
+                        <label form={"designation"}><b>Priority</b></label><br/>
+                        <select
+                            value={priorityFilter}
+                            onChange={
+                                (e) => {
+                                    setPriorityFilter(e.target.value as Priorities);
+                                }
+                            }
+                        >
+                            {
+                                priority?.map((prior) => {
+                                    return (
+                                        <option
+                                            className={"statis-dropdown"}
+                                            value={prior}
+                                            key={prior + "_filterPrior"}
+                                        >
+                                            {prior}
+                                        </option>
+                                    );
+                                })
+
+                            }
+                        </select>
+                    </div>
                 </div>
 
                 {/* the content to be populated with each request*/}
@@ -126,17 +155,17 @@ export default function ServiceRequestOutputTables() {
         // For each div/request to overlay
         switch (curentServiceRequest) {
             case ReqTypes.flowReq:
-                return (<Flower_table statusFilter={statusFilter}/>);
+                return (<Flower_table statusFilter={statusFilter} priorityFilter={priorityFilter}/>);
             case ReqTypes.religReq:
-                return (<Religious_table statusFilter={statusFilter}/>);
+                return (<Religious_table statusFilter={statusFilter} priorityFilter={priorityFilter}/>);
             case ReqTypes.medReq:
-                return (<Medicine_table statusFilter={statusFilter}/>);
+                return (<Medicine_table statusFilter={statusFilter} priorityFilter={priorityFilter}/>);
             case ReqTypes.tranReq:
-                return (<Transportation_table statusFilter={statusFilter}/>);
+                return (<Transportation_table statusFilter={statusFilter} priorityFilter={priorityFilter}/>);
             case ReqTypes.sanReq:
-                return (<Sanitation_table statusFilter={statusFilter}/>);
+                return (<Sanitation_table statusFilter={statusFilter} priorityFilter={priorityFilter}/>);
             case ReqTypes.serviceRequest:
-                return (<ServiceRequest_Table statusFilter={statusFilter}/>);
+                return (<ServiceRequest_Table statusFilter={statusFilter} priorityFilter={priorityFilter}/>);
             default:
                 return (<div> bad state</div>);
 
