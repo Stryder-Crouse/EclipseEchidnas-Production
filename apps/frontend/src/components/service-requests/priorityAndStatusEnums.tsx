@@ -2,7 +2,7 @@ export enum Priority {
     low = 'Low',
     normal = 'Normal',
     high = 'High',
-    emergency = 'EMERGENCY'
+    emergency = 'Emergency'
 }
 
 export enum Status {

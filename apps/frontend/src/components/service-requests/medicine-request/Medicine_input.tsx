@@ -7,11 +7,14 @@ import {MedReq, ReqTypes, ServiceRequest} from "../../../../../backend/src/algor
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import {closeMedicineCard} from "../../service-request-cards/MedicineRequestCard.tsx";
 //import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 
 let longNames:string[] = [];
 
-export default function Medicine_input() {
+export default function Medicine_input({
+    setIsPopupOpen
+                                       }:closeMedicineCard) {
 
     const [medRequestDoses, setMedRequestDose] = useState("");
     const [medRequestType, setMedRequestType] = useState("");
@@ -25,6 +28,9 @@ export default function Medicine_input() {
     const [resetDropdown, setResetDropdown] = useState(false);
     const [selected, setSelected] = useState(-1);
     const [locations, setLocations] = useState<NodeDataBase[]>([]);
+
+    let interID = setInterval(fadeEffect, 100);
+    clearInterval(interID);
 
     useEffect(()=>{
         getLocations().then(
@@ -80,12 +86,34 @@ export default function Medicine_input() {
                     },
                 });
 
-
+            show();
         } catch {
             console.error("Error with trying to save Service Req in ServiceRequestPage.tsx");
         }
 
 
+    }
+
+    function show() {
+        const tag: HTMLElement = document.getElementById("popup") as HTMLElement;
+        tag.style.opacity = "1";
+        interID = setInterval(fadeEffect, 100);
+    }
+
+    function fadeEffect() {
+        const target = document.getElementById("popup") as HTMLElement;
+        let opacity = target.style.opacity;
+        if(Number(opacity) >= 0.97) {
+            opacity = (Number(opacity) - 0.001).toString();
+            target.style.opacity = opacity;
+        } else if (Number(opacity) > 0) {
+            opacity = (Number(opacity) - 0.1).toString();
+            target.style.opacity = opacity;
+        }
+
+        if(Number(opacity) < 0) {
+            clearInterval(interID);
+        }
     }
 
     function clear() {
@@ -95,54 +123,68 @@ export default function Medicine_input() {
         setMedRequestDose("");
     }
 
-
+    function closeMedicineForm(event: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) {
+        event.preventDefault();
+        setIsPopupOpen(false);
+    }
     return (
-            <div className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-4 align-self-center"}>
-                <form className={"p-1"}>
-                    <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Medicine Request</h1>
+        <div
+            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-4 align-self-center"}>
+            <form className={"p-2"}>
+                <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Medicine Request</h1>
 
 
-                    <div className="grid justify-center items-center my-1.5">
+                <div className="grid justify-center items-center my-1.5">
 
-                        <label className="label">Location </label>
-                        <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationMed"} isSearchable={true}
-                                        populationArr={longNames} resetDropdown={resetDropdown}
-                                        setSelected={setSelected}
-                                        inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
-                                        selectCSS={""}
-                                        resetOnSelect={false} setResetDropdown={setResetDropdown}/>
+                    <label className="label">Location </label>
+                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationMed"} isSearchable={true}
+                                    populationArr={longNames} resetDropdown={resetDropdown}
+                                    setSelected={setSelected}
+                                    inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
+                                    selectCSS={""}
+                                    resetOnSelect={false} setResetDropdown={setResetDropdown}/>
 
-                    </div>
-
-
-                    <SimpleTextInput id={"medRequestType"} labelContent={"Medicine Type"} inputStorage={medRequestType}
-                                     setInputStorage={setMedRequestType}
-                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
-                                     placeHolderText={""}>
-                    </SimpleTextInput>
+                </div>
 
 
-                    <SimpleTextInput id={"medRequestDose"} labelContent={"Medicine Dose"} inputStorage={medRequestDoses}
-                                     setInputStorage={setMedRequestDose}
-                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
-                                     placeHolderText={""}>
-                    </SimpleTextInput>
+                <SimpleTextInput id={"medRequestType"} labelContent={"Medicine Type"} inputStorage={medRequestType}
+                                 setInputStorage={setMedRequestType}
+                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
+                                 placeHolderText={""}>
+                </SimpleTextInput>
 
-                    <SimpleTextInput id={"medRequestDosage"} labelContent={"Amount"} inputStorage={medRequestDosage}
-                                     setInputStorage={setMedRequestDosage}
-                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
-                                     placeHolderText={""}>
-                    </SimpleTextInput>
 
-                    <RequestButtons submit={submit}/>
-                    <div className={"flex justify-center items-center my-1.5"}>
-                        <p>Created By: Alex and Antonio</p>
-                    </div>
-                </form>
+                <SimpleTextInput id={"medRequestDose"} labelContent={"Medicine Dose"} inputStorage={medRequestDoses}
+                                 setInputStorage={setMedRequestDose}
+                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
+                                 placeHolderText={""}>
+                </SimpleTextInput>
+
+                <SimpleTextInput id={"medRequestDosage"} labelContent={"Amount"} inputStorage={medRequestDosage}
+                                 setInputStorage={setMedRequestDosage}
+                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
+                                 placeHolderText={""}>
+                </SimpleTextInput>
+
+                <RequestButtons submit={submit}/>
+
+            </form>
+            <div className={"grid justify-center items-center m-auto my-1.5 mb-5"}>
+                <button onClick={(event) => closeMedicineForm(event)} className={
+                    "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-5"}>
+                    Close
+                </button>
+                <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
+                    <h3>
+                        Successfully submitted!
+                    </h3>
+                </div>
+                <p className={"flex justify-center items-center mt-5"}>Created By: Alex and Antonio</p>
             </div>
+        </div>
 
     );
 }
