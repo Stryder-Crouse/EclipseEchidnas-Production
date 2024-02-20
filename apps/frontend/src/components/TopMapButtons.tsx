@@ -12,6 +12,7 @@ export interface levelStates{
     setEndNode: Dispatch<SetStateAction<Node>>;
     locations:Node[];
     setPathFindingType:Dispatch<SetStateAction<string>>;
+    textDirections:string[]
 }
 
 
@@ -25,7 +26,8 @@ export default function TopMapButtons({setSelectedFloorIndex:setFloor,
                                       endNode:endNode,
                                           setEndNode:setEndNode,
                                           locations:locations,
-                                        setPathFindingType:setPathFindingType
+                                        setPathFindingType:setPathFindingType,
+                                          textDirections
                                       }:levelStates) {
 
     const [selectedAlgoIndex, setSelectedAlgoIndex] =useState(-1);
@@ -47,11 +49,19 @@ export default function TopMapButtons({setSelectedFloorIndex:setFloor,
                               startNode={startNode}/>
                 <div className={"ml-5 mt-1"}>
                     <CreateDropdown
-                        dropBtnName={"PLACEHOLDER SEARCH TYPE"} dropdownID={"Search Type"} populationArr={searchOptions} isSearchable={false}
+                        dropBtnName={"PLACEHOLDER SEARCH TYPE"} dropdownID={"Search Type"} populationArr={searchOptions}
+                        isSearchable={false}
                         resetOnSelect={false} resetDropdown={resetDropdown}
                         setResetDropdown={setResetDropdown} setSelected={setSelectedAlgoIndex}
                         inputCSS={""}
                         selectCSS={"transition-all hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}></CreateDropdown>
+                </div>
+                <div className={"ml-5 mt-1"}>
+                    {
+                        textDirections.map((direction)=>{
+                            return <div>{direction}</div>;
+                        })
+                    }
                 </div>
             </div>
 

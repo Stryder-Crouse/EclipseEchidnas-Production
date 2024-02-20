@@ -1,5 +1,6 @@
 import {Node, NodeType} from "../../Graph/Node.ts";
 import {Coordinate, euclideanDistance} from "../../Graph/Coordinate.ts";
+import {Graph} from "../../Graph/Graph.ts";
 
 /* thresholds of turning */
 const BEAR_THRESHOLD: number = 22.5;
@@ -20,7 +21,7 @@ export enum Directions {
  * Generate a set of text directions for a given path of Nodes.
  * @param path the path of nodes
  */
-export function generateTextDirections(path: Array<Node> | null): Array<string> | null {
+export function generateTextDirections(path: Array<Node> | null, graph:Graph): Array<string> | null {
     /* Cool */
     const directions: Array<string> = new Array<string>();
     directions.push("Starting at "+path![0].longName);
@@ -30,22 +31,29 @@ export function generateTextDirections(path: Array<Node> | null): Array<string> 
         return null;
     }
 
+    //remove extra tranistions (hence elevator and stair nodes do not chain)
+    path = removeExtraTranisions(path);
+
+
     /* iterate through the path, skipping first and last */
     for (let i: number = 1; i < path.length - 1; i++) {
         /* find the angle at this node */
         const turnAngle = findDeviation(path[i - 1], path[i], path[i + 1]);
 
 
+        //if current node is an elvelator
         if(path[i].nodeType==NodeType.ELEV ){
-            if(directions[directions.length - 1] != Directions.TAKE_ELEV) {
-                directions.push(Directions.TAKE_ELEV);
+
+            //if we use it
+            if(path[i+1].floor!=path[i].floor){
+                directions.push(Directions.TAKE_ELEV+ " to floor " +path[i+1].floor);
             }
             continue;
         }
 
         if(path[i].nodeType==NodeType.STAI ){
-            if(directions[directions.length - 1] != Directions.TAKE_STAI) {
-                directions.push(Directions.TAKE_STAI);
+            if(path[i+1].floor!=path[i].floor) {
+                directions.push(Directions.TAKE_STAI+ " to floor " +path[i+1].floor);
             }
             continue;
         }
@@ -60,15 +68,21 @@ export function generateTextDirections(path: Array<Node> | null): Array<string> 
 
         /* bearing case */
         else if (turnAngle < TURN_THRESHOLD) {
+
+            const closestPointName = graph.closestNonHallToNode(path[i],200).longName;
+
             /* gaslighting */
             const go: Directions = determineTurn(path[i - 1], path[i], path[i + 1]);
+
+
+
             switch (go) {
                 case Directions.LEFT: {
-                    directions.push(Directions.BEAR_LEFT);
+                    directions.push(Directions.BEAR_LEFT +" near "+closestPointName);
                     break;
                 }
                 case Directions.RIGHT: {
-                    directions.push(Directions.BEAR_RIGHT);
+                    directions.push(Directions.BEAR_RIGHT+" near "+closestPointName);
                     break;
                 }
                 default: {
@@ -80,7 +94,11 @@ export function generateTextDirections(path: Array<Node> | null): Array<string> 
 
         /* turning */
         else {
-            directions.push(determineTurn(path[i - 1], path[i], path[i + 1]));
+            directions.push(
+                determineTurn(path[i - 1], path[i], path[i + 1])
+                +" near "
+                +graph.closestNonHallToNode(path[i],200).longName
+            );
         }
     }
 
@@ -139,15 +157,15 @@ function determineTurn(previous: Node, current: Node, next: Node): Directions {
     // postive then the point is to the right
     // 0 then strait line
 
-    //swap y cordnaite sign for math to work properly
+
     const prevToNextVector: Coordinate = {
         x: next.coordinate.x - previous.coordinate.x,
-        y: -next.coordinate.y - -previous.coordinate.y
+        y: next.coordinate.y - previous.coordinate.y
     };
 
     const currentVector: Coordinate = {
         x: current.coordinate.x - previous.coordinate.x,
-        y: -current.coordinate.y - -previous.coordinate.y
+        y: current.coordinate.y - previous.coordinate.y
     };
 
     const zValue = (prevToNextVector.x * currentVector.y) - (prevToNextVector.y * currentVector.x);
@@ -167,7 +185,65 @@ function determineTurn(previous: Node, current: Node, next: Node): Directions {
 
 }
 
+//used for text directions
+export function removeExtraTranisions(rawPath: Array<Node>) {
+    /* find the subset of edges from that path on this floor */
+    const newPath: Array<Node> = [];
 
+    /* for every node in the path */
+    for (let i = 0; i < rawPath.length; i++) {
+        /* store this node and the next node */
+        const start = rawPath.at(i)!;
+
+        //break if last node
+        if(i==rawPath.length-1){
+            newPath.push(start);
+            break;
+        }
+
+        const end = rawPath.at(i + 1)!;
+
+        /* if both nodes are on the same floor */
+        if (start.floor==end.floor) {
+            //push start
+            newPath.push(start);
+        }
+
+        /* else start is on this floor, but end is on a different floor */
+        else {
+
+
+            /* iterate forward through the path */
+            let currentEndNode = end;
+
+
+            while (i < rawPath.length - 2) {
+                currentEndNode = rawPath.at(i + 1)!;
+                const nextEndNode = rawPath.at(i + 2)!;
+
+
+                //stoped tranisioning though floors
+                if(currentEndNode.floor == nextEndNode.floor){
+                    break;
+                }
+
+
+                i++;
+            }
+
+            /* push new end */
+            newPath.push(start);
+            newPath.push(currentEndNode);
+            //increment one more time to skip the current end node on next loop
+            i++;
+        }
+
+
+    }
+
+
+    return newPath;
+}
 
 
 // export function generateTextDirections(path: Array<Node> | null): Array<string> | null {
