@@ -6,24 +6,29 @@ import Logo from "../../images/Brigham_and_Womens_Hospital_logo.svg.png";
 
 import axios from "axios";
 import {useEffect} from "react";
-import {useAuth0, User} from "@auth0/auth0-react";
+import {useAuth0} from "@auth0/auth0-react";
 
 export default function RegisterForm() {
     const [username, setUsername] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [currEmail, setCurrEmail] = useState('');
-    const user = useAuth0();
-    const {email} = user as User;
+
+    const currUser = useAuth0();
+    const thisEmail = currUser?.user?.email;
 
 
-    useEffect(()=>{
-        setCurrEmail(JSON.stringify(email));
-        //todo BNBN inside this if statement should be where the function goes to check if the employee is in the database (use accessToken)
-        {/*if(){
+    useEffect(() => {
+        if (thisEmail) {
+            console.log('User found');
+            setCurrEmail(JSON.stringify(thisEmail));
+            //todo BNBN inside this if statement should be where the function goes to check if the employee is in the database (use accessToken)
+            {/*if(){
             window.location.href="http://localhost:3000/RequestList";
-        }*/}
-    },[email]);
+        }*/
+            }
+        } else console.log('Could not find user');
+    }, [thisEmail]);
 
     function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
@@ -45,7 +50,7 @@ export default function RegisterForm() {
             }
         }).then();
 
-        window.location.href="http://localhost:3000/RequestList";
+        //window.location.href = "http://localhost:3000/RequestList";
     }
 
     return (
