@@ -389,6 +389,73 @@ router.get("/medReq", async function (req: Request, res: Response) {
 
 });
 
+router.get("/medReq/filter", async function (req: Request, res: Response) {
+    try {
+        const statusFilter: Status = req.query.status as Status;
+        const priorityFilter: Priorities = req.query.priority as Priorities;
+        const emplFilter: string = req.query.employee as string;
+        const locFilter: string = req.query.location as string;
+
+        console.log("statusfilter: \n" + statusFilter);
+        console.log("priorityFilter: \n" + priorityFilter);
+        console.log("emplFilter: \n" + emplFilter);
+        console.log("locFilter: \n" + locFilter);
+
+        //make a local type that potentially has one field for each filter
+        type WhereCondition = {
+            status?: string;
+            reqPriority?: string;
+            assignedUName?: string;
+            reqLocationID?: string;
+            reqType: string;
+        };
+
+        //make an instance of the type with one field that filters by religious requests
+        // and no other fields. This ensures that if no filter is applied to the service request,
+        // all the service requests will be sent
+        const whereCondition :WhereCondition = {
+            reqType: "medication"
+        };
+
+
+        //if there is a status filter, add it to the whereCondition
+        if (statusFilter != null && statusFilter != Status.Any) {
+            whereCondition.status = statusFilter;
+        }
+        //if there is a priority filter, add it to the whereCondition
+        if(priorityFilter != null && priorityFilter == Priorities.any){
+            whereCondition.reqPriority = priorityFilter;
+        }
+        //if there is an employee filter, add it to the whereCondition
+        if(emplFilter != null && emplFilter != "" && emplFilter.toLowerCase() != "any"){
+            whereCondition.assignedUName = emplFilter;
+        }
+        //if there is a location filter, add it to the whereCondition
+        if(locFilter != null && locFilter != "" && locFilter.toLowerCase() != "any"){
+            whereCondition.reqLocationID = locFilter;
+        }
+
+        //send the request to the user with the specified conditions
+        res.send(await PrismaClient.serviceRequest.findMany({
+            where: whereCondition,
+            orderBy: {
+                reqID: "desc"
+            }
+        }));
+
+        console.log("Res: " + res); //debugging info
+
+        console.info("\nSuccessfully filtered requests\n"); //debugging info
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+
+    } catch (err) {
+        console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
+    }
+});
+
+
 // ---------------------------------    Outside Transport DB Interaction    ---------------------------------
 
 router.post("/outsideTransport", async function (req: Request, res: Response) {
@@ -524,6 +591,73 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
 
 });
 
+router.get("/outsideTransport/filter", async function (req: Request, res: Response) {
+    try {
+        const statusFilter: Status = req.query.status as Status;
+        const priorityFilter: Priorities = req.query.priority as Priorities;
+        const emplFilter: string = req.query.employee as string;
+        const locFilter: string = req.query.location as string;
+
+        console.log("statusfilter: \n" + statusFilter);
+        console.log("priorityFilter: \n" + priorityFilter);
+        console.log("emplFilter: \n" + emplFilter);
+        console.log("locFilter: \n" + locFilter);
+
+        //make a local type that potentially has one field for each filter
+        type WhereCondition = {
+            status?: string;
+            reqPriority?: string;
+            assignedUName?: string;
+            reqLocationID?: string;
+            reqType: string;
+        };
+
+        //make an instance of the type with one field that filters by religious requests
+        // and no other fields. This ensures that if no filter is applied to the service request,
+        // all the service requests will be sent
+        const whereCondition :WhereCondition = {
+            reqType: "transportation"
+        };
+
+
+        //if there is a status filter, add it to the whereCondition
+        if (statusFilter != null && statusFilter != Status.Any) {
+            whereCondition.status = statusFilter;
+        }
+        //if there is a priority filter, add it to the whereCondition
+        if(priorityFilter != null && priorityFilter == Priorities.any){
+            whereCondition.reqPriority = priorityFilter;
+        }
+        //if there is an employee filter, add it to the whereCondition
+        if(emplFilter != null && emplFilter != "" && emplFilter.toLowerCase() != "any"){
+            whereCondition.assignedUName = emplFilter;
+        }
+        //if there is a location filter, add it to the whereCondition
+        if(locFilter != null && locFilter != "" && locFilter.toLowerCase() != "any"){
+            whereCondition.reqLocationID = locFilter;
+        }
+
+        //send the request to the user with the specified conditions
+        res.send(await PrismaClient.serviceRequest.findMany({
+            where: whereCondition,
+            orderBy: {
+                reqID: "desc"
+            }
+        }));
+
+        console.log("Res: " + res); //debugging info
+
+        console.info("\nSuccessfully filtered requests\n"); //debugging info
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+
+    } catch (err) {
+        console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
+    }
+});
+
+
 // ---------------------------------    Sanitation DB Interaction    ---------------------------------
 
 router.post("/sanReq", async function (req: Request, res: Response) {
@@ -645,6 +779,72 @@ router.get("/sanReq", async function (req: Request, res: Response) {
             console.error("\nUnable to send Requests\n");
             res.sendStatus(500);
         }
+    }
+});
+
+router.get("/sanReq/filter", async function (req: Request, res: Response) {
+    try {
+        const statusFilter: Status = req.query.status as Status;
+        const priorityFilter: Priorities = req.query.priority as Priorities;
+        const emplFilter: string = req.query.employee as string;
+        const locFilter: string = req.query.location as string;
+
+        console.log("statusfilter: \n" + statusFilter);
+        console.log("priorityFilter: \n" + priorityFilter);
+        console.log("emplFilter: \n" + emplFilter);
+        console.log("locFilter: \n" + locFilter);
+
+        //make a local type that potentially has one field for each filter
+        type WhereCondition = {
+            status?: string;
+            reqPriority?: string;
+            assignedUName?: string;
+            reqLocationID?: string;
+            reqType: string;
+        };
+
+        //make an instance of the type with one field that filters by religious requests
+        // and no other fields. This ensures that if no filter is applied to the service request,
+        // all the service requests will be sent
+        const whereCondition :WhereCondition = {
+            reqType: "sanitation"
+        };
+
+
+        //if there is a status filter, add it to the whereCondition
+        if (statusFilter != null && statusFilter != Status.Any) {
+            whereCondition.status = statusFilter;
+        }
+        //if there is a priority filter, add it to the whereCondition
+        if(priorityFilter != null && priorityFilter == Priorities.any){
+            whereCondition.reqPriority = priorityFilter;
+        }
+        //if there is an employee filter, add it to the whereCondition
+        if(emplFilter != null && emplFilter != "" && emplFilter.toLowerCase() != "any"){
+            whereCondition.assignedUName = emplFilter;
+        }
+        //if there is a location filter, add it to the whereCondition
+        if(locFilter != null && locFilter != "" && locFilter.toLowerCase() != "any"){
+            whereCondition.reqLocationID = locFilter;
+        }
+
+        //send the request to the user with the specified conditions
+        res.send(await PrismaClient.serviceRequest.findMany({
+            where: whereCondition,
+            orderBy: {
+                reqID: "desc"
+            }
+        }));
+
+        console.log("Res: " + res); //debugging info
+
+        console.info("\nSuccessfully filtered requests\n"); //debugging info
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+
+    } catch (err) {
+        console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
     }
 });
 
@@ -779,6 +979,73 @@ router.get("/flowReq", async function (req: Request, res: Response) {
         console.error("\nUnable to send requests\n");
     }
 });
+
+router.get("/flowReq/filter", async function (req: Request, res: Response) {
+    try {
+        const statusFilter: Status = req.query.status as Status;
+        const priorityFilter: Priorities = req.query.priority as Priorities;
+        const emplFilter: string = req.query.employee as string;
+        const locFilter: string = req.query.location as string;
+
+        console.log("statusfilter: \n" + statusFilter);
+        console.log("priorityFilter: \n" + priorityFilter);
+        console.log("emplFilter: \n" + emplFilter);
+        console.log("locFilter: \n" + locFilter);
+
+        //make a local type that potentially has one field for each filter
+        type WhereCondition = {
+            status?: string;
+            reqPriority?: string;
+            assignedUName?: string;
+            reqLocationID?: string;
+            reqType: string;
+        };
+
+        //make an instance of the type with one field that filters by religious requests
+        // and no other fields. This ensures that if no filter is applied to the service request,
+        // all the service requests will be sent
+        const whereCondition :WhereCondition = {
+            reqType: "flower delivery"
+        };
+
+
+        //if there is a status filter, add it to the whereCondition
+        if (statusFilter != null && statusFilter != Status.Any) {
+            whereCondition.status = statusFilter;
+        }
+        //if there is a priority filter, add it to the whereCondition
+        if(priorityFilter != null && priorityFilter == Priorities.any){
+            whereCondition.reqPriority = priorityFilter;
+        }
+        //if there is an employee filter, add it to the whereCondition
+        if(emplFilter != null && emplFilter != "" && emplFilter.toLowerCase() != "any"){
+            whereCondition.assignedUName = emplFilter;
+        }
+        //if there is a location filter, add it to the whereCondition
+        if(locFilter != null && locFilter != "" && locFilter.toLowerCase() != "any"){
+            whereCondition.reqLocationID = locFilter;
+        }
+
+        //send the request to the user with the specified conditions
+        res.send(await PrismaClient.serviceRequest.findMany({
+            where: whereCondition,
+            orderBy: {
+                reqID: "desc"
+            }
+        }));
+
+        console.log("Res: " + res); //debugging info
+
+        console.info("\nSuccessfully filtered requests\n"); //debugging info
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+
+    } catch (err) {
+        console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
+    }
+});
+
 
 // ---------------------------------    Relig Req DB Interaction    ---------------------------------
 router.post('/religiousRequest', async function (req: Request, res: Response) {
@@ -926,8 +1193,9 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
             reqType: string;
         };
 
-        //make an instance of the type with no fields for now. This ensures that if no filter
-        //  is applied to the service request, all the service requests will be sent
+        //make an instance of the type with one field that filters by religious requests
+        // and no other fields. This ensures that if no filter is applied to the service request,
+        // all the service requests will be sent
         const whereCondition: WhereCondition = {
             reqType: "religious"
         };
