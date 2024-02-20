@@ -31,10 +31,9 @@ router.get("/serviceReq", async function (req: Request, res: Response) {
         res.status(200).send(await PrismaClient.serviceRequest.findMany()); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you all of the requests\n");
         //send status unless 6 times bug occurs
-        res.sendStatus(200);
     } catch (err) {
         console.error("\nUnable to send requests\n");
-        res.sendStatus(400); // Send error
+        res.sendStatus(500); // Send error
     }
 });
 
@@ -65,26 +64,26 @@ router.get("/serviceReq/filter", async function (req: Request, res: Response) {
 
         //make an instance of the type with no fields for now. This ensures that if no filter
         //  is applied to the service request, all the service requests will be sent
-        const whereCondition :WhereCondition = {};
+        const whereCondition: WhereCondition = {};
 
         //if there is a status filter, add it to the whereCondition
         if (statusFilter != null && statusFilter != Status.Any) {
             whereCondition.status = statusFilter;
         }
         //if there is a priority filter, add it to the whereCondition
-        if(priorityFilter != null && priorityFilter != Priorities.any){
+        if (priorityFilter != null && priorityFilter != Priorities.any) {
             whereCondition.reqPriority = priorityFilter;
         }
         //if there is an employee filter, add it to the whereCondition
-        if(emplFilter != null && emplFilter != "" && emplFilter.toLowerCase() != "any"){
+        if (emplFilter != null && emplFilter != "" && emplFilter.toLowerCase() != "any") {
             whereCondition.assignedUName = emplFilter;
         }
         //if there is a location filter, add it to the whereCondition
-        if(locFilter != null && locFilter != "" && locFilter.toLowerCase() != "any"){
+        if (locFilter != null && locFilter != "" && locFilter.toLowerCase() != "any") {
             whereCondition.recLocationID = locFilter;
         }
         //if there is a type filter, add it to the whereCondition
-        if(typeFilter != null && typeFilter != "" && typeFilter.toLowerCase() != "any"){
+        if (typeFilter != null && typeFilter != "" && typeFilter.toLowerCase() != "any") {
             whereCondition.type = typeFilter;
         }
 
@@ -148,7 +147,7 @@ router.post("/changeUser", async function (req: Request, res: Response) {
         res.sendStatus(200);
     } catch (error) {
         console.error("Unable to change assigned user");
-        res.sendStatus(400); // Send error
+        res.sendStatus(500); // Send error
     }
 });
 
@@ -165,7 +164,7 @@ router.post("/changeState", async function (req: Request, res: Response) {
         });
         if (!serviceRequest) {
             console.error(`Service Request with ID ${reqID} not found`);
-            res.sendStatus(400); // Send error
+            res.sendStatus(500); // Send error
         }
 
         await PrismaClient.serviceRequest.update({
@@ -177,9 +176,9 @@ router.post("/changeState", async function (req: Request, res: Response) {
         console.info("Successfully changed service request state");
         //send status unless 6 times bug occurs
         res.sendStatus(200);
-    } catch(error){
+    } catch (error) {
         console.error("Unable to change service request state");
-        res.sendStatus(400); // Send error
+        res.sendStatus(500); // Send error
     }
 });
 
@@ -196,7 +195,7 @@ router.post("/changePriority", async function (req: Request, res: Response) {
         //if there is no entry in the DB matching that service request id, then let the person know that there is an error
         if (!servReq) {
             console.error(`Service Request with ID ${reqID} not found`);
-            res.sendStatus(400); // Send error
+            res.sendStatus(500); // Send error
         }
 
 
@@ -214,7 +213,7 @@ router.post("/changePriority", async function (req: Request, res: Response) {
 
     } catch {
         console.error("Database issue with changing the Priority");
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 });
 
@@ -230,7 +229,7 @@ router.post("/removeRequest", async function (req: Request, res: Response) {
         res.sendStatus(200);
     } catch {
         console.log("Error removing request");
-        res.sendStatus(400);
+        res.sendStatus(500);
     }
 });
 
@@ -273,7 +272,7 @@ router.post("/medReq", async function (req: Request, res: Response) {
                         //connectOrCreate makes you specify what data you will create with and also what you
                         // want to connect to (needs to know both potential outcomes)
                         create: {
-                            userID:"0",
+                            userID: "0",
                             userName: "No one",
                             firstName: "N/A",
                             lastName: "N/A",
@@ -308,11 +307,11 @@ router.post("/medReq", async function (req: Request, res: Response) {
         console.info("Successfully saved Med Req"); // Log that it was successful
         //sendback the id of the request
         //console.info("HHH " +record.genReqID);
-        res.status(200).send(200);
+        res.status(200).send("lol forgot to put something here");
     } catch (error) {
         // Log any failures
         console.error(`Unable to save Med Req`);
-        res.sendStatus(400); // Send error
+        res.sendStatus(500); // Send error
     }
 });
 
@@ -349,6 +348,7 @@ router.get("/medReq", async function (req: Request, res: Response) {
             console.info("\nSuccessfully gave you all of the medical requests\n");
         } catch (err) {
             console.error("\nUnable to send requests\n");
+            res.sendStatus(500);
         }
 
     } else {
@@ -382,6 +382,7 @@ router.get("/medReq", async function (req: Request, res: Response) {
             console.info("\nSuccessfully gave you all of the medical requests\n");
         } catch (err) {
             console.error("\nUnable to send requests\n");
+            res.sendStatus(500);
         }
     }
 
@@ -417,7 +418,7 @@ router.post("/outsideTransport", async function (req: Request, res: Response) {
                         //connectOrCreate makes you specify what data you will create with and also what you
                         // want to connect to (needs to know both potential outcomes)
                         create: {
-                            userID:"0",
+                            userID: "0",
                             userName: "No one",
                             firstName: "N/A",
                             lastName: "N/A",
@@ -477,10 +478,10 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects
             res.status(200).send([transportReq, serviceReqs]);
             //send status unless 6 times bug occurs
-            res.sendStatus(200);
             console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
         } catch (err) {
             console.error("\nUnable to send Requests\n");
+            res.sendStatus(500);
         }
 
     } else {
@@ -510,7 +511,6 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
 
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects
             //send status unless 6 times bug occurs
-            res.status(200);
             res.status(200).send([transportReq, serviceReqs]);
 
             console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
@@ -606,8 +606,7 @@ router.get("/sanReq", async function (req: Request, res: Response) {
 
             //we display info from both the service req and the sanitation req, so we send the person both DB objects
             //send status unless 6 times bug occurs
-            res.status(200);
-            res.status(200).send([sanReq,serviceReqs]);
+            res.status(200).send([sanReq, serviceReqs]);
             console.info("\nSuccessfully gave you all of the Sanitation Requests\n");
         } catch (err) {
             res.sendStatus(500);
@@ -640,8 +639,7 @@ router.get("/sanReq", async function (req: Request, res: Response) {
 
             //we display info from both the service req and the sanitation req, so we send the person both DB objects
             //send status unless 6 times bug occurs
-            res.status(200);
-            res.status(200).send([sanReq,serviceReqs]);
+            res.status(200).send([sanReq, serviceReqs]);
             console.info("\nSuccessfully gave you all of the Sanitation Requests\n");
         } catch (err) {
             console.error("\nUnable to send Requests\n");
@@ -688,7 +686,7 @@ router.post("/flowReq", async function (req: Request, res: Response) {
                         //connectOrCreate makes you specify what data you will create with and also what you
                         // want to connect to (needs to know both potential outcomes)
                         create: {
-                            userID:"0",
+                            userID: "0",
                             userName: "No one",
                             firstName: "N/A",
                             lastName: "N/A",
@@ -806,7 +804,7 @@ router.post('/religiousRequest', async function (req: Request, res: Response) {
                         //connectOrCreate makes you specify what data you will create with and also what you
                         // want to connect to (needs to know both potential outcomes)
                         create: {
-                            userID:"0",
+                            userID: "0",
                             userName: "No one",
                             firstName: "N/A",
                             lastName: "N/A",
@@ -930,7 +928,7 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
 
         //make an instance of the type with no fields for now. This ensures that if no filter
         //  is applied to the service request, all the service requests will be sent
-        const whereCondition :WhereCondition = {
+        const whereCondition: WhereCondition = {
             reqType: "religious"
         };
 
@@ -940,15 +938,15 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
             whereCondition.status = statusFilter;
         }
         //if there is a priority filter, add it to the whereCondition
-        if(priorityFilter != null && priorityFilter == Priorities.any){
+        if (priorityFilter != null && priorityFilter == Priorities.any) {
             whereCondition.reqPriority = priorityFilter;
         }
         //if there is an employee filter, add it to the whereCondition
-        if(emplFilter != null && emplFilter != "" && emplFilter.toLowerCase() != "any"){
+        if (emplFilter != null && emplFilter != "" && emplFilter.toLowerCase() != "any") {
             whereCondition.assignedUName = emplFilter;
         }
         //if there is a location filter, add it to the whereCondition
-        if(locFilter != null && locFilter != "" && locFilter.toLowerCase() != "any"){
+        if (locFilter != null && locFilter != "" && locFilter.toLowerCase() != "any") {
             whereCondition.reqLocationID = locFilter;
         }
 
