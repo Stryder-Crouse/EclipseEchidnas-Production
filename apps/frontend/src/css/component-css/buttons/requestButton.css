@@ -14,13 +14,3 @@
     margin: auto;
 
 }
-
-.popup-words {
-    color: green;
-    text-align: center;
-}
-
-.popup {
-    display: block;
-    opacity: 0;
-}

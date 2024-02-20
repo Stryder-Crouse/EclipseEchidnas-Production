@@ -1,6 +1,6 @@
-import status from "../../../../backend/src/algorithms/Requests/Status.ts";
+import Status from "../../../../backend/src/algorithms/Requests/Status.ts";
 
 
 export interface statusFilter{
-    statusFilter:status;
+    statusFilter:Status;
 }

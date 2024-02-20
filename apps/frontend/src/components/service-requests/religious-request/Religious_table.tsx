@@ -330,7 +330,7 @@ async function getReligRequests(statusFilter:Status) {
 }
 
 async function getEmployees() {
-    const employees = await axios.get<Employee[]>("/api/employees/employees/med");
+    const employees = await axios.get<Employee[]>("/api/employees/employees/rel");
     return employees.data;
 
 
