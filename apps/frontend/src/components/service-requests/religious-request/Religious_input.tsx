@@ -200,17 +200,18 @@ export default function Religious_input({
                     </textarea>
                 </div>
                 <RequestButtons submit={handleSubmit}/>
-                <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
-                    <h3>
-                        Successfully submitted!
-                    </h3>
-                </div>
+
             </form>
             <div className={"grid justify-center items-center m-auto my-1.5 mb-5"}>
                 <button onClick={(event) => closeReligiousForm(event)} className={
                     "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 -mt-5"}>
                     Close
                 </button>
+                <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
+                    <h3>
+                        Successfully submitted!
+                    </h3>
+                </div>
                 <p className={"flex justify-center items-center mt-5"}>Created By: Alana and Grace</p>
             </div>
         </div>
