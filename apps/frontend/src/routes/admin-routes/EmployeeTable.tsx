@@ -1,9 +1,3 @@
-import SideNavBarComponent, {SideBarItem} from "../../components/SideNavBarComponent.tsx";
-import ServiceRequestIcon from "../../images/SideBar/requestIcon.png";
-import EmployeeIcon from "../../images/SideBar/user.png";
-import CSVIcon from "../../images/SideBar/table.png";
-import LogIcon from "../../images/SideBar/log-in.png";
-import MapIcon from "../../images/SideBar/map.png";
 import "../../css/route-css/EmployeeTable.css";
 import "../../css/route-css/EmployeeTableInput.css";
 import React, {useEffect, useState} from "react";
@@ -12,6 +6,11 @@ import {Employee, Roles} from "../../../../backend/src/algorithms/Employee/Emplo
 import trashIcon from "../../images/Table Functions/trash.png";
 import editPen from "../../images/Table Functions/editPen.png";
 import ExportImportButtonEmployee from "../../components/EmployeeTableButtons/ExportImportButtonEmployee.tsx";
+import FullSideNavBarComponent from "../../components/FullSideNavBarComponent.tsx";
+
+//TODO IMPLEMENT THESE BUTTONS TO POPULATE WITH EVERY ROW
+//import TrashIcon from "../../images/Table Functions/trash-2.png";
+//import EditIcon from "../../images/Table Functions/pencil.png";
 
 
 const designations = [Roles.None,Roles.nurse,Roles.doctor,Roles.admin,
@@ -45,15 +44,7 @@ function EmployeeTable() {
     return (
         <div className="flex h-lvh flex-row overflow-x-hidden">
             <div className="z-10">
-                <SideNavBarComponent>
-                    <SideBarItem icon={MapIcon} text="Map" link="/TailwindMapPage"/>
-                    <SideBarItem icon={ServiceRequestIcon} text="Services" link="ServiceRequest"/>
-                    <SideBarItem icon={EmployeeIcon} text="Employees" link="/EmployeeTable"/>
-                    <SideBarItem icon={CSVIcon} text=".CSV" link="/NodeEdgeTable"/>
-                    <hr className="my-3"/>
-                    {/*NEED THIS FIXED OR SUM */}
-                    <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"}/>
-                </SideNavBarComponent>
+                <FullSideNavBarComponent/>
             </div>
             <div className="flex flex-col w-lvw -ml-10">
                 <ExportImportButtonEmployee/>
