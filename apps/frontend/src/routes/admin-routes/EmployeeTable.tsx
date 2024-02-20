@@ -47,7 +47,7 @@ function EmployeeTable() {
     },[]);
     //table-id is request-table
     return (
-        <div className="flex h-lvh flex-row">
+        <div className="flex h-lvh flex-row overflow-x-hidden">
             <div className="z-10">
                 <SideNavBarComponent>
                     <SideBarItem icon={MapIcon} text="Map" link="/TailwindMapPage"/>

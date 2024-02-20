@@ -12,6 +12,7 @@ import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataB
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {closeTransportCard} from "../../service-request-cards/TransportationRequestCard.tsx";
 //import LocationsDropDown from "../../navigation-bar/LocationsDropDown.tsx";
+import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";
 
 let longNames:string[] = [];
 
@@ -235,10 +236,8 @@ export default function Transportation_Input({
                     "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-5"}>
                     Close
                 </button>
-                <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
-                    <h3>
-                        Successfully submitted!
-                    </h3>
+                <div id={"popup"} className={" opacity-0 "}>
+                    <RequestSubmitToast/>
                 </div>
                 <p className={"flex justify-center items-center mt-5"}>Created By: Michael and Ryan</p>
             </div>
