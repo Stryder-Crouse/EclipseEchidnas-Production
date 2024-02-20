@@ -10,11 +10,14 @@ import RequestButtons from "../../buttons/RequestButtons.tsx";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
+import {closeTransportCard} from "../../service-request-cards/TransportationRequestCard.tsx";
 //import LocationsDropDown from "../../navigation-bar/LocationsDropDown.tsx";
 
 let longNames:string[] = [];
 
-export default function Transportation_Input() {
+export default function Transportation_Input({
+    setIsPopupOpen
+                                             }: closeTransportCard) {
 
     enum PriorityLevel {
         Unchosen = "Priority: ",
@@ -131,9 +134,14 @@ export default function Transportation_Input() {
         setAdditional("");
     }
 
+    function closeTransportForm(event: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) {
+        event.preventDefault();
+        setIsPopupOpen(false);
+    }
     return (
 
-        <div className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
+        <div
+            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
 
             <form className={"p-2"}>
 
@@ -141,93 +149,98 @@ export default function Transportation_Input() {
                     Transportation</h1> {/* Div Title */}
 
 
-                    <div className={"flex justify-center items-center my-1.5"}> {/* Priority Dropdown */}
-                        {/*<label
+                <div className={"flex justify-center items-center my-1.5"}> {/* Priority Dropdown */}
+                    {/*<label
                             className={"mr-1"}
                             htmlFor={"priority"}
                         >Priority Level: </label>*/}
-                        <select
-                            className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
-                            value={priority}
-                            id={"priority"}
-                            onChange={(e) => setPriority(e.target.value as PriorityLevel)}
-                        >
-                            <option value={PriorityLevel.Unchosen}>Priority:</option>
-                            <option value={PriorityLevel.Low}>Low</option>
-                            <option value={PriorityLevel.Medium}>Medium</option>
-                            <option value={PriorityLevel.High}>High</option>
-                            <option value={PriorityLevel.Emergency}>Emergency</option>
-                        </select>
-                    </div>
+                    <select
+                        className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
+                        value={priority}
+                        id={"priority"}
+                        onChange={(e) => setPriority(e.target.value as PriorityLevel)}
+                    >
+                        <option value={PriorityLevel.Unchosen}>Priority:</option>
+                        <option value={PriorityLevel.Low}>Low</option>
+                        <option value={PriorityLevel.Medium}>Medium</option>
+                        <option value={PriorityLevel.High}>High</option>
+                        <option value={PriorityLevel.Emergency}>Emergency</option>
+                    </select>
+                </div>
 
-                    {/*patient name*/}
-                    <SimpleTextInput id={"patientName"} labelContent={"Patient Name:"} inputStorage={patientName}
-                                     setInputStorage={setPatientName}
-                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
-                                     placeHolderText={"Patient Name: "}>
-                    </SimpleTextInput>
+                {/*patient name*/}
+                <SimpleTextInput id={"patientName"} labelContent={"Patient Name:"} inputStorage={patientName}
+                                 setInputStorage={setPatientName}
+                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
+                                 placeHolderText={"Patient Name: "}>
+                </SimpleTextInput>
 
-                    {/*room number*/}
-                    <div className="grid justify-center items-center my-1.5">
+                {/*room number*/}
+                <div className="grid justify-center items-center my-1.5">
 
-                        <label className="label">Location </label>
-                        <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationTran"} isSearchable={true}
-                                        populationArr={longNames} resetDropdown={resetDropdown}
-                                        setSelected={setSelected}
-                                        inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
-                                        selectCSS={""}
-                                        resetOnSelect={false} setResetDropdown={setResetDropdown}/>
+                    <label className="label">Location </label>
+                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationTran"} isSearchable={true}
+                                    populationArr={longNames} resetDropdown={resetDropdown}
+                                    setSelected={setSelected}
+                                    inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
+                                    selectCSS={""}
+                                    resetOnSelect={false} setResetDropdown={setResetDropdown}/>
 
-                    </div>
+                </div>
 
-                    {/*destination*/}
-                    <SimpleTextInput id={"destination"} labelContent={"Destination:"} inputStorage={destination}
-                                     setInputStorage={setDestination}
-                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
-                                     placeHolderText={"Destination: "}>
-                    </SimpleTextInput>
+                {/*destination*/}
+                <SimpleTextInput id={"destination"} labelContent={"Destination:"} inputStorage={destination}
+                                 setInputStorage={setDestination}
+                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
+                                 placeHolderText={"Destination: "}>
+                </SimpleTextInput>
 
-                    <div className={"grid justify-center items-center my-1.5 mb-2"}>{/* Mode of Transportation Input */}
-                        {/*<label
+                <div className={"grid justify-center items-center my-1.5 mb-2"}>{/* Mode of Transportation Input */}
+                    {/*<label
                             htmlFor={"modeTransport"}
                         >Mode of Transportation: </label>*/}
-                        <select
-                            className={"p-1 w-60 bg-white text-black rounded-2xl border border-black shadow cursor-pointer"}
-                            value={modeTransport}
-                            id={"modeTransport"}
-                            onChange={(e) => setModeTransport(e.target.value as ModeTransport)}
-                        >
-                            <option value={ModeTransport.Unchosen}>Mode of Transportation:</option>
-                            <option value={ModeTransport.Ambulance}>Ambulance</option>
-                            <option value={ModeTransport.Helicopter}>Helicopter</option>
-                            <option value={ModeTransport.Boat}>Boat</option>
-                            <option value={ModeTransport.Superhero}>Superhero</option>
-                        </select>
-                    </div>
+                    <select
+                        className={"p-1 w-60 bg-white text-black rounded-2xl border border-black shadow cursor-pointer"}
+                        value={modeTransport}
+                        id={"modeTransport"}
+                        onChange={(e) => setModeTransport(e.target.value as ModeTransport)}
+                    >
+                        <option value={ModeTransport.Unchosen}>Mode of Transportation:</option>
+                        <option value={ModeTransport.Ambulance}>Ambulance</option>
+                        <option value={ModeTransport.Helicopter}>Helicopter</option>
+                        <option value={ModeTransport.Boat}>Boat</option>
+                        <option value={ModeTransport.Superhero}>Superhero</option>
+                    </select>
+                </div>
 
-                    <div className={"grid justify-center items-center my-1.5 mb-2"}> {/* Additional notes textbox */}
-                        <textarea
-                            className={"p-1 min-h-full h-20 w-60 bg-white text-black rounded-xl border border-black drop-shadow align-text-top"}
-                            id={"additional"}
-                            placeholder={"Additional Notes:"}
-                            value={additional}
-                            onChange={(e) => setAdditional(e.target.value)}
-                        />
-                    </div>
+                <div className={"grid justify-center items-center my-1.5 mb-2"}> {/* Additional notes textbox */}
+                    <textarea
+                        className={"p-1 min-h-full h-20 w-60 bg-white text-black rounded-xl border border-black drop-shadow align-text-top"}
+                        id={"additional"}
+                        placeholder={"Additional Notes:"}
+                        value={additional}
+                        onChange={(e) => setAdditional(e.target.value)}
+                    />
+                </div>
 
 
-                    <RequestButtons submit={submit}/>
-                    <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
-                        <h3>
-                            Successfully submitted!
-                        </h3>
-                    </div>
+                <RequestButtons submit={submit}/>
+
 
             </form>
-            <div className={"flex justify-center items-center my-1.5"}>
-                <p className={"flex justify-center items-center -mt-5"}>Created By: Michael and Ryan</p>
+            <div className={"grid justify-center items-center m-auto my-1.5 mb-5"}>
+                <button onClick={(event) => closeTransportForm(event)} className={
+                    "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-5"}>
+                    Close
+                </button>
+                <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
+                    <h3>
+                        Successfully submitted!
+                    </h3>
+                </div>
+                <p className={"flex justify-center items-center mt-5"}>Created By: Michael and Ryan</p>
             </div>
         </div>
     );
