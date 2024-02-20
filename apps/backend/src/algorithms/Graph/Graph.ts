@@ -1,4 +1,4 @@
-import {Buildings, floorToNumber, Node, nodeToString, NodeType} from "./Node.ts";
+import {Buildings, floorToNumber, Node, nodeToString, NodeType, NULLNODE} from "./Node.ts";
 import {Edge, edgeToString} from "./Edge.ts";
 import {euclideanDistance} from "./Coordinate.ts";
 
@@ -430,4 +430,39 @@ export class Graph {
         }
         return false;
     }
+
+
+    private closestNonHallToNode(goalNode:Node,maxDistance:number){
+
+        let closest = goalNode;
+        let shortestDistnace = Number.MAX_VALUE;
+
+        if(closest.nodeType!=NodeType.HALL){
+            return goalNode;
+        }
+
+        this.nodes.forEach((node)=>{
+
+            if(node.floor==goalNode.floor && node.nodeType!=NodeType.HALL){
+
+                const distance = euclideanDistance(node.coordinate,goalNode.coordinate);
+
+                if(distance < shortestDistnace){
+                    closest=node;
+                    shortestDistnace=distance;
+                }
+            }
+
+        });
+
+        //return NULLNODE if shorest node distance is greator than maxDistance
+        if(shortestDistnace>maxDistance){
+            return NULLNODE;
+        }
+
+        return closest;
+
+
+    }
+
 }

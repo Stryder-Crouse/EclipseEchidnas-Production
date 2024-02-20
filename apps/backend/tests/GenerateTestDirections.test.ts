@@ -1,9 +1,9 @@
 import {expect, test} from "vitest";
-import {Node} from "../src/algorithms/Graph/Node.ts";
+import { Node} from "../src/algorithms/Graph/Node.ts";
 import {
     Directions,
     findDeviation,
-    generateTextDirections
+    generateTextDirections, removeExtraTranisions
 } from "../src/algorithms/Search/TextDirections/GenerateTextDirections.ts";
 import {Coordinate} from "../src/algorithms/Graph/Coordinate.ts";
 import {readEdgeCSV, readNodeCSV} from "../src/algorithms/readCSV.ts";
@@ -26,6 +26,13 @@ function newNodeWithCoordinate(coordinate: Coordinate) {
     return <Node>{
         longName:"test",
         coordinate: coordinate,
+    };
+}
+
+function newNodeWithFloor(longname:string,newfloor:string) {
+    return <Node>{
+        longName: longname,
+        floor: newfloor
     };
 }
 
@@ -125,9 +132,12 @@ function generateTextDirections_two_right_turns(): void {
     const test_path: Array<Node> | null = AStar(graph.idToNode("1"), graph.idToNode("7"), graph);
     const test_directions: Array<string> | null =  generateTextDirections(test_path);
     const expected_directions: Array<string> = new Array<string>();
+
+    //right is left and left is right as the graph uses a regular cordnate system y+ up y- down
+    //compared to the one used on the map page y+ down, y- up
     expected_directions.push("Starting at Anesthesia Conf Floor L1");
-    expected_directions.push(Directions.BEAR_RIGHT);
-    expected_directions.push(Directions.RIGHT);
+    expected_directions.push(Directions.BEAR_LEFT);
+    expected_directions.push(Directions.BEAR_LEFT);
     expected_directions.push("You have arrived");
 
     /* it better match */
@@ -139,15 +149,48 @@ function generateTextDirections_long_path(): void {
     const test_path: Array<Node> | null = AStar(graph.idToNode("7"), graph.idToNode("16"), graph);
     const test_directions: Array<string> | null =  generateTextDirections(test_path);
     const expected_directions: Array<string> = new Array<string>();
+
+    //right is left and left is right as the graph uses a regular cordnate system y+ up y- down
+    //compared to the one used on the map page y+ down, y- up
     expected_directions.push("Starting at Anesthesia Conf Floor L1");
-    expected_directions.push(Directions.BEAR_RIGHT);
+    expected_directions.push(Directions.BEAR_LEFT);
     expected_directions.push(Directions.TAKE_ELEV);
-    expected_directions.push(Directions.BEAR_RIGHT);
+    expected_directions.push(Directions.BEAR_LEFT);
     expected_directions.push(Directions.TAKE_ELEV);
     expected_directions.push("You have arrived");
 
     /* it better match */
     expect(test_directions).toStrictEqual(expected_directions);
+}
+
+
+function testRemoveExtraTranisions(): void {
+
+    const n1 = newNodeWithFloor("n1","L2");
+    const n2 = newNodeWithFloor("n2","L1");
+    const n3 = newNodeWithFloor("n3","G");
+    const n4 = newNodeWithFloor("n4","1");
+    const n5 = newNodeWithFloor("n5","2");
+    const n6 = newNodeWithFloor("n6","2");
+    const n7 = newNodeWithFloor("n7","3");
+    const n8 = newNodeWithFloor("n8","3");
+    const n9 = newNodeWithFloor("n9","3");
+
+    const test_path: Array<Node> = [];
+    test_path.push(n1);
+    test_path.push(n2);
+    test_path.push(n3);
+    test_path.push(n4);
+    test_path.push(n5);
+    test_path.push(n6);
+    test_path.push(n7);
+    test_path.push(n8);
+    test_path.push(n9);
+
+
+    const newpath = removeExtraTranisions(test_path);
+
+    expect(newpath).toStrictEqual([n1,n5,n6,n7,n8,n9]);
 }
 
 /* - - - test execution - - - */
@@ -167,5 +210,5 @@ test("Simple test path with two right turns", generateTextDirections_two_right_t
 
 test("long path", generateTextDirections_long_path);
 
-
+test("remove extra tranistions - remove", testRemoveExtraTranisions);
 
