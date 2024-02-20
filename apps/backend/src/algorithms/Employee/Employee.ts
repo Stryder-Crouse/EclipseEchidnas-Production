@@ -1,6 +1,7 @@
 
 /** Type to store employees*/
 export type Employee = {
+    accessToken: string;
     userName: string;
     firstName: string;
     lastName: string;

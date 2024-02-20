@@ -3,21 +3,30 @@ import {useState} from "react";
 import SimpleTextInput from "../inputComponents/SimpleTextInput.tsx";
 import {Employee, Roles} from "../../../../backend/src/algorithms/Employee/Employee.ts";
 import Logo from "../../images/Brigham_and_Womens_Hospital_logo.svg.png";
-import {webAuth} from "../../../auth0.service.ts";
-import { Auth0Error } from "auth0-js";
+
 import axios from "axios";
+import {useEffect} from "react";
+import {useAuth0} from "@auth0/auth0-react";
 
 export default function RegisterForm() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-//
+    const user = useAuth0();
+
+    useEffect(()=>{
+        //const accessToken = JSON.stringify(user.getAccessTokenSilently);
+        //todo BNBN inside this if statement should be where the function goes to check if the employee is in the database (use accessToken)
+        {/*if(){
+            window.location.href="http://localhost:3000/RequestList";
+        }*/}
+    },[]);
+
     function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
 
         const employee: Employee = {
+            accessToken: JSON.stringify(user.getAccessTokenSilently),
             userName: username,
             firstName: firstName,
             lastName: lastName,
@@ -33,25 +42,7 @@ export default function RegisterForm() {
             }
         }).then();
 
-
-
-        webAuth.signup(
-            {
-                email: email,
-                password: password,
-                connection: "Username-Password-Authentication"
-            },
-            function(error: Auth0Error | null, result) {
-                if(error) {
-                    console.log(error);
-                    return;
-                }
-
-                console.log(result);
-            }
-        );
-
-        window.location.href="http://localhost:3000/AdminMapPage";
+        window.location.href="http://localhost:3000/RequestList";
     }
 
     return (
@@ -99,24 +90,6 @@ export default function RegisterForm() {
                                      inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                      divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
                                      placeHolderText={"Username: "}>
-                    </SimpleTextInput>
-                </div>
-
-                <div>
-                    <SimpleTextInput id={"email"} labelContent={"Email: "} inputStorage={email}
-                                     setInputStorage={setEmail}
-                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
-                                     placeHolderText={"Email: "}>
-                    </SimpleTextInput>
-                </div>
-
-                <div>
-                    <SimpleTextInput id={"password"} labelContent={"Password: "} inputStorage={password}
-                                     setInputStorage={setPassword}
-                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
-                                     placeHolderText={"Password: "}>
                     </SimpleTextInput>
                 </div>
 
