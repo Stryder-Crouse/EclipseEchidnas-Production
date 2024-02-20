@@ -51,7 +51,8 @@ export default function Sanitation_input({
                 assignedUName: "No one",            //upon creation, no employee is assigned
                 status: "Unassigned",             //upon creation, nobody is assigned, so set status to unassigned
                 reqID:-1,
-                reqPriority: priorityArr[priorityIndex]
+                reqPriority: priorityArr[priorityIndex],
+                time: null
             };
 
             console.log(servReq);
