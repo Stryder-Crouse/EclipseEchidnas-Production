@@ -1,4 +1,4 @@
-enum status {
+enum Status {
     Unassigned = "Unassigned",
     Assigned = "Assigned",
     InProgress = "In Progress",
@@ -6,4 +6,4 @@ enum status {
     Any = "Any"
 }
 
-export default status;
+export default Status;
