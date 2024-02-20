@@ -7,7 +7,7 @@ import axios from "axios";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import {closeCard} from "../../service-request-cards/ReligionRequestCard.tsx";
-
+import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";
 
 
 let longNames:string[] = [];
@@ -107,13 +107,13 @@ export default function Religious_input({
     }
 
     function show() {
-        const tag: HTMLElement = document.getElementById("popup") as HTMLElement;
+        const tag: HTMLElement = document.getElementById("rel-popup") as HTMLElement;
         tag.style.opacity = "1";
         interID = setInterval(fadeEffect, 100);
     }
 
     function fadeEffect() {
-        const target = document.getElementById("popup") as HTMLElement;
+        const target = document.getElementById("rel-popup") as HTMLElement;
         let opacity = target.style.opacity;
         if(Number(opacity) >= 0.97) {
             opacity = (Number(opacity) - 0.001).toString();
@@ -181,7 +181,7 @@ export default function Religious_input({
                 </div>
                 {/* Urgency */}
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
-                    <CreateDropdown dropBtnName={"Urgency"} dropdownID={"UrgencyID"} isSearchable={false}
+                    <CreateDropdown dropBtnName={"Priority "} dropdownID={"UrgencyID"} isSearchable={false}
                                     populationArr={priorityLevels}
                                     setSelected={setUrgencyDDIndx}
                                     resetDropdown={resetDropdownUrg}
@@ -191,7 +191,7 @@ export default function Religious_input({
                 </div>
                 {/* Extra notes */}
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
-                    <textarea placeholder={"Any extra notes?"}
+                    <textarea placeholder={"Extra Info: "}
                               className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
                               onChange={(e) => setExtraInfo(e.target.value)}
                               id={"service"}
@@ -207,12 +207,11 @@ export default function Religious_input({
                     "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-5"}>
                     Close
                 </button>
-                <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
-                    <h3>
-                        Successfully submitted!
-                    </h3>
-                </div>
+
                 <p className={"flex justify-center items-center mt-5"}>Created By: Alana and Grace</p>
+            </div>
+            <div id={"rel-popup"} className={"text-center flex justify-center m-auto opacity-0 "}>
+                <RequestSubmitToast/>
             </div>
         </div>
     );

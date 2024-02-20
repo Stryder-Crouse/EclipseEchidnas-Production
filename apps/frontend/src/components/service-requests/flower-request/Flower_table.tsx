@@ -36,16 +36,17 @@ export default function Flower_table({statusFilter, priorityFilter}:requestFilte
                 <thead>
                 <tr className={"tableTRHead"}>
                     <th className={"tableTD"}>ID</th>
-                    <th className={"tableTD"}>Priority</th>
+                    <th className={"tableTD"}>Type</th>
                     <th className={"tableTD"}>Status</th>
-                    <th className={"tableTD"}>Request Type</th>
+                    <th className={"tableTD"}>Priority</th>
+                    <th className={"tableTD"}>Employee Assigned</th>
+                    <th className={"tableTD"}>Location ID</th>
                     <th className={"tableTD"}>Sender</th>
-                    <th className={"tableTD"}>Location</th>
                     <th className={"tableTD"}>Flower type</th>
                     <th className={"tableTD"}>Flower Quantity</th>
                     <th className={"tableTD"}>Flower Recepient</th>
                     <th className={"tableTD"}>Message</th>
-                    <th className={"tableTD"}>Employee Assigned</th>
+                    <th className={"tableTD"}>Extra Notes</th>
                 </tr>
                 </thead>
                 {/* populating here */}
@@ -53,31 +54,14 @@ export default function Flower_table({statusFilter, priorityFilter}:requestFilte
                 {
                     //ids are startingNodeInput and endingNodeInput
 
-                    flowerRequest?.map((request,requestIndex) => {
+                    flowerRequest?.map((request, requestIndex) => {
                         return (
                             <tr className={"tableTR"} key={"Flow_" + request[0].genReqID}>
 
                                 <td className={"tableTD"}>{request[1].reqID}</td>
-                                <td className={"tableTD"}>
-                                    <select
-                                        value={request[1].reqPriority}
-                                        id={"priorityDropdown" + request[1].reqID}
-                                        onChange={
-                                            (event) => {
-                                                const eventHTML = event.target as HTMLSelectElement;
-                                                onPriorityChange(eventHTML, requestIndex).then();
-                                            }
-                                        }
-                                    >
-                                        <option className={"priorityDropdown"} value="Low">Low</option>
-                                        <option className={"priorityDropdown"} value="Medium">Medium
-                                        </option>
-                                        <option className={"priorityDropdown"} value="High">High</option>
-                                        <option className={"priorityDropdown"} value="Emergency">Emergency
-                                        </option>
-                                    </select>
-                                </td>
-                                <td className={"tableTD"}>
+                                <td className={"tableTD"}>{request[1].reqType}</td>
+                                {/*type*/}
+                                <td className={"tableTD"}> {/*status*/}
                                     <select
                                         value={request[1].status}
                                         id={"sanStatusDropdown" + request[1].reqID}
@@ -100,17 +84,26 @@ export default function Flower_table({statusFilter, priorityFilter}:requestFilte
                                         </option>
                                     </select>
                                 </td>
-
-
-                                <td className={"tableTD"}>{request[1].reqType}</td>
-                                <td className={"tableTD"}>{request[0].sender}</td>
-                                <td className={"tableTD"}>{request[1].reqLocationID}</td>
-                                <td className={"tableTD"}>{request[0].flowType}</td>
-                                <td className={"tableTD"}>{request[0].quantity.toString()}</td>
-                                <td className={"tableTD"}>{request[0].receiver}</td>
-                                <td className={"tableTD"}>{request[0].message}</td>
-
-                                <td className={"tableTD"}>
+                                <td className={"tableTD"}> {/*priority*/}
+                                    <select
+                                        value={request[1].reqPriority}
+                                        id={"priorityDropdown" + request[1].reqID}
+                                        onChange={
+                                            (event) => {
+                                                const eventHTML = event.target as HTMLSelectElement;
+                                                onPriorityChange(eventHTML, requestIndex).then();
+                                            }
+                                        }
+                                    >
+                                        <option className={"priorityDropdown"} value="Low">Low</option>
+                                        <option className={"priorityDropdown"} value="Medium">Medium
+                                        </option>
+                                        <option className={"priorityDropdown"} value="High">High</option>
+                                        <option className={"priorityDropdown"} value="Emergency">Emergency
+                                        </option>
+                                    </select>
+                                </td>
+                                <td className={"tableTD"}> {/*employee*/}
                                     <select
                                         value={request[1].assignedUName}
                                         onChange={
@@ -130,6 +123,15 @@ export default function Flower_table({statusFilter, priorityFilter}:requestFilte
                                         }
                                     </select>
                                 </td>
+
+                                <td className={"tableTD"}>{request[1].reqLocationID}</td>
+                                {/*location*/}
+                                <td className={"tableTD"}>{request[0].sender}</td>
+                                <td className={"tableTD"}>{request[0].flowType}</td>
+                                <td className={"tableTD"}>{request[0].quantity.toString()}</td>
+                                <td className={"tableTD"}>{request[0].receiver}</td>
+                                <td className={"tableTD"}>{request[0].message}</td>
+                                <td className={"tableTD"}>{request[1].extraInfo}</td>
                             </tr>
 
                         );

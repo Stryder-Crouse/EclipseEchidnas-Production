@@ -184,14 +184,15 @@ export default function Transportation_table({statusFilter, priorityFilter}:requ
                 <thead>
                 <tr className={"tableTRHead"}>
                     <th className={"tableTD"}>ID</th>
-                    <th className={"tableTD"}>Priority</th>
+                    <th className={"tableTD"}>Type</th>
                     <th className={"tableTD"}>Status</th>
-                    <th className={"tableTD"}>Assigned Employee</th>
-                    <th className={"tableTD"}>Patient Name</th>
-                    <th className={"tableTD"}>Patient Room</th>
+                    <th className={"tableTD"}>Priority</th>
+                    <th className={"tableTD"}>Employee Assigned</th>
+                    <th className={"tableTD"}>Location ID</th>
                     <th className={"tableTD"}>Destination</th>
+                    <th className={"tableTD"}>Patient Name</th>
                     <th className={"tableTD"}>Transportation Mode</th>
-                    <th className={"tableTD"}>Additional</th>
+                    <th className={"tableTD"}>Extra Notes</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -199,7 +200,7 @@ export default function Transportation_table({statusFilter, priorityFilter}:requ
                     return (
                         <tr key={"Req_" + requestIndex} className={"tableTR"}>
                             <td className={"tableTD"}>{request[1].reqID}</td>
-                            <td className={"tableTD"}>{request[1].reqPriority}</td>
+                            <td className={"tableTD"}>{request[1].reqType}</td>
                             <td className={"tableTD"}>
                                 <select
                                     value={request[1].status}
@@ -216,15 +217,15 @@ export default function Transportation_table({statusFilter, priorityFilter}:requ
                                     <option value={"Completed"}>Completed</option>
                                 </select>
                             </td>
+                            <td className={"tableTD"}>{request[1].reqPriority}</td>
                             <td className={"tableTD"}>
                                 <select
                                     value={request[1].assignedUName}
                                     onChange={
-                                        (event)=>
-                                            {
-                                                const eventHTML = event.target as HTMLSelectElement;
-                                                onEmployeeChange(eventHTML, requestIndex).then();
-                                            }
+                                        (event) => {
+                                            const eventHTML = event.target as HTMLSelectElement;
+                                            onEmployeeChange(eventHTML, requestIndex).then();
+                                        }
                                     }>
                                     {
                                         transportEmployees?.map((employee) =>
@@ -232,9 +233,9 @@ export default function Transportation_table({statusFilter, priorityFilter}:requ
                                     }
                                 </select>
                             </td>
+                            <td className={"tableTD"}>{request[1].reqLocationID}</td>
+                            <td className={"tableTD"}>{request[0].destination}</td>
                             <td className={"tableTD"}>{request[0].patientName}</td>
-                            <td className={"tableTD"}>{request[0].destination}</td>
-                            <td className={"tableTD"}>{request[0].destination}</td>
                             <td className={"tableTD"}>{request[0].modeOfTransport}</td>
                             <td className={"tableTD"}>{request[1].extraInfo}</td>
                         </tr>
