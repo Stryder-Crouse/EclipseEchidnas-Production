@@ -243,7 +243,6 @@ export default function Flower_input({
 
 }
 
-// @ts-ignore
 async function getLocations() {
     //load edges and node from database
     const nodesDB = await axios.get<NodeDataBase[]>("/api/load-nodes");
