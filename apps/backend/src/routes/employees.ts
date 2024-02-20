@@ -42,10 +42,11 @@ router.post("/updateEmployee", async function (req: Request, res: Response) {
     try {
         await PrismaClient.employee.update({
             where: {
-                userName: data.userName
+                userID: data.userID
             },
             data: {
                 //transfer all the info from the object into the database
+                userName: data.userName,
                 firstName: data.firstName,
                 lastName: data.lastName,
                 designation: data.designation,
@@ -298,6 +299,25 @@ router.get("/current_employee", async function (req: Request, res: Response) {
         console.info("\nSuccessfully gave you the employee\n");
     } catch (err) {
         console.error("\nUnable to send employees\n");
+    }
+});
+
+
+router.get("/determineIfUniqueEmail", async function (req: Request, res: Response)  {
+    const emailStr: string = req.query.string as string;
+    try {
+        if(PrismaClient.employee.findUnique( {
+            where : {
+                userID: emailStr
+            }
+        }) == null)
+        {
+            res.send(false);
+        }
+        res.send(true);
+    } catch {
+        console.log("Did not work");
+        res.sendStatus(400);
     }
 });
 export default router;

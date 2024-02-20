@@ -4,8 +4,9 @@ import SimpleTextInput from "../inputComponents/SimpleTextInput.tsx";
 import {Employee, Roles} from "../../../../backend/src/algorithms/Employee/Employee.ts";
 
 import axios from "axios";
-import {useEffect} from "react";
+// import {useEffect} from "react";
 import {useAuth0} from "@auth0/auth0-react";
+//import Employees from "../../../../backend/src/routes/employees.ts";
 
 export default function RegisterForm() {
     const [username, setUsername] = useState("");
@@ -17,39 +18,117 @@ export default function RegisterForm() {
     const thisEmail = currUser?.user?.email;
 
 
-    useEffect(() => {
-        if (thisEmail) {
-            console.log('User found');
-            setCurrEmail(JSON.stringify(thisEmail));
-            //todo BNBN inside this if statement should be where the function goes to check if the employee is in the database (use accessToken)
-            {/*if(){
-            window.location.href="http://localhost:3000/RequestList";
-        }*/
-            }
-        } else console.log('Could not find user');
-    }, [thisEmail]);
+    // useEffect(() => {
+    //     // if (thisEmail) {
+    //     //     let inDB: boolean = false;
+    //     //     console.log('User found');
+    //     //     setCurrEmail(JSON.stringify(thisEmail));
+    //     //     axios.get("api/employees/determineIfUniqueEmail").then((result) => {
+    //     //         console.log("Result: " + result.data);
+    //     //         inDB = result.data;
+    //     //     });
+    //     //     console.log(inDB);  //remove when login actually implemented
+    //         // if(inDB)
+    //         // {
+    //         //     const employee: Employee = {
+    //         //         userID: thisEmail,
+    //         //         userName: username,
+    //         //         firstName: firstName,
+    //         //         lastName: lastName,
+    //         //         designation: Roles.None,
+    //         //         isAdmin: false,
+    //         //     };
+    //         //     axios.post("/api/employees/updateEmployee", employee, {
+    //         //         headers: {
+    //         //             "Content-Type": "application/json",
+    //         //         }
+    //         //     }).then( (param) => {
+    //         //         if(param.status == 200)
+    //         //         {
+    //         //             console.log("There was an error updating employee! WEEE WOOOOO WEEEEE WOOOO");
+    //         //         }
+    //         //     });
+    //         //     window.location.href="http://localhost:3000/RequestList";
+    //         // }
+    //     } else console.log('Could not find user');
+    // }, [thisEmail]);
 
     function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
 
-        const employee: Employee = {
-            userID: currEmail,
-            userName: username,
-            firstName: firstName,
-            lastName: lastName,
-            designation: Roles.None,
-            isAdmin: false,
-        };
 
-        //backend functionality for new employees
-        //this will map to our backend and register a new account with Auth0
-        axios.post("/api/employees/employee", employee, {
-            headers: {
-                "Content-Type": "application/json",
+        let inDB: boolean = false;
+
+        //check to see if the email is currently in the db
+        if(thisEmail) {
+            console.log('User found');
+            setCurrEmail(JSON.stringify(thisEmail));
+            axios.get("api/employees/determineIfUniqueEmail", {params: {status: thisEmail}}).then((result) => {
+                console.log("Result: " + result.data);
+                inDB = result.data;
+            });
+        }
+
+
+        //if the employee is in the database already (based on the email)
+        if(inDB)
+        {
+            if(thisEmail) {             //check if the email is not null
+
+                //create a new employee with the updated info
+                const employee: Employee =
+                    {
+                        userID: thisEmail,
+                        userName: username,
+                        firstName: firstName,
+                        lastName: lastName,
+                        designation: Roles.None,
+                        isAdmin: false,
+                    };
+
+                //send the new employee data to the database and update the employee
+                axios.post("/api/employees/updateEmployee", employee, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                }).then((param) => {
+                    //if there is a problem with registering the employee's info, error out here
+                    if (param.status == 400) {
+                        console.log("There was an error updating employee! WEEE WOOOOO WEEEEE WOOOO");
+                    }
+                });
             }
-        }).then();
+        }
+        else            //if it is a new employee
+        {
+            //create the new employee
+            const employee: Employee = {
+                userID: currEmail,
+                userName: username,
+                firstName: firstName,
+                lastName: lastName,
+                designation: Roles.None,
+                isAdmin: false,
+            };
 
-        //window.location.href = "http://localhost:3000/RequestList";
+            //backend functionality for new employees
+            //this will map to our backend and register a new account with Auth0
+            axios.post("/api/employees/employee", employee, {
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            }).then((response) => {
+                //if there is an issue with posting, log it here
+                if(response.status == 400)
+                {
+                    console.log("There was an error with saving the employee again");
+                }
+            });
+
+            window.location.href = "http://localhost:3000/RequestList";
+        }
+
+
     }
 
     return (
