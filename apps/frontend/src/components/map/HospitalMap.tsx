@@ -267,7 +267,7 @@ function updatePathEdges(startingNode: Node,
     }
     
     //get and set text directions
-    setTextDirections(generateTextDirections(rawPath)!);
+    setTextDirections(generateTextDirections(rawPath,graph)!);
 
     /* calculate the edges and transitions just on this floor */
     const floorEdgesAndTransitions: edgesAndTransitions = calculateFloorPath(rawPath, floorIndex);

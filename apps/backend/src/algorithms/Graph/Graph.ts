@@ -432,7 +432,7 @@ export class Graph {
     }
 
 
-    private closestNonHallToNode(goalNode:Node,maxDistance:number){
+    public closestNonHallToNode(goalNode:Node,maxDistance:number){
 
         let closest = goalNode;
         let shortestDistnace = Number.MAX_VALUE;

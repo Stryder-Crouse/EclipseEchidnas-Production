@@ -1,5 +1,6 @@
 import {Node, NodeType} from "../../Graph/Node.ts";
 import {Coordinate, euclideanDistance} from "../../Graph/Coordinate.ts";
+import {Graph} from "../../Graph/Graph.ts";
 
 /* thresholds of turning */
 const BEAR_THRESHOLD: number = 22.5;
@@ -20,7 +21,7 @@ export enum Directions {
  * Generate a set of text directions for a given path of Nodes.
  * @param path the path of nodes
  */
-export function generateTextDirections(path: Array<Node> | null): Array<string> | null {
+export function generateTextDirections(path: Array<Node> | null, graph:Graph): Array<string> | null {
     /* Cool */
     const directions: Array<string> = new Array<string>();
     directions.push("Starting at "+path![0].longName);
@@ -67,6 +68,9 @@ export function generateTextDirections(path: Array<Node> | null): Array<string> 
 
         /* bearing case */
         else if (turnAngle < TURN_THRESHOLD) {
+
+            const closestPointName = graph.closestNonHallToNode(path[i],200).longName;
+
             /* gaslighting */
             const go: Directions = determineTurn(path[i - 1], path[i], path[i + 1]);
 
@@ -74,11 +78,11 @@ export function generateTextDirections(path: Array<Node> | null): Array<string> 
 
             switch (go) {
                 case Directions.LEFT: {
-                    directions.push(Directions.BEAR_LEFT);
+                    directions.push(Directions.BEAR_LEFT +" near "+closestPointName);
                     break;
                 }
                 case Directions.RIGHT: {
-                    directions.push(Directions.BEAR_RIGHT);
+                    directions.push(Directions.BEAR_RIGHT+" near "+closestPointName);
                     break;
                 }
                 default: {
@@ -90,7 +94,11 @@ export function generateTextDirections(path: Array<Node> | null): Array<string> 
 
         /* turning */
         else {
-            directions.push(determineTurn(path[i - 1], path[i], path[i + 1]));
+            directions.push(
+                determineTurn(path[i - 1], path[i], path[i + 1])
+                +" near "
+                +graph.closestNonHallToNode(path[i],200).longName
+            );
         }
     }
 

@@ -130,14 +130,14 @@ function findDeviation_rotated_right_angle(): void {
 function generateTextDirections_two_right_turns(): void {
     /* make the tested and expected paths */
     const test_path: Array<Node> | null = AStar(graph.idToNode("1"), graph.idToNode("7"), graph);
-    const test_directions: Array<string> | null =  generateTextDirections(test_path);
+    const test_directions: Array<string> | null =  generateTextDirections(test_path,graph);
     const expected_directions: Array<string> = new Array<string>();
 
     //right is left and left is right as the graph uses a regular cordnate system y+ up y- down
     //compared to the one used on the map page y+ down, y- up
     expected_directions.push("Starting at Anesthesia Conf Floor L1");
-    expected_directions.push(Directions.BEAR_LEFT);
-    expected_directions.push(Directions.BEAR_LEFT);
+    expected_directions.push(Directions.BEAR_LEFT+" near Medical Records Conference Room Floor L1");
+    expected_directions.push(Directions.BEAR_LEFT+" near Day Surgery Family Waiting Exit Floor L1");
     expected_directions.push("You have arrived");
 
     /* it better match */
@@ -147,16 +147,16 @@ function generateTextDirections_two_right_turns(): void {
 function generateTextDirections_long_path(): void {
     /* make the tested and expected paths */
     const test_path: Array<Node> | null = AStar(graph.idToNode("7"), graph.idToNode("16"), graph);
-    const test_directions: Array<string> | null =  generateTextDirections(test_path);
+    const test_directions: Array<string> | null =  generateTextDirections(test_path,graph);
     const expected_directions: Array<string> = new Array<string>();
 
     //right is left and left is right as the graph uses a regular cordnate system y+ up y- down
     //compared to the one used on the map page y+ down, y- up
-    expected_directions.push("Starting at Anesthesia Conf Floor L1");
-    expected_directions.push(Directions.BEAR_LEFT);
-    expected_directions.push(Directions.TAKE_ELEV);
-    expected_directions.push(Directions.BEAR_LEFT);
-    expected_directions.push(Directions.TAKE_ELEV);
+    expected_directions.push("Starting at Hallway 1 Floor L1");
+    expected_directions.push(Directions.BEAR_LEFT+" near  Elevator node 10");
+    expected_directions.push(Directions.TAKE_ELEV+" to floor 2");
+    expected_directions.push(Directions.BEAR_LEFT+" near Elevator node 13");
+    expected_directions.push(Directions.TAKE_ELEV+" to floor 3");
     expected_directions.push("You have arrived");
 
     /* it better match */
