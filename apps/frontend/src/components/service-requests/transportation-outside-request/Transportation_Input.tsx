@@ -227,11 +227,7 @@ export default function Transportation_Input({
 
 
                 <RequestButtons submit={submit}/>
-                <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
-                    <h3>
-                        Successfully submitted!
-                    </h3>
-                </div>
+
 
             </form>
             <div className={"grid justify-center items-center m-auto my-1.5 mb-5"}>
@@ -239,6 +235,11 @@ export default function Transportation_Input({
                     "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 -mt-5"}>
                     Close
                 </button>
+                <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
+                    <h3>
+                        Successfully submitted!
+                    </h3>
+                </div>
                 <p className={"flex justify-center items-center mt-5"}>Created By: Michael and Ryan</p>
             </div>
         </div>
