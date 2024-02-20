@@ -6,30 +6,19 @@ import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.
 import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 import {statusFilter} from "../serviceRequestInterface.ts";
 
-
-
-
 export default function Religious_table({statusFilter:statusFilter}:statusFilter) {
     console.log(statusFilter);
 
     const [religRequestList, setReligRequestList] =
-        useState<Array<[ReligRequest, ServiceRequest]>>([]);
-    const [religEmployees, setReligEmployees] =
-        useState<Employee[]>([]);
+        useState<Array<[ReligRequest, ServiceRequest, Employee[]]>>([]);
+
 
 
     //todo FNFN fix with proper population code
     useEffect(() => {
-
-            getEmployees().then(result => {
-                setReligEmployees(result);
-            });
             getReligRequests(statusFilter).then(result => {
                 setReligRequestList(result);
             });
-
-
-
 
     }, [statusFilter]);
 
@@ -70,8 +59,7 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                                     }
                                                 >
                                                     <option className={"priorityDropdown"} value="Low">Low</option>
-                                                    <option className={"priorityDropdown"} value="Medium">Medium
-                                                    </option>
+                                                    <option className={"priorityDropdown"} value="Medium">Medium</option>
                                                     <option className={"priorityDropdown"} value="High">High</option>
                                                     <option className={"priorityDropdown"} value="Emergency">Emergency
                                                     </option>
@@ -92,16 +80,10 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                                         }
                                                     }
                                                 >
-                                                    <option className={"status-dropdown"}
-                                                            value="Unassigned">Unassigned
-                                                    </option>
-                                                    <option className={"status-dropdown"} value="Assigned">Assigned
-                                                    </option>
-                                                    <option className={"status-dropdown"} value="In Progress">In
-                                                        Progress
-                                                    </option>
-                                                    <option className={"status-dropdown"} value="Completed">Completed
-                                                    </option>
+                                                    <option className={"status-dropdown"} value="Unassigned">Unassigned</option>
+                                                    <option className={"status-dropdown"} value="Assigned">Assigned</option>
+                                                    <option className={"status-dropdown"} value="In Progress">In Progress</option>
+                                                    <option className={"status-dropdown"} value="Completed">Completed</option>
                                                 </select>
                                             </td>
                                             <td className={"tableTD"}>
@@ -116,7 +98,7 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                                     }
                                                 >
                                                     {
-                                                        religEmployees?.map((employee) =>
+                                                        request[2].map((employee) =>
                                                             renderEmployees(employee, request[0].genReqID.toString()))
                                                     }
                                                 </select>
@@ -316,22 +298,15 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
 
 async function getReligRequests(statusFilter:Status) {
     const requests =
-        await axios.get<[ReligRequest[], ServiceRequest[]]>("/api/serviceRequests/religiousRequest",{params: {status: statusFilter}});
+        await axios.get<[ReligRequest[], ServiceRequest[], Employee[][]]>("/api/serviceRequests/religiousRequest",{params: {status: statusFilter}});
 
-    const religRequests: Array<[ReligRequest, ServiceRequest]> = [];
+    const religRequests: Array<[ReligRequest, ServiceRequest, Employee[]]> = [];
     for (let i = 0; i < requests.data[0].length; i++) {
-        religRequests.push([requests.data[0][i], requests.data[1][i]]);
+        religRequests.push([requests.data[0][i], requests.data[1][i], requests.data[2][i]]);
 
     }
     console.log(religRequests);
 
     return religRequests;
-
-}
-
-async function getEmployees() {
-    const employees = await axios.get<Employee[]>("/api/employees/employees/rel");
-    return employees.data;
-
 
 }

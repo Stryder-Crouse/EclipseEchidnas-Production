@@ -12,7 +12,7 @@ import {
     ServiceRequest
 } from "../algorithms/Requests/Request.ts";
 import Status from "../algorithms/Requests/Status.ts";
-//import {Employee} from "../algorithms/Employee/Employee.ts";
+import {religEmployees} from "./employees.ts";
 // import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
 
 //import path from "path";
@@ -278,7 +278,7 @@ router.post("/medReq", async function (req: Request, res: Response) {
                             firstName: "N/A",
                             lastName: "N/A",
                             designation: "N/A",
-                            isAdmin: true,
+                            isAdmin: false,
                         },
                         //second part of create or connect (the what-we-connect-to part)
                         where: {
@@ -449,8 +449,8 @@ router.get("/medReq/filter", async function (req: Request, res: Response) {
         res.sendStatus(200);
 
     } catch (err) {
+        res.sendStatus(500);
         console.error("\nUnable to send requests\n");
-        res.sendStatus(400); // Send error
     }
 });
 
@@ -489,7 +489,7 @@ router.post("/outsideTransport", async function (req: Request, res: Response) {
                             firstName: "N/A",
                             lastName: "N/A",
                             designation: "N/A",
-                            isAdmin: true,
+                            isAdmin: false,
                         },
                         //second part of create or connect (the what-we-connect-to part)
                         where: {
@@ -547,6 +547,7 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
             res.sendStatus(200);
             console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
         } catch (err) {
+            res.sendStatus(500);
             console.error("\nUnable to send Requests\n");
         }
 
@@ -582,6 +583,7 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
             res.sendStatus(200);
             console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
         } catch (err) {
+            res.sendStatus(500);
             console.error("\nUnable to send Requests\n");
         }
 
@@ -651,8 +653,8 @@ router.get("/outsideTransport/filter", async function (req: Request, res: Respon
         res.sendStatus(200);
 
     } catch (err) {
+        res.sendStatus(500);
         console.error("\nUnable to send requests\n");
-        res.sendStatus(400); // Send error
     }
 });
 
@@ -688,7 +690,8 @@ router.post("/sanReq", async function (req: Request, res: Response) {
                             firstName: "N/A",
                             lastName: "N/A",
                             designation: "N/A",
-                            isAdmin: true,
+                            isAdmin: false
+                            ,
                         },
                         //second part of create or connect (the what-we-connect-to part)
                         where: {
@@ -710,8 +713,8 @@ router.post("/sanReq", async function (req: Request, res: Response) {
         console.log("Successfully saved the Sanitation Request");
         res.sendStatus(200);
     } catch {
+        res.sendStatus(500);
         console.error("Sanitation Request Failed");
-        res.sendStatus(400);
     }
 });
 
@@ -776,6 +779,7 @@ router.get("/sanReq", async function (req: Request, res: Response) {
             res.sendStatus(200);
             console.info("\nSuccessfully gave you all of the Sanitation Requests\n");
         } catch (err) {
+            res.sendStatus(500);
             console.error("\nUnable to send Requests\n");
         }
     }
@@ -842,8 +846,8 @@ router.get("/sanReq/filter", async function (req: Request, res: Response) {
         res.sendStatus(200);
 
     } catch (err) {
+        res.sendStatus(500);
         console.error("\nUnable to send requests\n");
-        res.sendStatus(400); // Send error
     }
 });
 
@@ -890,7 +894,7 @@ router.post("/flowReq", async function (req: Request, res: Response) {
                             firstName: "N/A",
                             lastName: "N/A",
                             designation: "N/A",
-                            isAdmin: true,
+                            isAdmin: false,
                         },
                         //second part of create or connect (the what-we-connect-to part)
                         where: {
@@ -920,8 +924,8 @@ router.post("/flowReq", async function (req: Request, res: Response) {
         res.send(200);
     } catch (error) {
         // Log any failures
+        res.sendStatus(500);
         console.error(`Unable to save Flow Req`);
-        res.sendStatus(400); // Send error
     }
 });
 router.get("/flowReq", async function (req: Request, res: Response) {
@@ -973,6 +977,7 @@ router.get("/flowReq", async function (req: Request, res: Response) {
             console.info("\nSuccessfully gave you all of the flower requests\n");
         }
     } catch (err) {
+        res.sendStatus(500);
         console.error("\nUnable to send requests\n");
     }
 });
@@ -1038,8 +1043,8 @@ router.get("/flowReq/filter", async function (req: Request, res: Response) {
         res.sendStatus(200);
 
     } catch (err) {
+        res.sendStatus(500);
         console.error("\nUnable to send requests\n");
-        res.sendStatus(400); // Send error
     }
 });
 
@@ -1073,7 +1078,7 @@ router.post('/religiousRequest', async function (req: Request, res: Response) {
                             firstName: "N/A",
                             lastName: "N/A",
                             designation: "N/A",
-                            isAdmin: true,
+                            isAdmin: false,
                         },
                         //second part of create or connect (the what-we-connect-to part)
                         where: {
@@ -1124,12 +1129,42 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
                 }
             });
 
+            const employeeReq =
+                [[await PrismaClient.employee.upsert({
+                    //upsert without update is essentially "find or create"
+                    where: {
+                        userID: "0"
+                    },
+                    update: {},
+                    create: {
+                        userID:"0",
+                        userName: "No one",
+                        firstName: "N/A",
+                        lastName: "N/A",
+                        designation: "N/A",
+                        isAdmin: false,
+                    },
+                })]];
+
+            religReq.map(async (request, index) => {
+                    const nextEmployeeArr = await religEmployees(request.religion);
+                    if(nextEmployeeArr != undefined) {
+                        employeeReq.push(nextEmployeeArr);
+                    }
+                    else{
+                        console.error("nextEmployeeArr at index "+index+" of the religious requests list" +
+                            " was undefined!\n");
+                        res.sendStatus(500);
+                    }
+            });
+
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects
-            res.send([religReq, serviceReqs]);
+            res.send([religReq, serviceReqs, employeeReq]);
             console.info("\nSuccessfully gave you all of the Religious Requests\n");
             //send status unless 6 times bug occurs
             res.sendStatus(200);
         } catch (err) {
+            res.sendStatus(500);
             console.error("\nUnable to send Requests\n");
         }
     } else {
@@ -1163,6 +1198,7 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
             //send status unless 6 times bug occurs
             res.sendStatus(200);
         } catch (err) {
+            res.sendStatus(500);
             console.error("\nUnable to send Requests\n");
         }
     }
@@ -1230,8 +1266,8 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
         res.sendStatus(200);
 
     } catch (err) {
+        res.sendStatus(500);
         console.error("\nUnable to send requests\n");
-        res.sendStatus(400); // Send error
     }
 });
 
