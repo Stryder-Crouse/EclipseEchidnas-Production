@@ -4,6 +4,7 @@ import FlowerRequestCard from "../components/service-request-cards/FlowerRequest
 import ReligionRequestCard from "../components/service-request-cards/ReligionRequestCard.tsx";
 import TransportationRequestCard from "../components/service-request-cards/TransportationRequestCard.tsx";
 import SanitationRequestCard from "../components/service-request-cards/SanitationRequestCard.tsx";
+import RequestListCard from "../components/service-request-cards/RequestListCard.tsx";
 import MapIcon from "../images/SideBar/map.png";
 import ServiceRequestIcon from "../images/SideBar/requestIcon.png";
 import EmployeeIcon from "../images/SideBar/user.png";
@@ -27,13 +28,20 @@ function ServiceRequestPage() {
                     <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"}/>
                 </SideNavBarComponent>
             </div>
-            <div className={"relative flex flex-wrap justify-center mt-12"}>
-                <FlowerRequestCard/>
-                <ReligionRequestCard/>
-                <MedicineRequestCard/>
-                <TransportationRequestCard/>
-                <SanitationRequestCard/>
+            <div className={"grid justify-center m-auto"}>
+                <div className={"relative flex  justify-center "}>
+                    <FlowerRequestCard/>
+                    <ReligionRequestCard/>
+                    <MedicineRequestCard/>
+
+                </div>
+                <div className={"relative flex  justify-center mt-12"}>
+                    <TransportationRequestCard/>
+                    <SanitationRequestCard/>
+                    <RequestListCard/>
+                </div>
             </div>
+
         </div>
     );
 }
