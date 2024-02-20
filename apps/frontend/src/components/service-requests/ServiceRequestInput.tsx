@@ -1,3 +1,5 @@
+
+/**
 import React, {useState} from "react";
 import "../../css/component-css/ServicePage.css";
 import {ReqTypes} from "../../../../backend/src/algorithms/Requests/Request.ts";
@@ -5,7 +7,7 @@ import {ReqTypes} from "../../../../backend/src/algorithms/Requests/Request.ts";
 //from https://github.com/frontend-joe/react-widgets for css
 import Flower_input from "./flower-request/Flower_input.tsx";
 import Religious_input from "./religious-request/Religious_input.tsx";
-import Medicine_input from "./medicine-request/Medicine_input.tsx";
+//import Medicine_input from "./medicine-request/Medicine_input.tsx";
 import Transportation_Input from "./transportation-outside-request/Transportation_Input.tsx";
 import Sanitation_input from "./sanitation-request/Sanitation_input.tsx";
 
@@ -69,7 +71,7 @@ export default function ServiceRequestInput() {
 
             </ul>
             <div className="tab-content-wrapper">
-                {/* the content to be populated with each request */}
+
                 {
                     generateSelectedTable()
                 }
@@ -85,8 +87,8 @@ export default function ServiceRequestInput() {
                 return (<Flower_input/>);
             case ReqTypes.religReq:
                 return (<Religious_input/>);
-            case ReqTypes.medReq:
-                return (<Medicine_input/>);
+            //case ReqTypes.medReq:
+                //return (<Medicine_input/>);
             case ReqTypes.tranReq:
                 return (<Transportation_Input/>);
             case ReqTypes.sanReq:
@@ -99,4 +101,4 @@ export default function ServiceRequestInput() {
     }
 
 
-}
+} **/

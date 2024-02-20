@@ -12,6 +12,8 @@ import axios from "axios";
 import {FloorToIndex, Node, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
 import {useEffect, useState} from "react";
 
+
+
 /* Set the default floor to LL1 */
 const defaultFloor = FloorToIndex.LowerLevel1;
 
@@ -32,6 +34,7 @@ function TailwindMapPage() {
     const [locations, setLocations] = useState([] as Array<Node>);
     const [locationsWithHalls, setLocationsWithHalls] = useState([] as Array<Node>);
     const [pathFindingType, setPathFindingType] = useState("A*");
+    const [textDirections, setTextDirections] = useState([] as string[]);
 
     const [viewbox, setViewbox] =
         useState<{ x: number, y: number, width: number, height: number }>({x: 940, y: 490, width: 2160, height: 1900});
@@ -65,15 +68,24 @@ function TailwindMapPage() {
                     <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"}/>
                 </SideNavBarComponent>
 
-                <TopMapButtons setSelectedFloorIndex={setSelectedFloorIndex} endNode={endNode}
-                               locations={locations} setEndNode={setEndNode} setStartNode={setStartNode}
-                               startNode={startNode} setPathFindingType={setPathFindingType}/>
+                    <TopMapButtons
+                        setSelectedFloorIndex={setSelectedFloorIndex}
+                        endNode={endNode}
+                        locations={locations}
+                        setEndNode={setEndNode}
+                        setStartNode={setStartNode}
+                        startNode={startNode}
+                        setPathFindingType={setPathFindingType}
+                        textDirections={textDirections}
+                    />
 
-                <MapFeatureButtons viewbox={viewbox} setViewbox={setViewbox}
-                                   setDrawEntirePath={setDrawEntirePath} drawEntirePath={drawEntirePath}
-                                   setZoomScale={setZoomScale} setEndNode={setEndNode}
-                                   setStartNode={setStartNode} drawEntirePathOptions={drawEntirePathOptions}
-                                   setDrawEntirePathOptions={setDrawEntirePathOptions}/>
+                    <MapFeatureButtons viewbox={viewbox} setViewbox={setViewbox}
+                                       setDrawEntirePath={setDrawEntirePath} drawEntirePath={drawEntirePath}
+                                       setZoomScale={setZoomScale} setEndNode={setEndNode}
+                                       setStartNode={setStartNode} drawEntirePathOptions={drawEntirePathOptions}
+                                       setDrawEntirePathOptions={setDrawEntirePathOptions}/>
+
+
             </div>
             <HospitalMap startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
                          selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
@@ -81,6 +93,7 @@ function TailwindMapPage() {
                          pathFindingType={pathFindingType}
                          setViewbox={setViewbox} viewbox={viewbox} setZoomScale={setZoomScale}
                          zoomScale={zoomScale} drawEntirePathOptions={drawEntirePathOptions}
+                         setTextDirections={setTextDirections}
             />
         </div>
     );
