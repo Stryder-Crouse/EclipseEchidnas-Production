@@ -316,6 +316,6 @@ async function getSanRequests(statusFilter:Status) {
 }
 
 async function getEmployees() {
-    const employees = await axios.get<Employee[]>("/api/employees/employees/med");
+    const employees = await axios.get<Employee[]>("/api/employees/employees/san");
     return employees.data;
 }

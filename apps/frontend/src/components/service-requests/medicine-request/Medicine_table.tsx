@@ -121,9 +121,9 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
                                             </td>
                                             <td className={"tableTD"}>{request[1].reqLocationID}</td>
                                             {/*location*/}
-                                            <td className={"tableTD"}>{request[0].medType}</td>
-                                            <td className={"tableTD"}>{request[0].dosage}</td>
-                                            <td className={"tableTD"}>{request[0].numDoses.toString()}</td>
+                                            <td className={"tableTD"}>{request[0].medName}</td>
+                                            <td className={"tableTD"}>{request[0].medStrength}</td>
+                                            <td className={"tableTD"}>{request[0].quantity.toString()}</td>
                                             <td className={"tableTD"}>{request[1].extraInfo}</td>
                                         </tr>
 

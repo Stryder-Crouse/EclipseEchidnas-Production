@@ -1,5 +1,9 @@
 import SideNavBarComponent, {SideBarItem} from "../components/SideNavBarComponent.tsx";
-import TopRequestButtons from "../components/TopRequestButtons.tsx";
+import MedicineRequestCard from "../components/service-request-cards/MedicineRequestCard.tsx";
+import FlowerRequestCard from "../components/service-request-cards/FlowerRequestCard.tsx";
+import ReligionRequestCard from "../components/service-request-cards/ReligionRequestCard.tsx";
+import TransportationRequestCard from "../components/service-request-cards/TransportationRequestCard.tsx";
+import SanitationRequestCard from "../components/service-request-cards/SanitationRequestCard.tsx";
 import MapIcon from "../images/SideBar/map.png";
 import ServiceRequestIcon from "../images/SideBar/requestIcon.png";
 import EmployeeIcon from "../images/SideBar/user.png";
@@ -23,8 +27,12 @@ function TestServiceReqPage() {
                     <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"}/>
                 </SideNavBarComponent>
             </div>
-            <div className="0">
-                <TopRequestButtons/>
+            <div className={"relative flex flex-wrap justify-center mt-12"}>
+                <FlowerRequestCard/>
+                <ReligionRequestCard/>
+                <MedicineRequestCard/>
+                <TransportationRequestCard/>
+                <SanitationRequestCard/>
             </div>
         </div>
     );

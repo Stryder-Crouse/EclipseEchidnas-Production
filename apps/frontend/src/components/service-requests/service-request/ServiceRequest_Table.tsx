@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {statusFilter} from "../serviceRequestInterface.ts";
 import "../../../css/component-css/ServiceRequestTable.css";
-import status from "../../../../../backend/src/algorithms/Requests/Status.ts";
-import {ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
+import {Priorities, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import axios from "axios";
 import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
-import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 
 
 
@@ -316,9 +315,9 @@ export default function ServiceRequest_Table({statusFilter:statusFilter}:statusF
 
 
 //query the Database for all service requests that fit the current filter (filter can be empty)
-async function getServiceRequest(statusFilter: status) {
+async function getServiceRequest(statusFilter: Status) {
     const serviceRequest =
-        await axios.get<ServiceRequest[]>("/api/serviceRequests/filterByStatus", {params: {status: statusFilter}});
+        await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter", {params: {status: statusFilter, priority: Priorities.any, employee: "any"}});
     // console.log("sss");
     // console.log(serviceRequest.data);
     return serviceRequest.data;

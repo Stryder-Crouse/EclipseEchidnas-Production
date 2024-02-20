@@ -12,13 +12,6 @@ datasource db {
   url      = env("POSTGRES_URL")
 }
 
-// example table used in the express router example
-model HighScore {
-  id    Int      @id @default(autoincrement())
-  time  DateTime
-  score Int
-}
-
 model NodeDB {
   nodeID    String @id @db.VarChar(256)
   floor     String @db.VarChar(256)
@@ -47,11 +40,16 @@ model EdgeDB {
 }
 
 model MedReq {
-  medReqID Int    @id @unique @default(autoincrement())
-  medType  String @db.VarChar(256)
-  dosage   String @db.VarChar(256)
-  numDoses Int
-  genReqID Int    @unique
+  medReqID         Int      @id @unique @default(autoincrement())
+  patientName      String   @db.VarChar(256)
+  patientDOB       DateTime
+  patientMedRecNum Int
+  medName          String   @db.VarChar(256) //new "medName"
+  medStrength      String   @db.VarChar(256) //new "medStrength"
+  medForm          String   @db.VarChar(256) //tablet, liquid, etc.
+  medSig           String   @db.VarChar(256) //how to administer
+  quantity         Int //new "quantity"
+  genReqID         Int      @unique
 
   genReq ServiceRequest @relation("genericRequest", fields: [genReqID], references: [reqID])
 }
@@ -80,13 +78,14 @@ model ReligiousReq {
 }
 
 model ServiceRequest {
-  reqID         Int     @id @unique @default(autoincrement())
-  reqType       String  @db.VarChar(256)
-  reqLocationID String  @db.VarChar(256)
-  extraInfo     String  @db.VarChar(256)
-  status        String  @db.VarChar(256)
-  assignedUName String? @db.VarChar(256)
-  reqPriority   String  @db.VarChar(256)
+  reqID         Int      @id @unique @default(autoincrement())
+  reqType       String   @db.VarChar(256)
+  reqLocationID String   @db.VarChar(256)
+  extraInfo     String   @db.VarChar(256)
+  status        String   @db.VarChar(256)
+  assignedUName String?  @db.VarChar(256)
+  reqPriority   String   @db.VarChar(256)
+  time          DateTime
 
   // not actually here
   medReq           MedReq?           @relation("genericRequest")
@@ -99,7 +98,8 @@ model ServiceRequest {
 }
 
 model Employee {
-  userName    String  @id @unique @db.VarChar(256)
+  userID      String  @id @unique @db.VarChar(256) //this should come from Auth0
+  userName    String  @unique @db.VarChar(256) //this is the display name
   firstName   String  @db.VarChar(256)
   lastName    String  @db.VarChar(256)
   designation String  @db.VarChar(256)
