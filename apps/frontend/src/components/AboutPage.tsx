@@ -27,7 +27,7 @@ function AboutPage(){
         <>
 
             <div className="flex">
-                <div className="flex absolute w-screen h-screen">
+                <div className="flex absolute w-screen h-100">
                     <SideNavBarComponent>
                         <SideBarItem icon={MapIcon} text="Map" link={window.location.pathname}/>
                         <SideBarItem icon={ServiceRequestIcon} text="Services" link="ServiceRequest"/>
@@ -50,11 +50,11 @@ function AboutPage(){
             {/*<p className="text-center ...">Joseph Cardarelli</p>*/}
             {/*<p className="font-bold text-center ...">THE TEAM</p>*/}
             <p className="font-bold text-center ...">THE TEAM</p>
-            <div className="grid grid-cols-5 gap-7">
+            <div className="grid grid-cols-6 gap-1">
                 <div></div>
                 <div>
                     <div
-                        className="max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
+                        className="scale-75 max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
                         <img className="h-60 w-full " src={SameerPic} alt="Stryder"/>
                         <div className="px-6 py-4">
                             <div className="font-bold text-xl mb-2 text-center">Stryder Crouse</div>
@@ -66,7 +66,7 @@ function AboutPage(){
                     </div>
                 </div>
                 <div
-                    className="max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
+                    className="scale-75 max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
                     <img className="h-60 w-full" src={GracePic} alt="Sunset in the mountains"/>
                     <div className="px-6 py-4">
                         <div className="font-bold text-xl mb-2 text-center">Grace Philips</div>
@@ -78,7 +78,7 @@ function AboutPage(){
                 </div>
 
                 <div
-                    className="max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
+                    className="scale-75 max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
                     <img className="h-60 w-full" src={ChrisPic} alt="Sunset in the mountains"/>
                     <div className="px-6 py-4">
                         <div className="font-bold text-xl mb-2 text-center">Chris Lam</div>
@@ -88,19 +88,10 @@ function AboutPage(){
                     </div>
 
                 </div>
-                <div><h1 className="font-bold text-center ...">ABOUT</h1>
-                    <p className="font-bold text-center ...">DEPARTMENT</p>
-                    <p className="text-center ...">WPI Computer Science Department</p>
-                    <p className="font-bold text-center ...">COURSE</p>
-                    <p className="text-center ...">CS3733-C24 Software Engineering</p>
-                    <p className="font-bold text-center ...">INSTRUCTOR</p>
-                    <p className="text-center ...">Prof. Wilson Wong</p>
-                    <p className="font-bold text-center ...">TEAM COACH</p>
-                    <p className="text-center ...">Joseph Cardarelli</p>
-                </div>
-                <div></div>
+
+
                 <div
-                    className="max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
+                    className="scale-75 max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
                     <img className="h-60 w-full" src={SameerPic} alt="Sunset in the mountains"/>
                     <div className="px-6 py-4">
                         <div className="font-bold text-xl mb-2 text-center">Shiivek Agarwal</div>
@@ -111,7 +102,24 @@ function AboutPage(){
 
                 </div>
                 <div
-                    className="max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
+                    className="border-2 col-span-1 row-span-2 box-border h-332 w-350 p-4 border-4 ...">
+                    <h1 className="font-bold text-center ...">ABOUT</h1>
+                    <p className="font-bold text-center ...">DEPARTMENT</p>
+                    <p className="text-center ...">WPI Computer Science Department</p>
+                    <p className="font-bold text-center ...">COURSE</p>
+                    <p className="text-center ...">CS3733-C24 Software Engineering</p>
+                    <p className="font-bold text-center ...">INSTRUCTOR</p>
+                    <p className="text-center ...">Prof. Wilson Wong</p>
+                    <p className="font-bold text-center ...">TEAM COACH</p>
+                    <p className="text-center ...">Joseph Cardarelli</p>
+                    <p className="font-bold text-center ...">SPECIAL THANKS</p>
+                    <p className="text-center ...">A special thank you to Brigham and Women’s Hospital
+                        for their continued partnership and to Andrew Shin for taking the
+                        time to come and review the work done by the teams.</p>
+                </div>
+                <div></div>
+                <div
+                    className="scale-75 max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
                     <img className="h-60 w-full" src={SameerPic} alt="Sunset in the mountains"/>
                     <div className="px-6 py-4">
                         <div className="font-bold text-xl mb-2 text-center">Sameer Augustine</div>
@@ -122,7 +130,7 @@ function AboutPage(){
 
                 </div>
                 <div
-                    className="max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
+                    className="scale-75 max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
                     <img className="h-60 w-full" src={AlanaPic} alt="Sunset in the mountains"/>
                     <div className="px-6 py-4">
                         <div className="font-bold text-xl mb-2 text-center">Alana Reid</div>
@@ -132,8 +140,8 @@ function AboutPage(){
                     </div>
 
                 </div>
-                <div></div>
-                <div></div>
+
+
                 <div
                     className="scale-75 max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
                     <img className="h-60 w-full" src={MikePic} alt="Sunset in the mountains"/>
@@ -146,7 +154,7 @@ function AboutPage(){
 
                 </div>
                 <div
-                    className="max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
+                    className="scale-75 max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
                     <img className="h-60 w-full" src={AJPic} alt="Sunset in the mountains"/>
                     <div className="px-6 py-4">
                         <div className="font-bold text-xl mb-2 text-center">Antonio Aguiar</div>
@@ -156,27 +164,20 @@ function AboutPage(){
                     </div>
 
                 </div>
+                <div></div>
                 <div
-                    className="max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
+                    className="scale-75 max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
                     <img className="h-60 w-full" src={SzymPic} alt="Sunset in the mountains"/>
                     <div className="px-6 py-4">
-                        <div className="font-bold text-xl mb-2 text-center">Szymon Mamro</div>
+                        <div className="font-bold text-xl mb-3 text-center">Szymon Mamro</div>
                         <p className="text-gray-700 text-base text-center">
                             Backend Engineer
                         </p>
                     </div>
 
                 </div>
-                <div></div>
-                <div></div>
-
-
-            </div>
-            <div className="grid grid-cols-6 gap-7">
-                <div></div>
-                <div></div>
                 <div
-                    className="max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
+                    className="scale-75 max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
                     <img className="h-60 w-full" src={RyanPic} alt="Sunset in the mountains"/>
                     <div className="px-6 py-4">
                         <div className="font-bold text-xl mb-2 text-center">Ryan Hunter</div>
@@ -188,7 +189,7 @@ function AboutPage(){
                 </div>
 
                 <div
-                    className="max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
+                    className="scale-75 max-w-sm rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
                     <img className="h-60 w-full" src={SameerPic} alt="Sunset in the mountains"/>
                     <div className="px-6 py-4">
                         <div className="font-bold text-xl mb-2 text-center">Alex Ramirez</div>
@@ -199,18 +200,25 @@ function AboutPage(){
 
                 </div>
 
+
+            </div>
+            <div className="grid grid-cols-7 gap-7">
+                <div></div>
+                <div></div>
+
+
             </div>
 
-            <p className="font-bold text-center ...">SPECIAL THANKS</p>
-            <p className="text-center ...">A special thank you to Brigham and Women’s Hospital
-                for their continued partnership and to Andrew Shin for taking the
-                time to come and review the work done by the teams.</p>
-
-            <p className="font-bold text-center ...">COPYRIGHT</p>
-            <p className="text-center ...">The Brigham & Women’s Hospital maps and data used in this
-                application are copyrighted and provided for the sole use of educational purposes.</p>
-
+            {/*<p className="font-bold text-center ...">COPYRIGHT</p>*/}
+            <p className="text-center ..."></p>
+            <footer className="bg-white rounded-lg shadow m-4 dark:bg-gray-800">
+                <div className="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+      <span className="text-center text-sm text-gray-500 sm:text-center dark:text-gray-400">© The Brigham & Women’s Hospital maps and data used in this
+                application are copyrighted and provided for the sole use of educational purposes.</span>
+                </div>
+            </footer>
         </>
+
 
     );
 }
