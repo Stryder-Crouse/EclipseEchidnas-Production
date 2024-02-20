@@ -18,12 +18,12 @@ function ServiceRequestPage() {
                 <div className={"relative flex  justify-center "}>
                     <FlowerRequestCard />
                     <ReligionRequestCard />
-                    <MedicineRequestCard />
+
+                    {isAuthenticated && <MedicineRequestCard />}
                 </div>
                 <div className={"relative flex  justify-center mt-12"}>
-                    <TransportationRequestCard />
-                    <SanitationRequestCard />
-
+                    {isAuthenticated && <TransportationRequestCard/>}
+                    {isAuthenticated && <SanitationRequestCard/>}
                     {/* Conditionally render RequestListCard based on authentication status */}
                     {isAuthenticated && <RequestListCard />}
                 </div>
