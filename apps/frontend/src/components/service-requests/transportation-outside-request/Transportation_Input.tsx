@@ -71,7 +71,8 @@ export default function Transportation_Input() {
                 assignedUName: "No one",            //upon creation, no employee is assigned
                 status: "Unassigned",             //upon creation, nobody is assigned, so set status to unassigned
                 reqID:-1,
-                reqPriority:"Low"
+                reqPriority:"Low",
+                time: null
             };
 
             const transportData: OutsideTransport = {

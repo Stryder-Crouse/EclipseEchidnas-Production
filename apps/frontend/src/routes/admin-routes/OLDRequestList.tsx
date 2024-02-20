@@ -82,9 +82,9 @@ function OLDRequestList() {
                                       </select>
                                   </td>
                                   <td>{request[1].reqLocationID}</td>
-                                  <td>{request[0].medType}</td>
-                                  <td>{request[0].dosage}</td>
-                                  <td>{request[0].numDoses.toString()}</td>
+                                  <td>{request[0].medName}</td>
+                                  <td>{request[0].medStrength}</td>
+                                  <td>{request[0].quantity.toString()}</td>
                                   <td>
                                       <select
                                           value={request[1].status}
@@ -392,13 +392,13 @@ async function getEmployees() {
 //         reqStartLoc.textContent = servReq.reqLocationID;   //idk if the to string works
 //
 //         const reqMedType = document.createElement("td");
-//         reqMedType.textContent = medReq.medType;
+//         reqMedType.textContent = medReq.medName;
 //
 //         const reqDosage = document.createElement("td");
-//         reqDosage.textContent = medReq.dosage;
+//         reqDosage.textContent = medReq.medStrength;
 //
 //         const reqAmount = document.createElement("td");
-//         reqAmount.textContent = medReq.numDoses.toString();
+//         reqAmount.textContent = medReq.quantity.toString();
 //
 //         // status drop down
 //         const reqStatus = document.createElement("td");
