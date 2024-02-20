@@ -64,7 +64,7 @@ function TailwindMapPage() {
                     <SideBarItem icon={CSVIcon} text=".CSV" link="/NodeEdgeTable"/>
                     <hr className="my-3"/>
                     {/*NEED THIS FIXED OR SUM */}
-                    <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"}/>
+                    <SideBarItem icon={LogIcon} text="Login" link={"/RegisterPage"}/>
                 </SideNavBarComponent>
 
                     <TopMapButtons

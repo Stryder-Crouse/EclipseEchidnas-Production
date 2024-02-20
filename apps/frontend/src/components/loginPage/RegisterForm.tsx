@@ -2,7 +2,6 @@ import React from "react";
 import {useState} from "react";
 import SimpleTextInput from "../inputComponents/SimpleTextInput.tsx";
 import {Employee, Roles} from "../../../../backend/src/algorithms/Employee/Employee.ts";
-import Logo from "../../images/Brigham_and_Womens_Hospital_logo.svg.png";
 
 import axios from "axios";
 import {useEffect} from "react";
@@ -59,14 +58,14 @@ export default function RegisterForm() {
             <form
                 className={"font-project justify-content-center p-7 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl"}
             >
-
+                {/*
                 <div className={"flex justify-center w-full"}>
                     <img
                         className={"w-14"}
                         src={Logo}
                         alt={"A logo of the hospital"}
                     />
-                </div>
+                </div>*/}
 
                 <div className={"flex justify-center w-full"}>
                     <h1 className={"font-bold text-xl text-navStart"}>
