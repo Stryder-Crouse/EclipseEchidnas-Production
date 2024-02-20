@@ -70,10 +70,29 @@ export default function MapFeatureButtons({
         });
     }
 
+    /*
+    function openOptionsDiv() {
+        const openSesame = document.getElementById("optionTime");
+            if (openSesame != null) {
+                openSesame.style.display = "block";
+            }
+    }
+    function closeOptionsDiv() {
+        const closeSesame = document.getElementById("optionTime");
+            if (closeSesame != null) {
+                closeSesame.style.display = "none";
+            }
+    }
+    */
+
+    //TODO Stryder, replace the options div that has the "handleAllEdgesToggle" with the openOptionsDiv
+    //TODO the div that we is to be opened needs to be "hidden" state and the backend functionality
+
+
     /* what you see is what you get */
     return (
         <div className="grid z-10 fixed bottom-5 right-5">
-            <button className="bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10" onClick={handleAllEdgesToggle}>
+            <button id={"optionTime"} className="bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10" onClick={handleAllEdgesToggle}>
                 <img src={EyeIcon} alt={"See All Locations and Paths"}/>
             </button>
             <button className="bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10"
@@ -85,7 +104,7 @@ export default function MapFeatureButtons({
             </button>
 
             {/*PLACE HOLDER*/}
-            <div>
+            <div className={"bg-ivoryWhite rounded-md drop-shadow-lg p-2"}>
                 <b>Place Holder</b><br/>
                 <label htmlFor={"toggleNodes"}>Show Nodes</label><br/>
                 <input type={"checkbox"} name={"toggleNodes"} id={"toggleNodes"}
