@@ -1,35 +1,46 @@
 import React from "react";
 import axios from "axios";
 import {Employee} from "../../../../backend/src/algorithms/Employee/Employee.ts";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+import {HTMLInputElement} from "happy-dom";
 
 function ExportImportButtonEmployee() {
-
+    /* ay cabrón */
     async function importEmployee() {
-        const inputEmployee = document.createElement("input");
-        inputEmployee.type = "file";
-        inputEmployee.accept = "text/csv";
-        //let EmployeeFile: File;
-        //TODO AA implement when alex does thing
+        /* alloca.h */
+        const employeeInputElement: HTMLInputElement = document.createElement("input");
+        employeeInputElement.type = "file";
+        employeeInputElement.accept = "text/csv";
 
-        //const fileData = new FormData();
-        //fileData.append("csv", EmployeeFile);
+        /* put the data from the input element into a file */
+        let employeeFileData: File;
+        employeeInputElement.onchange = async (e: Event) => {
+            employeeFileData = (e.target as HTMLInputElement).files[0];
+            console.log("new employee file type Just Dropped");
+            console.log(employeeFileData.name);
+            console.log(employeeFileData.type);
 
-        // try {
-        //     await axios.post("/api/loadCSVFile", fileData, {
-        //         headers: {
-        //             "Content-Type": "multipart/form-data",
-        //         },
-        //     });
-        // } catch (err) {
-        //     throw new Error("Error with loading Employees");
-        // }
+            const fileData: FormData = new FormData();
+            fileData.append("csv", employeeFileData);
 
+            try {
+                await axios.post("/api/employees/employee_csv_import", fileData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                });
+            } catch (err) {
+                throw new Error("Error with loading Employees");
+            }
+        };
 
-        inputEmployee.click();
+        /* why? */
+        employeeInputElement.click();
     }
 
     async function exportEmployee() {
-        const employeesGetRaw= await axios.get<Employee[]>("/api/employees/employees");
+        const employeesGetRaw = await axios.get<Employee[]>("/api/employees/employees");
         const employeesGet = employeesGetRaw.data;
 
 
@@ -44,7 +55,7 @@ function ExportImportButtonEmployee() {
             EmployeeString += employeesGetElement.isAdmin + "\r\n";
         }
 
-        const employeeFile = new Blob( [EmployeeString], {
+        const employeeFile = new Blob([EmployeeString], {
             type: "text/csv",
         });
 
@@ -57,18 +68,18 @@ function ExportImportButtonEmployee() {
 
     return (
 
-            <div className={"flex justify-center mt-5"}>
-                <button
-                    className={"transition-all hover:bg-navy w-40 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}
-                    onClick={importEmployee}>
-                    Import .csv
-                </button>
-                <button
-                    className={"transition-all hover:bg-navy w-40 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}
-                    onClick={exportEmployee}>
-                    Export Current
-                </button>
-            </div>
+        <div className={"flex justify-center mt-5"}>
+            <button
+                className={"transition-all hover:bg-navy w-40 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}
+                onClick={importEmployee}>
+                Import .csv
+            </button>
+            <button
+                className={"transition-all hover:bg-navy w-40 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}
+                onClick={exportEmployee}>
+                Export Current
+            </button>
+        </div>
     );
 
 }

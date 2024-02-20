@@ -1,9 +1,43 @@
 import express, {Router, Request, Response} from "express";
 import PrismaClient from "../bin/database-connection.ts";
 import {Employee} from "../algorithms/Employee/Employee.ts";
+import multer from "multer";
+import fs from "fs";
 
 const router: Router = express.Router();
+const upload: multer.Multer = multer({dest: 'uploadedCSVs/'});
 
+/**
+ * import the oh my goodnesses into the badness
+ * @param req it's got the csv
+ * @param res send this
+ *
+ */
+async function handleCSVImport(req: Request, res: Response): Promise<void> {
+    /* What the FUCK */
+    console.log("Employee CSV import requested");
+
+    /* Deadass */
+    const employeeFile: Express.Multer.File[] = req.files as Express.Multer.File[];
+    if (employeeFile == null) {
+        console.error("employee file was FUCKED");
+        res.send("FUCK");
+        res.sendStatus(555);
+        return;
+    }
+
+    /* put the "File" into a string */
+    const employeeDataString: string = fs.readFileSync(employeeFile[0].path, "utf-8");
+    console.log(employeeDataString);
+    console.log(upload);
+
+
+    /* we did it */
+    res.sendStatus(200);
+    res.send("ok, nice");
+}
+
+router.post("/employee_csv_import", handleCSVImport);
 
 //post one employee into the database
 router.post("/employee", async function (req: Request, res: Response) {
