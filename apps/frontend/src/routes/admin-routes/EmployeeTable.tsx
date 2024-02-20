@@ -209,6 +209,7 @@ function EmployeeTable() {
         }
 
         const newEmployee: Employee = {
+            accessToken: '',
             designation: newDesignation ,
             firstName: newFristName,
             isAdmin: newIsAdmin,
