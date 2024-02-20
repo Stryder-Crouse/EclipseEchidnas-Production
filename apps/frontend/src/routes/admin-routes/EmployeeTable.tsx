@@ -1,9 +1,3 @@
-import SideNavBarComponent, {SideBarItem} from "../../components/SideNavBarComponent.tsx";
-import ServiceRequestIcon from "../../images/SideBar/requestIcon.png";
-import EmployeeIcon from "../../images/SideBar/user.png";
-import CSVIcon from "../../images/SideBar/table.png";
-import LogIcon from "../../images/SideBar/log-in.png";
-import MapIcon from "../../images/SideBar/map.png";
 import "../../css/route-css/EmployeeTable.css";
 import "../../css/route-css/EmployeeTableInput.css";
 import React, {useEffect, useState} from "react";
@@ -11,7 +5,7 @@ import axios from "axios";
 import {Employee, Roles} from "../../../../backend/src/algorithms/Employee/Employee.ts";
 import trashIcon from "../../images/Table Functions/trash.png";
 import editPen from "../../images/Table Functions/editPen.png";
-
+import FullSideNavBarComponent from "../../components/FullSideNavBarComponent.tsx";
 
 //TODO IMPLEMENT THESE BUTTONS TO POPULATE WITH EVERY ROW
 //import TrashIcon from "../../images/Table Functions/trash-2.png";
@@ -49,15 +43,7 @@ function EmployeeTable() {
     return (
         <div className="flex h-lvh flex-row overflow-x-hidden">
             <div className="z-10">
-                <SideNavBarComponent>
-                    <SideBarItem icon={MapIcon} text="Map" link="/TailwindMapPage"/>
-                    <SideBarItem icon={ServiceRequestIcon} text="Services" link="ServiceRequest"/>
-                    <SideBarItem icon={EmployeeIcon} text="Employees" link="/EmployeeTable"/>
-                    <SideBarItem icon={CSVIcon} text=".CSV" link="/NodeEdgeTable"/>
-                    <hr className="my-3"/>
-                    {/*NEED THIS FIXED OR SUM */}
-                    <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"}/>
-                </SideNavBarComponent>
+                <FullSideNavBarComponent/>
             </div>
             <div className={"employee-table-container"}>
                 <div className="flex">
