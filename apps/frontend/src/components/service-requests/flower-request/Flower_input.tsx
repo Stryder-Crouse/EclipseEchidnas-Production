@@ -4,13 +4,16 @@ import {FlowReq, ReqTypes, ServiceRequest} from "../../../../../backend/src/algo
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
-import status from "../../../../../backend/src/algorithms/Requests/Status.ts";
+import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
+import {closeFlowerCard} from "../../service-request-cards/FlowerRequestCard.tsx";
 
 
 let longNames:string[] = [];
 
-export default function Flower_input() {
+export default function Flower_input({
+    setIsPopupOpen
+                                     }: closeFlowerCard) {
     const [sender,setSender] = useState("");
     const [priority,setPriority] = useState("low");
     //const [location,setLocation] = useState("");
@@ -24,6 +27,8 @@ export default function Flower_input() {
     const [selected, setSelected] = useState(-1);
     const [locations, setLocations] = useState<NodeDataBase[]>([]);
 
+    let interID = setInterval(fadeEffect, 100);
+    clearInterval(interID);
 
     useEffect(()=>{
         getLocations().then(
@@ -43,10 +48,11 @@ export default function Flower_input() {
                 reqType: ReqTypes.flowReq,
                 reqLocationID: locations[selected].nodeID,
                 extraInfo: extraInfo,
-                status: status.Unassigned,
+                status: Status.Unassigned,
                 assignedUName: "",
                 reqPriority: priority,
                 reqID: -1,
+                time: new Date()
             };
 
             if(Number.isNaN(parseInt(flowerQuantity))){
@@ -76,6 +82,7 @@ export default function Flower_input() {
                         },
                     },
                 );
+                show();
             } catch(error){
                 throw new Error("Error with sending flower request");
             }
@@ -85,6 +92,28 @@ export default function Flower_input() {
 
 
         }
+
+    function show() {
+        const tag: HTMLElement = document.getElementById("popup") as HTMLElement;
+        tag.style.opacity = "1";
+        interID = setInterval(fadeEffect, 100);
+    }
+
+    function fadeEffect() {
+        const target = document.getElementById("popup") as HTMLElement;
+        let opacity = target.style.opacity;
+        if(Number(opacity) >= 0.97) {
+            opacity = (Number(opacity) - 0.001).toString();
+            target.style.opacity = opacity;
+        } else if (Number(opacity) > 0) {
+            opacity = (Number(opacity) - 0.1).toString();
+            target.style.opacity = opacity;
+        }
+
+        if(Number(opacity) < 0) {
+            clearInterval(interID);
+        }
+    }
 
         function clear() {
             setSender('');
@@ -103,12 +132,15 @@ export default function Flower_input() {
         }
 
 
-
+    function closeFlowerForm(event: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) {
+        event.preventDefault();
+        setIsPopupOpen(false);
+    }
 
     return(
-        <div className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
+        <div
+            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
             <form className="p-2">
-                <div className="App">
                     <h1 className={"grid mb-3 justify-center font-bold text-xl"}>Flower Request </h1>
 
                     <SimpleTextInput id={"senderName"} labelContent={"Name"} inputStorage={sender}
@@ -154,14 +186,16 @@ export default function Flower_input() {
                                      placeHolderText={""}>
                     </SimpleTextInput>
 
-                    <SimpleTextInput id={"flowerquantity"} labelContent={"Flower Quantity"} inputStorage={flowerQuantity}
+                    <SimpleTextInput id={"flowerquantity"} labelContent={"Flower Quantity"}
+                                     inputStorage={flowerQuantity}
                                      setInputStorage={setFlowerQuantity}
                                      inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                      divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
                                      placeHolderText={""}>
                     </SimpleTextInput>
 
-                    <SimpleTextInput id={"flowerrecipient"} labelContent={"Flower Recipient"} inputStorage={flowerRecipient}
+                    <SimpleTextInput id={"flowerrecipient"} labelContent={"Flower Recipient"}
+                                     inputStorage={flowerRecipient}
                                      setInputStorage={setFlowerRecipient}
                                      inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                      divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
@@ -177,15 +211,25 @@ export default function Flower_input() {
                     </SimpleTextInput>
 
 
-                    <div className={"grid justify-center items-center "}>
-                        <RequestButtons submit={submitForm}/>
-                        <p className={"flex justify-center items-center -mt-5"}>Created By: Shiivek and Syzmon</p>
-                    </div>
-                    </div>
+                    <RequestButtons submit={submitForm}/>
+
+
             </form>
+            <div className={"grid justify-center items-center m-auto my-1.5 mb-5"}>
+                <button onClick={(event) => closeFlowerForm(event)} className={
+                    "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-5"}>
+                    Close
+                </button>
+                <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
+                    <h3>
+                        Successfully submitted!
+                    </h3>
+                </div>
+                <p className={"flex justify-center items-center mt-5"}>Created By: Shiivek and Syzmon</p>
+            </div>
         </div>
 
-);
+    );
 
 
 }
