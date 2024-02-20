@@ -185,11 +185,11 @@ export default function Transportation_table({statusFilter:statusFilter}:statusF
                 <thead>
                 <tr className={"tableTRHead"}>
                     <th className={"tableTD"}>ID</th>
-                    <th className={"tableTD"}>Request Type</th>
+                    <th className={"tableTD"}>Type</th>
                     <th className={"tableTD"}>Status</th>
                     <th className={"tableTD"}>Priority</th>
-                    <th className={"tableTD"}>Employee</th>
-                    <th className={"tableTD"}>Patient Room</th>
+                    <th className={"tableTD"}>Employee Assigned</th>
+                    <th className={"tableTD"}>Location ID</th>
                     <th className={"tableTD"}>Destination</th>
                     <th className={"tableTD"}>Patient Name</th>
                     <th className={"tableTD"}>Transportation Mode</th>

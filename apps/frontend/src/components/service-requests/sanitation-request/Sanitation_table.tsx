@@ -40,11 +40,11 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
                 <thead>
                 <tr className={"tableTRHead"}>
                     <th className={"tableTD"}>ID</th>
-                    <th className={"tableTD"}>Request Type</th>
+                    <th className={"tableTD"}>Type</th>
                     <th className={"tableTD"}>Status</th>
                     <th className={"tableTD"}>Priority</th>
-                    <th className={"tableTD"}>Employee</th>
-                    <th className={"tableTD"}>Going To</th>
+                    <th className={"tableTD"}>Employee Assigned</th>
+                    <th className={"tableTD"}>Location ID</th>
                     <th className={"tableTD"}>Description</th>
                     <th className={"tableTD"}>Extra Notes</th>
                 </tr>

@@ -37,11 +37,11 @@ export default function Flower_table({statusFilter: statusFilter}: statusFilter)
                 <thead>
                 <tr className={"tableTRHead"}>
                     <th className={"tableTD"}>ID</th>
-                    <th className={"tableTD"}>Request Type</th>
+                    <th className={"tableTD"}>Type</th>
                     <th className={"tableTD"}>Status</th>
                     <th className={"tableTD"}>Priority</th>
                     <th className={"tableTD"}>Employee Assigned</th>
-                    <th className={"tableTD"}>Location</th>
+                    <th className={"tableTD"}>Location ID</th>
                     <th className={"tableTD"}>Sender</th>
                     <th className={"tableTD"}>Flower type</th>
                     <th className={"tableTD"}>Flower Quantity</th>
@@ -55,7 +55,7 @@ export default function Flower_table({statusFilter: statusFilter}: statusFilter)
                 {
                     //ids are startingNodeInput and endingNodeInput
 
-                    flowerRequest?.map((request,requestIndex) => {
+                    flowerRequest?.map((request, requestIndex) => {
                         return (
                             <tr className={"tableTR"} key={"Flow_" + request[0].genReqID}>
 

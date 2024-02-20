@@ -39,11 +39,11 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
                             <thead>
                             <tr className={"tableTRHead"}>
                                 <th className={"tableTD"}>ID</th>
-                                <th className={"tableTD"}>Request Type</th>
+                                <th className={"tableTD"}>Type</th>
                                 <th className={"tableTD"}>Status</th>
                                 <th className={"tableTD"}>Priority</th>
-                                <th className={"tableTD"}>Going To</th>
-                                <th className={"tableTD"}>Employee</th>
+                                <th className={"tableTD"}>Employee Assigned</th>
+                                <th className={"tableTD"}>Location ID</th>
                                 <th className={"tableTD"}>Medicine type</th>
                                 <th className={"tableTD"}>Dosage</th>
                                 <th className={"tableTD"}>Amount</th>
