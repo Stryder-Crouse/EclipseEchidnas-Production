@@ -32,8 +32,6 @@ function EmployeeTable() {
 
 
 
-
-
     /* populate the requests */
     useEffect(()=>{
         getEmployees().then((result)=>setEmployees(result));

@@ -15,6 +15,9 @@ import {requestFilters} from "../serviceRequestInterface.ts";
 
  ********/
 
+// async function getStats(){
+//     const stats = await axios.get("/api/serviceRequests/serviceReq/statistics");
+// }
 //todo FNFN statistics get for AJ
 //const stats = await axios.get("/api/serviceRequests/serviceReq/statistics");
 // stats.data.total is num of service requests
@@ -31,6 +34,7 @@ import {requestFilters} from "../serviceRequestInterface.ts";
 // stats.data.assigned num of assigned
 // stats.data.inProgress num of in progress
 // stats.data.completed num of completed
+
 
 
 export default function ServiceRequest_Table({statusFilter, priorityFilter}:requestFilters) {
