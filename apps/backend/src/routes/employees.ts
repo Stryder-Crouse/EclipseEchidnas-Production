@@ -314,11 +314,7 @@ router.get("/determineIfUniqueEmail", async function (req: Request, res: Respons
         const answer = await PrismaClient.employee.findUnique({where:{userID:emailStr}});
         console.log("Prisma Response: " + answer);
 
-        if(PrismaClient.employee.findUnique( {
-            where : {
-                userID: emailStr
-            }
-        }) == null)
+        if(answer == null)
         {
             res.send(false);
         }
