@@ -26,6 +26,7 @@ const PieChartStatsStatus = () =>{
     const options= {
         plugins: {
             legend: {
+                position: 'bottom',
                 labels: {
                     font: {
                         size: 20,
@@ -37,6 +38,7 @@ const PieChartStatsStatus = () =>{
     };
     return(
         <div className="flex">
+            {/*// @ts-expect-error asjhdska*/}
             <Pie data={data} options={options}></Pie>
         </div>
     );
