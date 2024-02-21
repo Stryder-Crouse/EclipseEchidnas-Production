@@ -46,6 +46,7 @@ function PieChartStatsStatus ({stats}:pieAssignedStats){
                 position: "relative", height: "90%",
                 width: "30%"
             }}>
+            <p className="text-center"><b>Request Status</b></p>
             {/*// @ts-expect-error asjhdska*/}
             <Pie data={data} options={options}></Pie>
         </div>
