@@ -789,85 +789,51 @@ router.get("/sanReq/filter", async function (req: Request, res: Response) {
         const locFilter: string = req.query.location as string;
 
 
-
-        //make a local type that potentially has one field for each filter
-        type WhereCondition = {
-            status?: string;
-            reqPriority?: string;
-            assignedUName?: string;
-            reqLocationID?: string;
-            reqType: string;
-        };
-
-        //make an instance of the type with one field that filters by religious requests
-        // and no other fields. This ensures that if no filter is applied to the service request,
-        // all the service requests will be sent
-        const whereCondition :WhereCondition = {
-            reqType: "sanitation"
-        };
-
-
-        // //if there is a status filter, add it to the whereCondition
-        // if (statusFilter != null &&  statusFilter != undefined &&statusFilter != Status.Any) {
-        //     whereCondition.status = statusFilter;
-        // }
-        // //if there is a priority filter, add it to the whereCondition
-        // if(priorityFilter != null && priorityFilter != Priorities.any){
-        //     whereCondition.reqPriority = priorityFilter;
-        // }
-        // //if there is an employee filter, add it to the whereCondition
-        // if(emplFilter != null && emplFilter != "" && emplFilter.toLowerCase() != "any"){
-        //     whereCondition.assignedUName = emplFilter;
-        // }
-        // //if there is a location filter, add it to the whereCondition
-        // if(locFilter != null && locFilter != "" && locFilter.toLowerCase() != "any"){
-        //     whereCondition.reqLocationID = locFilter;
-        // }
-
-        //if there is a status filter, add it to the whereCondition
-
             if(statusFilter==Status.Any){
-                statusFilter="*";
+                statusFilter="%";
             }
 
-        if(priorityFilter==Priorities.any){
-            priorityFilter="*";
-        }
-
-            whereCondition.status = statusFilter;
+            if(priorityFilter==Priorities.any){
+                priorityFilter="%";
+            }
 
 
-
-            whereCondition.reqPriority = priorityFilter;
-
-
-            whereCondition.assignedUName = emplFilter;
-
-
-            whereCondition.reqLocationID = locFilter;
 
 
         console.log("statusfilter: \n" + statusFilter);
         console.log("priorityFilter: \n" + priorityFilter);
         console.log("emplFilter: \n" + emplFilter);
         console.log("locFilter: \n" + locFilter);
-            const sreviceRequest = await PrismaClient.serviceRequest.findMany({
+
+
+
+
+
+        const sreviceRequest = await PrismaClient.serviceRequest.findMany({
                 orderBy:{
                     reqID: "asc"
                 },
                 where: {
                     AND:[
                         {
-                            status:statusFilter
+                            status:{
+                                contains:statusFilter
+                            }
                         },
                         {
-                            reqPriority:priorityFilter
+                            reqPriority:{
+                                contains:priorityFilter
+                            }
                         },
                         {
-                            assignedUName:emplFilter
+                            assignedUName:{
+                                contains:emplFilter
+                            }
                         },
                         {
-                            reqLocationID: locFilter
+                            reqLocationID:{
+                                contains:locFilter
+                            }
                         },
                         {
                             reqType:"sanitation"
@@ -885,16 +851,24 @@ router.get("/sanReq/filter", async function (req: Request, res: Response) {
                         serviceReq:{
                             AND:[
                                 {
-                                    status:statusFilter
+                                    status:{
+                                        contains:statusFilter
+                                    }
                                 },
                                 {
-                                    reqPriority:priorityFilter
+                                    reqPriority:{
+                                        contains:priorityFilter
+                                    }
                                 },
                                 {
-                                    assignedUName:emplFilter
+                                    assignedUName:{
+                                        contains:emplFilter
+                                    }
                                 },
                                 {
-                                    reqLocationID: locFilter
+                                    reqLocationID:{
+                                        contains:locFilter
+                                    }
                                 },
                                 {
                                     reqType:"sanitation"
@@ -905,7 +879,10 @@ router.get("/sanReq/filter", async function (req: Request, res: Response) {
                 }
             );
 
-            console.log();
+
+            // console.log("hi");
+            // console.log(sanRequest);
+            // console.log(sreviceRequest);
 
         //send the request to the user with the specified conditions
         res.status(200).send([sanRequest,sreviceRequest]);

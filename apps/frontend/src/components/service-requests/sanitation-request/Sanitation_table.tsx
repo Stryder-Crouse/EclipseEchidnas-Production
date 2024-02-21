@@ -303,7 +303,7 @@ async function getSanRequests(statusFilter:Status, priorityFilter:Priorities) {
     const requests =
         await axios.get<[sanReq[], ServiceRequest[]]>("/api/serviceRequests/sanReq/filter",
             {params: {status: statusFilter, priority: priorityFilter,
-                    employee:"*", location:"*"
+                    employee:"%", location:"%"
                 } });
 
     const sanRequests: Array<[sanReq, ServiceRequest]> = [];
