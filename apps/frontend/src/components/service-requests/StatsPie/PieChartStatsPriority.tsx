@@ -12,13 +12,13 @@ ChartJS.register(
     Legend
 );
 
-const PieChartStatsType = () =>{
+const PieChartStatsPriority = () =>{
     const data = {
-        labels: ['Flower', 'Medicine', 'Religious', 'Sanitation', 'Transport'],
+        labels: ['Low', 'Medium', 'High', 'Emergency'],
         datasets:[
             {
-                label: 'Service Request Type',
-                data:[3, 8, 10, 5],
+                label: 'Priority',
+                data:[10, 15, 5, 2],
                 backgroundColor: ["red", "blue", "green", "orange"]
             }
         ]
@@ -36,10 +36,10 @@ const PieChartStatsType = () =>{
         }
     };
     return(
-        <div>
+        <div className="flex">
             <Pie data={data} options={options}></Pie>
         </div>
     );
 };
 
-export default PieChartStatsType;
+export default PieChartStatsPriority;

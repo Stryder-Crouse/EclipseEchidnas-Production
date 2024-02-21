@@ -36,7 +36,7 @@ const PieChartStatsStatus = () =>{
         }
     };
     return(
-        <div>
+        <div className="flex">
             <Pie data={data} options={options}></Pie>
         </div>
     );
