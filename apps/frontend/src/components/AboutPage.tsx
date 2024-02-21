@@ -1,10 +1,4 @@
-import SideNavBarComponent, {SideBarItem} from "./SideNavBarComponent.tsx";
-import MapIcon from "../images/SideBar/map.png";
-import ServiceRequestIcon from "../images/SideBar/requestIcon.png";
-import EmployeeIcon from "../images/SideBar/user.png";
-import CSVIcon from "../images/SideBar/table.png";
-import LogIcon from "../images/SideBar/log-in.png";
-import AboutPageIcon from "../images/SideBar/about-pageIcon.png";
+import FullSideNavBarComponent from "./FullSideNavBarComponent.tsx";
 import SameerPic from "../images/Team/Sameer.png";
 import ChrisPic from "../images/Team/Chris.png";
 import MikePic from "../images/Team/Mike.png";
@@ -22,17 +16,7 @@ function AboutPage(){
     return(
         <div className={"flex h-lvh flex-row"}>
             <div className="flex">
-                <div className="z-10">
-                    <SideNavBarComponent>
-                        <SideBarItem icon={MapIcon} text="Map" link={window.location.pathname}/>
-                        <SideBarItem icon={ServiceRequestIcon} text="Services" link="ServiceRequest"/>
-                        <SideBarItem icon={EmployeeIcon} text="Employees" link="/EmployeeTable"/>
-                        <SideBarItem icon={CSVIcon} text=".CSV" link="/NodeEdgeTable"/>
-                        <hr className="my-3"/>
-                        <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"}/>
-                        <SideBarItem icon={AboutPageIcon} text="About" link="/AboutPage"/>
-                    </SideNavBarComponent>
-                </div>
+                <FullSideNavBarComponent/>
             </div>
             <div className="mt-7 flex flex-col m-auto">
                 <p className="mb-5 flex font-bold justify-center p-3 bg-white rounded-lg shadow dark:bg-gray-800">ABOUT</p>
@@ -64,7 +48,7 @@ function AboutPage(){
                         </ImageCard>
                     </div>
                     <div
-                        className="flex justify-center flex-col ml-4 h-332 w-[200px] p-4 border-4 rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer">
+                        className="flex justify-center flex-col ml-4 h-332 w-[200px] p-4 border-4 rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl  border-ivoryWhite cursor-pointer">
                         {/*<h1 className="flex font-bold justify-center">ABOUT</h1>*/}
                         <p className="flex font-bold justify-center">DEPARTMENT</p>
                         <p className="flex text-center justify-center">WPI Computer Science Department</p>
@@ -113,5 +97,6 @@ export function ImageCard({img, name, role}: imageProps) {
 
     );
 }
+
 
 export default AboutPage;

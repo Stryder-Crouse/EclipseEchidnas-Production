@@ -14,9 +14,7 @@ import FullSideNavBarComponent from "../../components/FullSideNavBarComponent.ts
 
 
 const designations = [Roles.None,Roles.nurse,Roles.doctor,Roles.admin,
-    Roles.janitor,Roles.flowerDeliverer,Roles.religiousPersonnel,
-    Roles.buddhistPersonnel, Roles.catholicPersonnel, Roles.christianPersonnel, Roles.mormonPersonnel, Roles.protestantPersonnel,
-    Roles.jainPersonnel, Roles.jewishPersonnel, Roles.muslimPersonnel, Roles.sikhPersonnel, Roles.shintoPersonnel];
+    Roles.janitor,Roles.flowerDeliverer,Roles.religiousPersonnel];
 
 function EmployeeTable() {
     
