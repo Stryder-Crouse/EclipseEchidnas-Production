@@ -44,9 +44,13 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
                                 <th className={"tableTD"}>Priority</th>
                                 <th className={"tableTD"}>Employee Assigned</th>
                                 <th className={"tableTD"}>Location ID</th>
-                                <th className={"tableTD"}>Medicine type</th>
-                                <th className={"tableTD"}>Dosage</th>
-                                <th className={"tableTD"}>Amount</th>
+                                <th className={"tableTD"}>Patient Name</th>
+                                <th className={"tableTD"}>Date of Birth</th>
+                                <th className={"tableTD"}>Med Record Num</th>
+                                <th className={"tableTD"}>Med Name</th>
+                                <th className={"tableTD"}>Med Strength</th>
+                                <th className={"tableTD"}>Med Form</th>
+                                <th className={"tableTD"}>Sig</th>
                                 <th className={"tableTD"}>Extra Notes</th>
                             </tr>
                             </thead>
@@ -121,8 +125,12 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
                                             </td>
                                             <td className={"tableTD"}>{request[1].reqLocationID}</td>
                                             {/*location*/}
+                                            <td className={"tableTD"}>{request[0].patientName}</td>
+                                            <td className={"tableTD"}>{request[0].patientDOB.toString()}</td>
+                                            <td className={"tableTD"}>{request[0].patientMedRecordNum}</td>
                                             <td className={"tableTD"}>{request[0].medName}</td>
                                             <td className={"tableTD"}>{request[0].medStrength}</td>
+                                            <td className={"tableTD"}>{request[0].medForm}</td>
                                             <td className={"tableTD"}>{request[0].quantity.toString()}</td>
                                             <td className={"tableTD"}>{request[1].extraInfo}</td>
                                         </tr>
