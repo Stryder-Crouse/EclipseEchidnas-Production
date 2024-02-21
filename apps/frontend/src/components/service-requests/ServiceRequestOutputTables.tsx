@@ -112,6 +112,8 @@ export default function ServiceRequestOutputTables() {
                             }
                         </select>
                     </div>
+
+
                 </div>
 
                 {/* the content to be populated with each request*/}
