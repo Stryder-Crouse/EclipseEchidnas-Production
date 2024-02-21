@@ -1,6 +1,6 @@
 import axios from "axios";
 import {useState,useEffect} from "react";
-import {FlowReq, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import {FlowReq, Priorities, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
 import {requestFilters} from "../serviceRequestInterface.ts";
@@ -8,7 +8,7 @@ import {requestFilters} from "../serviceRequestInterface.ts";
 // import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
 
 
-export default function Flower_table({statusFilter, priorityFilter}:requestFilters) {
+export default function Flower_table({statusFilter, priorityFilter,employeeFilter,locationFilter}:requestFilters) {
     console.log(statusFilter ,priorityFilter);
 
 
@@ -22,11 +22,11 @@ export default function Flower_table({statusFilter, priorityFilter}:requestFilte
         getEmployees().then(result=> {
             setFlowerEmployees(result);
         });
-        getflowerReq(statusFilter).then(result => {
+        getflowerReq(statusFilter, priorityFilter,employeeFilter,locationFilter).then(result => {
             console.log("hello");
             setFlowerRequest(result);
         });
-    },[statusFilter]);
+    },[employeeFilter, locationFilter, priorityFilter, statusFilter]);
 
 
     return (
@@ -331,9 +331,11 @@ export default function Flower_table({statusFilter, priorityFilter}:requestFilte
 
 }
 
-async function getflowerReq(statusFilter:Status) {
-    const requests = await axios.get<[FlowReq[], ServiceRequest[]]>("/api/serviceRequests/flowReq",
-        {params: {status: statusFilter}});
+async function getflowerReq(statusFilter:Status, priorityFilter:Priorities, employeeFilter:string, locationFilter:string) {
+    const requests = await axios.get<[FlowReq[], ServiceRequest[]]>("/api/serviceRequests/flowReq/filter",
+        {params: {status: statusFilter, priority: priorityFilter,
+                employee:employeeFilter, location:locationFilter
+            } });
 
     const flowRequests: Array<[FlowReq, ServiceRequest]> = [];
     for (let i = 0; i < requests.data[0].length; i++) {

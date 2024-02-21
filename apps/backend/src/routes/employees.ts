@@ -151,7 +151,14 @@ router.get("/employees", async function (req: Request, res: Response) {
     try {
         //try to send all the employees to the client
         //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
-        res.status(200).send(await PrismaClient.employee.findMany()); //end res.send (this is what will be sent to the client)
+        res.status(200).send(await PrismaClient.employee.findMany(
+            {
+                orderBy:{
+                    firstName: "asc"
+                }
+            }
+
+        )); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you the the employees\n");
     } catch (err) {
         console.error("\nUnable to send employees\n" + err);
