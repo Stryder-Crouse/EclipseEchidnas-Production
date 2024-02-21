@@ -6,7 +6,7 @@ import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 import {requestFilters} from "../serviceRequestInterface.ts";
 
 
-export default function Medicine_table({statusFilter, priorityFilter}:requestFilters) {
+export default function Medicine_table({statusFilter, priorityFilter,employeeFilter,locationFilter}:requestFilters) {
     console.log(statusFilter);
 
     const [medRequestList, setMedRequestList] =
@@ -23,14 +23,14 @@ export default function Medicine_table({statusFilter, priorityFilter}:requestFil
             getEmployees().then(result => {
                 setMedEmployees(result);
             });
-            getMedRequests(statusFilter, priorityFilter).then(result => {
+            getMedRequests(statusFilter, priorityFilter,employeeFilter,locationFilter).then(result => {
                 setMedRequestList(result);
             });
 
 
 
 
-    }, [statusFilter, priorityFilter]);
+    }, [statusFilter, priorityFilter, employeeFilter, locationFilter]);
 
     return (
         <div>
@@ -318,9 +318,11 @@ export default function Medicine_table({statusFilter, priorityFilter}:requestFil
 
 }
 
-async function getMedRequests(statusFilter:Status, priorityFilter: Priorities) {
+async function getMedRequests(statusFilter:Status, priorityFilter:Priorities, employeeFilter:string, locationFilter:string) {
     const requests =
-        await axios.get<[MedReq[], ServiceRequest[]]>("/api/serviceRequests/medReq",{params: {status: statusFilter, priority: priorityFilter} });
+        await axios.get<[MedReq[], ServiceRequest[]]>("/api/serviceRequests/medReq/filter",{params: {status: statusFilter, priority: priorityFilter,
+                employee:employeeFilter, location:locationFilter
+            } });
 
     const medRequests: Array<[MedReq, ServiceRequest]> = [];
     for (let i = 0; i < requests.data[0].length; i++) {
