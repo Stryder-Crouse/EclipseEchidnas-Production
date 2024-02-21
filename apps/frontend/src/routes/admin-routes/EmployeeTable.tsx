@@ -3,8 +3,8 @@ import "../../css/route-css/EmployeeTableInput.css";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Employee, Roles} from "../../../../backend/src/algorithms/Employee/Employee.ts";
-import trashIcon from "../../images/Table Functions/trash.png";
-import editPen from "../../images/Table Functions/editPen.png";
+import trashIcon from "../../images/Table Functions/trash-2.png";
+import editPen from "../../images/Table Functions/pencil.png";
 import ExportImportButtonEmployee from "../../components/EmployeeTableButtons/ExportImportButtonEmployee.tsx";
 import FullSideNavBarComponent from "../../components/FullSideNavBarComponent.tsx";
 
@@ -38,7 +38,7 @@ function EmployeeTable() {
     },[]);
     //table-id is request-table
     return (
-        <div className="flex h-lvh flex-row overflow-x-hidden">
+        <div className="flex h-lvh flex-row overflow-hidden">
             <div className="z-10">
                 <FullSideNavBarComponent/>
             </div>

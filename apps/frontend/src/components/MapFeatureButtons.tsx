@@ -35,8 +35,25 @@ export default function MapFeatureButtons({
     function handleAllEdgesToggle() {
         if (!drawEntirePath) {
             setDrawEntirePath(true);
+            openForm();
         } else {
             setDrawEntirePath(false);
+            closeForm();
+        }
+    }
+
+
+    function openForm() {
+        const openSesame = document.getElementById("options");
+        if (openSesame != null) {
+            openSesame.setAttribute("class","mb-4 bg-ivoryWhite rounded-md drop-shadow-lg p-2 visible");
+        }
+    }
+
+    function closeForm() {
+        const openSesame = document.getElementById("options");
+        if (openSesame != null) {
+            openSesame.setAttribute("class","w-0 h-0 mb-4 bg-ivoryWhite rounded-md drop-shadow-lg p-2 invisible");
         }
     }
 
@@ -91,21 +108,11 @@ export default function MapFeatureButtons({
 
     /* what you see is what you get */
     return (
-        <div className="grid z-10 fixed bottom-5 right-5">
-            <button id={"optionTime"} className="bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10" onClick={handleAllEdgesToggle}>
-                <img src={EyeIcon} alt={"See All Locations and Paths"}/>
-            </button>
-            <button className="bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10"
-                    onClick={() => {
-                        setStartNode(NULLNODE);
-                        setEndNode(NULLNODE);
-                    }}>
-                <img src={RefreshIcon} alt={"Refresh"}/>
-            </button>
+        <div className="z-10 fixed bottom-5 right-5 flex flex-col">
 
-            {/*PLACE HOLDER*/}
-            <div className={"bg-ivoryWhite rounded-md drop-shadow-lg p-2"}>
-                <b>Place Holder</b><br/>
+
+            <div id={"options"} className={"w-0 h-0 mb-4 bg-ivoryWhite rounded-md drop-shadow-lg p-2 invisible"}>
+                <b>Options</b><br/>
                 <label htmlFor={"toggleNodes"}>Show Nodes</label><br/>
                 <input type={"checkbox"} name={"toggleNodes"} id={"toggleNodes"}
                        checked={drawEntirePathOptions[0]}
@@ -119,14 +126,14 @@ export default function MapFeatureButtons({
 
                 ></input><br/>
                 <label htmlFor={"toggleEdges"}>Show Edges</label><br/>
-                <input type={"checkbox"} name={"toggleEdges"}  id={"toggleEdges"}
+                <input type={"checkbox"} name={"toggleEdges"} id={"toggleEdges"}
                        checked={drawEntirePathOptions[1]}
                        onChange={(e) => {
-                    const newDrawEntirePathOptions = [...drawEntirePathOptions];
-                    newDrawEntirePathOptions[1] = e.target.checked;
-                    console.log(e.target.checked);
-                    setDrawEntirePathOptions(newDrawEntirePathOptions);
-                }}></input><br/>
+                           const newDrawEntirePathOptions = [...drawEntirePathOptions];
+                           newDrawEntirePathOptions[1] = e.target.checked;
+                           console.log(e.target.checked);
+                           setDrawEntirePathOptions(newDrawEntirePathOptions);
+                       }}></input><br/>
                 <label htmlFor={"toggleLocationNames"}>Show Location Names</label><br/>
                 <input type={"checkbox"} name={"toggleLocationNames"} id={"toggleLocationNames"}
                        checked={drawEntirePathOptions[2]}
@@ -139,15 +146,30 @@ export default function MapFeatureButtons({
 
             </div>
 
-            <div className="grid ">
-                <button className="bg-ivoryWhite p-2 drop-shadow-lg rounded-t-md w-10"
+            <button id={"optionTime"} className="flex self-end bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10"
+                    onClick={handleAllEdgesToggle}>
+                <img src={EyeIcon} alt={"See All Locations and Paths"}/>
+            </button>
+            <button className="flex self-end bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10"
+                    onClick={() => {
+                        setStartNode(NULLNODE);
+                        setEndNode(NULLNODE);
+                    }}>
+                <img src={RefreshIcon} alt={"Refresh"}/>
+            </button>
+
+            {/*PLACE HOLDER*/}
+
+
+            <div className="flex flex-col self-end ">
+                <button className="flex bg-ivoryWhite p-2 drop-shadow-lg rounded-t-md w-10"
                         onClick={() => {
                             zoomMap(1);
                         }}
                 >
                     <img src={ZoomInIcon} alt={"Zoom In"}/>
                 </button>
-                <button className="bg-ivoryWhite p-2 drop-shadow-lg rounded-b-md w-10"
+                <button className="flex bg-ivoryWhite p-2 drop-shadow-lg rounded-b-md w-10"
                         onClick={() => {
                             zoomMap(-1);
                         }}
