@@ -103,7 +103,7 @@ function PieChartStatsAll(){
         }
     );
     
-    console.log(prioStats,reqStats,assignedStats);
+
 
     useEffect(() => {
         getAllStats().then( (result)=>{
@@ -125,16 +125,16 @@ function PieChartStatsAll(){
 async function getAllStats() {
     const getAllStats = await axios.get<allStats>("/api/serviceRequests/serviceReq/statistics");
 
-    let allStats = getAllStats.data;
+    const allStats = getAllStats.data;
 
-    let assigned:assignedStats ={
+    const assigned:assignedStats ={
         unassigned: allStats.unassigned,
         assigned: allStats.assigned,
         inProgress: allStats.inProgress,
         completed: allStats.completed
     };
 
-    let reqStats:reqStats ={
+    const reqStats:reqStats ={
         total: allStats.total,
         medReq: allStats.medReq,
         religReq: allStats.religReq,
@@ -143,7 +143,7 @@ async function getAllStats() {
         tranReq: allStats.tranReq
     };
 
-    let prioStats:prioStats={
+    const prioStats:prioStats={
         lowPrio: allStats.lowPrio,
         medPrio: allStats.medPrio,
         highPrio: allStats.highPrio,

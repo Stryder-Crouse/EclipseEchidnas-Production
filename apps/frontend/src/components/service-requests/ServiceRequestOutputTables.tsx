@@ -14,6 +14,7 @@ import Transportation_table from "./transportation-outside-request/Transportatio
 import Sanitation_table from "./sanitation-request/Sanitation_table.tsx";
 import ServiceRequest_Table from "./service-request/ServiceRequest_Table.tsx";
 import PieChartStatsAll from "./StatsPie/PieChartStatsAll.tsx";
+import PieChartStatsServiceRequest from "./StatsPie/PieChartStatsServiceRequest.tsx";
 
 
 
@@ -182,15 +183,25 @@ export default function ServiceRequestOutputTables() {
         if(statsToggle){
             switch (curentServiceRequest) {
                 case ReqTypes.flowReq:
-                    return (<PieChartStatsAll></PieChartStatsAll>);
+                    return (<PieChartStatsServiceRequest
+                        urlToGetStats={"/api/serviceRequests"}>
+                    </PieChartStatsServiceRequest>);
                 case ReqTypes.religReq:
-                    return (<PieChartStatsAll></PieChartStatsAll>);
+                    return (<PieChartStatsServiceRequest
+                        urlToGetStats={""}>
+                    </PieChartStatsServiceRequest>);
                 case ReqTypes.medReq:
-                    return (<PieChartStatsAll></PieChartStatsAll>);
+                    return (<PieChartStatsServiceRequest
+                        urlToGetStats={""}>
+                    </PieChartStatsServiceRequest>);
                 case ReqTypes.tranReq:
-                    return (<PieChartStatsAll></PieChartStatsAll>);
+                    return (<PieChartStatsServiceRequest
+                        urlToGetStats={""}>
+                    </PieChartStatsServiceRequest>);
                 case ReqTypes.sanReq:
-                    return (<PieChartStatsAll></PieChartStatsAll>);
+                    return (<PieChartStatsServiceRequest
+                        urlToGetStats={""}>
+                    </PieChartStatsServiceRequest>);
                 case ReqTypes.serviceRequest:
                     return (<PieChartStatsAll></PieChartStatsAll>);
                 default:
