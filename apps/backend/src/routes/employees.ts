@@ -22,6 +22,7 @@ router.post("/employee", async function (req: Request, res: Response) {
                 isAdmin: employeeData.isAdmin,
             },
         });
+        res.sendStatus(200);
         console.info("Successfully saved employee"); // Log that it was successful
     } catch (error) {
         // Log any failures
@@ -33,24 +34,24 @@ router.post("/employee", async function (req: Request, res: Response) {
 //function to update an employee's info (pass in an Employee object)
 router.post("/updateEmployee", async function (req: Request, res: Response) {
     //get the new employee info (new info is stored in an employee object)
-    const data: Employee = req.body;
+    const employeeData: Employee = req.body;
     //debug info
     console.log("Updated Info");
-    console.log(data);
+    console.log(employeeData);
 
     //query the database to update the desired employee
     try {
         await PrismaClient.employee.update({
             where: {
-                userID: data.userID
+                userID: employeeData.userID
             },
             data: {
                 //transfer all the info from the object into the database
-                userName: data.userName,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                designation: data.designation,
-                isAdmin: data.isAdmin
+                userName: employeeData.userName,
+                firstName: employeeData.firstName,
+                lastName: employeeData.lastName,
+                designation: employeeData.designation,
+                isAdmin: employeeData.isAdmin
             }
         });
         //debug info to let us know that the employee was successfully updated
@@ -299,12 +300,15 @@ router.get("/current_employee", async function (req: Request, res: Response) {
         console.info("\nSuccessfully gave you the employee\n");
     } catch (err) {
         console.error("\nUnable to send employees\n");
+        res.sendStatus(400);
     }
 });
 
 
 router.get("/determineIfUniqueEmail", async function (req: Request, res: Response)  {
-    const emailStr: string = req.query.string as string;
+    //param is specified in frontend to have an attribute of "email", which is what req.query is referencing
+    const emailStr: string = req.query.email as string;
+    // console.log("\n\n\n\nEmail String: " + emailStr + "\n\n\n");
     try {
         if(PrismaClient.employee.findUnique( {
             where : {
@@ -316,7 +320,7 @@ router.get("/determineIfUniqueEmail", async function (req: Request, res: Respons
         }
         res.send(true);
     } catch {
-        console.log("Did not work");
+        console.log("Could not figure out if email was already in the database");
         res.sendStatus(400);
     }
 });

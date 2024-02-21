@@ -64,21 +64,46 @@ export default function RegisterForm() {
             //thisEmail stores the email which was entered into auth0
             console.log('User found');
             setCurrEmail(JSON.stringify(thisEmail));
-            axios.get("api/employees/determineIfUniqueEmail", {params: {status: thisEmail}}).then((result) => {
+            // console.log("Curr: " + currEmail);
+            // console.log("this: " + thisEmail);
+            axios.get("api/employees/determineIfUniqueEmail", {params: {email: thisEmail}}).then((result) => {
                 // console.log("Result: " + result.data);
                 inDB = result.data;
-            });
-        }
+                // console.log("\n\n\n\nResult: " + result.data);
+                if(inDB)
+                {
+                    // console.log("\n\n\n\nHERE 3\n\n\n\n");
 
-        //check if the email is not null
-        if(thisEmail) {
 
-            //if the employee is in the database already (based on the email), then update the employee info with new login stuff
-            if (inDB) {
+                    //create a new employee with the updated info
+                    const employee: Employee = {
+                            userID: thisEmail,
+                            userName: username,
+                            firstName: firstName,
+                            lastName: lastName,
+                            designation: Roles.None,
+                            isAdmin: false,
+                    };
 
-                //create a new employee with the updated info
-                const employee: Employee =
-                    {
+
+                    console.log("thisEmail: " + thisEmail);
+                    console.log("currEmail: + " + currEmail);
+
+                    //send the new employee data to the database and update the employee
+                    axios.post("/api/employees/updateEmployee", employee, {
+                        headers: {
+                            "Content-Type": "application/json",
+                        }
+                    }).then((param) => {
+                        //if there is a problem with registering the employee's info, error out here
+                        if (param.status == 400) {
+                            console.log("There was an error updating employee! WEEE WOOOOO WEEEEE WOOOO");
+                        }
+                    });
+                }
+                else {
+                    //create the new employee
+                    const employee: Employee = {
                         userID: thisEmail,
                         userName: username,
                         firstName: firstName,
@@ -86,32 +111,72 @@ export default function RegisterForm() {
                         designation: Roles.None,
                         isAdmin: false,
                     };
-                console.log("thisEmail: " + thisEmail);
-                console.log("currEmail: + " + currEmail);
+
+                    // console.log("\n\n\n\n\n\n\n\nHEHEHEHEHEHHEHRREREREEREEEEEE\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                    // console.log("thisEmail: " + thisEmail);
+                    // console.log("currEmail: + " + currEmail);
+
+                    //backend functionality for new employees
+                    //this will map to our backend and register a new account with Auth0
+                    axios.post("/api/employees/employee", employee, {
+                        headers: {
+                            "Content-Type": "application/json",
+                        }
+                    }).then((response) => {
+                        //if there is an issue with posting, log it here
+                        if (response.status == 400) {
+                            console.log("There was an error with saving the employee again");
+                        }
+                    });
+                }
+                //window.location.href = "http://localhost:3000/RequestList";
+            });
+        }
+
+
+        //check if the email is not null
+        // if(thisEmail) {
+
+            //if the employee is in the database already (based on the email), then update the employee info with new login stuff
+            // if (inDB) {
+                // console.log("\n\n\n\nHERE 3\n\n\n\n");
+
+                //create a new employee with the updated info
+                // const employee: Employee =
+                //     {
+                //         userID: thisEmail,
+                //         userName: username,
+                //         firstName: firstName,
+                //         lastName: lastName,
+                //         designation: Roles.None,
+                //         isAdmin: false,
+                //     };
+                // console.log("thisEmail: " + thisEmail);
+                // console.log("currEmail: + " + currEmail);
 
                 //send the new employee data to the database and update the employee
-                axios.post("/api/employees/updateEmployee", employee, {
-                    headers: {
-                        "Content-Type": "application/json",
-                    }
-                }).then((param) => {
-                    //if there is a problem with registering the employee's info, error out here
-                    if (param.status == 400) {
-                        console.log("There was an error updating employee! WEEE WOOOOO WEEEEE WOOOO");
-                    }
-                });
-            }
-            else            //if it is a new employee, then register stuff into database
-            {
+                // axios.post("/api/employees/updateEmployee", employee, {
+                //     headers: {
+                //         "Content-Type": "application/json",
+                //     }
+                // }).then((param) => {
+                //     //if there is a problem with registering the employee's info, error out here
+                //     if (param.status == 400) {
+                //         console.log("There was an error updating employee! WEEE WOOOOO WEEEEE WOOOO");
+                //     }
+                // });
+            // }
+            // else            //if it is a new employee, then register stuff into database
+            // {
                 //create the new employee
-                const employee: Employee = {
-                    userID: thisEmail,
-                    userName: username,
-                    firstName: firstName,
-                    lastName: lastName,
-                    designation: Roles.None,
-                    isAdmin: false,
-                };
+                // const employee: Employee = {
+                //     userID: thisEmail,
+                //     userName: username,
+                //     firstName: firstName,
+                //     lastName: lastName,
+                //     designation: Roles.None,
+                //     isAdmin: false,
+                // };
 
                 // console.log("\n\n\n\n\n\n\n\nHEHEHEHEHEHHEHRREREREEREEEEEE\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                 // console.log("thisEmail: " + thisEmail);
@@ -119,20 +184,20 @@ export default function RegisterForm() {
 
                 //backend functionality for new employees
                 //this will map to our backend and register a new account with Auth0
-                axios.post("/api/employees/employee", employee, {
-                    headers: {
-                        "Content-Type": "application/json",
-                    }
-                }).then((response) => {
-                    //if there is an issue with posting, log it here
-                    if (response.status == 400) {
-                        console.log("There was an error with saving the employee again");
-                    }
-                });
+                // axios.post("/api/employees/employee", employee, {
+                //     headers: {
+                //         "Content-Type": "application/json",
+                //     }
+                // }).then((response) => {
+                //     //if there is an issue with posting, log it here
+                //     if (response.status == 400) {
+                //         console.log("There was an error with saving the employee again");
+                //     }
+                // });
 
-                //window.location.href = "http://localhost:3000/RequestList";
-            }
-        }
+                // window.location.href = "http://localhost:3000/RequestList";
+            // }
+        // }
 
     }
 
