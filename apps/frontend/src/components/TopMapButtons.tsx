@@ -42,26 +42,28 @@ export default function TopMapButtons({setSelectedFloorIndex:setFloor,
     }
 
     return (
-        <div className="z-10 max-h-10 flex mt-5 justify-content-center">
+        <div className="z-10 h-10 flex mt-5 justify-content-center">
             <div className={"flex flex-col"}>
                 <MapSearchBar endNode={endNode} locations={locations} setEndNode={setEndNode}
                               setStartNode={setStartNode}
                               startNode={startNode}/>
                 <div className={"ml-5 mt-1"}>
                     <CreateDropdown
-                        dropBtnName={"PLACEHOLDER SEARCH TYPE"} dropdownID={"Search Type"} populationArr={searchOptions}
+                        dropBtnName={"Search Type"} dropdownID={"Search Type"} populationArr={searchOptions}
                         isSearchable={false}
                         resetOnSelect={false} resetDropdown={resetDropdown}
                         setResetDropdown={setResetDropdown} setSelected={setSelectedAlgoIndex}
                         inputCSS={""}
-                        selectCSS={"transition-all hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}></CreateDropdown>
+                        selectCSS={"transition-all hover:bg-navy w- text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}></CreateDropdown>
                 </div>
-                <div className={"ml-5 mt-1"}>
-                    {
-                        textDirections.map((direction)=>{
-                            return <div>{direction}</div>;
-                        })
-                    }
+                <div className="flex flex-col border-gray-500 border-2 w-60 h-48 ml-5 mt-1 bg-white rounded-3xl p-2">
+                    <div className="overflow-y-scroll overflow-x-hidden">
+                        {textDirections.map((direction, index) => (
+                            <div key={index} className="flex w-full rounded-3xl pl-2 pr-2 pt-1 pb-1 bg-gray-200 m-2">
+                                {direction}
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
 

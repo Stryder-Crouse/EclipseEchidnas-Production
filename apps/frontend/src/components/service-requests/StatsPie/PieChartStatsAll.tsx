@@ -114,7 +114,7 @@ function PieChartStatsAll(){
     }, []);
 
     return (
-        <div className="flex justify-evenly m-auto h-full w-full">
+        <div className="flex  flex-row justify-evenly m-auto h-full w-full">
             <PieChartStatsPriority stats={prioStats}></PieChartStatsPriority>
             <PieChartStatsType stats={reqStats}></PieChartStatsType>
             <PieChartStatsStatus stats={assignedStats}></PieChartStatsStatus>

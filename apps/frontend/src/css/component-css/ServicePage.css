@@ -37,7 +37,7 @@
 }
 
 .tabs-container {
-
+    transform: scale(110%);
     padding: 16px;
     margin: 7.5% auto auto;
     width: 65%;
@@ -49,7 +49,6 @@
 
     border-radius: 16px;
     background-color: #F1F1F1;
-    box-shadow: 8px -9px 114px 0px rgba(217,217,217,1);
 
     /*proberly should get rid of this*/
     /*transform: scale(1.5);*/
@@ -66,7 +65,7 @@
     flex-direction: column;
 
 
-
+    margin-top: 0.75rem;
     transition: all 0.45s ease-in-out;
     padding: 0 16px;
     transform: scale(95%);

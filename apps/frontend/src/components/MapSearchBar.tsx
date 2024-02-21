@@ -51,10 +51,10 @@ export default function MapSearchBar({startNode:startNode,setStartNode:setStartN
                             selectCSS={""}
              resetOnSelect={true} setResetDropdown={setResetDropdown}>
             </CreateDropdown>
-            <div className={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white"}>
+            <div className={"w-60 p-2 rounded-3xl border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white"}>
                 <b>Start: </b>{startNode.longName}
             </div>
-            <div className={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white"}>
+            <div className={"w-60 p-2 rounded-3xl border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white"}>
                 <b>End: </b>{endNode.longName}
             </div>
 
