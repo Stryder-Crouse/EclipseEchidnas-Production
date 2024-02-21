@@ -309,7 +309,11 @@ router.get("/determineIfUniqueEmail", async function (req: Request, res: Respons
     //param is specified in frontend to have an attribute of "email", which is what req.query is referencing
     const emailStr: string = req.query.email as string;
     // console.log("\n\n\n\nEmail String: " + emailStr + "\n\n\n");
+
     try {
+        const answer = await PrismaClient.employee.findUnique({where:{userID:emailStr}});
+        console.log("Prisma Response: " + answer);
+
         if(PrismaClient.employee.findUnique( {
             where : {
                 userID: emailStr

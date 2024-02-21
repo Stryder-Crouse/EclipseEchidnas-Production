@@ -69,7 +69,7 @@ export default function RegisterForm() {
             axios.get("api/employees/determineIfUniqueEmail", {params: {email: thisEmail}}).then((result) => {
                 // console.log("Result: " + result.data);
                 inDB = result.data;
-                // console.log("\n\n\n\nResult: " + result.data);
+                console.log("\n\n\n\nResult: " + result.data);
                 if(inDB)
                 {
                     // console.log("\n\n\n\nHERE 3\n\n\n\n");
@@ -129,7 +129,7 @@ export default function RegisterForm() {
                         }
                     });
                 }
-                window.location.href = "http://localhost:3000/RequestList";
+                // window.location.href = "http://localhost:3000/RequestList";          //todo RYAN
             });
         }
 
