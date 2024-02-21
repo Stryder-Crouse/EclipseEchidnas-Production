@@ -1,7 +1,6 @@
 import MapSearchBar from "./MapSearchBar.tsx";
 import {FloorToIndex, Node} from "../../../backend/src/algorithms/Graph/Node.ts";
-import {Dispatch, SetStateAction, useState} from "react";
-import {CreateDropdown} from "./CreateDropdown.tsx";
+import {Dispatch, SetStateAction} from "react";
 
 
 export interface levelStates{
@@ -16,55 +15,31 @@ export interface levelStates{
 }
 
 
-
-const searchOptions:string[] = ["A*","BFS","DFS"];
-
-
 export default function TopMapButtons({setSelectedFloorIndex:setFloor,
                                           startNode:startNode,
                                           setStartNode:setStartNode,
                                       endNode:endNode,
                                           setEndNode:setEndNode,
                                           locations:locations,
-                                        setPathFindingType:setPathFindingType,
+                                          setPathFindingType:setPathFindingType,
                                           textDirections
                                       }:levelStates) {
 
-    const [selectedAlgoIndex, setSelectedAlgoIndex] =useState(-1);
 
-
-    const [resetDropdown, setResetDropdown] = useState(false);
-
-
-    if(selectedAlgoIndex!=-1){
-        setPathFindingType(searchOptions[selectedAlgoIndex]);
-        setSelectedAlgoIndex(-1);
-    }
 
     return (
         <div className="z-10 h-10 flex mt-5 justify-content-center">
             <div className={"flex flex-col"}>
-                <MapSearchBar endNode={endNode} locations={locations} setEndNode={setEndNode}
-                              setStartNode={setStartNode}
-                              startNode={startNode}/>
-                <div className={"ml-5 mt-1"}>
-                    <CreateDropdown
-                        dropBtnName={"Search Type"} dropdownID={"Search Type"} populationArr={searchOptions}
-                        isSearchable={false}
-                        resetOnSelect={false} resetDropdown={resetDropdown}
-                        setResetDropdown={setResetDropdown} setSelected={setSelectedAlgoIndex}
-                        inputCSS={""}
-                        selectCSS={"transition-all hover:bg-navy w- text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}></CreateDropdown>
-                </div>
-                <div className="flex flex-col border-gray-500 border-2 w-60 h-48 ml-5 mt-1 bg-white rounded-3xl p-2">
-                    <div className="overflow-y-scroll overflow-x-hidden">
-                        {textDirections.map((direction, index) => (
-                            <div key={index} className="flex w-full rounded-3xl pl-2 pr-2 pt-1 pb-1 bg-gray-200 m-2">
-                                {direction}
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                <MapSearchBar
+                    endNode={endNode}
+                    locations={locations}
+                    setEndNode={setEndNode}
+                    setStartNode={setStartNode}
+                    startNode={startNode}
+                    setPathFindingType={setPathFindingType}  
+                    setSelectedFloorIndex={setFloor}        
+                 textDirections={textDirections}/>
+
             </div>
 
             <button
