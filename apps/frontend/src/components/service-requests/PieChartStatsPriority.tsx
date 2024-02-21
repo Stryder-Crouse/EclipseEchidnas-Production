@@ -24,7 +24,16 @@ const PieChartStatsPriority = () =>{
         ]
     };
     const options= {
-
+        plugins: {
+            legend: {
+                labels: {
+                    font: {
+                        size: 20,
+                        family: "sans-serif"
+                    }
+                }
+            }
+        }
     };
     return(
         <div>
