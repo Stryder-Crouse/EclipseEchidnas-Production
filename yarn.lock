@@ -2198,6 +2198,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"auth0@npm:^4.3.1":
+  version: 4.3.1
+  resolution: "auth0@npm:4.3.1"
+  dependencies:
+    jose: "npm:^4.13.2"
+    uuid: "npm:^9.0.0"
+  checksum: 0fb7073718a376d38ec6e59a7a69e02adcc448b6126b2615104e346241aa4abe15fca8362d0d57497d3020e632fabbce06ccea0c8b1385e0325a312fa92a928b
+  languageName: node
+  linkType: hard
+
 "autoprefixer@npm:^10.4.17":
   version: 10.4.17
   resolution: "autoprefixer@npm:10.4.17"
@@ -2258,6 +2268,7 @@ __metadata:
     "@types/node": "npm:^20.2.3"
     "@types/pg": "npm:^8.10.1"
     "@types/supertest": "npm:^2.0.12"
+    auth0: "npm:^4.3.1"
     common: "workspace:*"
     cookie-parser: "npm:~1.4.4"
     database: "workspace:*"
@@ -5188,7 +5199,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jose@npm:^4.13.1, jose@npm:^4.14.4":
+"jose@npm:^4.13.1, jose@npm:^4.13.2, jose@npm:^4.14.4":
   version: 4.15.4
   resolution: "jose@npm:4.15.4"
   checksum: 20fa941597150dffc7af3f41d994500cc3e71cd650b755243dbd80d91cf26c1053f95b78af588f05cfc4371e492a67c5c7a48f689b8605145a8fe28b484d725b
@@ -8701,6 +8712,15 @@ __metadata:
   bin:
     uuid: ./bin/uuid
   checksum: 3834a826020a23fca314116c2becddc7f5d756b0280d630b58a65e700afeefd89d78ae97ddbdea5dcad497666cda6e9b0390ba74508e650d43d83a32d1e7cd19
+  languageName: node
+  linkType: hard
+
+"uuid@npm:^9.0.0":
+  version: 9.0.1
+  resolution: "uuid@npm:9.0.1"
+  bin:
+    uuid: dist/bin/uuid
+  checksum: 9d0b6adb72b736e36f2b1b53da0d559125ba3e39d913b6072f6f033e0c87835b414f0836b45bcfaf2bdf698f92297fea1c3cc19b0b258bc182c9c43cc0fab9f2
   languageName: node
   linkType: hard
 

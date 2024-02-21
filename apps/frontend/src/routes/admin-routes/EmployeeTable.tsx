@@ -41,6 +41,7 @@ function EmployeeTable() {
 
 
 
+
     /* populate the requests */
     useEffect(()=>{
         getEmployees().then((result)=>setEmployees(result));
@@ -294,26 +295,54 @@ function EmployeeTable() {
 
         const data:string[] = [employee.userName];
 
+        //username is param
+        const responce = await axios.post("/api/cascadeDelete", {params: {username: data[0]}});
+        console.log("Response: " + responce);
+
         //RYAN
         // const axios = require('axios');
-        const initialInfo: string = "https://login.auth0.com/api/v2/users/auth0|65d6564d5ac7907e90f2f8f7";
-        //initialInfo += data[0];
 
-        try
-        {
-            const config = {
-                method: 'delete',
-                maxBodyLength: Infinity,
-                url: initialInfo,
-                headers: {}
-            };
-
-            axios.request(config).then((response) => {
-                console.log("Response from Auth0 deleting" + JSON.stringify(response.data));
-            });
-        } catch {
-            console.log("Error with deleting from Auth0");
-        }
+        // const initialInfo: string = "https://dev-hca27okc2srfyen8.us.auth0.com/api/v2/auth0|65d66bda0177410b09a14e3c";
+        // //initialInfo += data[0];
+        // let accessToken = await getAccessTokenSilently({
+        //     authorizationParams: {
+        //         audience: "https://dev-hca27okc2srfyen8.us.auth0.com/api/v2/",
+        //         scope: "read:current_users",
+        //     }
+        // });
+        //
+        // console.log("User: " + user!.sub);
+        //
+        // const userDetails = `https://dev-hca27okc2srfyen8.us.auth0.com/api/v2/users/${user!.sub}`;
+        //
+        // console.log("User Details:" + userDetails);
+        //
+        // const response = await fetch(userDetails, {
+        //     headers: {
+        //         Authorization: `Bearer ${accessToken}`,
+        //     }
+        // });
+        //
+        // console.log((await response.json()));
+        //
+        //
+        // try
+        // {
+        //     const config = {
+        //         method: 'delete',
+        //         maxBodyLength: Infinity,
+        //         url: initialInfo,
+        //         headers: {
+        //             "authorization": "Bearer TOKEN"
+        //         }
+        //     };
+        //
+        //     axios.request(config).then((response) => {
+        //         console.log("Response from Auth0 deleting" + JSON.stringify(response.data));
+        //     });
+        // } catch {
+        //     console.log("Error with deleting from Auth0");
+        // }
 
 
         await axios.post("/api/employees/deleteEmployee",
