@@ -7,6 +7,7 @@ import EmployeeIcon from "../../images/SideBar/user.png";
 import CSVIcon from "../../images/SideBar/table.png";
 import LogIcon from "../../images/SideBar/log-in.png";
 import AboutPageIcon from "../../images/SideBar/about-pageIcon.png";
+import ServiceRequestStats from "../../components/service-requests/ServiceRequestStats.tsx";
 
 function RequestList() {
 
@@ -23,6 +24,7 @@ function RequestList() {
                 <SideBarItem icon={AboutPageIcon} text="About" link="/AboutPage"/>
             </SideNavBarComponent>
             <ServiceRequestOutputTables></ServiceRequestOutputTables>
+            <ServiceRequestStats></ServiceRequestStats>
         </div>
     );
 
