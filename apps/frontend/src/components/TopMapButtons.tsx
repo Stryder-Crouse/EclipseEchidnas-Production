@@ -49,17 +49,17 @@ export default function TopMapButtons({setSelectedFloorIndex:setFloor,
                               startNode={startNode}/>
                 <div className={"ml-5 mt-1"}>
                     <CreateDropdown
-                        dropBtnName={"PLACEHOLDER SEARCH TYPE"} dropdownID={"Search Type"} populationArr={searchOptions}
+                        dropBtnName={"Search Type"} dropdownID={"Search Type"} populationArr={searchOptions}
                         isSearchable={false}
                         resetOnSelect={false} resetDropdown={resetDropdown}
                         setResetDropdown={setResetDropdown} setSelected={setSelectedAlgoIndex}
                         inputCSS={""}
                         selectCSS={"transition-all hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}></CreateDropdown>
                 </div>
-                <div className={"ml-5 mt-1"}>
+                <div className={"border-gray-500 border-2 w-60 h-60 ml-5 mt-1 bg-white rounded-3xl p-2 "}>
                     {
                         textDirections.map((direction)=>{
-                            return <div>{direction}</div>;
+                            return <div className={"w-[90%] rounded-3xl pl-2 pr-2 pt-1 pb-1 bg-gray-200 m-2"}>{direction}</div>;
                         })
                     }
                 </div>
