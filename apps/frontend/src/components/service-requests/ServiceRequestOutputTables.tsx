@@ -119,6 +119,7 @@ export default function ServiceRequestOutputTables() {
             </ul>
             <div className="tab-content-wrapper">
 
+
                 <div className={"filterDiv"}>
                     <div className={"statusFilterDiv"}>
                         <label form={"designation"}><b>Status</b></label>
@@ -176,8 +177,44 @@ export default function ServiceRequestOutputTables() {
 
                     </div>
                     <div className={"statusFilterDiv"}>
+                        <label form={"designation"}><b>Location</b></label>
+                        <select
+                            className={"bg-transparent"}
+                            value={locationFilter}
+                            onChange={
+                                (e) => {
+                                    //console.log(e.target.value);
+                                    setLocationFilter(e.target.value);
+                                }
+                            }
+                        >
+                            <option
+                                className={"statis-dropdown"}
+                                value={"Any"}
+
+                            >
+                                Any
+                            </option>
+                            {
+                                locations?.map((loc) => {
+                                    return (
+                                        <option
+                                            className={"statis-dropdown"}
+                                            value={loc.nodeID}
+                                            key={loc.nodeID + "_location"}
+                                        >
+                                            {loc.nodeID}
+                                        </option>
+                                    );
+                                })
+
+                            }
+                        </select>
+                    </div>
+                    <div className={"statusFilterDiv"}>
                         <label form={"designation"}><b>Employee</b></label>
                         <select
+                            className={"bg-transparent w-32"}
                             value={employeeFilter}
                             onChange={
                                 (e) => {
@@ -211,57 +248,26 @@ export default function ServiceRequestOutputTables() {
                         </select>
 
                     </div>
-                    <div className={"statusFilterDiv"}>
-                        <label form={"designation"}><b>Location</b></label>
-                        <select
-                            value={locationFilter}
-                            onChange={
-                                (e) => {
-                                    //console.log(e.target.value);
-                                    setLocationFilter(e.target.value);
-                                }
-                            }
-                        >
-                            <option
-                                className={"statis-dropdown"}
-                                value={"Any"}
 
-                            >
-                                Any
-                            </option>
-                            {
-                                locations?.map((loc) => {
-                                    return (
-                                        <option
-                                            className={"statis-dropdown"}
-                                            value={loc.nodeID}
-                                            key={loc.nodeID + "_location"}
-                                        >
-                                            {loc.nodeID}
-                                        </option>
-                                    );
-                                })
-
-                            }
-                        </select>
-                    </div>
-
-                    {/*toggle*/}
-                    <label className="flex items-center cursor-pointer ml-2">
-                        <input type="checkbox"
-                               checked={statsToggle}
-                               className="sr-only peer"
-                               onChange={(event) => {
-                                   setStatsToggle(event.target.checked);
-                               }}
-                        />
-                        <div
-                            className=" relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300
+                        {/*toggle*/}
+                        <label className="flex items-center cursor-pointer ml-2 bg-transparent">
+                            <input type="checkbox"
+                                   checked={statsToggle}
+                                   className="sr-only peer"
+                                   onChange={(event) => {
+                                       setStatsToggle(event.target.checked);
+                                   }}
+                            />
+                            <div
+                                className=" relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300
                             dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
                             peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border
                             after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                        <span className="ml-1"><b>Stats</b></span>
-                    </label>
+                            <span className="ml-1"><b>Stats</b></span>
+                        </label>
+
+
+
                 </div>
 
                 {/* the content to be populated with each request*/}
