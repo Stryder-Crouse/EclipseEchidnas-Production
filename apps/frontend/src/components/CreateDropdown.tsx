@@ -85,9 +85,10 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, runOnChan
                 />
                 <datalist className="dropbtn" id={datalistID}>
                     {
-                        populationArr.map((option: string) => <option
-                                                                      className={"dropdown-content"}>{option}</option>)
-                        //key={dropdownID+option}
+                        //make all the options from the populationArr, and give them all unique keys
+                        populationArr.map((option: string, index:number) =>
+                            <option key={dropdownID+option+"_"+index}
+                                    className={"dropdown-content"}>{option}</option>)
                     }
                 </datalist>
 
@@ -100,10 +101,16 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, runOnChan
                     setValueCorrectly(e.target.selectedIndex - 1);
                     /*accounts for the extra unselectable option with the placeholder text*/
                 }}>
-                    <option disabled={true} selected={true} className={"dropdown-content unselectable"}>{dropBtnName}</option>
+                    {/*make the first, unselectable option*/}
+                    <option disabled={true}
+                            selected={true}
+                            key={dropdownID+"_unselectable"}
+                            className={"dropdown-content unselectable"}>{dropBtnName}</option>
                     {
-                        populationArr.map((option: string) => <option  className={"dropdown-content"}>{option}</option>)
-                        //key={dropdownID+option+"s"}
+                        //make the rest of the options from the populationArr, and give them all unique keys
+                        populationArr.map((option: string, index) => <option
+                            key={dropdownID+option+"_"+index}
+                            className={"dropdown-content"}>{option}</option>)
                     }
                 </select>
 

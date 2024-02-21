@@ -160,10 +160,10 @@ export default function Flower_input({
                         onChange={handlePriority}
                         className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
                     >
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
-                        <option value="emergency">Emergency</option>
+                        <option key="flower_priorityType_low" value="low">Low</option>
+                        <option key="flower_priorityType_med" value="medium">Medium</option>
+                        <option key="flower_priorityType_high" value="high">High</option>
+                        <option key="flower_priorityType_emerg" value="emergency">Emergency</option>
                     </select>
                 </div>
 
