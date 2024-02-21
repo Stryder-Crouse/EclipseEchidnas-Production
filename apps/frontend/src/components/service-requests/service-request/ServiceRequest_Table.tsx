@@ -81,6 +81,7 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter}:requ
                                 <th className={"tableTD"}>{request.reqType}</th>
                                 <th className={"tableTD"}>
                                     <select
+                                        className={"bg-transparent"}
                                         value={request.status}
                                         id={"medStatusDropdown" + request.reqID}
                                         onChange={
@@ -98,6 +99,7 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter}:requ
                                 </th>
                                 <th className={"tableTD"}>
                                     <select
+                                        className={"bg-transparent"}
                                         value={request.reqPriority}     //sets dropdown to request's value
                                         id={"medStatusDropdown" + request.reqID}
                                         onChange={
@@ -115,6 +117,7 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter}:requ
                                 </th>
                                 <th className={"tableTD"}>
                                     <select
+                                        className={"bg-transparent"}
                                         value={request.assignedUName}
                                         onChange={
                                             (event) => {

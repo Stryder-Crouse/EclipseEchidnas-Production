@@ -18,9 +18,9 @@ function AboutPage(){
             <div className="flex">
                 <FullSideNavBarComponent/>
             </div>
-            <div className="mt-7 flex flex-col m-auto">
-                <p className="mb-5 flex font-bold justify-center p-3 bg-white rounded-lg shadow dark:bg-gray-800">ABOUT</p>
-                <div className="flex flex-row">
+            <div className="mt-5 flex flex-col m-auto">
+                <p className="mb-1 m-auto flex font-bold justify-center p-3 bg-white rounded-lg w-72 shadow dark:bg-gray-800">ABOUT THE DEVELOPERS</p>
+                <div className="flex flex-row scale-95">
                     <div className="flex grid grid-cols-6 gap-4">
                         <ImageCard img={StryderPic} name={"Stryder Crouse"} role={"Team Lead"}>
                         </ImageCard>
@@ -64,14 +64,15 @@ function AboutPage(){
                             time to come and review the work done by the teams.</p>
                     </div>
                 </div>
-                <footer className="mt-5 justify-center bg-white rounded-lg shadow dark:bg-gray-800 drop-shadow-xl">
-                    <div className="w-full p-4 md:flex md:items-center md:justify-between">
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                        © The Brigham & Women’s Hospital maps and data used in this
-                        application are copyrighted and provided for the sole use of educational purposes.
-                    </span>
+                <footer className="scale-95 justify-center bg-white rounded-lg shadow dark:bg-gray-800 drop-shadow-xl">
+                    <div className="text-center p-4 md:flex md:items-center md:justify-between">
+                        <span className="text-sm text-gray-500 dark:text-gray-400">
+                            © The Brigham & Women’s Hospital maps and data used in this
+                            application are copyrighted and provided for the sole use of educational purposes.
+                        </span>
                     </div>
                 </footer>
+
             </div>
         </div>
     );
@@ -85,7 +86,9 @@ export function ImageCard({img, name, role}: imageProps) {
 
     return (
         <div
-            className="w-[10vw] rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all">
+            className="w-[10vw] rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl
+            hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all
+            hover:scale-105">
             <img className="h-fit w-full " src={img} alt="Stryder"/>
             <div className="px-6 py-4">
                 <div className="font-bold text-xl mb-2 text-center">{name}</div>
