@@ -19,7 +19,7 @@ const PieChartStatsStatus = () =>{
             {
                 label: 'Service Request Type',
                 data:[7, 2, 5, 15],
-                backgroundColor: ["red", "blue", "green", "orange"]
+                backgroundColor: ["#BA1215", "#003a96", "#0C8750", "#FFBA08"]
             }
         ]
     };

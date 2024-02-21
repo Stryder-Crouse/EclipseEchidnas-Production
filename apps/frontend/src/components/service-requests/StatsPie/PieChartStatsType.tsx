@@ -18,8 +18,8 @@ const PieChartStatsType = () => {
         datasets: [
             {
                 label: 'Service Request Type',
-                data: [3, 8, 10, 5],
-                backgroundColor: ["red", "blue", "green", "orange"]
+                data: [3, 8, 10, 5, 11],
+                backgroundColor: ["#BA1215", "#003a96", "#0C8750", "#FFBA08", "#4F5459"]
             }
         ]
     };

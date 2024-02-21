@@ -19,7 +19,7 @@ const PieChartStatsPriority = () =>{
             {
                 label: 'Priority',
                 data:[10, 15, 5, 2],
-                backgroundColor: ["red", "blue", "green", "orange"]
+                backgroundColor: ["#BA1215", "#003a96", "#0C8750", "#FFBA08"]
             }
         ]
     };
