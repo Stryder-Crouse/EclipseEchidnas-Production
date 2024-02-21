@@ -12,6 +12,7 @@ import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataB
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {closeTransportCard} from "../../service-request-cards/TransportationRequestCard.tsx";
 //import LocationsDropDown from "../../navigation-bar/LocationsDropDown.tsx";
+import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";
 
 let longNames:string[] = [];
 
@@ -104,13 +105,13 @@ export default function Transportation_Input({
     }
 
     function show() {
-        const tag: HTMLElement = document.getElementById("popup") as HTMLElement;
+        const tag: HTMLElement = document.getElementById("transport-popup") as HTMLElement;
         tag.style.opacity = "1";
         interID = setInterval(fadeEffect, 100);
     }
 
     function fadeEffect() {
-        const target = document.getElementById("popup") as HTMLElement;
+        const target = document.getElementById("transport-popup") as HTMLElement;
         let opacity = target.style.opacity;
         if(Number(opacity) >= 0.97) {
             opacity = (Number(opacity) - 0.001).toString();
@@ -154,19 +155,19 @@ export default function Transportation_Input({
                             className={"mr-1"}
                             htmlFor={"priority"}
                         >Priority Level: </label>*/}
-                    <select
-                        className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
-                        value={priority}
-                        id={"priority"}
-                        onChange={(e) => setPriority(e.target.value as PriorityLevel)}
-                    >
-                        <option value={PriorityLevel.Unchosen}>Priority:</option>
-                        <option value={PriorityLevel.Low}>Low</option>
-                        <option value={PriorityLevel.Medium}>Medium</option>
-                        <option value={PriorityLevel.High}>High</option>
-                        <option value={PriorityLevel.Emergency}>Emergency</option>
-                    </select>
-                </div>
+                        <select
+                            className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
+                            value={priority}
+                            id={"priority"}
+                            onChange={(e) => setPriority(e.target.value as PriorityLevel)}
+                        >
+                            <option value={PriorityLevel.Unchosen}>Priority </option>
+                            <option value={PriorityLevel.Low}>Low</option>
+                            <option value={PriorityLevel.Medium}>Medium</option>
+                            <option value={PriorityLevel.High}>High</option>
+                            <option value={PriorityLevel.Emergency}>Emergency</option>
+                        </select>
+                    </div>
 
                 {/*patient name*/}
                 <SimpleTextInput id={"patientName"} labelContent={"Patient Name:"} inputStorage={patientName}
@@ -216,15 +217,15 @@ export default function Transportation_Input({
                     </select>
                 </div>
 
-                <div className={"grid justify-center items-center my-1.5 mb-2"}> {/* Additional notes textbox */}
-                    <textarea
-                        className={"p-1 min-h-full h-20 w-60 bg-white text-black rounded-xl border border-black drop-shadow align-text-top"}
-                        id={"additional"}
-                        placeholder={"Additional Notes:"}
-                        value={additional}
-                        onChange={(e) => setAdditional(e.target.value)}
-                    />
-                </div>
+                    <div className={"grid justify-center items-center my-1.5 mb-2"}> {/* Additional notes textbox */}
+                        <textarea
+                            className={"p-1 min-h-full h-20 w-60 bg-white text-black rounded-xl border border-black drop-shadow align-text-top"}
+                            id={"additional"}
+                            placeholder={"Extra Info:"}
+                            value={additional}
+                            onChange={(e) => setAdditional(e.target.value)}
+                        />
+                    </div>
 
 
                 <RequestButtons submit={submit}/>
@@ -236,12 +237,11 @@ export default function Transportation_Input({
                     "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-5"}>
                     Close
                 </button>
-                <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
-                    <h3>
-                        Successfully submitted!
-                    </h3>
-                </div>
+
                 <p className={"flex justify-center items-center mt-5"}>Created By: Michael and Ryan</p>
+            </div>
+            <div id={"transport-popup"} className={"text-center flex justify-center m-auto opacity-0 "}>
+                <RequestSubmitToast/>
             </div>
         </div>
     );

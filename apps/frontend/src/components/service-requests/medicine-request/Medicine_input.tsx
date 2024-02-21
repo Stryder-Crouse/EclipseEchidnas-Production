@@ -9,7 +9,7 @@ import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import {closeMedicineCard} from "../../service-request-cards/MedicineRequestCard.tsx";
 //import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
-
+import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";
 let longNames:string[] = [];
 
 export default function Medicine_input({
@@ -31,6 +31,8 @@ export default function Medicine_input({
 
     let interID = setInterval(fadeEffect, 100);
     clearInterval(interID);
+
+    const [extraInfo, setExtraInfo] = useState("");
 
     useEffect(()=>{
         getLocations().then(
@@ -95,13 +97,13 @@ export default function Medicine_input({
     }
 
     function show() {
-        const tag: HTMLElement = document.getElementById("popup") as HTMLElement;
+        const tag: HTMLElement = document.getElementById("med-popup") as HTMLElement;
         tag.style.opacity = "1";
         interID = setInterval(fadeEffect, 100);
     }
 
     function fadeEffect() {
-        const target = document.getElementById("popup") as HTMLElement;
+        const target = document.getElementById("med-popup") as HTMLElement;
         let opacity = target.style.opacity;
         if(Number(opacity) >= 0.97) {
             opacity = (Number(opacity) - 0.001).toString();
@@ -148,7 +150,7 @@ export default function Medicine_input({
                 </div>
 
 
-                <SimpleTextInput id={"medRequestType"} labelContent={"Medicine Type"} inputStorage={medRequestType}
+                <SimpleTextInput id={"medRequestType"} labelContent={"Medicine Name"} inputStorage={medRequestType}
                                  setInputStorage={setMedRequestType}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
@@ -156,19 +158,28 @@ export default function Medicine_input({
                 </SimpleTextInput>
 
 
-                <SimpleTextInput id={"medRequestDose"} labelContent={"Medicine Dose"} inputStorage={medRequestDoses}
+                <SimpleTextInput id={"medRequestDose"} labelContent={"Medicine Strength"} inputStorage={medRequestDoses}
                                  setInputStorage={setMedRequestDose}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
                                  placeHolderText={""}>
                 </SimpleTextInput>
 
-                <SimpleTextInput id={"medRequestDosage"} labelContent={"Amount"} inputStorage={medRequestDosage}
-                                 setInputStorage={setMedRequestDosage}
-                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
-                                 placeHolderText={""}>
-                </SimpleTextInput>
+                    <SimpleTextInput id={"medRequestDosage"} labelContent={"Amount"} inputStorage={medRequestDosage}
+                                     setInputStorage={setMedRequestDosage}
+                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
+                                     placeHolderText={""}>
+                    </SimpleTextInput>
+                    <div className={"grid justify-center items-center my-1.5 mb-1"}>
+                    <textarea placeholder={"Extra Info: "}
+                              className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
+                              onChange={(e) => setExtraInfo(e.target.value)}
+                              id={"service"}
+                              value={extraInfo}
+                              required>
+                    </textarea>
+                    </div>
 
                 <RequestButtons submit={submit}/>
 
@@ -178,12 +189,11 @@ export default function Medicine_input({
                     "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-5"}>
                     Close
                 </button>
-                <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
-                    <h3>
-                        Successfully submitted!
-                    </h3>
-                </div>
+
                 <p className={"flex justify-center items-center mt-5"}>Created By: Alex and Antonio</p>
+            </div>
+            <div id={"med-popup"} className={"text-center flex justify-center m-auto opacity-0 "}>
+                <RequestSubmitToast/>
             </div>
         </div>
 
