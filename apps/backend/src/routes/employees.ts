@@ -300,4 +300,5 @@ router.get("/current_employee", async function (req: Request, res: Response) {
         console.error("\nUnable to send employees\n");
     }
 });
+
 export default router;
