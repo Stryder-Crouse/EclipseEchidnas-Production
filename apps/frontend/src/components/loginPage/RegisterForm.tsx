@@ -86,8 +86,8 @@ export default function RegisterForm() {
                     };
 
 
-                    console.log("thisEmail: " + thisEmail);
-                    console.log("currEmail: + " + currEmail);
+                    // console.log("thisEmail: " + thisEmail);
+                    // console.log("currEmail: + " + currEmail);
 
                     //send the new employee data to the database and update the employee
                     axios.post("/api/employees/updateEmployee", employee, {
@@ -114,7 +114,7 @@ export default function RegisterForm() {
 
                     // console.log("\n\n\n\n\n\n\n\nHEHEHEHEHEHHEHRREREREEREEEEEE\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
                     // console.log("thisEmail: " + thisEmail);
-                    // console.log("currEmail: + " + currEmail);
+                    console.log("(To avoid error) currEmail: " + currEmail);
 
                     //backend functionality for new employees
                     //this will map to our backend and register a new account with Auth0
