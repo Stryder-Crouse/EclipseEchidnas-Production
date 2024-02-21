@@ -32,7 +32,7 @@ function PieChartStatsType({stats}:pieTypeStats){
                 position: 'bottom',
                 labels: {
                     font: {
-                        size: 20,
+                        size: 16,
                         family: "sans-serif"
                     }
                 }
