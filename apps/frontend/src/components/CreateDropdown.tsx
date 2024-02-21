@@ -5,6 +5,9 @@ export interface DropdownProps{
     dropdownID:string,
     populationArr: string[],
     isSearchable: boolean,
+
+    runOnChange: ()=>void,
+
     resetOnSelect: boolean,
     resetDropdown: boolean,
     setResetDropdown: React.Dispatch<React.SetStateAction<boolean>>,
@@ -13,7 +16,7 @@ export interface DropdownProps{
     selectCSS:string
 }
 
-export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populationArr, setSelected, resetDropdown,
+export function CreateDropdown({dropBtnName, dropdownID, isSearchable, runOnChange, populationArr, setSelected, resetDropdown,
                                    setResetDropdown, inputCSS, resetOnSelect}: DropdownProps) {
 
     //every time this is reloaded, check to see if we need to reset the value of the dropdown
@@ -49,6 +52,7 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
 
     function setValueCorrectly(index:number){
         //const value = populationArr[index];
+        runOnChange();
         setSelected(index);
         if(resetOnSelect){
             resetInputBox();

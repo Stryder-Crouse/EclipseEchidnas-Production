@@ -98,8 +98,10 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                                     }
                                                 >
                                                     {
-                                                        request[2].map((employee) =>
-                                                            renderEmployees(employee, request[0].genReqID.toString()))
+                                                        request[2].map((employee) =>{
+                                                            console.log("\n\n");
+                                                            return renderEmployees(employee, request[0].genReqID.toString());
+                                                        })
                                                     }
                                                 </select>
                                             </td>
@@ -115,6 +117,7 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
     );
 
     function renderEmployees(employee: Employee, religID: string) {
+        console.log(employee.userName+",");
         return (
             <option
 

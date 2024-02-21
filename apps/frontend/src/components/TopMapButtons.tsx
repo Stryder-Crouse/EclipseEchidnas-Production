@@ -49,6 +49,7 @@ export default function TopMapButtons({setSelectedFloorIndex:setFloor,
                               startNode={startNode}/>
                 <div className={"ml-5 mt-1"}>
                     <CreateDropdown
+                        runOnChange={()=>{return -1;}}
                         dropBtnName={"PLACEHOLDER SEARCH TYPE"} dropdownID={"Search Type"} populationArr={searchOptions}
                         isSearchable={false}
                         resetOnSelect={false} resetDropdown={resetDropdown}

@@ -47,6 +47,7 @@ export default function MapSearchBar({startNode:startNode,setStartNode:setStartN
             <CreateDropdown dropBtnName={selectedText} dropdownID={"Location"} isSearchable={true}
                             populationArr={longNames} resetDropdown={resetDropdown}
                              setSelected={setSelected}
+                            runOnChange={()=>{return -1;}}
                             inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
                             selectCSS={""}
              resetOnSelect={true} setResetDropdown={setResetDropdown}>

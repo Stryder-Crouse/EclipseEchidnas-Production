@@ -331,13 +331,13 @@ router.get("/medReq", async function (req: Request, res: Response) {
 
             const medReqs = await PrismaClient.medReq.findMany({
                 orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                    genReqID: "desc", //order by service request id so the two arrays are parallel
                 }
             });
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "medication"
@@ -357,7 +357,7 @@ router.get("/medReq", async function (req: Request, res: Response) {
 
             const medReqs = await PrismaClient.medReq.findMany({
                 orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                    genReqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     genReq: {
@@ -369,7 +369,7 @@ router.get("/medReq", async function (req: Request, res: Response) {
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "medication",
@@ -527,14 +527,14 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
 
             const transportReq = await PrismaClient.outsideTransport.findMany({
                 orderBy: {
-                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                    serviceReqID: "desc", //order by service request id so the two arrays are parallel
                 }
 
             });
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "transportation"
@@ -556,7 +556,7 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
 
             const transportReq = await PrismaClient.outsideTransport.findMany({
                 orderBy: {
-                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                    serviceReqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     serviceReq: {
@@ -568,7 +568,7 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "transportation",
@@ -727,13 +727,13 @@ router.get("/sanReq", async function (req: Request, res: Response) {
 
             const sanReq = await PrismaClient.sanReq.findMany({
                 orderBy: {
-                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                    serviceReqID: "desc", //order by service request id so the two arrays are parallel
                 }
             });
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "sanitation"
@@ -753,7 +753,7 @@ router.get("/sanReq", async function (req: Request, res: Response) {
 
             const sanReq = await PrismaClient.sanReq.findMany({
                 orderBy: {
-                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                    serviceReqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     serviceReq: {
@@ -765,7 +765,7 @@ router.get("/sanReq", async function (req: Request, res: Response) {
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "sanitation",
@@ -939,12 +939,12 @@ router.get("/flowReq", async function (req: Request, res: Response) {
             //try to send all the nodes to the client
             const flowReqs = await PrismaClient.flowReq.findMany({
                 orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                    genReqID: "desc", //order by service request id so the two arrays are parallel
                 },
             });
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: ReqTypes.flowReq,
@@ -956,7 +956,7 @@ router.get("/flowReq", async function (req: Request, res: Response) {
             //try to send all the nodes to the client
             const flowReqs = await PrismaClient.flowReq.findMany({
                 orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                    genReqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     genReq: {
@@ -966,7 +966,7 @@ router.get("/flowReq", async function (req: Request, res: Response) {
             });
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: ReqTypes.flowReq,
@@ -1116,19 +1116,20 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
 
             const religReq = await PrismaClient.religiousReq.findMany({
                 orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                    genReqID: "desc", //order by service request id so the two arrays are parallel
                 }
             });
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "religious"
                 }
             });
 
+            //even though we use push later, we should still use const here
             const employeeReq =
                 [[await PrismaClient.employee.upsert({
                     //upsert without update is essentially "find or create"
@@ -1146,17 +1147,36 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
                     },
                 })]];
 
+            //get all the data out of the database using religReqs' religion fields
             religReq.map(async (request, index) => {
                     const nextEmployeeArr = await religEmployees(request.religion);
-                    if(nextEmployeeArr != undefined) {
+                    if(index == 0 && nextEmployeeArr != undefined){ //remove the "No one" array from the first slot
+                        employeeReq[0] = nextEmployeeArr;
+                    }
+                    else if(nextEmployeeArr != undefined) {
                         employeeReq.push(nextEmployeeArr);
                     }
                     else{
                         console.error("nextEmployeeArr at index "+index+" of the religious requests list" +
                             " was undefined!\n");
-                        res.sendStatus(500);
+                        employeeReq.push([await PrismaClient.employee.upsert({
+                            //upsert without update is essentially "find or create"
+                            where: {
+                                userID: "0"
+                            },
+                            update: {},
+                            create: {
+                                userID:"0",
+                                userName: "No one",
+                                firstName: "N/A",
+                                lastName: "N/A",
+                                designation: "N/A",
+                                isAdmin: false,
+                            },
+                        })]);
                     }
             });
+            console.log(employeeReq);
 
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects
             res.send([religReq, serviceReqs, employeeReq]);
@@ -1172,7 +1192,7 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
 
             const religReq = await PrismaClient.religiousReq.findMany({
                 orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                    genReqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     genReq: {
@@ -1184,7 +1204,7 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "religious",
