@@ -1,11 +1,12 @@
 import express, {Router, Request, Response} from "express";
 import PrismaClient from "../bin/database-connection.ts";
 import {Employee} from "../algorithms/Employee/Employee.ts";
-import multer from "multer";
 import fs from "fs";
+import {readEmployeeCSV} from "../algorithms/readCSV.ts";
+import multer from "multer";
 
 const router: Router = express.Router();
-const upload: multer.Multer = multer({dest: 'uploadedCSVs/'});
+const upload = multer({dest: 'uploadedCSVs/'});
 
 /**
  * import the oh my goodnesses into the badness
@@ -29,14 +30,39 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
     const employeeDataString: string = fs.readFileSync(employeeFile[0].path, "utf-8");
 
     /* turn the string into an array of employees */
-    console.log(employeeDataString);
-    console.log(upload);
+    const employeeArray: Array<Employee> = readEmployeeCSV(employeeDataString);
+
+    /* stryder's prisma */
+    try {
+        /* DROP TABLE * */
+        await PrismaClient.$transaction([
+            PrismaClient.edgeDB.deleteMany(),
+            PrismaClient.medReq.deleteMany(),
+            PrismaClient.sanReq.deleteMany(),
+            PrismaClient.religiousReq.deleteMany(),
+            PrismaClient.outsideTransport.deleteMany(),
+            PrismaClient.flowReq.deleteMany(),
+            PrismaClient.serviceRequest.deleteMany(),
+            PrismaClient.nodeDB.deleteMany(),
+            PrismaClient.employee.deleteMany()
+        ]);
+
+        /* shove it into a clean prisma */
+        await PrismaClient.employee.createMany({data: employeeArray});
+    }
+
+    /* yikes case */
+    catch (error) {
+        console.error("handleCSVImport: failed to put CSV into prisma: " + error);
+        res.sendStatus(500); // and send 204
+        return;
+    }
 
     /* we did it */
     res.status(200).send("ok, nice");
 }
 
-router.post("/employee_csv_import", handleCSVImport);
+router.route("/employee_csv_import").post(upload.single("csv"), handleCSVImport);
 
 //post one employee into the database
 router.post("/employee", async function (req: Request, res: Response) {
@@ -55,6 +81,7 @@ router.post("/employee", async function (req: Request, res: Response) {
             },
         });
         console.info("Successfully saved employee"); // Log that it was successful
+        res.sendStatus(200);
     } catch (err) {
         // Log any failures
         console.error("Unable to save employee" + err);

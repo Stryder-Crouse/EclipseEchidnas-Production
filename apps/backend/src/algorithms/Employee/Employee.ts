@@ -1,4 +1,3 @@
-
 /** Type to store employees*/
 export type Employee = {
     userID: string;

@@ -16,14 +16,12 @@ function ExportImportButtonEmployee() {
         /* put the data from the input element into a file */
         let employeeFileData: File;
         employeeInputElement.onchange = async (e: Event) => {
+            /* crank it */
             employeeFileData = (e.target as HTMLInputElement).files[0];
-            console.log("new employee file type Just Dropped");
-            console.log(employeeFileData.name);
-            console.log(employeeFileData.type);
-
             const fileData: FormData = new FormData();
             fileData.append("csv", employeeFileData);
 
+            /* send it to backend */
             try {
                 await axios.post("/api/employees/employee_csv_import", fileData, {
                     headers: {
@@ -31,7 +29,7 @@ function ExportImportButtonEmployee() {
                     },
                 });
             } catch (err) {
-                throw new Error("Error with loading Employees");
+                console.error("importEmployee: axios didn't like the CSV: " + err);
             }
         };
 
