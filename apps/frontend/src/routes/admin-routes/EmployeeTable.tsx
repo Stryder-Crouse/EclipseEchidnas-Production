@@ -296,8 +296,8 @@ function EmployeeTable() {
 
         //RYAN
         // const axios = require('axios');
-        let initialInfo: string = "https://login.auth0.com/api/v2/users/";
-        initialInfo += data[0];
+        const initialInfo: string = "https://login.auth0.com/api/v2/users/auth0|65d6564d5ac7907e90f2f8f7";
+        //initialInfo += data[0];
 
         try
         {
