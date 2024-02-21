@@ -1,6 +1,7 @@
 
 /** Type to store employees*/
 export type Employee = {
+    userID: string;
     userName: string;
     firstName: string;
     lastName: string;
@@ -16,6 +17,17 @@ export enum Roles {
     janitor = "janitor",
     flowerDeliverer = "flower deliverer",
     religiousPersonnel = "religious personnel",
-    None="None"
+    buddhistPersonnel = "Buddhist personnel",
+    catholicPersonnel = "Catholic personnel",
+    mormonPersonnel = "Mormon personnel",
+    christianPersonnel = "Christian (non-denominational) personnel",
+    protestantPersonnel = "Protestant personnel",
+    hinduPersonnel = "Hindu personnel",
+    muslimPersonnel = "Muslim personnel",
+    jainPersonnel = "Jain personnel",
+    jewishPersonnel = "Jewish personnel",
+    sikhPersonnel = "Sikh personnel",
+    shintoPersonnel = "Shinto personnel",
+    None = "None"
     //nurse_and_flower_deliverer = "nurse and flower deliverer"
 }

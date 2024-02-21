@@ -10,6 +10,7 @@ import loadNodes from "./routes/loadNodes.ts";
 import loadEdges from "./routes/loadEdges.ts";
 import employees from "./routes/employees.ts";
 
+
 const app: Express = express(); // Setup the backend
 
 // Setup generic middlewear

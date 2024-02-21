@@ -7,7 +7,7 @@ import {ReqTypes} from "../../../../backend/src/algorithms/Requests/Request.ts";
 import Flower_table from "./flower-request/Flower_table.tsx";
 import Religious_table from "./religious-request/Religious_table.tsx";
 import Medicine_table from "./medicine-request/Medicine_table.tsx";
-import status from "../../../../backend/src/algorithms/Requests/Status.ts";
+import Status from "../../../../backend/src/algorithms/Requests/Status.ts";
 
 import Transportation_table from "./transportation-outside-request/Transportation_table.tsx";
 import Sanitation_table from "./sanitation-request/Sanitation_table.tsx";
@@ -15,13 +15,13 @@ import ServiceRequest_Table from "./service-request/ServiceRequest_Table.tsx";
 
 
 
-const statuses = [status.Any,status.Unassigned,status.Assigned,status.InProgress,status.Completed];
+const statuses = [Status.Any,Status.Unassigned,Status.Assigned,Status.InProgress,Status.Completed];
 
 
 export default function ServiceRequestOutputTables() {
 
 
-    const [statusFilter , setStatusFilter ] = useState(status.Any);
+    const [statusFilter , setStatusFilter ] = useState(Status.Any);
 
     const [curentServiceRequest , setCurentServiceRequest ] = useState(ReqTypes.serviceRequest);
     console.log(curentServiceRequest);
@@ -92,7 +92,7 @@ export default function ServiceRequestOutputTables() {
                             value={statusFilter}
                             onChange={
                                 (e) => {
-                                    setStatusFilter(e.target.value as status);
+                                    setStatusFilter(e.target.value as Status);
                                 }
                             }
                         >
@@ -112,6 +112,8 @@ export default function ServiceRequestOutputTables() {
                             }
                         </select>
                     </div>
+
+
                 </div>
 
                 {/* the content to be populated with each request*/}
