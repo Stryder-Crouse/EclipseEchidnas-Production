@@ -4,7 +4,7 @@ import ServiceRequestIcon from "../images/SideBar/requestIcon.png";
 import EmployeeIcon from "../images/SideBar/user.png";
 import CSVIcon from "../images/SideBar/table.png";
 import LogIcon from "../images/SideBar/log-in.png";
-import AboutPageIcon from "../images/SideBar/users-round.png";
+import AboutPageIcon from "../images/SideBar/about-pageIcon.png";
 import SameerPic from "../images/Team/Sameer.png";
 import ChrisPic from "../images/Team/Chris.png";
 import MikePic from "../images/Team/Mike.png";
@@ -13,23 +13,14 @@ import SzymPic from "../images/Team/Szymon.png";
 import GracePic from "../images/Team/Grace.png";
 import AJPic from "../images/Team/AJ.png";
 import AlanaPic from "../images/Team/Alana.png";
-import ShiivekPic from "../images/Team/Shiivek.jpg";
+import ShiivekPic from "../images/Team/Shiivek.png";
 import AlexPic from "../images/Team/Alex.png";
 import StryderPic from "../images/Team/Stryder.png";
 import WongPic from "../images/Team/Wong.jpg";
 
 function AboutPage(){
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const myStyle = {
-            backgroundImage:
-                "url('https://lithespeed.com/wp-content/uploads/2021/04/testimonial-bg.jpg')",
-            height: "100vh",
-            backgroundSize: "cover",
-            backgroundRepeat: "no-repeat",
-        };
     return(
         <div className={"flex h-lvh flex-row"}>
-
             <div className="flex">
                 <div className="z-10">
                     <SideNavBarComponent>
@@ -37,14 +28,14 @@ function AboutPage(){
                         <SideBarItem icon={ServiceRequestIcon} text="Services" link="ServiceRequest"/>
                         <SideBarItem icon={EmployeeIcon} text="Employees" link="/EmployeeTable"/>
                         <SideBarItem icon={CSVIcon} text=".CSV" link="/NodeEdgeTable"/>
-                        <SideBarItem icon={AboutPageIcon} text="About" link="/AboutPage"/>
                         <hr className="my-3"/>
                         <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"}/>
+                        <SideBarItem icon={AboutPageIcon} text="About" link="/AboutPage"/>
                     </SideNavBarComponent>
                 </div>
             </div>
-            <div className="flex flex-col m-auto">
-                <p className="flex font-bold text-center">THE TEAM</p>
+            <div className="mt-7 flex flex-col m-auto">
+                <p className="mb-5 flex font-bold justify-center p-3 bg-white rounded-lg shadow dark:bg-gray-800">ABOUT</p>
                 <div className="flex flex-row">
                     <div className="flex grid grid-cols-6 gap-4">
                         <ImageCard img={StryderPic} name={"Stryder Crouse"} role={"Team Lead"}>
@@ -73,25 +64,25 @@ function AboutPage(){
                         </ImageCard>
                     </div>
                     <div
-                        className="flex justify-center flex-col m-4 h-332 w-[200px] p-4 border-4">
-                        <h1 className=" flex font-bold text-center ...">ABOUT</h1>
-                        <p className="flex font-bold text-center ...">DEPARTMENT</p>
-                        <p className="flex text-center ...">WPI Computer Science Department</p>
-                        <p className="flex font-bold text-center ...">COURSE</p>
-                        <p className="flex text-center ...">CS3733-C24 Software Engineering</p>
-                        <p className="flex font-bold text-center ...">INSTRUCTOR</p>
-                        <p className="flex text-center ...">Prof. Wilson Wong</p>
-                        <p className="flex font-bold text-center ...">TEAM COACH</p>
-                        <p className="flex text-center ...">Joseph Cardarelli</p>
-                        <p className="flex font-bold text-center ...">SPECIAL THANKS</p>
-                        <p className="flex text-center ...">A special thank you to Brigham and Women’s Hospital
+                        className="flex justify-center flex-col ml-4 h-332 w-[200px] p-4 border-4 rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer">
+                        {/*<h1 className="flex font-bold justify-center">ABOUT</h1>*/}
+                        <p className="flex font-bold justify-center">DEPARTMENT</p>
+                        <p className="flex text-center justify-center">WPI Computer Science Department</p>
+                        <p className="flex font-bold justify-center">COURSE</p>
+                        <p className="flex justify-center text-center">CS3733-C24 Software Engineering</p>
+                        <p className="flex font-bold justify-center">INSTRUCTOR</p>
+                        <p className="flex justify-center">Prof. Wilson Wong</p>
+                        <p className="flex font-bold justify-center">TEAM COACH</p>
+                        <p className="flex justify-center">Joseph Cardarelli</p>
+                        <p className="flex font-bold justify-center">SPECIAL THANKS</p>
+                        <p className="flex justify-center text-center">A special thank you to Brigham and Women’s Hospital
                             for their continued partnership and to Andrew Shin for taking the
                             time to come and review the work done by the teams.</p>
                     </div>
                 </div>
-                <footer className="align-self-end bg-white rounded-lg shadow m-4 dark:bg-gray-800">
-                    <div className="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
-                    <span className="text-center text-sm text-gray-500 sm:text-center dark:text-gray-400">
+                <footer className="mt-5 justify-center bg-white rounded-lg shadow dark:bg-gray-800 drop-shadow-xl">
+                    <div className="w-full p-4 md:flex md:items-center md:justify-between">
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
                         © The Brigham & Women’s Hospital maps and data used in this
                         application are copyrighted and provided for the sole use of educational purposes.
                     </span>
@@ -122,6 +113,5 @@ export function ImageCard({img, name, role}: imageProps) {
 
     );
 }
-
 
 export default AboutPage;

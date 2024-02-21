@@ -13,9 +13,7 @@ import FullSideNavBarComponent from "../../components/FullSideNavBarComponent.ts
 
 
 const designations = [Roles.None,Roles.nurse,Roles.doctor,Roles.admin,
-    Roles.janitor,Roles.flowerDeliverer,Roles.religiousPersonnel,
-    Roles.buddhistPersonnel, Roles.catholicPersonnel, Roles.christianPersonnel, Roles.mormonPersonnel, Roles.protestantPersonnel,
-    Roles.jainPersonnel, Roles.jewishPersonnel, Roles.muslimPersonnel, Roles.sikhPersonnel, Roles.shintoPersonnel];
+    Roles.janitor,Roles.flowerDeliverer,Roles.religiousPersonnel];
 
 function EmployeeTable() {
     
@@ -30,8 +28,6 @@ function EmployeeTable() {
     const [newDesignation, setNewDesignation] = useState(Roles.None);
     // const [resetDesignation, setResetDesignation] = useState(false);
     const [editIndex, setEditIndex] = useState(-1);
-
-
 
 
 
@@ -167,7 +163,7 @@ function EmployeeTable() {
                         >{formSubmitText()}</button>
                     </div>
                     <div>
-                        <button type={"button"} className={"submitButtonEmployee"}onClick={closeForm}>Close</button>
+                        <button type={"button"} className={"submitButtonEmployee"} onClick={closeForm}>Close</button>
                     </div>
                 </form>
             </div>
