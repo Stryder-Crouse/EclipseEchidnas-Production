@@ -13,7 +13,7 @@ import SzymPic from "../images/Team/Szymon.png";
 import GracePic from "../images/Team/Grace.png";
 import AJPic from "../images/Team/AJ.png";
 import AlanaPic from "../images/Team/Alana.png";
-import ShiivekPic from "../images/Team/Shiivek.jpg";
+import ShiivekPic from "../images/Team/Shiivek.png";
 import AlexPic from "../images/Team/Alex.png";
 import StryderPic from "../images/Team/Stryder.png";
 import WongPic from "../images/Team/Wong.jpg";
