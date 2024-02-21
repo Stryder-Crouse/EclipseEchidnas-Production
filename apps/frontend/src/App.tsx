@@ -5,6 +5,7 @@ import ProtectedAdminMap from "./components/protected-pages/ProtectedAdminMap.ts
 import ServiceRequestPage from "./routes/ServiceRequestPage.tsx";
 import ProtectedRequestList from "./components/protected-pages/ProtectedRequestList.tsx";
 import ProtectedNodeEdgeTable from "./components/protected-pages/ProtectedNodeEdgeTable.tsx";
+import AboutPage from './components/AboutPage.tsx';
 //import GuestMap from "./routes/guest-routes/GuestMap.tsx";
 import ProtectedEmployeeTable from "./components/protected-pages/ProtectedEmployeeTable.tsx";
 import TailwindMapPage from "./routes/TailwindMapPage.tsx";
@@ -56,6 +57,10 @@ function App() {
                 {
                     path: "/TestServiceReqPage",
                         element: <TestServiceReqPage/>,
+                },
+                {
+                    path: "/AboutPage",
+                    element: <AboutPage/>,
                 },
             ],
         },
