@@ -42,7 +42,7 @@ model EdgeDB {
 model MedReq {
   medReqID         Int      @id @unique @default(autoincrement())
   patientName      String   @db.VarChar(256)
-  patientDOB       DateTime
+  patientDOB       Date
   patientMedRecNum Int
   medName          String   @db.VarChar(256) //new "medName"
   medStrength      String   @db.VarChar(256) //new "medStrength"

@@ -311,7 +311,7 @@ router.post("/medReq", async function (req: Request, res: Response) {
         res.send(200);
     } catch (error) {
         // Log any failures
-        console.error(`Unable to save Med Req`);
+        console.error(`Unable to save Med Req\n`);
         res.sendStatus(400); // Send error
     }
 });
