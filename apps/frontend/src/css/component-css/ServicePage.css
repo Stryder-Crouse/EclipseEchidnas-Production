@@ -22,13 +22,15 @@
 
 }
 
-.statusFilterDiv{
+.statusFilterDiv {
     max-width: 20vw;
-    max-height:13vh ;
+    height: 13vh; /* Add this line to explicitly set the height */
     background-color: #E1E1E1;
     border-radius: 10px;
     padding: 8px;
+    margin-right: 1.5rem;
 }
+
 
 .tabs-container {
 
@@ -42,7 +44,7 @@
 
     border-radius: 16px;
     background-color: #F1F1F1;
-    box-shadow: 8px -9px 114px 0 rgba(217,217,217,1);
+
 
     /*proberly should get rid of this*/
     /*transform: scale(1.5);*/

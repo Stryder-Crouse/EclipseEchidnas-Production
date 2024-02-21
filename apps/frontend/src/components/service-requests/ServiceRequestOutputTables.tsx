@@ -100,7 +100,7 @@ export default function ServiceRequestOutputTables() {
                        onClick={() => {
                            setCurentServiceRequest(ReqTypes.tranReq);
                        }}>
-                        Transportation Request
+                        Transport Request
                     </a>
                 </li>
                 <li>
@@ -115,7 +115,7 @@ export default function ServiceRequestOutputTables() {
             </ul>
 
             <div className="tab-content-wrapper">
-                <div className={"flex"}>
+                <div className={"flex h-24 mb-4"}>
 
                     <div className={"statusFilterDiv"}>
                         <label form={"designation"}><b>Priority</b></label><br/>
@@ -221,6 +221,7 @@ export default function ServiceRequestOutputTables() {
 
 
                 </div>
+
                 {
                     generateSelectedTable()
                 }
