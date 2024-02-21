@@ -171,9 +171,7 @@ export function readEmployeeCSV(rawEmployeeString: string | null): Array<Employe
         const employeeDataByLine: Array<string> = employeeLine.split(CSV_SEP);
 
         /* if the data is valid */
-        if (employeeDataByLine.length == EMPLOYEE_FIELD_LEN &&
-            typeof(employeeDataByLine[EMPLOYEE_FIELD_LEN - 1]) == "boolean") {
-
+        if (employeeDataByLine.length == EMPLOYEE_FIELD_LEN) {
             /* make the new Employee */
             const newEmployee: Employee = {
                 userID : employeeDataByLine[0],

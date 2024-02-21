@@ -16,12 +16,12 @@ const upload = multer({dest: 'uploadedCSVs/'});
  */
 async function handleCSVImport(req: Request, res: Response): Promise<void> {
     /* What the FUCK */
-    console.log("Employee CSV import requested");
+    console.log("handleCSVImport: Employee CSV import requested");
 
     /* Deadass */
     const employeeFile: Express.Multer.File[] = req.files as Express.Multer.File[];
     if (employeeFile == null) {
-        console.error("employee file was FUCKED");
+        console.error("handleCSVImport: employee file was FUCKED");
         res.status(500).send("FUCK");
         return;
     }
@@ -62,7 +62,7 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
     res.status(200).send("ok, nice");
 }
 
-router.route("/employee_csv_import").post(upload.single("csv"), handleCSVImport);
+router.route("/employee_csv_import").post(upload.array("csv", 1), handleCSVImport);
 
 //post one employee into the database
 router.post("/employee", async function (req: Request, res: Response) {
