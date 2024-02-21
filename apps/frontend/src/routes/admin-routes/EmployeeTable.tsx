@@ -38,7 +38,7 @@ function EmployeeTable() {
     },[]);
     //table-id is request-table
     return (
-        <div className="flex h-lvh flex-row overflow-x-hidden">
+        <div className="flex h-lvh flex-row overflow-hidden">
             <div className="z-10">
                 <FullSideNavBarComponent/>
             </div>
