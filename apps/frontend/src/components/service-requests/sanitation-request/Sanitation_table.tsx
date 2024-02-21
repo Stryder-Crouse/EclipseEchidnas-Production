@@ -6,7 +6,7 @@ import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.
 import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 
 
-export default function Sanitation_table({statusFilter, priorityFilter}:requestFilters) {
+export default function Sanitation_table({statusFilter, priorityFilter,employeeFilter,locationFilter}:requestFilters) {
     console.log(statusFilter);
 
     const [sanRequestList, setSanRequestList] =
@@ -21,7 +21,7 @@ export default function Sanitation_table({statusFilter, priorityFilter}:requestF
             getEmployees().then(result=> {
                 setSanEmployees(result);
             });
-            getSanRequests(statusFilter, priorityFilter).then(result=> {
+            getSanRequests(statusFilter, priorityFilter,employeeFilter,locationFilter).then(result=> {
                 setSanRequestList(result);
             });
 
@@ -31,7 +31,7 @@ export default function Sanitation_table({statusFilter, priorityFilter}:requestF
         };
 
 
-    },[statusFilter, priorityFilter]);
+    },[statusFilter, priorityFilter, employeeFilter, locationFilter]);
 
     return (
         <div>
@@ -299,11 +299,11 @@ export default function Sanitation_table({statusFilter, priorityFilter}:requestF
 
 }
 
-async function getSanRequests(statusFilter:Status, priorityFilter:Priorities) {
+async function getSanRequests(statusFilter:Status, priorityFilter:Priorities, employeeFilter:string, locationFilter:string) {
     const requests =
         await axios.get<[sanReq[], ServiceRequest[]]>("/api/serviceRequests/sanReq/filter",
             {params: {status: statusFilter, priority: priorityFilter,
-                    employee:"%", location:"%"
+                    employee:employeeFilter, location:locationFilter
                 } });
 
     const sanRequests: Array<[sanReq, ServiceRequest]> = [];

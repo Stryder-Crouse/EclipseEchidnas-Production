@@ -37,7 +37,7 @@ import {requestFilters} from "../serviceRequestInterface.ts";
 
 
 
-export default function ServiceRequest_Table({statusFilter, priorityFilter}:requestFilters) {
+export default function ServiceRequest_Table({statusFilter, priorityFilter,employeeFilter,locationFilter}:requestFilters) {
     console.log(priorityFilter);
 
 
@@ -54,9 +54,9 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter}:requ
     //will rerun every single time statusFilter is changed (updates table for new entries)
     useEffect(() => {
         //fetches servReqs from the db to update the frontend table
-        getServiceRequest(statusFilter).then((result)=>{setServiceRequests(result);});
+        getServiceRequest(statusFilter,priorityFilter,employeeFilter,locationFilter).then((result)=>{setServiceRequests(result);});
         getEmployees().then((result)=>{setEmployees(result);});
-    }, [statusFilter]);
+    }, [employeeFilter, locationFilter, priorityFilter, statusFilter]);
 
     //make table of Service Requests
     return (
@@ -337,9 +337,11 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter}:requ
 
 
 //query the Database for all service requests that fit the current filter (filter can be empty)
-async function getServiceRequest(statusFilter: Status) {
+async function getServiceRequest(statusFilter:Status, priorityFilter:Priorities, employeeFilter:string, locationFilter:string) {
     const serviceRequest =
-        await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter", {params: {status: statusFilter, priority: Priorities.any, employee: "any"}});
+        await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter", {params: {status: statusFilter, priority: priorityFilter,
+                employee:employeeFilter, location:locationFilter
+            } });
     // console.log("sss");
     // console.log(serviceRequest.data);
     return serviceRequest.data;
