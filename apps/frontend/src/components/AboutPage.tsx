@@ -19,7 +19,7 @@ function AboutPage(){
                 <FullSideNavBarComponent/>
             </div>
             <div className="mt-5 flex flex-col m-auto">
-                <p className="mb-1 m-auto flex font-bold justify-center p-3 bg-white rounded-lg w-72 shadow dark:bg-gray-800">ABOUT THE DEVELOPERS</p>
+                <p className="mb-1 m-auto flex font-bold justify-center p-3 bg-white rounded-lg w-72 shadow ">ABOUT THE DEVELOPERS</p>
                 <div className="flex flex-row scale-95">
                     <div className="flex grid grid-cols-6 gap-4">
                         <ImageCard img={StryderPic} name={"Stryder Crouse"} role={"Team Lead"}>
@@ -64,7 +64,7 @@ function AboutPage(){
                             time to come and review the work completed by all the teams.</p>
                     </div>
                 </div>
-                <footer className="scale-95 justify-center bg-white rounded-lg shadow dark:bg-gray-800 drop-shadow-xl">
+                <footer className="scale-95 justify-center bg-white rounded-lg shadow drop-shadow-xl">
                     <div className="text-center p-4 md:flex md:items-center md:justify-between">
                         <span className="text-sm text-gray-500 dark:text-gray-400">
                             © The Brigham & Women’s Hospital maps and data used in this
