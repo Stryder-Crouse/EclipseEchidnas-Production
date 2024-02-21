@@ -28,8 +28,55 @@ router.get("/serviceReq", async function (req: Request, res: Response) {
     try {
         //try to send all the nodes to the client
         //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
-        res.send(await PrismaClient.serviceRequest.findMany()); //end res.send (this is what will be sent to the client)
+        res.status(200).send(await PrismaClient.serviceRequest.findMany()); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you all of the requests\n");
+        //send status unless 6 times bug occurs
+    } catch (err) {
+        console.error("\nUnable to send requests\n" + err);
+        res.sendStatus(500); // Send error
+    }
+});
+
+// return all the stats of types, priority, status of service requests in the database
+router.get("/serviceReq/statistics", async function (req: Request, res: Response) {
+    try {
+        const statistics = await PrismaClient.serviceRequest.findMany();
+        const result = {
+            total: 0,
+            medReq: 0,
+            religReq: 0,
+            flowReq: 0,
+            sanReq: 0,
+            tranReq: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+
+        for (const entry of statistics) {
+            result.total++;
+            if (entry.reqType == "medication") result.medReq++;
+            if (entry.reqType == "religious") result.religReq++;
+            if (entry.reqType == "flower delivery") result.flowReq++;
+            if (entry.reqType == "sanitation") result.sanReq++;
+            if (entry.reqType == "transportation") result.tranReq++;
+            if (entry.reqPriority == "Low") result.lowPrio++;
+            if (entry.reqPriority == "Medium") result.medPrio++;
+            if (entry.reqPriority == "High") result.highPrio++;
+            if (entry.reqPriority == "Emergency") result.emergPrio++;
+            if (entry.status == "Unassigned") result.unassigned++;
+            if (entry.status == "Assigned") result.assigned++;
+            if (entry.status == "In Progress") result.inProgress++;
+            if (entry.status == "Completed") result.completed++;
+        }
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
         //send status unless 6 times bug occurs
         res.sendStatus(200);
     } catch (err) {
@@ -65,31 +112,31 @@ router.get("/serviceReq/filter", async function (req: Request, res: Response) {
 
         //make an instance of the type with no fields for now. This ensures that if no filter
         //  is applied to the service request, all the service requests will be sent
-        const whereCondition :WhereCondition = {};
+        const whereCondition: WhereCondition = {};
 
         //if there is a status filter, add it to the whereCondition
         if (statusFilter != null && statusFilter != Status.Any) {
             whereCondition.status = statusFilter;
         }
         //if there is a priority filter, add it to the whereCondition
-        if(priorityFilter != null && priorityFilter != Priorities.any){
+        if (priorityFilter != null && priorityFilter != Priorities.any) {
             whereCondition.reqPriority = priorityFilter;
         }
         //if there is an employee filter, add it to the whereCondition
-        if(emplFilter != null && emplFilter != "" && emplFilter.toLowerCase() != "any"){
+        if (emplFilter != null && emplFilter != "" && emplFilter.toLowerCase() != "any") {
             whereCondition.assignedUName = emplFilter;
         }
         //if there is a location filter, add it to the whereCondition
-        if(locFilter != null && locFilter != "" && locFilter.toLowerCase() != "any"){
+        if (locFilter != null && locFilter != "" && locFilter.toLowerCase() != "any") {
             whereCondition.recLocationID = locFilter;
         }
         //if there is a type filter, add it to the whereCondition
-        if(typeFilter != null && typeFilter != "" && typeFilter.toLowerCase() != "any"){
+        if (typeFilter != null && typeFilter != "" && typeFilter.toLowerCase() != "any") {
             whereCondition.type = typeFilter;
         }
 
         //send the request to the user with the specified conditions
-        res.send(await PrismaClient.serviceRequest.findMany({
+        res.status(200).send(await PrismaClient.serviceRequest.findMany({
             where: whereCondition,
             orderBy: {
                 reqID: "desc"
@@ -100,10 +147,9 @@ router.get("/serviceReq/filter", async function (req: Request, res: Response) {
 
         console.info("\nSuccessfully filtered requests\n"); //debugging info
         //send status unless 6 times bug occurs
-        res.sendStatus(200);
-    } catch {
-        console.error("\nUnable to filter requests.\n");
-        res.sendStatus(400); // Send error
+    } catch (err) {
+        console.error("\nUnable to filter requests.\n" + err);
+        res.sendStatus(500); // Send error
     }
 });
 
@@ -122,7 +168,7 @@ router.post("/changeUser", async function (req: Request, res: Response) {
         });
         if (!serviceRequest) {
             console.error(`Service Request with ID ${reqID} not found`);
-            res.sendStatus(400); // Send error
+            res.sendStatus(500); // Send error
         }
 
 
@@ -132,7 +178,7 @@ router.post("/changeUser", async function (req: Request, res: Response) {
         });
         if (!newAssignedEmployee) {
             console.error(`Employee with username ${newAssignedUser} not found`);
-            res.sendStatus(400); // Send error
+            res.sendStatus(500); // Send error
         }
 
         await PrismaClient.serviceRequest.update({
@@ -147,8 +193,8 @@ router.post("/changeUser", async function (req: Request, res: Response) {
         //send status unless 6 times bug occurs
         res.sendStatus(200);
     } catch (error) {
-        console.error("Unable to change assigned user");
-        res.sendStatus(400); // Send error
+        console.error("Unable to change assigned user" + error);
+        res.sendStatus(500); // Send error
     }
 });
 
@@ -165,7 +211,7 @@ router.post("/changeState", async function (req: Request, res: Response) {
         });
         if (!serviceRequest) {
             console.error(`Service Request with ID ${reqID} not found`);
-            res.sendStatus(400); // Send error
+            res.sendStatus(500); // Send error
         }
 
         await PrismaClient.serviceRequest.update({
@@ -177,9 +223,9 @@ router.post("/changeState", async function (req: Request, res: Response) {
         console.info("Successfully changed service request state");
         //send status unless 6 times bug occurs
         res.sendStatus(200);
-    } catch(error){
-        console.error("Unable to change service request state");
-        res.sendStatus(400); // Send error
+    } catch (error) {
+        console.error("Unable to change service request state" + error);
+        res.sendStatus(500); // Send error
     }
 });
 
@@ -196,7 +242,7 @@ router.post("/changePriority", async function (req: Request, res: Response) {
         //if there is no entry in the DB matching that service request id, then let the person know that there is an error
         if (!servReq) {
             console.error(`Service Request with ID ${reqID} not found`);
-            res.sendStatus(400); // Send error
+            res.sendStatus(500); // Send error
         }
 
 
@@ -212,9 +258,51 @@ router.post("/changePriority", async function (req: Request, res: Response) {
         //send status unless 6 times bug occurs
         res.sendStatus(200);
 
-    } catch {
-        console.error("Database issue with changing the Priority");
-        res.sendStatus(400);
+    } catch (err) {
+        console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
+    }
+});
+
+// return all the stats of types, priority, status of transport requests in the database
+router.get("/outsideTransport/statistics", async function (req: Request, res: Response) {
+    try {
+        const statistics = await PrismaClient.serviceRequest.findMany({
+            where: {
+                reqType: "transportation"
+            }
+        });
+        const result = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+
+        for (const entry of statistics) {
+            result.total++;
+            if (entry.reqPriority == "Low") result.lowPrio++;
+            if (entry.reqPriority == "Medium") result.medPrio++;
+            if (entry.reqPriority == "High") result.highPrio++;
+            if (entry.reqPriority == "Emergency") result.emergPrio++;
+            if (entry.status == "Unassigned") result.unassigned++;
+            if (entry.status == "Assigned") result.assigned++;
+            if (entry.status == "In Progress") result.inProgress++;
+            if (entry.status == "Completed") result.completed++;
+        }
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+    } catch (err) {
+        console.error("Database issue with changing the Priority: " + err);
+        res.sendStatus(500);
     }
 });
 
@@ -228,9 +316,9 @@ router.post("/removeRequest", async function (req: Request, res: Response) {
         });
         console.log("Successfully Destroyed Request");
         res.sendStatus(200);
-    } catch {
-        console.log("Error removing request");
-        res.sendStatus(400);
+    } catch (err) {
+        console.log("Error removing request" + err);
+        res.sendStatus(500);
     }
 });
 
@@ -273,7 +361,7 @@ router.post("/medReq", async function (req: Request, res: Response) {
                         //connectOrCreate makes you specify what data you will create with and also what you
                         // want to connect to (needs to know both potential outcomes)
                         create: {
-                            userID:"0",
+                            userID: "0",
                             userName: "No one",
                             firstName: "N/A",
                             lastName: "N/A",
@@ -308,11 +396,11 @@ router.post("/medReq", async function (req: Request, res: Response) {
         console.info("Successfully saved Med Req"); // Log that it was successful
         //sendback the id of the request
         //console.info("HHH " +record.genReqID);
-        res.send(200);
+        res.status(200).send("lol forgot to put something here");
     } catch (error) {
         // Log any failures
-        console.error(`Unable to save Med Req`);
-        res.sendStatus(400); // Send error
+        console.error("Unable to save Med Req" + error);
+        res.sendStatus(500); // Send error
     }
 });
 
@@ -345,10 +433,11 @@ router.get("/medReq", async function (req: Request, res: Response) {
             });
 
 
-            res.send([medReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
+            res.status(200).send([medReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
             console.info("\nSuccessfully gave you all of the medical requests\n");
         } catch (err) {
-            console.error("\nUnable to send requests\n");
+            console.error("\nUnable to send requests\n" + err);
+            res.sendStatus(500);
         }
 
     } else {
@@ -378,10 +467,11 @@ router.get("/medReq", async function (req: Request, res: Response) {
             });
 
 
-            res.send([medReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
+            res.status(200).send([medReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
             console.info("\nSuccessfully gave you all of the medical requests\n");
         } catch (err) {
-            console.error("\nUnable to send requests\n");
+            console.error("\nUnable to send requests\n" + err);
+            res.sendStatus(500);
         }
     }
 
@@ -435,7 +525,7 @@ router.get("/medReq/filter", async function (req: Request, res: Response) {
         }
 
         //send the request to the user with the specified conditions
-        res.send(await PrismaClient.serviceRequest.findMany({
+        res.status(200).send(await PrismaClient.serviceRequest.findMany({
             where: whereCondition,
             orderBy: {
                 reqID: "desc"
@@ -446,8 +536,48 @@ router.get("/medReq/filter", async function (req: Request, res: Response) {
 
         console.info("\nSuccessfully filtered requests\n"); //debugging info
         //send status unless 6 times bug occurs
-        res.sendStatus(200);
+    } catch (err) {
+        console.error("\nUnable to send requests\n" + err);
+        res.sendStatus(400); // Send error
+    }
+});
 
+// return all the stats of types, priority, status of med requests in the database
+router.get("/medReq/statistics", async function (req: Request, res: Response) {
+    try {
+        const statistics = await PrismaClient.serviceRequest.findMany({
+            where: {
+                reqType: "medication"
+            }
+        });
+        const result = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+
+        for (const entry of statistics) {
+            result.total++;
+            if (entry.reqPriority == "Low") result.lowPrio++;
+            if (entry.reqPriority == "Medium") result.medPrio++;
+            if (entry.reqPriority == "High") result.highPrio++;
+            if (entry.reqPriority == "Emergency") result.emergPrio++;
+            if (entry.status == "Unassigned") result.unassigned++;
+            if (entry.status == "Assigned") result.assigned++;
+            if (entry.status == "In Progress") result.inProgress++;
+            if (entry.status == "Completed") result.completed++;
+        }
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
     } catch (err) {
         console.error("\nUnable to send requests\n");
         res.sendStatus(400); // Send error
@@ -484,7 +614,7 @@ router.post("/outsideTransport", async function (req: Request, res: Response) {
                         //connectOrCreate makes you specify what data you will create with and also what you
                         // want to connect to (needs to know both potential outcomes)
                         create: {
-                            userID:"0",
+                            userID: "0",
                             userName: "No one",
                             firstName: "N/A",
                             lastName: "N/A",
@@ -512,8 +642,8 @@ router.post("/outsideTransport", async function (req: Request, res: Response) {
         });
         console.log("Successfully saved the Outside Transportation Request");
         res.sendStatus(200);
-    } catch {
-        console.error("Outside Transportation Request Failed");
+    } catch (error) {
+        console.error("Outside Transportation Request Failed " + error);
         res.sendStatus(400);
     }
 });
@@ -542,12 +672,12 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
             });
 
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects
-            res.send([transportReq, serviceReqs]);
+            res.status(200).send([transportReq, serviceReqs]);
             //send status unless 6 times bug occurs
-            res.sendStatus(200);
             console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
         } catch (err) {
-            console.error("\nUnable to send Requests\n");
+            console.error("\nUnable to send Requests\n" + err);
+            res.sendStatus(500);
         }
 
     } else {
@@ -576,13 +706,13 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
             });
 
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects
-            res.send([transportReq, serviceReqs]);
-            res.send([transportReq,serviceReqs]);
             //send status unless 6 times bug occurs
-            res.sendStatus(200);
+            res.status(200).send([transportReq, serviceReqs]);
+
             console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
         } catch (err) {
-            console.error("\nUnable to send Requests\n");
+            res.sendStatus(500);
+            console.error("\nUnable to send Requests\n" + err);
         }
 
     }
@@ -637,7 +767,7 @@ router.get("/outsideTransport/filter", async function (req: Request, res: Respon
         }
 
         //send the request to the user with the specified conditions
-        res.send(await PrismaClient.serviceRequest.findMany({
+        res.status(200).send(await PrismaClient.serviceRequest.findMany({
             where: whereCondition,
             orderBy: {
                 reqID: "desc"
@@ -648,10 +778,8 @@ router.get("/outsideTransport/filter", async function (req: Request, res: Respon
 
         console.info("\nSuccessfully filtered requests\n"); //debugging info
         //send status unless 6 times bug occurs
-        res.sendStatus(200);
-
     } catch (err) {
-        console.error("\nUnable to send requests\n");
+        console.error("\nUnable to send requests\n" + err);
         res.sendStatus(400); // Send error
     }
 });
@@ -709,9 +837,9 @@ router.post("/sanReq", async function (req: Request, res: Response) {
         });
         console.log("Successfully saved the Sanitation Request");
         res.sendStatus(200);
-    } catch {
-        console.error("Sanitation Request Failed");
-        res.sendStatus(400);
+    } catch (err) {
+        console.error("Sanitation Request Failed " + err);
+        res.sendStatus(500);
     }
 });
 
@@ -738,12 +866,12 @@ router.get("/sanReq", async function (req: Request, res: Response) {
             });
 
             //we display info from both the service req and the sanitation req, so we send the person both DB objects
-            res.send([sanReq,serviceReqs]);
             //send status unless 6 times bug occurs
-            res.sendStatus(200);
+            res.status(200).send([sanReq, serviceReqs]);
             console.info("\nSuccessfully gave you all of the Sanitation Requests\n");
         } catch (err) {
-            console.error("\nUnable to send Requests\n");
+            res.sendStatus(500);
+            console.error("\nUnable to send Requests\n" + err);
         }
     } else {
         try {
@@ -771,12 +899,12 @@ router.get("/sanReq", async function (req: Request, res: Response) {
             });
 
             //we display info from both the service req and the sanitation req, so we send the person both DB objects
-            res.send([sanReq,serviceReqs]);
             //send status unless 6 times bug occurs
-            res.sendStatus(200);
+            res.status(200).send([sanReq, serviceReqs]);
             console.info("\nSuccessfully gave you all of the Sanitation Requests\n");
         } catch (err) {
-            console.error("\nUnable to send Requests\n");
+            console.error("\nUnable to send Requests\n" + err);
+            res.sendStatus(500);
         }
     }
 });
@@ -828,7 +956,7 @@ router.get("/sanReq/filter", async function (req: Request, res: Response) {
         }
 
         //send the request to the user with the specified conditions
-        res.send(await PrismaClient.serviceRequest.findMany({
+        res.status(200).send(await PrismaClient.serviceRequest.findMany({
             where: whereCondition,
             orderBy: {
                 reqID: "desc"
@@ -839,8 +967,48 @@ router.get("/sanReq/filter", async function (req: Request, res: Response) {
 
         console.info("\nSuccessfully filtered requests\n"); //debugging info
         //send status unless 6 times bug occurs
-        res.sendStatus(200);
+    } catch (err) {
+        console.error("\nUnable to send requests\n" + err);
+        res.sendStatus(500); // Send error
+    }
+});
 
+// return all the stats of types, priority, status of sanitation requests in the database
+router.get("/sanReq/statistics", async function (req: Request, res: Response) {
+    try {
+        const statistics = await PrismaClient.serviceRequest.findMany({
+            where: {
+                reqType: "sanitation"
+            }
+        });
+        const result = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+
+        for (const entry of statistics) {
+            result.total++;
+            if (entry.reqPriority == "Low") result.lowPrio++;
+            if (entry.reqPriority == "Medium") result.medPrio++;
+            if (entry.reqPriority == "High") result.highPrio++;
+            if (entry.reqPriority == "Emergency") result.emergPrio++;
+            if (entry.status == "Unassigned") result.unassigned++;
+            if (entry.status == "Assigned") result.assigned++;
+            if (entry.status == "In Progress") result.inProgress++;
+            if (entry.status == "Completed") result.completed++;
+        }
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
     } catch (err) {
         console.error("\nUnable to send requests\n");
         res.sendStatus(400); // Send error
@@ -885,7 +1053,7 @@ router.post("/flowReq", async function (req: Request, res: Response) {
                         //connectOrCreate makes you specify what data you will create with and also what you
                         // want to connect to (needs to know both potential outcomes)
                         create: {
-                            userID:"0",
+                            userID: "0",
                             userName: "No one",
                             firstName: "N/A",
                             lastName: "N/A",
@@ -917,11 +1085,11 @@ router.post("/flowReq", async function (req: Request, res: Response) {
         console.info("Successfully saved Flow Req"); // Log that it was successful
         //sendback the id of the request
         //console.info("HHH " +record.genReqID);
-        res.send(200);
-    } catch (error) {
+        res.sendStatus(200);
+    } catch (err) {
         // Log any failures
-        console.error(`Unable to save Flow Req`);
-        res.sendStatus(400); // Send error
+        console.error("Unable to save Flow Req " + err);
+        res.sendStatus(500); // Send error
     }
 });
 router.get("/flowReq", async function (req: Request, res: Response) {
@@ -946,7 +1114,7 @@ router.get("/flowReq", async function (req: Request, res: Response) {
                     reqType: ReqTypes.flowReq,
                 }
             });
-            res.send([flowReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
+            res.status(200).send([flowReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
             console.info("\nSuccessfully gave you all of the flower requests\n");
         } else {
             //try to send all the nodes to the client
@@ -969,11 +1137,12 @@ router.get("/flowReq", async function (req: Request, res: Response) {
                     status: filterStatus,
                 }
             });
-            res.send([flowReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
+            res.status(200).send([flowReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
             console.info("\nSuccessfully gave you all of the flower requests\n");
         }
     } catch (err) {
-        console.error("\nUnable to send requests\n");
+        res.sendStatus(500);
+        console.error("\nUnable to send requests\n" + err);
     }
 });
 
@@ -1024,7 +1193,7 @@ router.get("/flowReq/filter", async function (req: Request, res: Response) {
         }
 
         //send the request to the user with the specified conditions
-        res.send(await PrismaClient.serviceRequest.findMany({
+        res.status(200).send(await PrismaClient.serviceRequest.findMany({
             where: whereCondition,
             orderBy: {
                 reqID: "desc"
@@ -1035,8 +1204,49 @@ router.get("/flowReq/filter", async function (req: Request, res: Response) {
 
         console.info("\nSuccessfully filtered requests\n"); //debugging info
         //send status unless 6 times bug occurs
-        res.sendStatus(200);
 
+    } catch (err) {
+        console.error("\nUnable to send requests\n" + err);
+        res.sendStatus(400); // Send error
+    }
+});
+
+// return all the stats of types, priority, status of flower requests in the database
+router.get("/flowReq/statistics", async function (req: Request, res: Response) {
+    try {
+        const statistics = await PrismaClient.serviceRequest.findMany({
+            where: {
+                reqType: "flower delivery"
+            }
+        });
+        const result = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+
+        for (const entry of statistics) {
+            result.total++;
+            if (entry.reqPriority == "Low") result.lowPrio++;
+            if (entry.reqPriority == "Medium") result.medPrio++;
+            if (entry.reqPriority == "High") result.highPrio++;
+            if (entry.reqPriority == "Emergency") result.emergPrio++;
+            if (entry.status == "Unassigned") result.unassigned++;
+            if (entry.status == "Assigned") result.assigned++;
+            if (entry.status == "In Progress") result.inProgress++;
+            if (entry.status == "Completed") result.completed++;
+        }
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
     } catch (err) {
         console.error("\nUnable to send requests\n");
         res.sendStatus(400); // Send error
@@ -1068,7 +1278,7 @@ router.post('/religiousRequest', async function (req: Request, res: Response) {
                         //connectOrCreate makes you specify what data you will create with and also what you
                         // want to connect to (needs to know both potential outcomes)
                         create: {
-                            userID:"0",
+                            userID: "0",
                             userName: "No one",
                             firstName: "N/A",
                             lastName: "N/A",
@@ -1098,8 +1308,8 @@ router.post('/religiousRequest', async function (req: Request, res: Response) {
         console.log("Successfully saved the Religious Request");
         res.sendStatus(200);
     } catch (err) {
-        console.error("Unable to save the Religious Request");
-        res.sendStatus(400);
+        console.error("Unable to save the Religious Request" + err);
+        res.sendStatus(500);
     }
 });
 router.get("/religiousRequest", async function (req: Request, res: Response) {
@@ -1125,12 +1335,12 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
             });
 
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects
-            res.send([religReq, serviceReqs]);
+            res.status(200).send([religReq, serviceReqs]);
             console.info("\nSuccessfully gave you all of the Religious Requests\n");
             //send status unless 6 times bug occurs
-            res.sendStatus(200);
         } catch (err) {
-            console.error("\nUnable to send Requests\n");
+            res.sendStatus(500);
+            console.error("\nUnable to send Requests\n" + err);
         }
     } else {
         try {
@@ -1158,12 +1368,12 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
             });
 
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects
-            res.send([religReq, serviceReqs]);
+            res.status(200).send([religReq, serviceReqs]);
             console.info("\nSuccessfully gave you all of the Religious Requests\n");
             //send status unless 6 times bug occurs
-            res.sendStatus(200);
         } catch (err) {
-            console.error("\nUnable to send Requests\n");
+            console.error("\nUnable to send Requests\n" + err);
+            res.sendStatus(500);
         }
     }
 
@@ -1193,7 +1403,7 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
         //make an instance of the type with one field that filters by religious requests
         // and no other fields. This ensures that if no filter is applied to the service request,
         // all the service requests will be sent
-        const whereCondition :WhereCondition = {
+        const whereCondition: WhereCondition = {
             reqType: "religious"
         };
 
@@ -1203,20 +1413,20 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
             whereCondition.status = statusFilter;
         }
         //if there is a priority filter, add it to the whereCondition
-        if(priorityFilter != null && priorityFilter == Priorities.any){
+        if (priorityFilter != null && priorityFilter == Priorities.any) {
             whereCondition.reqPriority = priorityFilter;
         }
         //if there is an employee filter, add it to the whereCondition
-        if(emplFilter != null && emplFilter != "" && emplFilter.toLowerCase() != "any"){
+        if (emplFilter != null && emplFilter != "" && emplFilter.toLowerCase() != "any") {
             whereCondition.assignedUName = emplFilter;
         }
         //if there is a location filter, add it to the whereCondition
-        if(locFilter != null && locFilter != "" && locFilter.toLowerCase() != "any"){
+        if (locFilter != null && locFilter != "" && locFilter.toLowerCase() != "any") {
             whereCondition.reqLocationID = locFilter;
         }
 
         //send the request to the user with the specified conditions
-        res.send(await PrismaClient.serviceRequest.findMany({
+        res.status(200).send(await PrismaClient.serviceRequest.findMany({
             where: whereCondition,
             orderBy: {
                 reqID: "desc"
@@ -1227,11 +1437,52 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
 
         console.info("\nSuccessfully filtered requests\n"); //debugging info
         //send status unless 6 times bug occurs
-        res.sendStatus(200);
 
     } catch (err) {
         console.error("\nUnable to send requests\n");
         res.sendStatus(400); // Send error
+    }
+});
+
+// return all the stats of types, priority, status of religious requests in the database
+router.get("/religiousRequest/statistics", async function (req: Request, res: Response) {
+    try {
+        const statistics = await PrismaClient.serviceRequest.findMany({
+            where: {
+                reqType: "religious"
+            }
+        });
+        const result = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+
+        for (const entry of statistics) {
+            result.total++;
+            if (entry.reqPriority == "Low") result.lowPrio++;
+            if (entry.reqPriority == "Medium") result.medPrio++;
+            if (entry.reqPriority == "High") result.highPrio++;
+            if (entry.reqPriority == "Emergency") result.emergPrio++;
+            if (entry.status == "Unassigned") result.unassigned++;
+            if (entry.status == "Assigned") result.assigned++;
+            if (entry.status == "In Progress") result.inProgress++;
+            if (entry.status == "Completed") result.completed++;
+        }
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+    } catch (err) {
+        console.error("\nUnable to send requests\n" + err);
+        res.sendStatus(500); // Send error
     }
 });
 

@@ -15,7 +15,22 @@ import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.
 
  ********/
 
-
+//todo FNFN statistics get for AJ
+//const stats = await axios.get("/api/serviceRequests/serviceReq/statistics");
+// stats.data.total is num of service requests
+// stats.data.medReq is num of med requests
+// stats.data.religReq is num of relig req
+// stats.data.flowReq is num of flow req
+// stats.data.sanReq is num of san req
+// stats.data.tranReq is number tran req
+// stats.data.lowPrio is number of low prio
+// stats.data.medPrio is num of med prio
+// stats.data.highPrio num of high prio
+// stats.data.emergPrio num of emergency prio
+// stats.data.unassigned num of unassigned
+// stats.data.assigned num of assigned
+// stats.data.inProgress num of in progress
+// stats.data.completed num of completed
 
 
 export default function ServiceRequest_Table({statusFilter:statusFilter}:statusFilter) {
@@ -45,14 +60,15 @@ export default function ServiceRequest_Table({statusFilter:statusFilter}:statusF
             {/* make your table in here  */}
             <table className={"medTable"}>
                 <thead>
-                    <tr className={"tableTRHead"}>
-                        <th className={"tableTD"}>ID</th>
-                        <th className={"tableTD"}>Priority</th>
-                        <th className={"tableTD"}>Status</th>
-                        <th className={"tableTD"}>Type</th>
-                        <th className={"tableTD"}>Location ID</th>
-                        <th className={"tableTD"}>Employee Assigned</th>
-                    </tr>
+                <tr className={"tableTRHead"}>
+                    <th className={"tableTD"}>ID</th>
+                    <th className={"tableTD"}>Type</th>
+                    <th className={"tableTD"}>Status</th>
+                    <th className={"tableTD"}>Priority</th>
+                    <th className={"tableTD"}>Employee Assigned</th>
+                    <th className={"tableTD"}>Location ID</th>
+                    <th className={"tableTD"}>Extra Notes</th>
+                </tr>
                 </thead>
                 <tbody>
                 {/*populate the table with records in the medRequests useState*/}
@@ -62,6 +78,24 @@ export default function ServiceRequest_Table({statusFilter:statusFilter}:statusF
                         return (
                             <tr className={"tableTR"}>
                                 <th className={"tableTD"}>{request.reqID}</th>
+                                <th className={"tableTD"}>{request.reqType}</th>
+                                <th className={"tableTD"}>
+                                    <select
+                                        value={request.status}
+                                        id={"medStatusDropdown" + request.reqID}
+                                        onChange={
+                                            (event) => {
+                                                const eventHTML = event.target as HTMLSelectElement;
+                                                onStatusChange(eventHTML, requestIndex).then();
+                                            }
+                                        }
+                                    >
+                                        <option className={"status-dropdown"} value="Unassigned">Unassigned</option>
+                                        <option className={"status-dropdown"} value="Assigned">Assigned</option>
+                                        <option className={"status-dropdown"} value="In Progress">In Progress</option>
+                                        <option className={"status-dropdown"} value="Completed">Completed</option>
+                                    </select>
+                                </th>
                                 <th className={"tableTD"}>
                                     <select
                                         value={request.reqPriority}     //sets dropdown to request's value
@@ -81,25 +115,6 @@ export default function ServiceRequest_Table({statusFilter:statusFilter}:statusF
                                 </th>
                                 <th className={"tableTD"}>
                                     <select
-                                        value={request.status}
-                                        id={"medStatusDropdown" + request.reqID}
-                                        onChange={
-                                            (event) => {
-                                                const eventHTML = event.target as HTMLSelectElement;
-                                                onStatusChange(eventHTML, requestIndex).then();
-                                            }
-                                        }
-                                    >
-                                        <option className={"status-dropdown"} value="Unassigned">Unassigned</option>
-                                        <option className={"status-dropdown"} value="Assigned">Assigned</option>
-                                        <option className={"status-dropdown"} value="In Progress">In Progress</option>
-                                        <option className={"status-dropdown"} value="Completed">Completed</option>
-                                    </select>
-                                </th>
-                                <th className={"tableTD"}>{request.reqType}</th>
-                                <th className={"tableTD"}>{request.reqLocationID}</th>
-                                <th className={"tableTD"}>
-                                    <select
                                         value={request.assignedUName}
                                         onChange={
                                             (event) => {
@@ -111,10 +126,12 @@ export default function ServiceRequest_Table({statusFilter:statusFilter}:statusF
                                     >
                                         {
                                             employees?.map((employee) =>
-                                            renderEmployees(employee, request.reqID.toString()))
+                                                renderEmployees(employee, request.reqID.toString()))
                                         }
                                     </select>
                                 </th>
+                                <th className={"tableTD"}>{request.reqLocationID}</th>
+                                <td className={"tableTD"}>{request.extraInfo}</td>
                             </tr>
                         );
                     })
@@ -125,16 +142,16 @@ export default function ServiceRequest_Table({statusFilter:statusFilter}:statusF
     );
 
 
-    function renderEmployees(employee:Employee,reqID:string){
+    function renderEmployees(employee: Employee, reqID: string) {
         return (
             <option
                 className={"statis-dropdown"}
-                value = {employee.userName}
-                key = {reqID+employee.userName}
+                value={employee.userName}
+                key={reqID + employee.userName}
             >
                 {(employee.firstName + " "
-                    +employee.lastName
-                    + " ("+employee.designation+")")}
+                    + employee.lastName
+                    + " (" + employee.designation + ")")}
             </option>
         );
     }
