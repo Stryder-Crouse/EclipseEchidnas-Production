@@ -259,6 +259,48 @@ router.post("/changePriority", async function (req: Request, res: Response) {
         res.sendStatus(200);
 
     } catch (err) {
+        console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
+    }
+});
+
+// return all the stats of types, priority, status of transport requests in the database
+router.get("/outsideTransport/statistics", async function (req: Request, res: Response) {
+    try {
+        const statistics = await PrismaClient.serviceRequest.findMany({
+            where: {
+                reqType: "transportation"
+            }
+        });
+        const result = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+
+        for (const entry of statistics) {
+            result.total++;
+            if (entry.reqPriority == "Low") result.lowPrio++;
+            if (entry.reqPriority == "Medium") result.medPrio++;
+            if (entry.reqPriority == "High") result.highPrio++;
+            if (entry.reqPriority == "Emergency") result.emergPrio++;
+            if (entry.status == "Unassigned") result.unassigned++;
+            if (entry.status == "Assigned") result.assigned++;
+            if (entry.status == "In Progress") result.inProgress++;
+            if (entry.status == "Completed") result.completed++;
+        }
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+    } catch (err) {
         console.error("Database issue with changing the Priority: " + err);
         res.sendStatus(500);
     }
@@ -497,6 +539,48 @@ router.get("/medReq/filter", async function (req: Request, res: Response) {
     } catch (err) {
         res.sendStatus(500);
         console.error("\nUnable to send requests\n" + err);
+    }
+});
+
+// return all the stats of types, priority, status of med requests in the database
+router.get("/medReq/statistics", async function (req: Request, res: Response) {
+    try {
+        const statistics = await PrismaClient.serviceRequest.findMany({
+            where: {
+                reqType: "medication"
+            }
+        });
+        const result = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+
+        for (const entry of statistics) {
+            result.total++;
+            if (entry.reqPriority == "Low") result.lowPrio++;
+            if (entry.reqPriority == "Medium") result.medPrio++;
+            if (entry.reqPriority == "High") result.highPrio++;
+            if (entry.reqPriority == "Emergency") result.emergPrio++;
+            if (entry.status == "Unassigned") result.unassigned++;
+            if (entry.status == "Assigned") result.assigned++;
+            if (entry.status == "In Progress") result.inProgress++;
+            if (entry.status == "Completed") result.completed++;
+        }
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+    } catch (err) {
+        console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
     }
 });
 
@@ -890,6 +974,48 @@ router.get("/sanReq/filter", async function (req: Request, res: Response) {
     }
 });
 
+// return all the stats of types, priority, status of sanitation requests in the database
+router.get("/sanReq/statistics", async function (req: Request, res: Response) {
+    try {
+        const statistics = await PrismaClient.serviceRequest.findMany({
+            where: {
+                reqType: "sanitation"
+            }
+        });
+        const result = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+
+        for (const entry of statistics) {
+            result.total++;
+            if (entry.reqPriority == "Low") result.lowPrio++;
+            if (entry.reqPriority == "Medium") result.medPrio++;
+            if (entry.reqPriority == "High") result.highPrio++;
+            if (entry.reqPriority == "Emergency") result.emergPrio++;
+            if (entry.status == "Unassigned") result.unassigned++;
+            if (entry.status == "Assigned") result.assigned++;
+            if (entry.status == "In Progress") result.inProgress++;
+            if (entry.status == "Completed") result.completed++;
+        }
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+    } catch (err) {
+        console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
+    }
+});
+
 
 // ---------------------------------    Flower Request DB Interaction    ---------------------------------
 
@@ -1083,6 +1209,48 @@ router.get("/flowReq/filter", async function (req: Request, res: Response) {
     } catch (err) {
         res.sendStatus(500);
         console.error("\nUnable to send requests\n" + err);
+    }
+});
+
+// return all the stats of types, priority, status of flower requests in the database
+router.get("/flowReq/statistics", async function (req: Request, res: Response) {
+    try {
+        const statistics = await PrismaClient.serviceRequest.findMany({
+            where: {
+                reqType: "flower delivery"
+            }
+        });
+        const result = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+
+        for (const entry of statistics) {
+            result.total++;
+            if (entry.reqPriority == "Low") result.lowPrio++;
+            if (entry.reqPriority == "Medium") result.medPrio++;
+            if (entry.reqPriority == "High") result.highPrio++;
+            if (entry.reqPriority == "Emergency") result.emergPrio++;
+            if (entry.status == "Unassigned") result.unassigned++;
+            if (entry.status == "Assigned") result.assigned++;
+            if (entry.status == "In Progress") result.inProgress++;
+            if (entry.status == "Completed") result.completed++;
+        }
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+    } catch (err) {
+        console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
     }
 });
 
@@ -1324,6 +1492,48 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
         console.info("\nSuccessfully filtered requests\n"); //debugging info
         //send status unless 6 times bug occurs
 
+    } catch (err) {
+        console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
+    }
+});
+
+// return all the stats of types, priority, status of religious requests in the database
+router.get("/religiousRequest/statistics", async function (req: Request, res: Response) {
+    try {
+        const statistics = await PrismaClient.serviceRequest.findMany({
+            where: {
+                reqType: "religious"
+            }
+        });
+        const result = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+
+        for (const entry of statistics) {
+            result.total++;
+            if (entry.reqPriority == "Low") result.lowPrio++;
+            if (entry.reqPriority == "Medium") result.medPrio++;
+            if (entry.reqPriority == "High") result.highPrio++;
+            if (entry.reqPriority == "Emergency") result.emergPrio++;
+            if (entry.status == "Unassigned") result.unassigned++;
+            if (entry.status == "Assigned") result.assigned++;
+            if (entry.status == "In Progress") result.inProgress++;
+            if (entry.status == "Completed") result.completed++;
+        }
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
     } catch (err) {
         console.error("\nUnable to send requests\n" + err);
         res.sendStatus(500); // Send error
