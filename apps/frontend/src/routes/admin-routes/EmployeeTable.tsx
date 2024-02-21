@@ -33,8 +33,6 @@ function EmployeeTable() {
 
 
 
-
-
     /* populate the requests */
     useEffect(()=>{
         getEmployees().then((result)=>setEmployees(result));
@@ -167,7 +165,7 @@ function EmployeeTable() {
                         >{formSubmitText()}</button>
                     </div>
                     <div>
-                        <button type={"button"} className={"submitButtonEmployee"}onClick={closeForm}>Close</button>
+                        <button type={"button"} className={"submitButtonEmployee"} onClick={closeForm}>Close</button>
                     </div>
                 </form>
             </div>
