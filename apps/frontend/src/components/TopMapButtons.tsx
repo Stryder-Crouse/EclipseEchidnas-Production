@@ -56,10 +56,10 @@ export default function TopMapButtons({setSelectedFloorIndex:setFloor,
                         inputCSS={""}
                         selectCSS={"transition-all hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}></CreateDropdown>
                 </div>
-                <div className={"border-gray-500 border-2 w-60 h-60 ml-5 mt-1 bg-white rounded-3xl p-2 "}>
+                <div className={"flex flex-col border-gray-500 border-2 w-60  ml-5 mt-1 bg-white rounded-3xl p-2 "}>
                     {
                         textDirections.map((direction)=>{
-                            return <div className={"w-[90%] rounded-3xl pl-2 pr-2 pt-1 pb-1 bg-gray-200 m-2"}>{direction}</div>;
+                            return <div className={"flex w-[90%] rounded-3xl pl-2 pr-2 pt-1 pb-1 bg-gray-200 m-2"}>{direction}</div>;
                         })
                     }
                 </div>
