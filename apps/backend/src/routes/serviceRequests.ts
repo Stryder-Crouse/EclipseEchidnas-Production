@@ -1107,6 +1107,9 @@ router.post('/religiousRequest', async function (req: Request, res: Response) {
         res.sendStatus(400);
     }
 });
+
+
+
 router.get("/religiousRequest", async function (req: Request, res: Response) {
 
     const statusFilter: Status = req.query.status as Status;
@@ -1148,34 +1151,35 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
                 })]];
 
             //get all the data out of the database using religReqs' religion fields
-            religReq.map(async (request, index) => {
-                    const nextEmployeeArr = await religEmployees(request.religion);
-                    if(index == 0 && nextEmployeeArr != undefined){ //remove the "No one" array from the first slot
-                        employeeReq[0] = nextEmployeeArr;
-                    }
-                    else if(nextEmployeeArr != undefined) {
-                        employeeReq.push(nextEmployeeArr);
-                    }
-                    else{
-                        console.error("nextEmployeeArr at index "+index+" of the religious requests list" +
-                            " was undefined!\n");
-                        employeeReq.push([await PrismaClient.employee.upsert({
-                            //upsert without update is essentially "find or create"
-                            where: {
-                                userID: "0"
-                            },
-                            update: {},
-                            create: {
-                                userID:"0",
-                                userName: "No one",
-                                firstName: "N/A",
-                                lastName: "N/A",
-                                designation: "N/A",
-                                isAdmin: false,
-                            },
-                        })]);
-                    }
-            });
+            for(let i = 0; i<religReq.length; i++){
+                const nextEmployeeArr = await religEmployees(religReq[i].religion);
+                if(i == 0 && nextEmployeeArr != undefined){ //remove the "No one" array from the first slot
+                    employeeReq[0] = nextEmployeeArr;
+                }
+                else if(nextEmployeeArr != undefined) {
+                    employeeReq.push(nextEmployeeArr);
+                }
+                else{
+                    console.error("nextEmployeeArr at index "+i+" of the religious requests list" +
+                        " was undefined!\n");
+                    employeeReq.push([await PrismaClient.employee.upsert({
+                        //upsert without update is essentially "find or create"
+                        where: {
+                            userID: "0"
+                        },
+                        update: {},
+                        create: {
+                            userID:"0",
+                            userName: "No one",
+                            firstName: "N/A",
+                            lastName: "N/A",
+                            designation: "N/A",
+                            isAdmin: false,
+                        },
+                    })]);
+                }
+            }
+
             console.log(employeeReq);
 
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects

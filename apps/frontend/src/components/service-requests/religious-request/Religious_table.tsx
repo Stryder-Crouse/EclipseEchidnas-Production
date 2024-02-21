@@ -306,7 +306,6 @@ async function getReligRequests(statusFilter:Status) {
     const religRequests: Array<[ReligRequest, ServiceRequest, Employee[]]> = [];
     for (let i = 0; i < requests.data[0].length; i++) {
         religRequests.push([requests.data[0][i], requests.data[1][i], requests.data[2][i]]);
-
     }
     console.log(religRequests);
 
