@@ -184,23 +184,23 @@ export default function ServiceRequestOutputTables() {
             switch (curentServiceRequest) {
                 case ReqTypes.flowReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={"/api/serviceRequests"}>
+                        urlToGetStats={"/api/serviceRequests/flowReq/statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.religReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={""}>
+                        urlToGetStats={"/api/serviceRequests/religiousRequest/statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.medReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={""}>
+                        urlToGetStats={"/api/serviceRequests/medReq/statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.tranReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={""}>
+                        urlToGetStats={"/api/serviceRequests/outsideTransport/statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.sanReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={""}>
+                        urlToGetStats={"/api/serviceRequests/sanReq/statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.serviceRequest:
                     return (<PieChartStatsAll></PieChartStatsAll>);
