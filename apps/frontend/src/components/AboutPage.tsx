@@ -19,8 +19,8 @@ function AboutPage(){
                 <FullSideNavBarComponent/>
             </div>
             <div className="mt-7 flex flex-col m-auto">
-                <p className="mb-5 flex font-bold justify-center p-3 bg-white rounded-lg shadow dark:bg-gray-800">ABOUT</p>
-                <div className="flex flex-row">
+                <p className="mb-5 m-auto flex font-bold justify-center p-3 bg-white rounded-lg w-72 shadow dark:bg-gray-800">ABOUT THE DEVELOPERS</p>
+                <div className="flex flex-row scale-95">
                     <div className="flex grid grid-cols-6 gap-4">
                         <ImageCard img={StryderPic} name={"Stryder Crouse"} role={"Team Lead"}>
                         </ImageCard>
