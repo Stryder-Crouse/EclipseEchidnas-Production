@@ -14,13 +14,3 @@
     margin: auto;
 
 }
-
-h3 {
-    color: green;
-    text-align: center;
-}
-
-.popup {
-    display: block;
-    opacity: 0;
-}
