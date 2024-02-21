@@ -5,6 +5,7 @@ import {
     Tooltip,
     Legend
 } from 'chart.js';
+import { piePrioStats} from "./PieChartStatsAll.tsx";
 
 ChartJS.register(
     ArcElement,
@@ -12,13 +13,13 @@ ChartJS.register(
     Legend
 );
 
-const PieChartStatsPriority = () =>{
+function PieChartStatsPriority({stats}:piePrioStats){
     const data = {
-        labels: ['Low       ', 'Medium    ', 'High', 'Emergency'],
+        labels: ['Low       ', 'Medium        ', 'High         ', 'Emergency'],
         datasets:[
             {
-                label: 'Priority',
-                data:[10, 15, 5, 2],
+                label: 'Count',
+                data:[stats.lowPrio, stats.medPrio, stats.highPrio, stats.emergPrio],
                 backgroundColor: ["#BA1215", "#003a96", "#0C8750", "#FFBA08"]
             }
         ]
@@ -48,6 +49,6 @@ const PieChartStatsPriority = () =>{
             <Pie data={data} options={options}></Pie>
         </div>
     );
-};
+}
 
 export default PieChartStatsPriority;

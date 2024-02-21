@@ -5,6 +5,7 @@ import {
     Tooltip,
     Legend
 } from 'chart.js';
+import { pieTypeStats} from "./PieChartStatsAll.tsx";
 
 ChartJS.register(
     ArcElement,
@@ -12,13 +13,13 @@ ChartJS.register(
     Legend
 );
 
-const PieChartStatsType = () => {
+function PieChartStatsType({stats}:pieTypeStats){
     const data = {
         labels: ['Flower', 'Medicine', 'Religious', 'Sanitation', 'Transport'],
         datasets: [
             {
-                label: 'Service Request Type',
-                data: [3, 8, 10, 5, 11],
+                label: 'Count',
+                data: [stats.flowReq, stats.medReq, stats.religReq, stats.sanReq, stats.tranReq],
                 backgroundColor: ["#BA1215", "#003a96", "#0C8750", "#FFBA08", "#4F5459"]
             }
         ]
@@ -31,7 +32,7 @@ const PieChartStatsType = () => {
                 position: 'bottom',
                 labels: {
                     font: {
-                        size: 16,
+                        size: 20,
                         family: "sans-serif"
                     }
                 }
@@ -48,5 +49,5 @@ const PieChartStatsType = () => {
             <Pie data={data} options={options}></Pie>
         </div>
     );
-};
+}
 export default PieChartStatsType;

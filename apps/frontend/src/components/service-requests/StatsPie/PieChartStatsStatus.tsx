@@ -5,6 +5,7 @@ import {
     Tooltip,
     Legend
 } from 'chart.js';
+import { pieAssignedStats} from "./PieChartStatsAll.tsx";
 
 ChartJS.register(
     ArcElement,
@@ -12,13 +13,14 @@ ChartJS.register(
     Legend
 );
 
-const PieChartStatsStatus = () =>{
+function PieChartStatsStatus ({stats}:pieAssignedStats){
     const data = {
         labels: ['Unassigned', 'Assigned', 'In Progress', 'Completed'],
         datasets:[
             {
-                label: 'Service Request Type',
-                data:[7, 2, 5, 15],
+                label: 'Count',
+                data:[stats.unassigned, stats.assigned,
+                    stats.inProgress, stats.completed],
                 backgroundColor: ["#BA1215", "#003a96", "#0C8750", "#FFBA08"]
             }
         ]
@@ -48,6 +50,6 @@ const PieChartStatsStatus = () =>{
             <Pie data={data} options={options}></Pie>
         </div>
     );
-};
+}
 
 export default PieChartStatsStatus;
