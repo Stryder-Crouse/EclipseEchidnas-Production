@@ -99,7 +99,6 @@ router.get("/serviceReq/filter", async function (req: Request, res: Response) {
 
         console.info("\nSuccessfully filtered requests\n"); //debugging info
         //send status unless 6 times bug occurs
-        res.sendStatus(200);
     } catch (err) {
         console.error("\nUnable to filter requests.\n" + err);
         res.sendStatus(500); // Send error
