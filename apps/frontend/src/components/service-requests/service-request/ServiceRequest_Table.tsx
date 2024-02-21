@@ -15,7 +15,22 @@ import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.
 
  ********/
 
-
+//todo FNFN statistics get for AJ
+//const stats = await axios.get("/api/serviceRequests/serviceReq/statistics");
+// stats.data.total is num of service requests
+// stats.data.medReq is num of med requests
+// stats.data.religReq is num of relig req
+// stats.data.flowReq is num of flow req
+// stats.data.sanReq is num of san req
+// stats.data.tranReq is number tran req
+// stats.data.lowPrio is number of low prio
+// stats.data.medPrio is num of med prio
+// stats.data.highPrio num of high prio
+// stats.data.emergPrio num of emergency prio
+// stats.data.unassigned num of unassigned
+// stats.data.assigned num of assigned
+// stats.data.inProgress num of in progress
+// stats.data.completed num of completed
 
 
 export default function ServiceRequest_Table({statusFilter:statusFilter}:statusFilter) {
