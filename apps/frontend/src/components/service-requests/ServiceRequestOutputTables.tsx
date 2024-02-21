@@ -218,6 +218,8 @@ export default function ServiceRequestOutputTables() {
                                         selectCSS={""}
                                         resetOnSelect={false} setResetDropdown={setResetDropdown}/>
                     </div>
+
+
                 </div>
                 {
                     generateSelectedTable()
