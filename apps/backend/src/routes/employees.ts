@@ -1,6 +1,7 @@
 import express, {Router, Request, Response} from "express";
 import PrismaClient from "../bin/database-connection.ts";
 import {Employee} from "../algorithms/Employee/Employee.ts";
+// import axios from "axios";
 
 const router: Router = express.Router();
 
@@ -68,9 +69,14 @@ router.post("/updateEmployee", async function (req: Request, res: Response) {
 router.post("/deleteEmployee", async function (req: Request, res: Response) {
     console.log("req.body");
     console.log(req.body);
+
+    //get the user which the admin wants to fire
+    const data: string[] = req.body;
+
+
+
+
     try {
-        //get the user which the admin wants to fire
-        const data: string[] = req.body;
 
         //query the database to delete the employee
         await PrismaClient.employee.delete({

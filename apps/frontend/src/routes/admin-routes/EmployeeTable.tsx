@@ -294,6 +294,28 @@ function EmployeeTable() {
 
         const data:string[] = [employee.userName];
 
+        //RYAN
+        // const axios = require('axios');
+        let initialInfo: string = "https://login.auth0.com/api/v2/users/";
+        initialInfo += data[0];
+
+        try
+        {
+            const config = {
+                method: 'delete',
+                maxBodyLength: Infinity,
+                url: initialInfo,
+                headers: {}
+            };
+
+            axios.request(config).then((response) => {
+                console.log("Response from Auth0 deleting" + JSON.stringify(response.data));
+            });
+        } catch {
+            console.log("Error with deleting from Auth0");
+        }
+
+
         await axios.post("/api/employees/deleteEmployee",
             data, {
                 headers: {
