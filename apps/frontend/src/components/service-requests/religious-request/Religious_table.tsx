@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {ReligRequest, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import {Priorities, ReligRequest, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
 //import AdminPageNavBar from "../../navigation-bar/AdminPageNavBar.tsx";
 import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
-import {statusFilter} from "../serviceRequestInterface.ts";
+import {requestFilters} from "../serviceRequestInterface.ts";
 
 
 
 
-export default function Religious_table({statusFilter:statusFilter}:statusFilter) {
-    console.log(statusFilter);
+export default function Religious_table({statusFilter, priorityFilter,employeeFilter,locationFilter}:requestFilters) {
+    console.log(statusFilter,priorityFilter);
 
     const [religRequestList, setReligRequestList] =
         useState<Array<[ReligRequest, ServiceRequest]>>([]);
@@ -24,14 +24,14 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
             getEmployees().then(result => {
                 setReligEmployees(result);
             });
-            getReligRequests(statusFilter).then(result => {
+            getReligRequests(statusFilter, priorityFilter,employeeFilter,locationFilter).then(result => {
                 setReligRequestList(result);
             });
 
 
 
 
-    }, [statusFilter]);
+    }, [statusFilter, priorityFilter, employeeFilter, locationFilter]);
 
     return (
         <div>
@@ -319,9 +319,11 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
 
 }
 
-async function getReligRequests(statusFilter:Status) {
+async function getReligRequests(statusFilter:Status, priorityFilter:Priorities, employeeFilter:string, locationFilter:string) {
     const requests =
-        await axios.get<[ReligRequest[], ServiceRequest[]]>("/api/serviceRequests/religiousRequest",{params: {status: statusFilter}});
+        await axios.get<[ReligRequest[], ServiceRequest[]]>("/api/serviceRequests/religiousRequest/filter",{params: {status: statusFilter, priority: priorityFilter,
+                employee:employeeFilter, location:locationFilter
+            } });
 
     const religRequests: Array<[ReligRequest, ServiceRequest]> = [];
     for (let i = 0; i < requests.data[0].length; i++) {

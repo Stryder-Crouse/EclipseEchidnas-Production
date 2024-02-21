@@ -5,6 +5,7 @@ import axios from "axios";
 import {Employee, Roles} from "../../../../backend/src/algorithms/Employee/Employee.ts";
 import trashIcon from "../../images/Table Functions/trash.png";
 import editPen from "../../images/Table Functions/editPen.png";
+import ExportImportButtonEmployee from "../../components/EmployeeTableButtons/ExportImportButtonEmployee.tsx";
 import FullSideNavBarComponent from "../../components/FullSideNavBarComponent.tsx";
 
 //TODO IMPLEMENT THESE BUTTONS TO POPULATE WITH EVERY ROW
@@ -13,9 +14,7 @@ import FullSideNavBarComponent from "../../components/FullSideNavBarComponent.ts
 
 
 const designations = [Roles.None,Roles.nurse,Roles.doctor,Roles.admin,
-    Roles.janitor,Roles.flowerDeliverer,Roles.religiousPersonnel,
-    Roles.buddhistPersonnel, Roles.catholicPersonnel, Roles.christianPersonnel, Roles.mormonPersonnel, Roles.protestantPersonnel,
-    Roles.jainPersonnel, Roles.jewishPersonnel, Roles.muslimPersonnel, Roles.sikhPersonnel, Roles.shintoPersonnel];
+    Roles.janitor,Roles.flowerDeliverer,Roles.religiousPersonnel];
 
 function EmployeeTable() {
     
@@ -39,135 +38,138 @@ function EmployeeTable() {
     },[]);
     //table-id is request-table
     return (
-        <div className="flex h-lvh flex-row overflow-x-hidden">
+        <div className="flex h-lvh flex-row overflow-hidden">
             <div className="z-10">
                 <FullSideNavBarComponent/>
             </div>
-            <div className={"employee-table-container"}>
-                <div className="flex">
-                    <span className={"employee-caption-container"}>
-                        <span className={"employee-table-title"}>Employee Table</span>
-                        <button onClick={openForm}
-                                className="items- drop-shadow-lg transition-all hover:bg-navy w-48 text-white p-2 bg-navStart rounded-full h-min font-semibold ">Add Employee</button>
-                    </span>
-                </div>
+            <div className="flex flex-col w-lvw -ml-10">
+                <ExportImportButtonEmployee/>
+                <div className={"employee-table-container"}>
+                    <div className="flex">
+                        <span className={"employee-caption-container"}>
+                            <span className={"employee-table-title"}>Employee Table</span>
+                            <button onClick={openForm}
+                                    className="items- drop-shadow-lg transition-all hover:bg-navy w-48 text-white p-2 bg-navStart rounded-full h-min font-semibold ">Add Employee</button>
+                        </span>
+                    </div>
 
 
-                <div className={"employeeTable"}>
-                    <table id={"request-table"}>
-                        <thead>
-                        <tr className={"tableTRHead"}>
-                            <th className={"tableTD"}>User Name</th>
-                            <th className={"tableTD"}>First Name</th>
-                            <th className={"tableTD"}>Last Name</th>
-                            <th className={"tableTD"}>Designation</th>
-                            <th className={"tableTD"}>Is Admin</th>
-                            <th className={"tableTD"}>Edit</th>
-                            <th className={"tableTD"}>Delete</th>
-                        </tr>
-                        </thead>
-                        {/* populating here */}
-                        <tbody>
-                        {
-                            employees.map((employee, employeeIndex) => {
-                                return drawEmployeeRecord(employee,employeeIndex);
-                            })
-                        }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            {/*add employee form*/}
-            <div id={"addEmployeeForm"} className="employeeInputHidden">
-                <div><b>New Employee</b></div>
-                <form className={"formNewEmployee"}>
-                    <div>
-                        <label form={"employeeUsername"}>Username</label><br/>
-                        <input disabled={isCreating()} type={"text"} placeholder={"Enter Username"} className={"inputText"}
-                               name={"employeeUsername"} required
-                               value={newUserName}
-                               onChange={(e) => {
-                                   setNewUserName(e.target.value);
-                               }}
-                        />
-                    </div>
-                    <div>
-                        <label form={"employeeFirst"}>First Name</label><br/>
-                        <input type={"text"} placeholder={"Enter First Name"} className={"inputText"}
-                               name={"employeeFirst"} required
-                               value={newFristName}
-                               onChange={(e) => {
-                                   setNewFristName(e.target.value);
-                               }}
-                        />
-                    </div>
-                    <div>
-                        <label form={"employeeLast"}>Last Name</label><br/>
-                        <input type={"text"} placeholder={"Enter Last Name"} className={"inputText"}
-                               name={"employeeFirst"} required
-                               value={newLastName}
-                               onChange={(e) => {
-                                   setNewLastName(e.target.value);
-                               }}
-                        />
-                    </div>
-                    <div>
-                        <label form={"designation"}>Designation</label><br/>
-                        <select
-                            value={newDesignation}
-                            onChange={
-                                (e) => {
-                                    setNewDesignation(e.target.value as Roles);
-                                }
-                            }
-                        >
+                    <div className={"employeeTable"}>
+                        <table id={"request-table"}>
+                            <thead>
+                            <tr className={"tableTRHead"}>
+                                <th className={"tableTD"}>User Name</th>
+                                <th className={"tableTD"}>First Name</th>
+                                <th className={"tableTD"}>Last Name</th>
+                                <th className={"tableTD"}>Designation</th>
+                                <th className={"tableTD"}>Is Admin</th>
+                                <th className={"tableTD"}>Edit</th>
+                                <th className={"tableTD"}>Delete</th>
+                            </tr>
+                            </thead>
+                            {/* populating here */}
+                            <tbody>
                             {
-                                designations?.map((des)=>{
-                                    return (
-                                        <option
-                                            className={"statis-dropdown"}
-                                            value={des}
-                                            key={des+"_newEmployee"}
-                                        >
-                                            {des}
-                                        </option>
-                                    );
+                                employees.map((employee, employeeIndex) => {
+                                    return drawEmployeeRecord(employee,employeeIndex);
                                 })
-
                             }
-                        </select>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {/*add employee form*/}
+                <div id={"addEmployeeForm"} className="employeeInputHidden">
+                    <div><b>New Employee</b></div>
+                    <form className={"formNewEmployee"}>
+                        <div>
+                            <label form={"employeeUsername"}>Username</label><br/>
+                            <input disabled={isCreating()} type={"text"} placeholder={"Enter Username"} className={"inputText"}
+                                   name={"employeeUsername"} required
+                                   value={newUserName}
+                                   onChange={(e) => {
+                                       setNewUserName(e.target.value);
+                                   }}
+                            />
+                        </div>
+                        <div>
+                            <label form={"employeeFirst"}>First Name</label><br/>
+                            <input type={"text"} placeholder={"Enter First Name"} className={"inputText"}
+                                   name={"employeeFirst"} required
+                                   value={newFristName}
+                                   onChange={(e) => {
+                                       setNewFristName(e.target.value);
+                                   }}
+                            />
+                        </div>
+                        <div>
+                            <label form={"employeeLast"}>Last Name</label><br/>
+                            <input type={"text"} placeholder={"Enter Last Name"} className={"inputText"}
+                                   name={"employeeFirst"} required
+                                   value={newLastName}
+                                   onChange={(e) => {
+                                       setNewLastName(e.target.value);
+                                   }}
+                            />
+                        </div>
+                        <div>
+                            <label form={"designation"}>Designation</label><br/>
+                            <select
+                                value={newDesignation}
+                                onChange={
+                                    (e) => {
+                                        setNewDesignation(e.target.value as Roles);
+                                    }
+                                }
+                            >
+                                {
+                                    designations?.map((des)=>{
+                                        return (
+                                            <option
+                                                className={"statis-dropdown"}
+                                                value={des}
+                                                key={des+"_newEmployee"}
+                                            >
+                                                {des}
+                                            </option>
+                                        );
+                                    })
+
+                                }
+                            </select>
 
 
-                        {/*<CreateDropdown dropBtnName={"Designation"} dropdownID={"employeeDesignation"}*/}
-                        {/*                isSearchable={false}*/}
-                        {/*                populationArr={designations} resetDropdown={resetDesignation}*/}
-                        {/*                setSelected={setNewDesignationIndex}*/}
-                        {/*                inputCSS={""}*/}
-                        {/*                selectCSS={"inputText"}*/}
-                        {/*                resetOnSelect={false} setResetDropdown={setResetDesignation}></CreateDropdown>*/}
+                            {/*<CreateDropdown dropBtnName={"Designation"} dropdownID={"employeeDesignation"}*/}
+                            {/*                isSearchable={false}*/}
+                            {/*                populationArr={designations} resetDropdown={resetDesignation}*/}
+                            {/*                setSelected={setNewDesignationIndex}*/}
+                            {/*                inputCSS={""}*/}
+                            {/*                selectCSS={"inputText"}*/}
+                            {/*                resetOnSelect={false} setResetDropdown={setResetDesignation}></CreateDropdown>*/}
 
-                    </div>
-                    <div>
-                        <label form={"isAdmin"}>Is Admin</label><br/>
-                        <input type={"checkbox"}
-                               name={"isAdmin"} required
-                                 className={"inputText"}
-                               id={"isAdminCheck"}
-                               onChange={(e) => {
-                                   console.log(e.target.checked);
-                                       setNewIsAdmin(e.target.checked);
-                               }}
-                        />
-                    </div>
-                    <div>
-                        <button  type={"button"} className={"submitButtonEmployee"}
-                        onClick={onSubmit}
-                        >{formSubmitText()}</button>
-                    </div>
-                    <div>
-                        <button type={"button"} className={"submitButtonEmployee"} onClick={closeForm}>Close</button>
-                    </div>
-                </form>
+                        </div>
+                        <div>
+                            <label form={"isAdmin"}>Is Admin</label><br/>
+                            <input type={"checkbox"}
+                                   name={"isAdmin"} required
+                                     className={"inputText"}
+                                   id={"isAdminCheck"}
+                                   onChange={(e) => {
+                                       console.log(e.target.checked);
+                                           setNewIsAdmin(e.target.checked);
+                                   }}
+                            />
+                        </div>
+                        <div>
+                            <button  type={"button"} className={"submitButtonEmployee"}
+                            onClick={onSubmit}
+                            >{formSubmitText()}</button>
+                        </div>
+                        <div>
+                            <button type={"button"} className={"submitButtonEmployee"}onClick={closeForm}>Close</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     );

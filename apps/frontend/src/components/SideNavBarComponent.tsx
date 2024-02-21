@@ -51,18 +51,19 @@ export function SideBarItem({ icon, text, link, onClick }: SideBarItemProps): JS
     const { expanded } = useContext(SidebarContext) || { expanded: true, setExpanded: () => {} };
 
     return (
-        <li className="relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors group hover:bg-navy">
-            <a href={link} className="flex mb-8 mt-8" onClick={onClick}>
-                <img src={icon} alt={"Map Icon"} className={"absolute"} style={{ width: expanded ? '24' : '24', height: '24px' }} />
-                <span className={`text-white overflow-hidden transition-all ${expanded ? "w-52 ml-8" : "w-0"}`}>{text}</span>
-            </a>
-
-            {!expanded && (
-                <div className={'absolute left-full rounded-md px-2 py-1 ml-6 bg-ivoryWhite text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0'}>
+        <a href={link} className="flex mb-8 mt-8 cursor-pointer transition-colors group hover:bg-navy rounded-md" onClick={onClick}>
+            <li className="relative flex items-center py-2 px-3 my-1 font-medium">
+                <img src={icon} alt={"Map Icon"} className={"absolute"}
+                     style={{width: expanded ? '24' : '24', height: '24px'}}/>
+                <span
+                    className={`text-white overflow-hidden transition-all ${expanded ? "w-52 ml-8" : "w-0"}`}>{text}</span>
+        {!expanded && (
+        <div className={'absolute left-full rounded-md px-2 py-1 ml-6 bg-ivoryWhite text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0'}>
                     {text}
                 </div>
             )}
         </li>
+        </a>
     );
 }
 

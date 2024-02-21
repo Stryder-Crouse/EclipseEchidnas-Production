@@ -11,40 +11,43 @@
     --widget-background: #F1F1F1;
 }
 
-/** {*/
-/*    margin: 0;*/
-/*    padding: 0;*/
-/*    box-sizing: border-box;*/
-/*}*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 .filterDiv{
+    margin-bottom: 1rem;
 
+    display: flex;
+    flex-direction: row;
 
 }
 
-.statusFilterDiv {
-    max-width: 20vw;
-    height: 13vh; /* Add this line to explicitly set the height */
+.statusFilterDiv{
+    max-width: 12rem;
     background-color: #E1E1E1;
     border-radius: 10px;
     padding: 8px;
-    margin-right: 1.5rem;
+    display: flex;
+    margin-right: 1rem;
 }
-
 
 .tabs-container {
 
     padding: 16px;
-    margin:  auto auto;
-    width: 75%;
-    height: 95vh;
+    margin: 7.5% auto auto;
+    width: 65%;
+    height: 75vh;
+
     display: flex;
 
     /*justify-content: center;*/
 
     border-radius: 16px;
     background-color: #F1F1F1;
-
+    box-shadow: 8px -9px 114px 0px rgba(217,217,217,1);
 
     /*proberly should get rid of this*/
     /*transform: scale(1.5);*/
@@ -55,9 +58,10 @@
     overflow-y: auto;
     overflow-x: auto;
     max-height: 100%;
+    width: 100%;
 
-
-    display:grid;
+    display: flex;
+    flex-direction: column;
 
 
 

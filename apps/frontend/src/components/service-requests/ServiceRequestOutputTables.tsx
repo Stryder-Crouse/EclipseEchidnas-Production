@@ -1,65 +1,69 @@
-import React, {useState,useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import "../../css/component-css/ServicePage.css";
-import axios from "axios";
 import {ReqTypes, Priorities} from "../../../../backend/src/algorithms/Requests/Request.ts";
-import {CreateDropdown} from "../CreateDropdown.tsx";
+
 //from https://github.com/frontend-joe/react-widgets for css
+
 import Flower_table from "./flower-request/Flower_table.tsx";
 import Religious_table from "./religious-request/Religious_table.tsx";
 import Medicine_table from "./medicine-request/Medicine_table.tsx";
 import Status from "../../../../backend/src/algorithms/Requests/Status.ts";
 
+
 import Transportation_table from "./transportation-outside-request/Transportation_table.tsx";
 import Sanitation_table from "./sanitation-request/Sanitation_table.tsx";
 import ServiceRequest_Table from "./service-request/ServiceRequest_Table.tsx";
-import {NodeDataBase} from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import PieChartStatsAll from "./StatsPie/PieChartStatsAll.tsx";
+import PieChartStatsServiceRequest from "./StatsPie/PieChartStatsServiceRequest.tsx";
 import {Employee} from "../../../../backend/src/algorithms/Employee/Employee.ts";
+import axios from "axios";
 
-const type = [ReqTypes.medReq,ReqTypes.religReq,ReqTypes.flowReq,ReqTypes.sanReq,ReqTypes.tranReq,ReqTypes.serviceRequest];
-const priority = [Priorities.any,Priorities.low,Priorities.medium,Priorities.high,Priorities.emergency];
+import {NodeDataBase} from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+
+
+
 const statuses = [Status.Any,Status.Unassigned,Status.Assigned,Status.InProgress,Status.Completed];
+const priority = [Priorities.any, Priorities.low, Priorities.medium, Priorities.high, Priorities.emergency];
 
 
-let longNames:string[] = [];
-let longerNames:string[] = [];
 export default function ServiceRequestOutputTables() {
 
-    const [PriorityFilter, setPriorityFilter] = useState<Priorities>(Priorities.any);
-   const [resetDropdown, setResetDropdown] = useState(false);
-    //const [selected, setSelected] = useState();
+
     const [statusFilter , setStatusFilter ] = useState(Status.Any);
+    const [priorityFilter , setPriorityFilter ] = useState(Priorities.any);
+    const [employeeFilter , setEmployeeFilter ] = useState("Any");
+
+
+
+    const [locationFilter , setLocationFilter ] = useState("Any");
+
     const [curentServiceRequest , setCurentServiceRequest ] = useState(ReqTypes.serviceRequest);
-    //const [locations, setLocations] = useState<NodeDataBase[]>([]);
-    const [selected, setSelected] = useState(-1);
+
+    const [statsToggle , setStatsToggle ]
+        = useState(false);
+
+    const [employeesList , setEmployeesList ]
+        = useState<Employee[]>([]);
+    const [locations, setLocations] = useState<NodeDataBase[]>([]);
+
     console.log(curentServiceRequest);
     console.log(setStatusFilter);
-    console.log(selected);
+    console.log(locationFilter);
 
-    useEffect(()=>{
+
+
+    useEffect(() => {
+        //fetches servReqs from the db to update the frontend table
+
+        getEmployees().then((result)=>{setEmployeesList(result);});
         getLocations().then(
             (result)=>{
+                setLocations(result);
 
-                const locationLongName:string[] = [];
-                //setLocations(result);
-                result.forEach((node)=>{ locationLongName.push(node.longName);});
-                longNames=locationLongName;
 
             });
+    }, []);
 
-    },[]);
-
-    useEffect(()=>{
-        getEmployees().then(
-            (result)=>{
-
-                const EmployeeLongName:string[] = [];
-                //setLocations(result);
-                result.forEach((node)=>{ EmployeeLongName.push(node.userName);});
-                longerNames=EmployeeLongName;
-
-            });
-
-    },[]);
 
 
     return (
@@ -100,7 +104,7 @@ export default function ServiceRequestOutputTables() {
                        onClick={() => {
                            setCurentServiceRequest(ReqTypes.tranReq);
                        }}>
-                        Transport Request
+                        Transportation Request
                     </a>
                 </li>
                 <li>
@@ -113,40 +117,13 @@ export default function ServiceRequestOutputTables() {
                 </li>
 
             </ul>
-
             <div className="tab-content-wrapper">
-                <div className={"flex h-24 mb-4"}>
 
+                <div className={"filterDiv"}>
                     <div className={"statusFilterDiv"}>
-                        <label form={"designation"}><b>Priority</b></label><br/>
+                        <label form={"designation"}><b>Status</b></label>
                         <select
-                            value={PriorityFilter}
-                            onChange={
-                                (e) => {
-                                    setPriorityFilter(e.target.value as Priorities);
-                                }
-                            }
-                        >
-                            {
-                                priority?.map((priority) => {
-                                    return (
-                                        <option
-                                            className={"statis-dropdown"}
-                                            value={priority}
-                                            key={priority + "_filterStatus"}
-                                        >
-                                            {priority}
-                                        </option>
-                                    );
-                                })
-                            }
-                        </select>
-
-                    </div>
-
-                    <div className={"statusFilterDiv"}>
-                        <label form={"designation"}><b>Status</b></label><br/>
-                        <select
+                            className={"bg-transparent border-black"}
                             value={statusFilter}
                             onChange={
                                 (e) => {
@@ -169,84 +146,179 @@ export default function ServiceRequestOutputTables() {
 
                             }
                         </select>
-
                     </div>
-
                     <div className={"statusFilterDiv"}>
-                        <label form={"designation"}><b>Request Specific</b></label><br/>
+                        <label form={"designation"}><b>Priority</b></label>
                         <select
-                            value={curentServiceRequest}
+                            className={"bg-transparent border-black"}
+                            value={priorityFilter}
                             onChange={
                                 (e) => {
-                                    setCurentServiceRequest(e.target.value as ReqTypes);
+                                    setPriorityFilter(e.target.value as Priorities);
                                 }
                             }
                         >
                             {
-                                type?.map((ReqTypes) => {
+                                priority?.map((prior) => {
                                     return (
                                         <option
                                             className={"statis-dropdown"}
-                                            value={ReqTypes}
-                                            key={ReqTypes + "_filterStatus"}
+                                            value={prior}
+                                            key={prior + "_filterPrior"}
                                         >
-                                            {ReqTypes}
+                                            {prior}
                                         </option>
                                     );
                                 })
+
                             }
                         </select>
 
                     </div>
-
                     <div className={"statusFilterDiv"}>
-                        <label className="label">Location </label>
-                        <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationFlow"} isSearchable={true}
-                                        populationArr={longNames} resetDropdown={resetDropdown}
-                                        setSelected={setSelected}
-                                        inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
-                                        selectCSS={""}
-                                        resetOnSelect={false} setResetDropdown={setResetDropdown}/>
+                        <label form={"designation"}><b>Employee</b></label>
+                        <select
+                            value={employeeFilter}
+                            onChange={
+                                (e) => {
+                                    setEmployeeFilter(e.target.value);
+                                }
+                            }
+                        >
+                            <option
+                                className={"statis-dropdown"}
+                                value={"Any"}
+
+                            >
+                                Any
+                            </option>
+                            {
+                                employeesList?.map((emp) => {
+                                    return (
+                                        <option
+                                            className={"statis-dropdown"}
+                                            value={emp.userName}
+                                            key={emp + "_filterPrior"}
+                                        >
+                                            {(emp.firstName + " "
+                                                + emp.lastName
+                                                + " (" + emp.designation + ")")}
+                                        </option>
+                                    );
+                                })
+
+                            }
+                        </select>
+
+                    </div>
+                    <div className={"statusFilterDiv"}>
+                        <label form={"designation"}><b>Location</b></label>
+                        <select
+                            value={locationFilter}
+                            onChange={
+                                (e) => {
+                                    //console.log(e.target.value);
+                                    setLocationFilter(e.target.value);
+                                }
+                            }
+                        >
+                            <option
+                                className={"statis-dropdown"}
+                                value={"Any"}
+
+                            >
+                                Any
+                            </option>
+                            {
+                                locations?.map((loc) => {
+                                    return (
+                                        <option
+                                            className={"statis-dropdown"}
+                                            value={loc.nodeID}
+                                            key={loc.nodeID + "_location"}
+                                        >
+                                            {loc.nodeID}
+                                        </option>
+                                    );
+                                })
+
+                            }
+                        </select>
                     </div>
 
-                    <div className={"statusFilterDiv"}>
-                        <label className="label"> Employees </label>
-                        <CreateDropdown dropBtnName={"Employees"} dropdownID={"Employee Names"} isSearchable={true}
-                                        populationArr={longerNames} resetDropdown={resetDropdown}
-                                        setSelected={setSelected}
-                                        inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
-                                        selectCSS={""}
-                                        resetOnSelect={false} setResetDropdown={setResetDropdown}/>
-                    </div>
-
-
+                    {/*toggle*/}
+                    <label className="flex items-center cursor-pointer ml-2">
+                        <input type="checkbox"
+                               checked={statsToggle}
+                               className="sr-only peer"
+                               onChange={(event) => {
+                                   setStatsToggle(event.target.checked);
+                               }}
+                        />
+                        <div
+                            className=" relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300
+                            dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
+                            peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border
+                            after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                        <span className="ml-1"><b>Stats</b></span>
+                    </label>
                 </div>
 
+                {/* the content to be populated with each request*/}
                 {
                     generateSelectedTable()
                 }
             </div>
-
-
         </div>
     );
 
-
     function generateSelectedTable() {
         // For each div/request to overlay
+
+        if (statsToggle) {
+            switch (curentServiceRequest) {
+                case ReqTypes.flowReq:
+                    return (<PieChartStatsServiceRequest
+                        urlToGetStats={"/api/serviceRequests/flowReq/statistics"}>
+                    </PieChartStatsServiceRequest>);
+                case ReqTypes.religReq:
+                    return (<PieChartStatsServiceRequest
+                        urlToGetStats={"/api/serviceRequests/religiousRequest/statistics"}>
+                    </PieChartStatsServiceRequest>);
+                case ReqTypes.medReq:
+                    return (<PieChartStatsServiceRequest
+                        urlToGetStats={"/api/serviceRequests/medReq/statistics"}>
+                    </PieChartStatsServiceRequest>);
+                case ReqTypes.tranReq:
+                    return (<PieChartStatsServiceRequest
+                        urlToGetStats={"/api/serviceRequests/outsideTransport/statistics"}>
+                    </PieChartStatsServiceRequest>);
+                case ReqTypes.sanReq:
+                    return (<PieChartStatsServiceRequest
+                        urlToGetStats={"/api/serviceRequests/sanReq/statistics"}>
+                    </PieChartStatsServiceRequest>);
+                case ReqTypes.serviceRequest:
+                    return (<PieChartStatsAll></PieChartStatsAll>);
+                default:
+                    return (<div> bad state</div>);
+
+            }
+
+        }
+
         switch (curentServiceRequest) {
             case ReqTypes.flowReq:
-                return (<Flower_table statusFilter={statusFilter}/>);
+                return (<Flower_table statusFilter={statusFilter} priorityFilter={priorityFilter} employeeFilter={employeeFilter} locationFilter={locationFilter}/>);
             case ReqTypes.religReq:
-                return (<Religious_table statusFilter={statusFilter}/>);
+                return (<Religious_table statusFilter={statusFilter} priorityFilter={priorityFilter} employeeFilter={employeeFilter} locationFilter={locationFilter}/>);
             case ReqTypes.medReq:
-                return (<Medicine_table statusFilter={statusFilter}/>);
+                return (<Medicine_table statusFilter={statusFilter} priorityFilter={priorityFilter} employeeFilter={employeeFilter} locationFilter={locationFilter}/>);
             case ReqTypes.tranReq:
-                return (<Transportation_table statusFilter={statusFilter}/>);
+                return (<Transportation_table statusFilter={statusFilter} priorityFilter={priorityFilter} employeeFilter={employeeFilter} locationFilter={locationFilter}/>);
             case ReqTypes.sanReq:
-                return (<Sanitation_table statusFilter={statusFilter}/>);
+                return (<Sanitation_table statusFilter={statusFilter} priorityFilter={priorityFilter} employeeFilter={employeeFilter} locationFilter={locationFilter}/>);
             case ReqTypes.serviceRequest:
-                return (<ServiceRequest_Table statusFilter={statusFilter}/>);
+                return (<ServiceRequest_Table statusFilter={statusFilter} priorityFilter={priorityFilter} employeeFilter={employeeFilter} locationFilter={locationFilter}/>);
             default:
                 return (<div> bad state</div>);
 
@@ -257,14 +329,14 @@ export default function ServiceRequestOutputTables() {
 
 }
 
-async function getLocations() {
-    //load edges and node from database
-    const nodesDB = await axios.get<NodeDataBase[]>("/api/load-nodes");
-    return nodesDB.data;
-}
-
-
-async function getEmployees()  {
+async function getEmployees() {
     const employees = await axios.get<Employee[]>("/api/employees/employees");
     return employees.data;
+
+}
+
+async function getLocations() {
+    //load edges and node from database
+    const nodesDB = await axios.get<NodeDataBase[]>("/api/load-nodes/byID");
+    return nodesDB.data;
 }
