@@ -31,3 +31,70 @@ export enum Roles {
     None = "None"
     //nurse_and_flower_deliverer = "nurse and flower deliverer"
 }
+
+/**
+ * enum emaciation
+ * @param roleString do it'
+ * @return an enum member
+ */
+export function stringToRoles(roleString: string): Roles {
+    switch (roleString) {
+        case "nurse": {
+            return Roles.nurse;
+        }
+        case "doctor": {
+            return Roles.doctor;
+        }
+        case "administrator": {
+            return Roles.admin;
+        }
+        case "janitor": {
+            return Roles.janitor;
+        }
+        case "flower deliverer": {
+            return Roles.flowerDeliverer;
+        }
+        case "religious personnel": {
+            return Roles.religiousPersonnel;
+        }
+        case "Buddhist personnel": {
+            return Roles.buddhistPersonnel;
+        }
+        case "Catholic personnel": {
+            return Roles.catholicPersonnel;
+        }
+        case "Mormon personnel": {
+            return Roles.mormonPersonnel;
+        }
+        case "Christian (non-denominational) personnel": {
+            return Roles.christianPersonnel;
+        }
+        case "Protestant personnel": {
+            return Roles.protestantPersonnel;
+        }
+        case "Hindu personnel": {
+            return Roles.hinduPersonnel;
+        }
+        case "Muslim personnel": {
+            return Roles.muslimPersonnel;
+        }
+        case "Jain personnel": {
+            return Roles.jainPersonnel;
+        }
+        case "Jewish personnel": {
+            return Roles.jewishPersonnel;
+        }
+        case "Sikh personnel": {
+            return Roles.sikhPersonnel;
+        }
+        case "Shinto personnel": {
+            return Roles.shintoPersonnel;
+        }
+        case "None": {
+            return Roles.None;
+        }
+        default: {
+            return Roles.None;
+        }
+    }
+}

@@ -27,6 +27,8 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
 
     /* put the "File" into a string */
     const employeeDataString: string = fs.readFileSync(employeeFile[0].path, "utf-8");
+
+    /* turn the string into an array of employees */
     console.log(employeeDataString);
     console.log(upload);
 
