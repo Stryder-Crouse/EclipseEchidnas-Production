@@ -4,7 +4,7 @@ import PieChartStatsStatus from "./PieChartStatsStatus.tsx";
 
 function PieChartStatsAll(){
     return (
-        <div className="flex flex-row">
+        <div className="flex flex-row h-full w-full">
             <PieChartStatsPriority></PieChartStatsPriority>
             <PieChartStatsType></PieChartStatsType>
             <PieChartStatsStatus></PieChartStatsStatus>

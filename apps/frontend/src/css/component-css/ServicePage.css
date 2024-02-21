@@ -20,6 +20,8 @@
 .filterDiv{
     margin-bottom: 1rem;
 
+    display: flex;
+    flex-direction: row;
 }
 
 .statusFilterDiv{
@@ -27,6 +29,7 @@
     background-color: #E1E1E1;
     border-radius: 10px;
     padding: 8px;
+    display: flex;
 }
 
 .tabs-container {

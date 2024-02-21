@@ -25,11 +25,13 @@ const PieChartStatsType = () =>{
     };
     const options= {
         plugins: {
+
+
             legend: {
                 position: 'bottom',
                 labels: {
                     font: {
-                        size: 20,
+                        size: 16,
                         family: "sans-serif"
                     }
                 }
