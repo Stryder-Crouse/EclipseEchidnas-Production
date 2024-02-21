@@ -21,8 +21,7 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
     const employeeFile: Express.Multer.File[] = req.files as Express.Multer.File[];
     if (employeeFile == null) {
         console.error("employee file was FUCKED");
-        res.send("FUCK");
-        res.sendStatus(555);
+        res.status(500).send("FUCK");
         return;
     }
 
@@ -31,10 +30,8 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
     console.log(employeeDataString);
     console.log(upload);
 
-
     /* we did it */
-    res.sendStatus(200);
-    res.send("ok, nice");
+    res.status(200).send("ok, nice");
 }
 
 router.post("/employee_csv_import", handleCSVImport);
@@ -43,7 +40,6 @@ router.post("/employee_csv_import", handleCSVImport);
 router.post("/employee", async function (req: Request, res: Response) {
     const employeeData: Employee = req.body;
     console.log(req.body);
-
 
     try {
         await PrismaClient.employee.create({
@@ -57,10 +53,10 @@ router.post("/employee", async function (req: Request, res: Response) {
             },
         });
         console.info("Successfully saved employee"); // Log that it was successful
-    } catch (error) {
+    } catch (err) {
         // Log any failures
-        console.error(`Unable to save employee`);
-        res.sendStatus(400); // Send error
+        console.error("Unable to save employee" + err);
+        res.sendStatus(500); // Send error
     }
 });
 
@@ -89,10 +85,10 @@ router.post("/updateEmployee", async function (req: Request, res: Response) {
         //debug info to let us know that the employee was successfully updated
         console.log("Employee successfully updated");
         res.sendStatus(200);
-    } catch {
+    } catch (err) {
         //debug info to let us know that we failed to update the employee
-        console.log("Error with Updating an Employee (Check to see if the employee exists)");
-        res.sendStatus(400);
+        console.log("Error with Updating an Employee (Check to see if the employee exists)" + err);
+        res.sendStatus(500);
     }
 });
 
@@ -113,10 +109,10 @@ router.post("/deleteEmployee", async function (req: Request, res: Response) {
         //debug info to know that we successfully deleted the employee
         console.log("Employee Successfully Fired!");
         res.sendStatus(200);
-    } catch {
+    } catch (err) {
         //debug info to know that we failed to delete the employee
-        console.log("Error with Firing the Employee (Check to see if the employee exists)");
-        res.sendStatus(400);
+        console.log("Error with Firing the Employee (Check to see if the employee exists)" + err);
+        res.sendStatus(500);
     }
 });
 
@@ -126,10 +122,11 @@ router.get("/employees", async function (req: Request, res: Response) {
     try {
         //try to send all the employees to the client
         //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
-        res.send(await PrismaClient.employee.findMany()); //end res.send (this is what will be sent to the client)
+        res.status(200).send(await PrismaClient.employee.findMany()); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you the the employees\n");
     } catch (err) {
-        console.error("\nUnable to send employees\n");
+        console.error("\nUnable to send employees\n" + err);
+        res.sendStatus(500);
     }
 });
 
@@ -137,7 +134,7 @@ router.get("/employees", async function (req: Request, res: Response) {
 router.get("/employees/med", async function (req: Request, res: Response) {
     try {
 
-        res.send(await PrismaClient.employee.findMany(
+        res.status(200).send(await PrismaClient.employee.findMany(
             {
                 where: {
                     OR: [
@@ -161,7 +158,8 @@ router.get("/employees/med", async function (req: Request, res: Response) {
         )); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you the the employees\n");
     } catch (err) {
-        console.error("\nUnable to send employees\n");
+        console.error("\nUnable to send employees\n" + err);
+        res.sendStatus(500);
     }
 });
 
@@ -169,7 +167,7 @@ router.get("/employees/med", async function (req: Request, res: Response) {
 router.get("/employees/san", async function (req: Request, res: Response) {
     try {
 
-        res.send(await PrismaClient.employee.findMany(
+        res.status(200).send(await PrismaClient.employee.findMany(
             {
                 where: {
                     OR: [
@@ -187,15 +185,15 @@ router.get("/employees/san", async function (req: Request, res: Response) {
         )); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you the the employees\n");
     } catch (err) {
-        console.error("\nUnable to send employees\n");
+        console.error("\nUnable to send employees\n" + err);
+        res.sendStatus(500);
     }
 });
 
 //gets all employees with outsideTransport permissions
 router.get("/employees/transport", async function (req: Request, res: Response) {
     try {
-
-        res.send(await PrismaClient.employee.findMany(
+        res.status(200).send(await PrismaClient.employee.findMany(
             {
                 where: {
                     OR: [
@@ -219,7 +217,8 @@ router.get("/employees/transport", async function (req: Request, res: Response) 
         )); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you the the employees\n");
     } catch (err) {
-        console.error("\nUnable to send employees\n");
+        console.error("\nUnable to send employees\n" + err);
+        res.sendStatus(500);
     }
 });
 
@@ -227,7 +226,7 @@ router.get("/employees/transport", async function (req: Request, res: Response) 
 router.get("/employees/flow", async function (req: Request, res: Response) {
     try {
 
-        res.send(await PrismaClient.employee.findMany(
+        res.status(200).send(await PrismaClient.employee.findMany(
             {
                 where: {
                     OR: [
@@ -245,7 +244,8 @@ router.get("/employees/flow", async function (req: Request, res: Response) {
         )); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you the the employees\n");
     } catch (err) {
-        console.error("\nUnable to send employees\n");
+        console.error("\nUnable to send employees\n" + err);
+        res.sendStatus(500);
     }
 });
 
@@ -293,7 +293,7 @@ router.get("/employees/rel", async function (req: Request, res: Response) {
                 break;*/ //already covered by the definition of the var
         }
 
-        res.send(await PrismaClient.employee.findMany(
+        res.status(200).send(await PrismaClient.employee.findMany(
             {
                 where: {
                     OR: [
@@ -314,7 +314,8 @@ router.get("/employees/rel", async function (req: Request, res: Response) {
         )); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you the the employees\n");
     } catch (err) {
-        console.error("\nUnable to send employees\n");
+        console.error("\nUnable to send employees\n" + err);
+        res.sendStatus(500);
     }
 });
 
@@ -324,14 +325,15 @@ router.get("/current_employee", async function (req: Request, res: Response) {
     try {
         //try to send all the employees to the client
         //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
-        res.send(await PrismaClient.employee.findUnique(
+        res.status(200).send(await PrismaClient.employee.findUnique(
             {
                 where: {userName: currentUser.userName}
             }
         )); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you the employee\n");
     } catch (err) {
-        console.error("\nUnable to send employees\n");
+        console.error("\nUnable to send employees\n" + err);
+        res.sendStatus(500);
     }
 });
 export default router;

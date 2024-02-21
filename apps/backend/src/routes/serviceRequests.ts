@@ -32,7 +32,7 @@ router.get("/serviceReq", async function (req: Request, res: Response) {
         console.info("\nSuccessfully gave you all of the requests\n");
         //send status unless 6 times bug occurs
     } catch (err) {
-        console.error("\nUnable to send requests\n");
+        console.error("\nUnable to send requests\n" + err);
         res.sendStatus(500); // Send error
     }
 });
@@ -100,8 +100,8 @@ router.get("/serviceReq/filter", async function (req: Request, res: Response) {
         console.info("\nSuccessfully filtered requests\n"); //debugging info
         //send status unless 6 times bug occurs
         res.sendStatus(200);
-    } catch {
-        console.error("\nUnable to filter requests.\n");
+    } catch (err) {
+        console.error("\nUnable to filter requests.\n" + err);
         res.sendStatus(500); // Send error
     }
 });
@@ -146,7 +146,7 @@ router.post("/changeUser", async function (req: Request, res: Response) {
         //send status unless 6 times bug occurs
         res.sendStatus(200);
     } catch (error) {
-        console.error("Unable to change assigned user");
+        console.error("Unable to change assigned user" + error);
         res.sendStatus(500); // Send error
     }
 });
@@ -177,7 +177,7 @@ router.post("/changeState", async function (req: Request, res: Response) {
         //send status unless 6 times bug occurs
         res.sendStatus(200);
     } catch (error) {
-        console.error("Unable to change service request state");
+        console.error("Unable to change service request state" + error);
         res.sendStatus(500); // Send error
     }
 });
@@ -211,8 +211,8 @@ router.post("/changePriority", async function (req: Request, res: Response) {
         //send status unless 6 times bug occurs
         res.sendStatus(200);
 
-    } catch {
-        console.error("Database issue with changing the Priority");
+    } catch (err) {
+        console.error("Database issue with changing the Priority: " + err);
         res.sendStatus(500);
     }
 });
@@ -227,8 +227,8 @@ router.post("/removeRequest", async function (req: Request, res: Response) {
         });
         console.log("Successfully Destroyed Request");
         res.sendStatus(200);
-    } catch {
-        console.log("Error removing request");
+    } catch (err) {
+        console.log("Error removing request" + err);
         res.sendStatus(500);
     }
 });
@@ -310,7 +310,7 @@ router.post("/medReq", async function (req: Request, res: Response) {
         res.status(200).send("lol forgot to put something here");
     } catch (error) {
         // Log any failures
-        console.error(`Unable to save Med Req`);
+        console.error("Unable to save Med Req" + error);
         res.sendStatus(500); // Send error
     }
 });
@@ -347,7 +347,7 @@ router.get("/medReq", async function (req: Request, res: Response) {
             res.status(200).send([medReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
             console.info("\nSuccessfully gave you all of the medical requests\n");
         } catch (err) {
-            console.error("\nUnable to send requests\n");
+            console.error("\nUnable to send requests\n" + err);
             res.sendStatus(500);
         }
 
@@ -381,7 +381,7 @@ router.get("/medReq", async function (req: Request, res: Response) {
             res.status(200).send([medReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
             console.info("\nSuccessfully gave you all of the medical requests\n");
         } catch (err) {
-            console.error("\nUnable to send requests\n");
+            console.error("\nUnable to send requests\n" + err);
             res.sendStatus(500);
         }
     }
@@ -436,7 +436,7 @@ router.get("/medReq/filter", async function (req: Request, res: Response) {
         }
 
         //send the request to the user with the specified conditions
-        res.send(await PrismaClient.serviceRequest.findMany({
+        res.status(200).send(await PrismaClient.serviceRequest.findMany({
             where: whereCondition,
             orderBy: {
                 reqID: "desc"
@@ -447,10 +447,8 @@ router.get("/medReq/filter", async function (req: Request, res: Response) {
 
         console.info("\nSuccessfully filtered requests\n"); //debugging info
         //send status unless 6 times bug occurs
-        res.sendStatus(200);
-
     } catch (err) {
-        console.error("\nUnable to send requests\n");
+        console.error("\nUnable to send requests\n" + err);
         res.sendStatus(400); // Send error
     }
 });
@@ -513,8 +511,8 @@ router.post("/outsideTransport", async function (req: Request, res: Response) {
         });
         console.log("Successfully saved the Outside Transportation Request");
         res.sendStatus(200);
-    } catch {
-        console.error("Outside Transportation Request Failed");
+    } catch (error) {
+        console.error("Outside Transportation Request Failed " + error);
         res.sendStatus(400);
     }
 });
@@ -547,7 +545,7 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
             //send status unless 6 times bug occurs
             console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
         } catch (err) {
-            console.error("\nUnable to send Requests\n");
+            console.error("\nUnable to send Requests\n" + err);
             res.sendStatus(500);
         }
 
@@ -583,7 +581,7 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
             console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
         } catch (err) {
             res.sendStatus(500);
-            console.error("\nUnable to send Requests\n");
+            console.error("\nUnable to send Requests\n" + err);
         }
 
     }
@@ -638,7 +636,7 @@ router.get("/outsideTransport/filter", async function (req: Request, res: Respon
         }
 
         //send the request to the user with the specified conditions
-        res.send(await PrismaClient.serviceRequest.findMany({
+        res.status(200).send(await PrismaClient.serviceRequest.findMany({
             where: whereCondition,
             orderBy: {
                 reqID: "desc"
@@ -649,10 +647,8 @@ router.get("/outsideTransport/filter", async function (req: Request, res: Respon
 
         console.info("\nSuccessfully filtered requests\n"); //debugging info
         //send status unless 6 times bug occurs
-        res.sendStatus(200);
-
     } catch (err) {
-        console.error("\nUnable to send requests\n");
+        console.error("\nUnable to send requests\n" + err);
         res.sendStatus(400); // Send error
     }
 });
@@ -710,8 +706,8 @@ router.post("/sanReq", async function (req: Request, res: Response) {
         });
         console.log("Successfully saved the Sanitation Request");
         res.sendStatus(200);
-    } catch {
-        console.error("Sanitation Request Failed");
+    } catch (err) {
+        console.error("Sanitation Request Failed " + err);
         res.sendStatus(500);
     }
 });
@@ -744,7 +740,7 @@ router.get("/sanReq", async function (req: Request, res: Response) {
             console.info("\nSuccessfully gave you all of the Sanitation Requests\n");
         } catch (err) {
             res.sendStatus(500);
-            console.error("\nUnable to send Requests\n");
+            console.error("\nUnable to send Requests\n" + err);
         }
     } else {
         try {
@@ -776,7 +772,7 @@ router.get("/sanReq", async function (req: Request, res: Response) {
             res.status(200).send([sanReq, serviceReqs]);
             console.info("\nSuccessfully gave you all of the Sanitation Requests\n");
         } catch (err) {
-            console.error("\nUnable to send Requests\n");
+            console.error("\nUnable to send Requests\n" + err);
             res.sendStatus(500);
         }
     }
@@ -829,7 +825,7 @@ router.get("/sanReq/filter", async function (req: Request, res: Response) {
         }
 
         //send the request to the user with the specified conditions
-        res.send(await PrismaClient.serviceRequest.findMany({
+        res.status(200).send(await PrismaClient.serviceRequest.findMany({
             where: whereCondition,
             orderBy: {
                 reqID: "desc"
@@ -840,11 +836,9 @@ router.get("/sanReq/filter", async function (req: Request, res: Response) {
 
         console.info("\nSuccessfully filtered requests\n"); //debugging info
         //send status unless 6 times bug occurs
-        res.sendStatus(200);
-
     } catch (err) {
-        console.error("\nUnable to send requests\n");
-        res.sendStatus(400); // Send error
+        console.error("\nUnable to send requests\n" + err);
+        res.sendStatus(500); // Send error
     }
 });
 
@@ -919,9 +913,9 @@ router.post("/flowReq", async function (req: Request, res: Response) {
         //sendback the id of the request
         //console.info("HHH " +record.genReqID);
         res.sendStatus(200);
-    } catch (error) {
+    } catch (err) {
         // Log any failures
-        console.error(`Unable to save Flow Req`);
+        console.error("Unable to save Flow Req " + err);
         res.sendStatus(500); // Send error
     }
 });
@@ -970,13 +964,12 @@ router.get("/flowReq", async function (req: Request, res: Response) {
                     status: filterStatus,
                 }
             });
-            res.status(200);
             res.status(200).send([flowReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
             console.info("\nSuccessfully gave you all of the flower requests\n");
         }
     } catch (err) {
         res.sendStatus(500);
-        console.error("\nUnable to send requests\n");
+        console.error("\nUnable to send requests\n" + err);
     }
 });
 
@@ -1027,7 +1020,7 @@ router.get("/flowReq/filter", async function (req: Request, res: Response) {
         }
 
         //send the request to the user with the specified conditions
-        res.send(await PrismaClient.serviceRequest.findMany({
+        res.status(200).send(await PrismaClient.serviceRequest.findMany({
             where: whereCondition,
             orderBy: {
                 reqID: "desc"
@@ -1038,10 +1031,9 @@ router.get("/flowReq/filter", async function (req: Request, res: Response) {
 
         console.info("\nSuccessfully filtered requests\n"); //debugging info
         //send status unless 6 times bug occurs
-        res.sendStatus(200);
 
     } catch (err) {
-        console.error("\nUnable to send requests\n");
+        console.error("\nUnable to send requests\n" + err);
         res.sendStatus(400); // Send error
     }
 });
@@ -1101,7 +1093,7 @@ router.post('/religiousRequest', async function (req: Request, res: Response) {
         console.log("Successfully saved the Religious Request");
         res.sendStatus(200);
     } catch (err) {
-        console.error("Unable to save the Religious Request");
+        console.error("Unable to save the Religious Request" + err);
         res.sendStatus(500);
     }
 });
@@ -1133,7 +1125,7 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
             //send status unless 6 times bug occurs
         } catch (err) {
             res.sendStatus(500);
-            console.error("\nUnable to send Requests\n");
+            console.error("\nUnable to send Requests\n" + err);
         }
     } else {
         try {
@@ -1165,7 +1157,7 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
             console.info("\nSuccessfully gave you all of the Religious Requests\n");
             //send status unless 6 times bug occurs
         } catch (err) {
-            console.error("\nUnable to send Requests\n");
+            console.error("\nUnable to send Requests\n" + err);
             res.sendStatus(500);
         }
     }
@@ -1232,7 +1224,7 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
         //send status unless 6 times bug occurs
 
     } catch (err) {
-        console.error("\nUnable to send requests\n");
+        console.error("\nUnable to send requests\n" + err);
         res.sendStatus(500); // Send error
     }
 });
