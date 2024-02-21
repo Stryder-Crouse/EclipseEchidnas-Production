@@ -13,6 +13,8 @@ import Status from "../../../../backend/src/algorithms/Requests/Status.ts";
 import Transportation_table from "./transportation-outside-request/Transportation_table.tsx";
 import Sanitation_table from "./sanitation-request/Sanitation_table.tsx";
 import ServiceRequest_Table from "./service-request/ServiceRequest_Table.tsx";
+import PieChartStatsAll from "./StatsPie/PieChartStatsAll.tsx";
+import PieChartStatsServiceRequest from "./StatsPie/PieChartStatsServiceRequest.tsx";
 
 
 
@@ -27,8 +29,14 @@ export default function ServiceRequestOutputTables() {
     const [priorityFilter , setPriorityFilter ] = useState(Priorities.any);
 
     const [curentServiceRequest , setCurentServiceRequest ] = useState(ReqTypes.serviceRequest);
+
+    const [statsToggle , setStatsToggle ]
+        = useState(false);
+
     console.log(curentServiceRequest);
     console.log(setStatusFilter);
+
+
 
     // useEffect(() => {
     //
@@ -140,9 +148,25 @@ export default function ServiceRequestOutputTables() {
 
                             }
                         </select>
+
                     </div>
 
-
+                    {/*toggle*/}
+                    <label className="flex items-center cursor-pointer">
+                        <input type="checkbox"
+                               checked={statsToggle}
+                               className="sr-only peer"
+                                onChange={(event)=>{
+                                    setStatsToggle(event.target.checked);
+                                }}
+                        />
+                        <div
+                            className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300
+                            dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
+                            peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border
+                            after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                        <span className="ml-1"><b>Stats</b></span>
+                    </label>
                 </div>
 
                 {/* the content to be populated with each request*/}
@@ -155,6 +179,38 @@ export default function ServiceRequestOutputTables() {
 
     function generateSelectedTable() {
         // For each div/request to overlay
+
+        if(statsToggle){
+            switch (curentServiceRequest) {
+                case ReqTypes.flowReq:
+                    return (<PieChartStatsServiceRequest
+                        urlToGetStats={"/api/serviceRequests/flowReq/statistics"}>
+                    </PieChartStatsServiceRequest>);
+                case ReqTypes.religReq:
+                    return (<PieChartStatsServiceRequest
+                        urlToGetStats={"/api/serviceRequests/religiousRequest/statistics"}>
+                    </PieChartStatsServiceRequest>);
+                case ReqTypes.medReq:
+                    return (<PieChartStatsServiceRequest
+                        urlToGetStats={"/api/serviceRequests/medReq/statistics"}>
+                    </PieChartStatsServiceRequest>);
+                case ReqTypes.tranReq:
+                    return (<PieChartStatsServiceRequest
+                        urlToGetStats={"/api/serviceRequests/outsideTransport/statistics"}>
+                    </PieChartStatsServiceRequest>);
+                case ReqTypes.sanReq:
+                    return (<PieChartStatsServiceRequest
+                        urlToGetStats={"/api/serviceRequests/sanReq/statistics"}>
+                    </PieChartStatsServiceRequest>);
+                case ReqTypes.serviceRequest:
+                    return (<PieChartStatsAll></PieChartStatsAll>);
+                default:
+                    return (<div> bad state</div>);
+
+            }
+
+        }
+
         switch (curentServiceRequest) {
             case ReqTypes.flowReq:
                 return (<Flower_table statusFilter={statusFilter} priorityFilter={priorityFilter}/>);

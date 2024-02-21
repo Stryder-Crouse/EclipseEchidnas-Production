@@ -60,8 +60,8 @@ function AboutPage(){
                         <p className="flex justify-center">Joseph Cardarelli</p>
                         <p className="flex font-bold justify-center">SPECIAL THANKS</p>
                         <p className="flex justify-center text-center">A special thank you to Brigham and Women’s Hospital
-                            for their continued partnership and to Andrew Shin for taking the
-                            time to come and review the work done by the teams.</p>
+                            for their continued partnership with WPI and to Andrew Shin for taking the
+                            time to come and review the work completed by all the teams.</p>
                     </div>
                 </div>
                 <footer className="scale-95 justify-center bg-white rounded-lg shadow dark:bg-gray-800 drop-shadow-xl">

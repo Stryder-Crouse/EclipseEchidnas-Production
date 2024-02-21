@@ -1,3 +1,4 @@
+/** importations **/
 import React from "react";
 import MedicineRequestCard from "../components/service-request-cards/MedicineRequestCard.tsx";
 import FlowerRequestCard from "../components/service-request-cards/FlowerRequestCard.tsx";
