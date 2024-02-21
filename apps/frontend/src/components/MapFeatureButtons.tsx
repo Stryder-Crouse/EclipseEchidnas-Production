@@ -4,27 +4,35 @@ import ZoomInIcon from "../images/MapFunctions/plus.png";
 import ZoomOutIcon from "../images/MapFunctions/minus.png";
 import {Dispatch, SetStateAction} from "react";
 import {Node, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
+import {Viewbox} from "./map/HospitalMap.tsx";
 
-
-
-
-export interface zoomAndMapStates{
-    drawEntirePath:boolean;
+/**
+ * Type to hold all applicable states on the Tailwind map page wrapper.
+ */
+export type zoomAndMapStates = {
+    drawEntirePath: boolean;
     setDrawEntirePath: Dispatch<SetStateAction<boolean>>;
-    veiwbox:{x:number, y:number, width:number, height:number},
-    setVeiwbox:Dispatch<SetStateAction<{x:number, y:number, width:number, height:number}>>
-    setZoomScale:Dispatch<SetStateAction<number>>,
-    setStartNode:Dispatch<SetStateAction<Node>>
-    setEndNode:Dispatch<SetStateAction<Node>>
+    viewbox: Viewbox,
+    setViewbox: Dispatch<SetStateAction<Viewbox>>
+    setZoomScale: Dispatch<SetStateAction<number>>,
+    setStartNode: Dispatch<SetStateAction<Node>>
+    setEndNode: Dispatch<SetStateAction<Node>>
+    drawEntirePathOptions:boolean[]
+    setDrawEntirePathOptions:Dispatch<SetStateAction<boolean[]>>
 }
-export default function MapFeatureButtons({drawEntirePath:drawEntirePath,
-                                              setDrawEntirePath:setDrawEntirePath,
-                                              veiwbox:veiwbox,
-                                              setVeiwbox:setVeiwbox,
-                                              setZoomScale:setZoomScale, setStartNode,setEndNode}:zoomAndMapStates) {
-
-
-    function handleMapToggle() {
+export default function MapFeatureButtons({
+                                              drawEntirePath: drawEntirePath,
+                                              setDrawEntirePath: setDrawEntirePath,
+                                              viewbox: viewbox,
+                                              setViewbox: setViewbox,
+                                              setZoomScale: setZoomScale, setStartNode, setEndNode,
+                                              drawEntirePathOptions,
+                                              setDrawEntirePathOptions
+                                          }: zoomAndMapStates) {
+    /**
+     * Handle when the all edges toggle is pressed.
+     */
+    function handleAllEdgesToggle() {
         if (!drawEntirePath) {
             setDrawEntirePath(true);
         } else {
@@ -32,54 +40,121 @@ export default function MapFeatureButtons({drawEntirePath:drawEntirePath,
         }
     }
 
-    function zoomMap(direction:number){
-        const svgElement =  document.getElementById("map")!;
-        const svgSize:{width:number,height:number} = {width:svgElement.clientWidth, height:svgElement.clientHeight};
+    /**
+     * Handle zooming the map using the on-screen buttons.
+     * @param direction the direction (in or out) to zoom
+     */
+    function zoomMap(direction: number) {
+        /* find the map on the page */
+        const svgElement = document.getElementById("map")!;
+        const svgSize: { width: number, height: number } = {
+            width: svgElement.clientWidth,
+            height: svgElement.clientHeight
+        };
 
+        /* calculate transformation of the viewbox based on zoom direction */
+        const changeInWidth = viewbox.width * Math.sign(direction) * 0.2;
+        const changeInHeight = viewbox.height * Math.sign(direction) * 0.2;
 
-        //calulate change in width and height of the box based on zoom direction
-        const changeInWidth = veiwbox.width * Math.sign(direction)*0.2;
-        const changeInHeight = veiwbox.height * Math.sign(direction)*0.2;
+        /* reference the mouse to the center and get the new x and y coordinates*/
+        const newX = viewbox.x + (changeInWidth * (svgSize.width / 2)) / svgSize.width;
+        const newY = viewbox.y + (changeInHeight * (svgSize.height / 2)) / svgSize.height;
 
-        //keep mouse in the center of the zoom and get new x and y
-        const newX = veiwbox.x +(changeInWidth*(svgSize.width/2))/svgSize.width;
-        const newY = veiwbox.y +(changeInHeight*(svgSize.height/2))/svgSize.height;
+        /* update the scale */
+        setZoomScale(svgSize.width / viewbox.width);
 
-        //set scale for proper panning
-        setZoomScale(svgSize.width/veiwbox.width);
-        //set new veiwbox
-        setVeiwbox({x: newX, y: newY,
-            width:veiwbox.width - changeInWidth,height:veiwbox.height - changeInHeight});
-
-
+        /* update the viewbox*/
+        setViewbox({
+            x: newX, y: newY,
+            width: viewbox.width - changeInWidth, height: viewbox.height - changeInHeight
+        });
     }
 
-    //TODO 1. have ALL node toggle work 2. toggle on/off selection of nodes 3/4. zoom in and out functionality
-    return(
+    /*
+    function openOptionsDiv() {
+        const openSesame = document.getElementById("optionTime");
+            if (openSesame != null) {
+                openSesame.style.display = "block";
+            }
+    }
+    function closeOptionsDiv() {
+        const closeSesame = document.getElementById("optionTime");
+            if (closeSesame != null) {
+                closeSesame.style.display = "none";
+            }
+    }
+    */
+
+    //TODO Stryder, replace the options div that has the "handleAllEdgesToggle" with the openOptionsDiv
+    //TODO the div that we is to be opened needs to be "hidden" state and the backend functionality
+
+
+    /* what you see is what you get */
+    return (
         <div className="grid z-10 fixed bottom-5 right-5">
-            <button className="bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg" onClick={handleMapToggle}>
+            <button id={"optionTime"} className="bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10" onClick={handleAllEdgesToggle}>
                 <img src={EyeIcon} alt={"See All Locations and Paths"}/>
             </button>
-            <button className="bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg"
-                    onClick={()=>{
+            <button className="bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10"
+                    onClick={() => {
                         setStartNode(NULLNODE);
                         setEndNode(NULLNODE);
                     }}>
                 <img src={RefreshIcon} alt={"Refresh"}/>
             </button>
+
+            {/*PLACE HOLDER*/}
+            <div className={"bg-ivoryWhite rounded-md drop-shadow-lg p-2"}>
+                <b>Place Holder</b><br/>
+                <label htmlFor={"toggleNodes"}>Show Nodes</label><br/>
+                <input type={"checkbox"} name={"toggleNodes"} id={"toggleNodes"}
+                       checked={drawEntirePathOptions[0]}
+                       onChange={(e) => {
+                           const newDrawEntirePathOptions = [...drawEntirePathOptions];
+                           newDrawEntirePathOptions[0] = e.target.checked;
+                           console.log(e.target.checked);
+                           setDrawEntirePathOptions(newDrawEntirePathOptions);
+                       }}
+
+
+                ></input><br/>
+                <label htmlFor={"toggleEdges"}>Show Edges</label><br/>
+                <input type={"checkbox"} name={"toggleEdges"}  id={"toggleEdges"}
+                       checked={drawEntirePathOptions[1]}
+                       onChange={(e) => {
+                    const newDrawEntirePathOptions = [...drawEntirePathOptions];
+                    newDrawEntirePathOptions[1] = e.target.checked;
+                    console.log(e.target.checked);
+                    setDrawEntirePathOptions(newDrawEntirePathOptions);
+                }}></input><br/>
+                <label htmlFor={"toggleLocationNames"}>Show Location Names</label><br/>
+                <input type={"checkbox"} name={"toggleLocationNames"} id={"toggleLocationNames"}
+                       checked={drawEntirePathOptions[2]}
+                       onChange={(e) => {
+                           const newDrawEntirePathOptions = [...drawEntirePathOptions];
+                           newDrawEntirePathOptions[2] = e.target.checked;
+                           console.log(e.target.checked);
+                           setDrawEntirePathOptions(newDrawEntirePathOptions);
+                       }}></input>
+
+            </div>
+
             <div className="grid ">
-                <button className="bg-ivoryWhite p-2 drop-shadow-lg rounded-t-md"
-                        onClick={()=>{zoomMap(1);}}
+                <button className="bg-ivoryWhite p-2 drop-shadow-lg rounded-t-md w-10"
+                        onClick={() => {
+                            zoomMap(1);
+                        }}
                 >
                     <img src={ZoomInIcon} alt={"Zoom In"}/>
                 </button>
-                <button className="bg-ivoryWhite p-2 drop-shadow-lg rounded-b-md "
-                        onClick={()=>{zoomMap(-1);}}
+                <button className="bg-ivoryWhite p-2 drop-shadow-lg rounded-b-md w-10"
+                        onClick={() => {
+                            zoomMap(-1);
+                        }}
                 >
                     <img src={ZoomOutIcon} alt={"Zoom Out"}/>
                 </button>
             </div>
-
         </div>
     );
 }

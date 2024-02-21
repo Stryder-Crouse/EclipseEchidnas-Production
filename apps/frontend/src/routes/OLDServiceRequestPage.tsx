@@ -1,6 +1,6 @@
 /** importations **/
 import React, { ChangeEvent, useState } from "react";
-import "../css/route-css/medicineRequest.css";
+
 import AdminPageNavBar from "../components/navigation-bar/AdminPageNavBar.tsx";
 import RequestButtons from "../components/buttons/RequestButtons.tsx";
 import ExitButton from "../components/buttons/ExitButton.tsx";
@@ -35,14 +35,20 @@ export default function OLDServiceRequestPage() {
             assignedUName: "No one",            //upon creation, no employee is assigned
             status: "Unassigned",             //upon creation, nobody is assigned, so set status to unassigned
             reqID:-1,
-            reqPriority:"Low"
+            reqPriority:"Low",
+            time: null
         };
 
         //Make a Med Req after the service req (Med req needs service req's id, so med req cannot be made before)
         const medReqData: MedReq = {
-            dosage: medRequestDosage,               //
-            medType: medRequestType,                //etc etc etc
-            numDoses: parseInt(medRequestDoses),    //
+            patientName: "CREATEINPUT",
+            patientDOB: new Date(),
+            patientMedReqNum: 0,
+            medForm: "CREATEINPUT",
+            medSig: "CREATEINPUT",
+            medStrength: medRequestDosage,               //
+            medName: medRequestType,                //etc etc etc
+            quantity: parseInt(medRequestDoses),    //
             genReqID: -1,    // default is 0, but is always changed to the value of the newly created Service Req
         };
         clear();

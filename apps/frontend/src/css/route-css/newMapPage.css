@@ -83,19 +83,6 @@ body.newMapPage {
     font-size: 125%;
 }
 
-
-.selection-buttons {
-    background-color: #d9d9d9;
-    color: black;
-    padding: 1rem;
-    border-radius: 2rem;
-    width: 150%;
-    text-align: center;
-    font-weight: bold;
-    border-color: transparent;
-
-}
-
 .reset-location-button {
     background-color: #012d5a;
     border: 1px solid transparent;

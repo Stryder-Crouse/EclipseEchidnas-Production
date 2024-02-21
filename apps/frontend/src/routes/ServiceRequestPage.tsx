@@ -1,32 +1,35 @@
-/** importations **/
 import React from "react";
-import "../css/route-css/medicineRequest.css";
-import SideNavBarComponent, {SideBarItem} from "../components/SideNavBarComponent.tsx";
+import MedicineRequestCard from "../components/service-request-cards/MedicineRequestCard.tsx";
+import FlowerRequestCard from "../components/service-request-cards/FlowerRequestCard.tsx";
+import ReligionRequestCard from "../components/service-request-cards/ReligionRequestCard.tsx";
+import TransportationRequestCard from "../components/service-request-cards/TransportationRequestCard.tsx";
+import SanitationRequestCard from "../components/service-request-cards/SanitationRequestCard.tsx";
+import RequestListCard from "../components/service-request-cards/RequestListCard.tsx";
+import FullSideNavBarComponent from "../components/FullSideNavBarComponent.tsx";
+import { useAuth0 } from "@auth0/auth0-react";
 
-import ServiceRequestInput from "../components/service-requests/ServiceRequestInput.tsx";
-import MapIcon from "../images/SideBar/map.png";
-import ServiceRequestIcon from "../images/SideBar/requestIcon.png";
-import EmployeeIcon from "../images/SideBar/user.png";
-import CSVIcon from "../images/SideBar/table.png";
-import LogIcon from "../images/SideBar/log-in.png";
+function ServiceRequestPage() {
+    const { isAuthenticated } = useAuth0();
 
-export default function ServiceRequestPage() {
+    return (
+        <div className="flex">
+            <FullSideNavBarComponent />
+            <div className={"grid justify-center m-auto"}>
+                <div className={"relative flex  justify-center "}>
+                    <FlowerRequestCard />
+                    <ReligionRequestCard />
 
-
-  return (
-    <div className="flex h-lvh">
-        <SideNavBarComponent>
-            <SideBarItem icon={MapIcon} text="Map" link="/TailwindMapPage"/>
-            <SideBarItem icon={ServiceRequestIcon} text="Services" link="/ServiceRequest"/>
-            {/*todo chris change this you what you want*/}
-            <SideBarItem icon={ServiceRequestIcon} text="Request List" link="/RequestList"/>
-            <SideBarItem icon={EmployeeIcon} text="Employees" link="/EmployeeTable"/>
-            <SideBarItem icon={CSVIcon} text=".CSV" link="/NodeEdgeTable"/>
-            <hr className="my-3"/>
-            {/*NEED THIS FIXED OR SUM */}
-            <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"}/>
-        </SideNavBarComponent>
-        <ServiceRequestInput/>
-    </div>
-  );
+                    {isAuthenticated && <MedicineRequestCard />}
+                </div>
+                <div className={"relative flex  justify-center mt-12"}>
+                    {isAuthenticated && <TransportationRequestCard/>}
+                    {isAuthenticated && <SanitationRequestCard/>}
+                    {/* Conditionally render RequestListCard based on authentication status */}
+                    {isAuthenticated && <RequestListCard />}
+                </div>
+            </div>
+        </div>
+    );
 }
+
+export default ServiceRequestPage;

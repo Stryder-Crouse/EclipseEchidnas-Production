@@ -10,9 +10,11 @@ router.post("/employee", async function (req: Request, res: Response) {
     const employeeData: Employee = req.body;
     console.log(req.body);
 
+
     try {
         await PrismaClient.employee.create({
             data: {
+                userID: employeeData.userID,
                 userName: employeeData.userName,
                 firstName: employeeData.firstName,
                 lastName: employeeData.lastName,
@@ -21,15 +23,15 @@ router.post("/employee", async function (req: Request, res: Response) {
             },
         });
         console.info("Successfully saved employee"); // Log that it was successful
-    } catch(error){
-    // Log any failures
-    console.error(`Unable to save employee`);
-    res.sendStatus(400); // Send error
+    } catch (error) {
+        // Log any failures
+        console.error(`Unable to save employee`);
+        res.sendStatus(400); // Send error
     }
 });
 
 //function to update an employee's info (pass in an Employee object)
-router.post("/updateEmployee", async function(req: Request, res: Response) {
+router.post("/updateEmployee", async function (req: Request, res: Response) {
     //get the new employee info (new info is stored in an employee object)
     const data: Employee = req.body;
     //debug info
@@ -61,12 +63,12 @@ router.post("/updateEmployee", async function(req: Request, res: Response) {
 });
 
 //function to delete employee (fire them) --- Pass a string (employee's username) to function
-router.post("/deleteEmployee", async function(req: Request, res: Response) {
+router.post("/deleteEmployee", async function (req: Request, res: Response) {
     console.log("req.body");
     console.log(req.body);
     try {
         //get the user which the admin wants to fire
-        const data:string[] = req.body;
+        const data: string[] = req.body;
 
         //query the database to delete the employee
         await PrismaClient.employee.delete({
@@ -97,32 +99,57 @@ router.get("/employees", async function (req: Request, res: Response) {
     }
 });
 
-//gets all employees with medicalRequest permissions
+//gets all employees with medicineRequest permissions
 router.get("/employees/med", async function (req: Request, res: Response) {
     try {
 
         res.send(await PrismaClient.employee.findMany(
             {
-                where:{
-                    OR:[
+                where: {
+                    OR: [
                         {
-                        designation:"doctor"
+                            designation: "doctor"
                         },
                         {
-                            designation:"nurse"
+                            designation: "nurse"
                         },
                         {
-                            designation:"administrator"
+                            designation: "administrator"
                         },
                         {
-                            userName:"No one"
+                            userName: "No one"
                         }
                     ]
 
                 }
 
             }
+        )); //end res.send (this is what will be sent to the client)
+        console.info("\nSuccessfully gave you the the employees\n");
+    } catch (err) {
+        console.error("\nUnable to send employees\n");
+    }
+});
 
+//gets all employees with sanitationRequest permissions
+router.get("/employees/san", async function (req: Request, res: Response) {
+    try {
+
+        res.send(await PrismaClient.employee.findMany(
+            {
+                where: {
+                    OR: [
+                        {
+                            designation: "janitor"
+                        },
+                        {
+                            userName: "No one"
+                        }
+                    ]
+
+                }
+
+            }
         )); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you the the employees\n");
     } catch (err) {
@@ -136,26 +163,25 @@ router.get("/employees/transport", async function (req: Request, res: Response) 
 
         res.send(await PrismaClient.employee.findMany(
             {
-                where:{
-                    OR:[
+                where: {
+                    OR: [
                         {
-                            designation:"doctor"
+                            designation: "doctor"
                         },
                         {
-                            designation:"nurse"
+                            designation: "nurse"
                         },
                         {
-                            designation:"administrator"
+                            designation: "administrator"
                         },
                         {
-                            userName:"No one"
+                            userName: "No one"
                         }
                     ]
 
                 }
 
             }
-
         )); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you the the employees\n");
     } catch (err) {
@@ -163,26 +189,94 @@ router.get("/employees/transport", async function (req: Request, res: Response) 
     }
 });
 
-//gets all employees with medicalRequest permissions
+//gets all employees with flowerRequest permissions
 router.get("/employees/flow", async function (req: Request, res: Response) {
     try {
 
         res.send(await PrismaClient.employee.findMany(
             {
-                where:{
-                    OR:[
+                where: {
+                    OR: [
                         {
-                            designation:"flower deliverer"
+                            designation: "flower deliverer"
                         },
                         {
-                            userName:"No one"
+                            userName: "No one"
                         }
                     ]
 
                 }
 
             }
+        )); //end res.send (this is what will be sent to the client)
+        console.info("\nSuccessfully gave you the the employees\n");
+    } catch (err) {
+        console.error("\nUnable to send employees\n");
+    }
+});
 
+//gets all employees with religiousRequest permissions
+router.get("/employees/rel", async function (req: Request, res: Response) {
+    try {
+        const religion: string = req.body;
+        let typeOfReligiousPersonnel = "religious personnel";
+        switch (religion) {
+            case "Buddhism":
+                typeOfReligiousPersonnel = "Buddhist personnel";
+                break;
+            case "Christianity (Catholicism)":
+                typeOfReligiousPersonnel = "Catholic personnel";
+                break;
+            case "Christianity (Mormonism)":
+                typeOfReligiousPersonnel = "Mormon personnel";
+                break;
+            case "Christianity (Non-Denominational)":
+                typeOfReligiousPersonnel = "Christian (non-denominational) personnel";
+                break;
+            case "Christianity (Protestantism)":
+                typeOfReligiousPersonnel = "Protestant personnel";
+                break;
+            case "Hinduism":
+                typeOfReligiousPersonnel = "Hindu personnel";
+                break;
+            case "Islam":
+                typeOfReligiousPersonnel = "Muslim personnel";
+                break;
+            case "Jainism":
+                typeOfReligiousPersonnel = "Jain personnel";
+                break;
+            case "Judaism":
+                typeOfReligiousPersonnel = "Jewish personnel";
+                break;
+            case "Sikhism":
+                typeOfReligiousPersonnel = "Sikh personnel";
+                break;
+            case "Shinto":
+                typeOfReligiousPersonnel = "Shinto personnel";
+                break;
+            /*default:
+                typeOfReligiousPersonnel = "religious personnel";
+                break;*/ //already covered by the definition of the var
+        }
+
+        res.send(await PrismaClient.employee.findMany(
+            {
+                where: {
+                    OR: [
+                        {
+                            designation: typeOfReligiousPersonnel
+                        },
+                        { //always pull "religious personnel", no matter the religion
+                            designation: "religious personnel"
+                        },
+                        {
+                            userName: "No one"
+                        }
+                    ]
+
+                }
+
+            }
         )); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you the the employees\n");
     } catch (err) {
@@ -192,13 +286,13 @@ router.get("/employees/flow", async function (req: Request, res: Response) {
 
 //gets the employee with the username of the Auth0 login
 router.get("/current_employee", async function (req: Request, res: Response) {
-    const currentUser : Employee = req.body;
+    const currentUser: Employee = req.body;
     try {
         //try to send all the employees to the client
         //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
         res.send(await PrismaClient.employee.findUnique(
             {
-                where:{ userName: currentUser.userName}
+                where: {userName: currentUser.userName}
             }
         )); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you the employee\n");

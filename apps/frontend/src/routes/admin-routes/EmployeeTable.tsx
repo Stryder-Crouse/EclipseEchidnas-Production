@@ -1,9 +1,3 @@
-import SideNavBarComponent, {SideBarItem} from "../../components/SideNavBarComponent.tsx";
-import ServiceRequestIcon from "../../images/SideBar/requestIcon.png";
-import EmployeeIcon from "../../images/SideBar/user.png";
-import CSVIcon from "../../images/SideBar/table.png";
-import LogIcon from "../../images/SideBar/log-in.png";
-import MapIcon from "../../images/SideBar/map.png";
 import "../../css/route-css/EmployeeTable.css";
 import "../../css/route-css/EmployeeTableInput.css";
 import React, {useEffect, useState} from "react";
@@ -11,7 +5,7 @@ import axios from "axios";
 import {Employee, Roles} from "../../../../backend/src/algorithms/Employee/Employee.ts";
 import trashIcon from "../../images/Table Functions/trash.png";
 import editPen from "../../images/Table Functions/editPen.png";
-
+import FullSideNavBarComponent from "../../components/FullSideNavBarComponent.tsx";
 
 //TODO IMPLEMENT THESE BUTTONS TO POPULATE WITH EVERY ROW
 //import TrashIcon from "../../images/Table Functions/trash-2.png";
@@ -19,7 +13,9 @@ import editPen from "../../images/Table Functions/editPen.png";
 
 
 const designations = [Roles.None,Roles.nurse,Roles.doctor,Roles.admin,
-    Roles.janitor,Roles.flowerDeliverer,Roles.religiousPersonnel];
+    Roles.janitor,Roles.flowerDeliverer,Roles.religiousPersonnel,
+    Roles.buddhistPersonnel, Roles.catholicPersonnel, Roles.christianPersonnel, Roles.mormonPersonnel, Roles.protestantPersonnel,
+    Roles.jainPersonnel, Roles.jewishPersonnel, Roles.muslimPersonnel, Roles.sikhPersonnel, Roles.shintoPersonnel];
 
 function EmployeeTable() {
     
@@ -37,23 +33,17 @@ function EmployeeTable() {
 
 
 
+
+
     /* populate the requests */
     useEffect(()=>{
         getEmployees().then((result)=>setEmployees(result));
     },[]);
     //table-id is request-table
     return (
-        <div className="flex h-lvh flex-row">
+        <div className="flex h-lvh flex-row overflow-x-hidden">
             <div className="z-10">
-                <SideNavBarComponent>
-                    <SideBarItem icon={MapIcon} text="Map" link="/TailwindMapPage"/>
-                    <SideBarItem icon={ServiceRequestIcon} text="Services" link="ServiceRequest"/>
-                    <SideBarItem icon={EmployeeIcon} text="Employees" link="/EmployeeTable"/>
-                    <SideBarItem icon={CSVIcon} text=".CSV" link="/NodeEdgeTable"/>
-                    <hr className="my-3"/>
-                    {/*NEED THIS FIXED OR SUM */}
-                    <SideBarItem icon={LogIcon} text="Login" link={"/ServiceRequest"}/>
-                </SideNavBarComponent>
+                <FullSideNavBarComponent/>
             </div>
             <div className={"employee-table-container"}>
                 <div className="flex">
@@ -95,7 +85,7 @@ function EmployeeTable() {
                 <form className={"formNewEmployee"}>
                     <div>
                         <label form={"employeeUsername"}>Username</label><br/>
-                        <input disabled={true} type={"text"} placeholder={"Enter Username"} className={"inputText"}
+                        <input disabled={isCreating()} type={"text"} placeholder={"Enter Username"} className={"inputText"}
                                name={"employeeUsername"} required
                                value={newUserName}
                                onChange={(e) => {
@@ -184,6 +174,13 @@ function EmployeeTable() {
         </div>
     );
 
+
+    function isCreating(){
+        if(editIndex!=-1){
+            return true;
+        }
+        return false;
+    }
     function formSubmitText(){
         if(editIndex!=-1){
             return "Update Employee";
@@ -199,7 +196,10 @@ function EmployeeTable() {
             isEditing=true;
         }
 
+        //todo FNFN fix this so that it works with Auth0 (the Auth0 token should
+        // be the UserID) or remove it all together
         const newEmployee: Employee = {
+            userID: "ERROR",
             designation: newDesignation ,
             firstName: newFristName,
             isAdmin: newIsAdmin,
@@ -293,6 +293,7 @@ function EmployeeTable() {
     /**
      * Draw a table row.
      * @param employee the employee to draw.
+     * @param employeeIndex
      */
     function drawEmployeeRecord(employee: Employee , employeeIndex:number) {
         return (
