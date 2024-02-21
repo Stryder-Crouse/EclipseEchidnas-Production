@@ -14,7 +14,7 @@ ChartJS.register(
 
 const PieChartStatsPriority = () =>{
     const data = {
-        labels: ['Low', 'Medium', 'High', 'Emergency'],
+        labels: ['Low       ', 'Medium    ', 'High', 'Emergency'],
         datasets:[
             {
                 label: 'Priority',
@@ -23,10 +23,11 @@ const PieChartStatsPriority = () =>{
             }
         ]
     };
-    const options= {
+    const options = {
+        maintainAspectRatio: false,
         plugins: {
-
             legend: {
+                align: 'start',
                 position: 'bottom',
                 labels: {
                     font: {
@@ -37,8 +38,12 @@ const PieChartStatsPriority = () =>{
             }
         }
     };
-    return(
-        <div className="flex">
+    return (
+        <div style={
+            {
+                position: "relative", height: "90%",
+                width: "30%"
+            }}>
             {/*// @ts-expect-error asjhdska*/}
             <Pie data={data} options={options}></Pie>
         </div>

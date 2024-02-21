@@ -12,22 +12,22 @@ ChartJS.register(
     Legend
 );
 
-const PieChartStatsType = () =>{
+const PieChartStatsType = () => {
     const data = {
         labels: ['Flower', 'Medicine', 'Religious', 'Sanitation', 'Transport'],
-        datasets:[
+        datasets: [
             {
                 label: 'Service Request Type',
-                data:[3, 8, 10, 5],
+                data: [3, 8, 10, 5],
                 backgroundColor: ["red", "blue", "green", "orange"]
             }
         ]
     };
-    const options= {
+    const options = {
+        maintainAspectRatio: false,
         plugins: {
-
-
             legend: {
+                align: 'start',
                 position: 'bottom',
                 labels: {
                     font: {
@@ -38,13 +38,15 @@ const PieChartStatsType = () =>{
             }
         }
     };
-
-    return(
-        <div className="flex">
+    return (
+        <div style={
+            {
+                position: "relative", height: "90%",
+                width: "30%"
+            }}>
             {/*// @ts-expect-error asjhdska*/}
             <Pie data={data} options={options}></Pie>
         </div>
     );
 };
-
 export default PieChartStatsType;

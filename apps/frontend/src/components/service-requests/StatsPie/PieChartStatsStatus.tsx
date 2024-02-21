@@ -23,10 +23,11 @@ const PieChartStatsStatus = () =>{
             }
         ]
     };
-    const options= {
+    const options = {
+        maintainAspectRatio: false,
         plugins: {
-
             legend: {
+                align:'start',
                 position: 'bottom',
                 labels: {
                     font: {
@@ -37,8 +38,12 @@ const PieChartStatsStatus = () =>{
             }
         }
     };
-    return(
-        <div className="flex">
+    return (
+        <div style={
+            {
+                position: "relative", height: "90%",
+                width: "30%"
+            }}>
             {/*// @ts-expect-error asjhdska*/}
             <Pie data={data} options={options}></Pie>
         </div>
