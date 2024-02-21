@@ -17,19 +17,39 @@ ChartJS.register(
     Legend
 );
 
+
 const ServiceRequestStats = () =>{
     const data = {
-        labels: ['Mon', 'Tue', 'Wed'],
+        labels: ['Request Type', 'Priority', 'Status'],
         datasets:[
             {
-                label: 'Branch',
+                label: 'RandomBS1',
                 data:[100, 200, 300],
-                backgroundColor: '#61DBFB'
+                backgroundColor: ["red", "blue", "green"]
+            },
+            {
+                label: 'RandomBS2',
+                data:[100, 200, 300],
+                backgroundColor: ["yellow", "purple", "cyan"]
+
+            },
+            {
+                label: 'RandomBS3',
+                data:[100, 200, 300],
+                backgroundColor: ["green", "orange", "red"]
             }
         ]
     };
     const options= {
-        indexAxis: 'y'
+        indexAxis: 'y',
+        scales:{
+            x:{
+                stacked:true
+            },
+            y:{
+                stacked:true
+            }
+        }
     };
 
 
