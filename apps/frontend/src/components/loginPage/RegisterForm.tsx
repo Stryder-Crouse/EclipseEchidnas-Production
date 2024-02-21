@@ -129,7 +129,7 @@ export default function RegisterForm() {
                         }
                     });
                 }
-                //window.location.href = "http://localhost:3000/RequestList";
+                window.location.href = "http://localhost:3000/RequestList";
             });
         }
 
