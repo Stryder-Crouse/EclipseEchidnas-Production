@@ -1723,6 +1723,7 @@ router.get("/religiousRequest/statistics", async function (req: Request, res: Re
         };
 
         for (const entry of statistics) {
+            console.log(entry.reqPriority);
             result.total++;
             if (entry.reqPriority == "Low") result.lowPrio++;
             if (entry.reqPriority == "Medium") result.medPrio++;
@@ -1733,11 +1734,10 @@ router.get("/religiousRequest/statistics", async function (req: Request, res: Re
             if (entry.status == "In Progress") result.inProgress++;
             if (entry.status == "Completed") result.completed++;
         }
-
-        res.send(result);
+        console.log('rel stats');
+        console.log(result);
+        res.status(200).send(result);
         console.info("\nSuccessfully gave you all of the statistics\n");
-        //send status unless 6 times bug occurs
-        res.sendStatus(200);
     } catch (err) {
         console.error("\nUnable to send requests\n" + err);
         res.sendStatus(500); // Send error
