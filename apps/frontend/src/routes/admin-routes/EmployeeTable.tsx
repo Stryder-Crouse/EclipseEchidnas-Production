@@ -34,6 +34,8 @@ function EmployeeTable() {
     const [newLastName, setNewLastName] = useState("");
     const [newIsAdmin, setNewIsAdmin] = useState(false);
     const [newDesignation, setNewDesignation] = useState(Roles.None);
+    const [userID, setUserID] = useState("");
+
     // const [resetDesignation, setResetDesignation] = useState(false);
     const [editIndex, setEditIndex] = useState(-1);
 
@@ -211,10 +213,9 @@ function EmployeeTable() {
             isEditing=true;
         }
 
-        //todo FNFN fix this so that it works with Auth0 (the Auth0 token should
-        // be the UserID) or remove it all together
+
         const newEmployee: Employee = {
-            userID: "Error",
+            userID: userID,
             designation: newDesignation ,
             firstName: newFristName,
             isAdmin: newIsAdmin,
@@ -277,6 +278,7 @@ function EmployeeTable() {
         setNewFristName(employee.firstName);
         setNewUserName(employee.userName);
         setEditIndex(employeeIndex);
+        setUserID(employee.userID);
 
 
         openForm();

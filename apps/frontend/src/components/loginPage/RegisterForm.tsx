@@ -9,7 +9,7 @@ import {useAuth0} from "@auth0/auth0-react";
 //import Employees from "../../../../backend/src/routes/employees.ts";
 
 export default function RegisterForm() {
-    const [username, setUsername] = useState("");
+
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     //const [currEmail, setCurrEmail] = useState('');
@@ -131,14 +131,7 @@ export default function RegisterForm() {
                     </SimpleTextInput>
                 </div>
 
-                <div>
-                    <SimpleTextInput id={"userName"} labelContent={"Username: "} inputStorage={username}
-                                     setInputStorage={setUsername}
-                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                     divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
-                                     placeHolderText={"Username: "}>
-                    </SimpleTextInput>
-                </div>
+
 
                 <div className={"flex justify-center w-full mt-5"}>
                     <button
