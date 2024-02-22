@@ -99,32 +99,23 @@ export default function MapSearchBar({startNode:startNode,
                     <b>End: </b>{endNode.longName}
                 </div>
 
-                <div className={"ml-5 mt-1"}>
-                    <CreateDropdown
-                        dropBtnName={selectedText}
-                        dropdownID={"Location"}
-                        isSearchable={true}
-                        populationArr={longNames}
-                        resetDropdown={resetDropdown}
-                        setSelected={setSelected}
-                        inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
-                        selectCSS={""}
-                        resetOnSelect={true}
-                        setResetDropdown={setResetDropdown}
-                    />
 
-                </div>
-                <div className="flex flex-col border-gray-500 border-2 w-60 h-48 ml-5 mt-1 bg-white rounded-3xl p-2">
-                    <div className="overflow-y-scroll overflow-x-hidden">
+                <div className="flex flex-col border-gray-500 border-2 w-60 max-h-[70vh] mt-1 bg-white rounded-3xl p-2">
+                    {/*<p className={"bg-[#024c96] p-1 rounded-xl w-full text-white font-semibold cursor-pointer flex justify-center m-auto "}>*/}
+                    {/*    Text Directions*/}
+                    {/*</p>*/}
+                    <div className="overflow-y-auto overflow-x-hidden">
                         {textDirections.map((direction, index) => (
-                            <div key={index} className="flex w-full rounded-3xl pl-2 pr-2 pt-1 pb-1 bg-gray-200 m-2">
-                                {direction}
+                            <div key={index} className="flex w-[90%] rounded-3xl pl-2 pr-2 pt-1 pb-1 bg-gray-200 m-2">
+                                <b>{(index+1).toString()+":"}</b>{" "+direction}
+
                             </div>
                         ))}
                     </div>
+                    <button className={"bg-[#024c96] p-1 rounded-xl w-full text-white font-semibold cursor-pointer flex justify-center m-auto "} onClick={closeLocations}>Close</button>
                 </div>
 
-                <button onClick={closeLocations}>Close</button>
+
             </div>
 
 
