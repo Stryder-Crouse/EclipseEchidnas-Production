@@ -12,7 +12,7 @@ export default function RegisterForm() {
     const [username, setUsername] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [currEmail, setCurrEmail] = useState('');
+    //const [currEmail, setCurrEmail] = useState('');
 
     const currUser = useAuth0();
     const thisEmail = currUser?.user?.email;
@@ -53,84 +53,40 @@ export default function RegisterForm() {
     //     } else console.log('Could not find user');
     // }, [thisEmail]);
 
-    function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    async function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         e.preventDefault();
+        console.log("HIHI");
 
+        //thisEmail stores the email which was entered into auth0
+        console.log('User found');
+        //setCurrEmail(JSON.stringify(thisEmail));
 
-        let inDB: boolean = false;
+        const email =JSON.stringify(thisEmail);
+        console.log(email);
 
-        //check to see if the email is currently in the db
-        if(thisEmail) {
-            //thisEmail stores the email which was entered into auth0
-            console.log('User found');
-            setCurrEmail(JSON.stringify(thisEmail));
-            // console.log("Curr: " + currEmail);
-            // console.log("this: " + thisEmail);
-            axios.get("api/employees/determineIfUniqueEmail", {params: {email: thisEmail}}).then((result) => {
-                // console.log("Result: " + result.data);
-                inDB = result.data;
-                // console.log("\n\n\n\nResult: " + result.data);
-                if(inDB)
-                {
-                    // console.log("\n\n\n\nHERE 3\n\n\n\n");
+        const employee: Employee = {
 
+            userID: currUser.user!.sub!,
+            userName: JSON.stringify(thisEmail),
+            firstName: firstName,
+            lastName: lastName,
+            designation: Roles.None,
+            isAdmin: false,
+        };
 
-                    //create a new employee with the updated info
-                    const employee: Employee = {
-                            userID: thisEmail,
-                            userName: username,
-                            firstName: firstName,
-                            lastName: lastName,
-                            designation: Roles.None,
-                            isAdmin: false,
-                    };
-
-
-                    // console.log("thisEmail: " + thisEmail);
-                    // console.log("currEmail: + " + currEmail);
-
-                    //send the new employee data to the database and update the employee
-                    axios.post("/api/employees/updateEmployee", employee, {
-                        headers: {
-                            "Content-Type": "application/json",
-                        }
-                    }).then((param) => {
-                        //if there is a problem with registering the employee's info, error out here
-                        if (param.status == 400) {
-                            console.log("There was an error updating employee! WEEE WOOOOO WEEEEE WOOOO");
-                        }
-                    });
-                }
-                else {
-                    //create the new employee
-                    const employee: Employee = {
-                        userID: thisEmail,
-                        userName: username,
-                        firstName: firstName,
-                        lastName: lastName,
-                        designation: Roles.None,
-                        isAdmin: false,
-                    };
-
-
-                    console.log("(To avoid error) currEmail: " + currEmail);
-
-                    //backend functionality for new employees
-                    //this will map to our backend and register a new account with Auth0
-                    axios.post("/api/employees/employee", employee, {
-                        headers: {
-                            "Content-Type": "application/json",
-                        }
-                    }).then((response) => {
-                        //if there is an issue with posting, log it here
-                        if (response.status == 400) {
-                            console.log("There was an error with saving the employee again");
-                        }
-                    });
-                }
-                window.location.href = window.location.origin;
+        console.log("new user");
+        console.log(employee);
+        // console.log("Curr: " + currEmail);
+        // console.log("this: " + thisEmail);
+        await axios.post("api/employees/onLogin",
+            employee,{
+                headers: {
+                    "Content-Type": "application/json",
+                },
             });
-        }
+
+        window.location.href = "/AdminMapPage";
+
     }
 
     return (
@@ -184,7 +140,8 @@ export default function RegisterForm() {
                 <div className={"flex justify-center w-full mt-5"}>
                     <button
                         className={"p-2 w-40 text-white bg-navStart hover:bg-navy rounded-3xl border border-black drop-shadow"}
-                        onClick={handleSubmit}
+                        onClick={
+                            handleSubmit}
                     >
                         Register
                     </button>

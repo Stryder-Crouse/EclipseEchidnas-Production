@@ -11,8 +11,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
             clientId={"BxAg6HyJiboJvAd47Mj40WepvybXVTpY"}
             authorizationParams={{
                 redirect_uri: "http://localhost:3000/RegisterPage",
-                audience: "https://dev-hca27okc2srfyen8.us.auth0.com/api/v2/",
-                scope: "delete:users",
             }}>
 
             <App/>
