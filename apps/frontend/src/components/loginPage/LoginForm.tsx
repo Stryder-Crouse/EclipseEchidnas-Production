@@ -1,99 +1,162 @@
-import { useNavigate } from "react-router-dom";
+//import {useNavigate} from "react-router-dom";
 import React from "react";
-import { useState } from "react";
-import UsernameAlert from "./UsernameAlert.tsx";
-import PasswordAlert from "./PasswordAlert.tsx";
+import {useState} from "react";
 import "../../css/route-css/LoginPage.css";
+import Logo from "../../images/Brigham_and_Womens_Hospital_logo.svg.png";
+//import IncorrectAlert from "./IncorrectAlert.tsx";
+//import EmailAlert from "./EmailAlert.tsx";
+//import PasswordAlert from "./PasswordAlert.tsx";
 
 function LoginForm() {
-  //Create username and password variables to store inputs
-  const [username, setUsername] = useState(""); //Variable for Username
-  const [password, setPassword] = useState(""); //Variable for Password
-  const [showPassword, setShowPassword] = useState(false); //Boolean for if password is shown or not
-  const [incorrectError, setIncorrectError] = useState(false);
-  const navigate = useNavigate();
+    //Create email and password variables to store inputs
+    const [email, setEmail] = useState(""); //Variable for email
+    const [password, setPassword] = useState(""); //Variable for Password
+    const [showPassword, setShowPassword] = useState(false); //Boolean for if password is shown or not
+    const [incorrect, setIncorrect] = useState(false);
+    const [emailMiss, setEmailMiss] = useState(false);
+    const [passMiss, setPassMiss] = useState(false);
 
-  /**
-   * Assigns input to the username variable, and if empty displays alert (alert currently not working, alternative implemented but hope to use in future)
-   * @param username Value entered into the username textbox
-   */
-  function handleUsername(username: string) {
-    setUsername(username);
-    if (username === "") {
-      return <UsernameAlert />;
+    //const navigate = useNavigate();
+
+    /**
+     * Assigns input to the email variable, and if empty displays alert
+     * @param email Value entered into the email textbox
+     */
+    function handleEmail(email: string) {
+        setEmail(email);
+        if (email === "") {
+            setEmailMiss(true);
+        } else setEmailMiss(false);
     }
-  }
 
-  /**
-   * Assigns input to the password variable, and if empty displays alert (alert currently not working, alternative implemented but hope to use in future)
-   * @param password Value entered into the password textbox
-   */
-  function handlePassword(password: string) {
-    setPassword(password);
-    if (password === "") {
-      return <PasswordAlert />;
+    /**
+     * Assigns input to the password variable, and if empty displays alert
+     * @param password Value entered into the password textbox
+     */
+    function handlePassword(password: string) {
+        setPassword(password);
+        if (password === "") {
+            setPassMiss(true);
+        } else setPassMiss(false);
     }
-  }
 
-  /**
-   * When submit button pushed, determines if values entered are valid login credentials
-   * If so, navigates to the map page
-   * If not, returns with telling the error message to show
-   */
-  function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    e.preventDefault();
-    if (username === "admin" && password === "admin") {
-      navigate("/AdminMapPage");
-      //to get map to load properly on adminMapPage
-      window.location.reload();
-    } else if (username != "" && password != "") {
-      setIncorrectError(true);
+    /**
+     * When submit button pushed, determines if values entered are valid login credentials
+     * If so, navigates to the map page
+     * If not, returns with telling the error message to show
+     */
+    function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+        e.preventDefault();
+        setIncorrect(false);
     }
-  }
 
-  return (
-    <form>
-      {incorrectError ? ( //If the entered username or password are incorrect, shows error message
-        <div className={"incorrect"}>Incorrect Username or Password</div>
-      ) : null}
+    return (
+        <div>
 
-      <input //Textbox to enter Username
-        className={"usernameButton"}
-        required
-        type="text"
-        id="username"
-        value={username}
-        placeholder={"*Username"}
-        onChange={(e) => handleUsername(e.target.value)}
-      />
+            <form
+                className={"font-project justify-content-center p-7 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl"}>
 
-      <br />
+                <div className={"flex justify-center w-full"}>
+                    <img
+                        className={"w-14"}
+                        src={Logo}
+                        alt={"A logo of the hospital"}
+                    />
+                </div>
 
-      <input //Textbox to enter Password
-        className={"passwordButton"}
-        required
-        type={showPassword ? "text" : "password"}
-        id="password"
-        value={password}
-        placeholder={"*Password"}
-        onChange={(e) => handlePassword(e.target.value)}
-      />
 
-      {/*Button to toggle visbility of password on/off (defaults to off)*/}
-      <div className={"showPassButton"}>
-        <input
-          id={"showPass"}
-          type={"checkbox"}
-          onChange={() => setShowPassword((prev) => !prev)}
-        />
-        <label htmlFor={"showPass"}>Show Password</label>
-      </div>
-      <br />
-      <button className={"loginButton"} onClick={handleSubmit}>
-        Login
-      </button>
-    </form>
-  );
+                {incorrect ? ( //If the entered username or password are incorrect, shows error message
+                    <div className={"flex justify-center w-full mt-1.5"}>
+                        <div
+                            className={"w-48 my-1.5 p-1 text-black text-xs bg-red-200 rounded-lg border border-black drop-shadow"}
+                        >
+                            Incorrect Username or Password
+                        </div>
+                    </div>
+                ) : null}
+
+                <div className={"grid justify-center items-center my-1.5"}>
+                    <label
+                        className={"mb-1"}
+                        htmlFor={"email"}>
+                        Email:
+                    </label>
+                    <input //Textbox to enter Password
+                        className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                        id="email"
+                        value={email}
+                        placeholder={"Email: "}
+                        onChange={(e) => handleEmail(e.target.value)}
+                    />
+                </div>
+
+                {emailMiss ? ( //If the email is left empty, show error message
+                    <div className={"flex justify-center w-full mt-1.5"}>
+                        <div
+                            className={"w-44 my-1.5 p-1 text-black text-xs bg-red-200 rounded-lg border border-black drop-shadow"}
+                        >
+                            Email Missing. Email Required
+                        </div>
+                    </div>
+                ) : null}
+
+                <div className={"grid justify-center items-center my-1.5"}>
+                    <label
+                        className={"mb-1"}
+                        htmlFor={"password"}>
+                        Password:
+                    </label>
+                    <input //Textbox to enter Password
+                        className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                        type={showPassword ? "text" : "password"}
+                        id="password"
+                        value={password}
+                        placeholder={"Password: "}
+                        onChange={(e) => handlePassword(e.target.value)}
+                    />
+                </div>
+
+                {passMiss ? ( //If the password is left empty, show error message
+                    <div className={"flex justify-center w-full mt-1.5"}>
+                        <div
+                            className={"flex justify-center w-56 my-1.5 p-1 text-black text-xs bg-red-200 rounded-lg border border-black drop-shadow"}
+                        >
+                            Password Missing. Password Required
+                        </div>
+                    </div>
+                ) : null}
+
+                {/*Button to toggle visbility of password on/off (defaults to off)*/}
+                <div className={"flex justify-center w-full my-1.5"}>
+                    <div className={"p-2 w-40 bg-navy hover:bg-navStart rounded-3xl border border-black drop-shadow"}>
+                        <input
+                            className={"accent-navy"}
+                            id={"showPass"}
+                            type={"checkbox"}
+                            onChange={() => setShowPassword((prev) => !prev)}
+                        />
+                        <label
+                            className={"text-white p-1"}
+                            htmlFor={"showPass"}
+                        >
+                            Show Password
+                        </label>
+                    </div>
+                </div>
+
+                <div className={"flex justify-center w-full my-1.5"}>
+                    <button
+                        className={"p-2 w-40 text-white bg-navStart hover:bg-navy rounded-3xl border border-black drop-shadow"}
+                        onClick={handleSubmit}
+                    >
+                        Login
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    );
 }
 
 export default LoginForm;
