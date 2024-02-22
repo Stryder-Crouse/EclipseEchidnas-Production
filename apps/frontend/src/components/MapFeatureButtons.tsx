@@ -153,7 +153,13 @@ export default function MapFeatureButtons({
             <button className="flex self-end bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10"
                     onClick={() => {
                         setStartNode(NULLNODE);
+
                         setEndNode(NULLNODE);
+                        //close the drop down
+                        const openLocationInput = document.getElementById("locationDropdown");
+                        if (openLocationInput != null) {
+                            openLocationInput.style.display = "none";
+                        }
                     }}>
                 <img src={RefreshIcon} alt={"Refresh"}/>
             </button>

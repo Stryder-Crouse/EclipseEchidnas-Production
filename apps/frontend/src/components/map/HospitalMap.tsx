@@ -229,6 +229,7 @@ function updatePathEdges(startingNode: Node,
     if (startingNode == NULLNODE || endingNode == NULLNODE) {
         setPathEdges([]);
         setPathFloorTransitionNodes([]);
+        setTextDirections([]);
         return;
     }
 
@@ -275,6 +276,12 @@ function updatePathEdges(startingNode: Node,
     /* set the changes */
     setPathFloorTransitionNodes(floorEdgesAndTransitions.transitions);
     setPathEdges(floorEdgesAndTransitions.edges);
+
+    //open the drop down to show the text directions
+    const openLocationInput = document.getElementById("locationDropdown");
+    if (openLocationInput != null) {
+        openLocationInput.style.display = "block";
+    }
 }
 
 /**
