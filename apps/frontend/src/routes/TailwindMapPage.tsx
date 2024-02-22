@@ -7,7 +7,6 @@ import {FloorToIndex, Node, NULLNODE} from "../../../backend/src/algorithms/Grap
 import {useEffect, useState} from "react";
 import FullSideNavBarComponent from "../components/FullSideNavBarComponent.tsx";
 
-
 /* Set the default floor to LL1 */
 const defaultFloor = FloorToIndex.LowerLevel1;
 

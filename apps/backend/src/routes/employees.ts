@@ -80,6 +80,7 @@ router.post("/employee", async function (req: Request, res: Response) {
                 isAdmin: employeeData.isAdmin,
             },
         });
+        res.sendStatus(200);
         console.info("Successfully saved employee"); // Log that it was successful
         res.sendStatus(200);
     } catch (err) {
@@ -92,23 +93,24 @@ router.post("/employee", async function (req: Request, res: Response) {
 //function to update an employee's info (pass in an Employee object)
 router.post("/updateEmployee", async function (req: Request, res: Response) {
     //get the new employee info (new info is stored in an employee object)
-    const data: Employee = req.body;
+    const employeeData: Employee = req.body;
     //debug info
     console.log("Updated Info");
-    console.log(data);
+    console.log(employeeData);
 
     //query the database to update the desired employee
     try {
         await PrismaClient.employee.update({
             where: {
-                userName: data.userName
+                userID: employeeData.userID
             },
             data: {
                 //transfer all the info from the object into the database
-                firstName: data.firstName,
-                lastName: data.lastName,
-                designation: data.designation,
-                isAdmin: data.isAdmin
+                userName: employeeData.userName,
+                firstName: employeeData.firstName,
+                lastName: employeeData.lastName,
+                designation: employeeData.designation,
+                isAdmin: employeeData.isAdmin
             }
         });
         //debug info to let us know that the employee was successfully updated
@@ -125,14 +127,22 @@ router.post("/updateEmployee", async function (req: Request, res: Response) {
 router.post("/deleteEmployee", async function (req: Request, res: Response) {
     console.log("req.body");
     console.log(req.body);
+
+    //get the user which the admin wants to fire
+    const data: string[] = req.body as string[];
+
+    console.log("DDDD");
+    console.log(data[0]);
+
+
+
+
     try {
-        //get the user which the admin wants to fire
-        const data: string[] = req.body;
 
         //query the database to delete the employee
         await PrismaClient.employee.delete({
             where: {
-                userName: data[0]          //employee's username is unique, so we must delete an employee by their username
+                userID: data[0]          //employee's username is unique, so we must delete an employee by their username
             }
         });
         //debug info to know that we successfully deleted the employee
@@ -151,7 +161,14 @@ router.get("/employees", async function (req: Request, res: Response) {
     try {
         //try to send all the employees to the client
         //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
-        res.status(200).send(await PrismaClient.employee.findMany()); //end res.send (this is what will be sent to the client)
+        res.status(200).send(await PrismaClient.employee.findMany(
+            {
+                orderBy:{
+                    firstName: "asc"
+                }
+            }
+
+        )); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you the the employees\n");
     } catch (err) {
         console.error("\nUnable to send employees\n" + err);
@@ -365,4 +382,61 @@ router.get("/current_employee", async function (req: Request, res: Response) {
         res.sendStatus(500);
     }
 });
+
+router.post("/onLogin", async function (req: Request, res: Response)  {
+    //param is specified in frontend to have an attribute of "email", which is what req.query is referencing
+    const employeeData:Employee = req.body as Employee;
+
+    console.log("this is employee");
+    console.log(employeeData);
+
+    // console.log("\n\n\n\nEmail String: " + emailStr + "\n\n\n");
+
+    try {
+        const answer = await PrismaClient.employee.findUnique(
+            {where:{userID:employeeData.userName}});
+        console.log("Prisma Response: " + answer);
+        console.log(answer);
+
+        if(answer == null)
+        {
+            //create
+            await PrismaClient.employee.create({
+                data: {
+                    userID: employeeData.userID,
+                    userName: employeeData.userName,
+                    firstName: employeeData.firstName,
+                    lastName: employeeData.lastName,
+                    designation: employeeData.designation,
+                    isAdmin: employeeData.isAdmin,
+                },
+            });
+
+
+            res.sendStatus(200);
+        }
+
+        //update
+        await PrismaClient.employee.update({
+            where: {
+                userID: employeeData.userID
+            },
+            data: {
+                //transfer all the info from the object into the database
+                userName: employeeData.userName,
+                firstName: employeeData.firstName,
+                lastName: employeeData.lastName,
+                designation: employeeData.designation,
+                isAdmin: employeeData.isAdmin
+            }
+        });
+
+        res.sendStatus(200);
+    } catch(err) {
+        console.log("could not update or add user on login");
+        console.log(err);
+        res.sendStatus(400);
+    }
+});
+
 export default router;
