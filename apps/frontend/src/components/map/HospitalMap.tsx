@@ -1,14 +1,21 @@
 import axios from "axios";
-import {FloorToIndex, floorToNumber, Node, NULLNODE} from "../../../../backend/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, floorToNumber, Node, NodeType, NULLNODE} from "../../../../backend/src/algorithms/Graph/Node.ts";
 import "../../css/component-css/Map.css";
 import {Edge, NULLEDGE} from "../../../../backend/src/algorithms/Graph/Edge.ts";
 import {Graph} from "../../../../backend/src/algorithms/Graph/Graph.ts";
-import {onNodeHover, onNodeLeave,} from "../../event-logic/circleNodeEventHandlers.ts";
+import {onNodeHover, onNodeLeave, onNodeRightClick,} from "../../event-logic/circleNodeEventHandlers.ts";
 import {NodeDataBase, nodeDataBaseToNode,} from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import {EdgeDataBase, edgeDataBasetoEdge,} from "../../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {AStar} from "../../../../backend/src/algorithms/Search/AStar.ts";
 import {Coordinate} from "../../../../backend/src/algorithms/Graph/Coordinate.ts";
+import {SearchContext} from "../../../../backend/src/algorithms/Search/Strategy/SearchContext.ts";
+import {AStarStrategy} from "../../../../backend/src/algorithms/Search/Strategy/AStarStrategy.ts";
+import {BFSStrategy} from "../../../../backend/src/algorithms/Search/Strategy/BFSStrategy.ts";
+import {DFSStrategy} from "../../../../backend/src/algorithms/Search/Strategy/DFSStrategy.ts";
+import {ServiceRequest} from "../../../../backend/src/algorithms/Requests/Request.ts";
+import {
+    generateTextDirections
+} from "../../../../backend/src/algorithms/Search/TextDirections/GenerateTextDirections.ts";
 
 /* - - - types - - - */
 /**
@@ -23,12 +30,14 @@ export type MapState = {
     setSelectedFloorIndex: Dispatch<SetStateAction<FloorToIndex>>;
     drawEntirePath: boolean;
     setDrawEntirePath: Dispatch<SetStateAction<boolean>>;
-    locations: Node[];
-    setLocations: Dispatch<SetStateAction<Node[]>>;
+    locationsWithHalls: Node[];
+    pathFindingType:string;
     viewbox: Viewbox,
     setViewbox: Dispatch<SetStateAction<Viewbox>>;
     zoomScale: number,
     setZoomScale: Dispatch<SetStateAction<number>>
+    drawEntirePathOptions:boolean[]
+    setTextDirections:Dispatch<SetStateAction<string[]>>
 }
 
 /**
@@ -74,6 +83,10 @@ let graph: Graph | null = null;
 const panSpeed: number = 2;
 const zoomSpeed: number = 0.1;
 
+let previousSelectedLevel = FloorToIndex.LowerLevel1;
+
+const nodeIDtoServiceRequest:Map<string,ServiceRequest[]> = new Map<string, ServiceRequest[]>();
+
 /* - - - functions - - - */
 /**
  * Create the global graph from nodes and edges gathered from the database.
@@ -81,7 +94,7 @@ const zoomSpeed: number = 0.1;
 async function createGraph() {
     /* ask axios for nodes and edges */
     const edgesDB = await axios.get<EdgeDataBase[]>("/api/load-edges");
-    const nodesDB = await axios.get<NodeDataBase[]>("/api/load-nodes");
+    const nodesDB = await axios.get<NodeDataBase[]>("/api/load-nodes/all");
 
     /* allocate some space for the nodes and edges */
     const edges: Array<Edge> = [];
@@ -102,13 +115,40 @@ async function createGraph() {
     // console.log(graph.getEdges());
 }
 
+
+async function getNodeServiceRequests(){
+
+    //setup map with empty strings for every node
+
+    graph?.getNodes().forEach((node)=>{
+        nodeIDtoServiceRequest.set(node.id,[]);
+    });
+
+
+    //get all service requests
+    const serviceRequestsRes =
+        await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq");
+    const serviceRequests =serviceRequestsRes.data;
+
+    //add service requests to graph
+    serviceRequests.forEach((request)=>{
+        if(nodeIDtoServiceRequest.get(request.reqLocationID)!=undefined){
+            nodeIDtoServiceRequest.get(request.reqLocationID)?.push(request);
+        }
+    });
+
+
+
+}
+
 /**
- * Enable zoom with MAGIC (a mouse event)
+ * Enable zoom with a mouse event
  * @param viewbox a Viewbox that holds coordinate information
  * @param setViewbox a Dispatch that transforms the coordinate information
  * @param setScale a Dispatch that sets the map scale
  */
-function createZoomEvent(viewbox: Viewbox, setViewbox: Dispatch<Viewbox>, setScale: Dispatch<number>) {
+function createZoomEvent(viewbox: Viewbox, setViewbox: Dispatch<Viewbox>, setScale: Dispatch<number>
+                         ) {
     /* grab the map and its current size */
     const svgElement = document.getElementById("map")!;
     const svgSize: { width: number, height: number } = {width: svgElement.clientWidth, height: svgElement.clientHeight};
@@ -148,6 +188,8 @@ function createZoomEvent(viewbox: Viewbox, setViewbox: Dispatch<Viewbox>, setSca
     });
 }
 
+
+
 /**
  * sets the path to the path to be displayed on the page
  */
@@ -156,7 +198,9 @@ function updatePathEdges(startingNode: Node,
                          setPathEdges: Dispatch<SetStateAction<Edge[]>>,
                          floorIndex: number,
                          drawAllEdges: boolean,
-                         setPathFloorTransitionNodes: Dispatch<Array<Transition>>) {
+                         setPathFloorTransitionNodes: Dispatch<Array<Transition>>,
+                         pathFindingType:string,
+                         setTextDirections: Dispatch<SetStateAction<string[]>>) {
 
     /* actually first: check if the graph is ready */
     if (graph == null) {
@@ -164,7 +208,7 @@ function updatePathEdges(startingNode: Node,
         return;
     }
 
-    /* first, check if we want to draw EVERY edge (for Wong) */
+    /* first, check if we want to draw EVERY edge  */
     if (drawAllEdges) {
         /* allocate some space for the edges on this floor */
         const thisFloorEdges: Array<Edge> = [];
@@ -185,16 +229,46 @@ function updatePathEdges(startingNode: Node,
     if (startingNode == NULLNODE || endingNode == NULLNODE) {
         setPathEdges([]);
         setPathFloorTransitionNodes([]);
+        setTextDirections([]);
         return;
     }
 
     /* use a pathfinding algorithm to find the path to draw */
-    // TODO: select between three search algorithms: a*, bfs, dfs
-    const rawPath: Array<Node> | null = AStar(graph.idToNode(startingNode.id), graph.idToNode(endingNode.id), graph);
+
+
+    let algo:SearchContext;
+    let rawPath: Array<Node> | null;
+
+    switch (pathFindingType){
+        case "A*":
+            algo = new SearchContext(new AStarStrategy());
+            rawPath = algo.search(graph.idToNode(startingNode.id)!, graph.idToNode(endingNode.id)!, graph);
+            break;
+        case "BFS":
+            algo = new SearchContext(new BFSStrategy());
+            rawPath = algo.search(graph.idToNode(startingNode.id)!, graph.idToNode(endingNode.id)!, graph);
+            break;
+        case "DFS":
+            algo = new SearchContext(new DFSStrategy());
+            rawPath = algo.search(graph.idToNode(startingNode.id)!, graph.idToNode(endingNode.id)!, graph);
+            break;
+
+        default:
+            algo = new SearchContext(new AStarStrategy());
+            rawPath = algo.search(graph.idToNode(startingNode.id)!, graph.idToNode(endingNode.id)!, graph);
+            break;
+
+    }
+
+
+
     if (rawPath == null) {
         console.error("no path could be found between " + startingNode?.id + " and " + endingNode?.id);
         return;
     }
+    
+    //get and set text directions
+    setTextDirections(generateTextDirections(rawPath,graph)!);
 
     /* calculate the edges and transitions just on this floor */
     const floorEdgesAndTransitions: edgesAndTransitions = calculateFloorPath(rawPath, floorIndex);
@@ -202,6 +276,12 @@ function updatePathEdges(startingNode: Node,
     /* set the changes */
     setPathFloorTransitionNodes(floorEdgesAndTransitions.transitions);
     setPathEdges(floorEdgesAndTransitions.edges);
+
+    //open the drop down to show the text directions
+    const openLocationInput = document.getElementById("locationDropdown");
+    if (openLocationInput != null) {
+        openLocationInput.style.display = "block";
+    }
 }
 
 /**
@@ -263,11 +343,11 @@ function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndT
                     break;
                 }
 
-                /* ROFLMAO */
+
                 i++;
             }
 
-            /* we found the transition 😻 */
+            /* we found the transition  */
             pathTransitions.push(newTransition);
         }
 
@@ -304,19 +384,22 @@ function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndT
                     break;
                 }
 
-                /* ROFLMAO 2 */
+
                 i++;
             }
 
-            /* we found the transition 😻 */
+            /* we found the transition  */
             i = startingI; //go back to starting i to avoid recalculations
             pathTransitions.push(newTransition);
         }
     }
 
-    /* caught gooning in 3840x2160 */
+
     return {edges: pathEdges, transitions: pathTransitions};
 }
+
+
+
 
 /**
  * Draw the map to the screen.
@@ -332,21 +415,25 @@ function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndT
  * @param zoomScale part of a MapState
  * @param setZoomScale part of a MapState
  */
-export function Map({
+export function HospitalMap({
                         startNode: startNode, setStartNode: setStartNode,
                         endNode: endNode, setEndNode: setEndNode,
                         selectedFloorIndex: selectedFloorIndex,
-                        drawEntirePath: drawEntirePath, locations: locations,
+                        drawEntirePath: drawEntirePath, locationsWithHalls: locationsWithHalls,
+                        pathFindingType:pathFindingType,
                         viewbox: viewbox, setViewbox: setViewbox,
                         zoomScale: zoomScale, setZoomScale: setZoomScale
+                        ,drawEntirePathOptions,setTextDirections
                     }: MapState) {
+
+
 
     /* when the page updates, update the edges */
     useEffect(() => {
-        updatePathEdges(startNode, endNode, setPathDrawnEdges, selectedFloorIndex, drawEntirePath, setPathFloorTransitions);
-    }, [drawEntirePath, endNode, selectedFloorIndex, startNode]);
+        updatePathEdges(startNode, endNode, setPathDrawnEdges, selectedFloorIndex, drawEntirePath,
+            setPathFloorTransitions, pathFindingType,setTextDirections);
+    }, [drawEntirePath, endNode, selectedFloorIndex, startNode, pathFindingType, setTextDirections]);
 
-    /* some bs useStates */
     const [pathDrawnEdges, setPathDrawnEdges] = useState<Array<Edge>>([]);
     const [pathFloorTransitions, setPathFloorTransitions] =
         useState<Array<Transition>>([]);
@@ -356,6 +443,13 @@ export function Map({
         useState<Coordinate>({x: 0, y: 0});
     const [endOfClick, setEndOfClick] =
         useState<Coordinate>({x: 0, y: 0});
+
+
+    //set map to zoom level for each level. Only do this when a diffrent floor is selected
+    if(previousSelectedLevel!=selectedFloorIndex){
+        setViewBoxForLevel();
+        previousSelectedLevel=selectedFloorIndex;
+    }
 
     /*
      * Create the event listener in raw JavaScript for zooming in and out,
@@ -368,7 +462,7 @@ export function Map({
         createZoomEvent(viewbox, setViewbox, setZoomScale);
     }, [setViewbox, setZoomScale, viewbox, zoomScale]);
 
-    /* THE THING YOU SEE */
+    /* Main map html*/
     return (
         /* overarching div with panning functionality */
         <div id={"map-test"}
@@ -405,13 +499,23 @@ export function Map({
                     })
                 }
                 {   /* draw the nodes on the map */
-                    locations.map((node) => {
+                    locationsWithHalls.map((node) => {
                         return drawNode(node);
                     })
                 }
+                { // draw location names when needed
+                    locationsWithHalls.map((node)=>{
+                        return drawNodeLocationName(node);
+                    })
+                }
                 {   /* draw the hover node info on the map */
-                    locations.map((node) => {
+                    locationsWithHalls.map((node) => {
                         return drawNodeInfo(node);
+                    })
+                }
+                {
+                    locationsWithHalls.map((node)=>{
+                        return drawNodeServiceRequests(node);
                     })
                 }
                 {   /* draw the transition text on the map */
@@ -428,8 +532,17 @@ export function Map({
      * @param edge the edge to draw
      */
     function drawEdge(edge: Edge) {
+
+
+
         /* draw the solid edge for everything */
         if (drawEntirePath) {
+
+            //if user has elected not to draw the edges
+            if(!drawEntirePathOptions[1]){
+                return;
+            }
+
             return drawEdgeHTML(edge, "pathLineAll");
         }
 
@@ -443,11 +556,12 @@ export function Map({
      * @param edgeClass the type of the edge (dotted or solid)
      */
     function drawEdgeHTML(edge: Edge, edgeClass: string) {
+
         return (<line key={"line_" + edge.id} className={edgeClass}
-                     x1={edge.startNode.coordinate.x.toString()}
-                     y1={edge.startNode.coordinate.y.toString()}
-                     x2={edge.endNode.coordinate.x.toString()}
-                     y2={edge.endNode.coordinate.y.toString()}></line>);
+                      x1={edge.startNode.coordinate.x.toString()}
+                      y1={edge.startNode.coordinate.y.toString()}
+                      x2={edge.endNode.coordinate.x.toString()}
+                      y2={edge.endNode.coordinate.y.toString()}></line>);
     }
 
     /**
@@ -457,6 +571,11 @@ export function Map({
     function drawNode(node: Node) {
         /* symbols */
         const tag: string = "clickableAtag";
+
+        //if all nodes should not be drawn
+        if(!drawEntirePathOptions[0] && drawEntirePath){
+            return;
+        }
 
         /* if the node is a start node, draw it green */
         if (node.id == startNode.id) {
@@ -475,7 +594,20 @@ export function Map({
 
         /* if we want to draw the whole path, draw it blue?? */
         else if (drawEntirePath) {
+            //make hallways visable with diffrent cloor to other nodes
+            if(node.nodeType == NodeType.HALL){
+                return drawNodeHTML(node, tag, "hallwayNodeVisible");
+            }
             return drawNodeHTML(node, tag, "normalNode");
+        }
+
+        //if node is a hallway
+        else if (node.nodeType == NodeType.HALL) {
+            //show hallway if in the path
+            if(inPathDrawnEdges(node.id)){
+                return drawNodeHTML(node, tag, "hallwayNodeVisible");
+            }
+            return drawNodeHTML(node, tag, "hallwayNodeHidden");
         }
 
         /* finally, draw the node blue */
@@ -489,11 +621,65 @@ export function Map({
      * @param nodeClass the class of the node
      */
     function drawNodeHTML(node: Node, tagClass: string, nodeClass: string) {
+
+        if(node.id == startNode.id) {
+            return(
+                <a key={node.id} id={node.id} className={tagClass}
+                   onClick={() => markNodeOnClick(node.id)}
+                   onMouseOver={() => onNodeHover(node.id)}
+                   onMouseLeave={() => onNodeLeave(node.id)}
+                   onContextMenu={(e)=>{
+                       e.preventDefault();
+                       onNodeRightClick(node.id);
+                   }}
+                >
+                    <circle cx={node.coordinate.x} cy={node.coordinate.y} className={nodeClass}></circle>
+                    <image
+                        x={node.coordinate.x - 25}
+                        y={node.coordinate.y - 50}
+                        width="50"
+                        height="50"
+                        href={"/src/images/MapFunctions/mapPinGreen.png"}
+                    ></image>
+
+                </a>
+            );
+        }
+        else if(node.id == endNode.id) {
+            return(
+                <a key={node.id} id={node.id} className={tagClass}
+                   onClick={() => markNodeOnClick(node.id)}
+                   onMouseOver={() => onNodeHover(node.id)}
+                   onMouseLeave={() => onNodeLeave(node.id)}
+                   onContextMenu={(e)=>{
+                       e.preventDefault();
+                       onNodeRightClick(node.id);
+                   }}
+                >
+                    <circle cx={node.coordinate.x} cy={node.coordinate.y} className={nodeClass}></circle>
+                    <image
+                        x={node.coordinate.x - 25}
+                        y={node.coordinate.y - 50}
+                        width="50"
+                        height="50"
+                        href={"/src/images/MapFunctions/mapPinRed.png"}
+                    ></image>
+
+                </a>
+            );
+        }
+
+
+
         return (
             <a key={node.id} id={node.id} className={tagClass}
                onClick={() => markNodeOnClick(node.id)}
                onMouseOver={() => onNodeHover(node.id)}
                onMouseLeave={() => onNodeLeave(node.id)}
+               onContextMenu={(e)=>{
+                   e.preventDefault();
+                   onNodeRightClick(node.id);
+               }}
             >
                 <circle cx={node.coordinate.x} cy={node.coordinate.y} className={nodeClass}></circle>
             </a>
@@ -505,8 +691,8 @@ export function Map({
      * @param node the node to draw
      */
     function drawNodeInfo(node: Node) {
-        /* make sure the graph exists before getting the nodes */
-        if (graph == null) {
+        /* make sure the graph and serviceRequest map exists before getting the nodes */
+        if (graph == null || nodeIDtoServiceRequest == null) {
             return;
         }
 
@@ -537,9 +723,15 @@ export function Map({
     function drawNodeInfoHTML(node: Node, connectedNode: Node, edgeConnections: string) {
         return (
             <foreignObject key={"nodeInfo_" + node.id} id={"nodeInfo_" + node.id}
-                           className={"foreignObjectNode"} x={node.coordinate.x + 20} y={node.coordinate.y - 250}
+                           className={"foreignObjectNode"} x={node.coordinate.x + 20}
+                           y={node.coordinate.y - 250}
+
+
+
             >
-                    <span className={"spanNodeInfo"}>
+                    <span className={"spanNodeInfo"}
+                          onMouseDown={(e)=>{e.stopPropagation(); }}
+                    >
                         <ul className={"ulNodeinfo"}>
                             <li><b>ID: </b>{node.id}</li>
                             <li>
@@ -559,15 +751,103 @@ export function Map({
         );
     }
 
+
+    function drawNodeServiceRequests(node: Node) {
+
+        if (nodeIDtoServiceRequest.get(node.id) == undefined) {
+            return;
+        }
+        //if no service requests dont draw anything expect skeliton so that the hover event still works
+        if(nodeIDtoServiceRequest.get(node.id)!.length==0){
+            return (
+                <foreignObject key={"nodeService_" + node.id} id={"nodeService_" + node.id}
+                               className={"foreignObjectNode"} x={0}
+                               y={0}
+                >
+                    <span className={"spanNodeInfo"}>
+
+                    </span>
+                </foreignObject>
+            );
+        }
+
+        return (
+            <foreignObject key={"nodeService_" + node.id} id={"nodeService_" + node.id}
+                           className={"foreignObjectNode"} x={node.coordinate.x - 420}
+                           y={node.coordinate.y-250}
+
+            >
+                    <span className={"spanNodeInfo"}
+                          onMouseDown={(e)=>{e.stopPropagation(); }}
+                    >
+                        <ul className={"ulNodeinfo"}>
+                            <li><b>Service Requests</b></li>
+                            {
+                                nodeIDtoServiceRequest.get(node.id)?.map((request) => {
+                                        return (
+                                            <li>
+                                                <ul className={"ulNodeRequestInfo"}>
+                                                    <li><b>ID: </b>{request.reqID}</li>
+                                                    <li><b>Type: </b>{request.reqType}</li>
+                                                    <li><b>Status: </b>{request.status}</li>
+                                                    <li><b>Priority: </b>{request.reqPriority}</li>
+                                                    <li><b>Assigned User: </b>{request.assignedUName}</li>
+                                                </ul>
+                                            </li>
+                                        );
+                                    }
+                                )
+
+                            }
+                        </ul>
+                    </span>
+            </foreignObject>
+        );
+    }
+
+
+    function drawNodeLocationName(node: Node){
+        if(drawEntirePathOptions[2] && drawEntirePath && node.nodeType!=NodeType.HALL){
+            return (
+                <foreignObject key={"nodeLongName_" + node.id} id={"nodeLongName_" + node.id}
+                               className={"foreignObjectNodeLongName"}
+                               x={node.coordinate.x+10} y={node.coordinate.y -10}
+                >
+                    <text className={"nodeLongNameText"}>{node.longName}</text>
+                </foreignObject>
+
+            );
+        }
+        return;
+    }
+
+
+
+
     /**
      * Find out if a given node is a transition node.
      * @param nodeID string ID of node to check
      */
     function inTransition(nodeID: string) {
-        /* funny */
+
         for (let i: number = 0; i < pathFloorTransitions.length; i++) {
             if (pathFloorTransitions[i].startTranNode.id == nodeID ||
                 pathFloorTransitions[i].endTranNode.id == nodeID) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Find out if a given node is in the drawn path.
+     * @param nodeID string ID of node to check
+     */
+    function inPathDrawnEdges(nodeID: string) {
+
+        for (let i: number = 0; i < pathDrawnEdges.length; i++) {
+            if (pathDrawnEdges[i].startNode.id == nodeID ||
+                pathDrawnEdges[i].endNode.id == nodeID) {
                 return true;
             }
         }
@@ -603,7 +883,7 @@ export function Map({
             return drawTransitionTextFromHTML(transition.startTranNode, transition.endTranNode, style);
         }
 
-        /* LOL */
+
         return <a key={"error a tag"}>error: wrong floor</a>;
     }
 
@@ -671,6 +951,35 @@ export function Map({
                 return "/src/images/maps/03_thethirdfloor.png";
             default:
                 return "/src/images/maps/00_thelowerlevel1.png";
+        }
+    }
+
+    /**
+     * Set the specific view box based on the specified floor index.
+     */
+    function setViewBoxForLevel(){
+        switch (selectedFloorIndex) {
+            case FloorToIndex.LowerLevel2:
+                setViewbox({x:730, y:518,width:2719,height:2392});
+                break;
+            case FloorToIndex.LowerLevel1:
+                setViewbox({x:704, y:348,width:2236,height:1967});
+                break;
+            case FloorToIndex.Ground:
+                setViewbox({x:579, y:412,width:3161,height:2780});
+                break;
+            case FloorToIndex.Level1:
+                setViewbox({x:579, y:412,width:3161,height:2780});
+                break;
+            case FloorToIndex.Level2:
+                setViewbox({x:613, y:219,width:3129,height:2753});
+                break;
+            case FloorToIndex.Level3:
+                setViewbox({x:474, y:493,width:2946,height:2591});
+                break;
+            default:
+                setViewbox({x:474, y:493,width:2946,height:2591});
+                break;
         }
     }
 
@@ -763,7 +1072,5 @@ export function Map({
 
 /* Code is defined at the top of this file but runs here. */
 createGraph().then(() => {
-    //makeNodes().then();
-    //makePath("CCONF003L1", "CHALL014L1").then();
-    //resetSelectedNodes();
+    getNodeServiceRequests().then();
 });

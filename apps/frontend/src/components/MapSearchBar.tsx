@@ -1,19 +1,30 @@
 import {CreateDropdown} from "./CreateDropdown.tsx";
-import { Node, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, Node, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
 import {Dispatch, SetStateAction, useState} from "react";
 
 
-export interface searchStates{
+
+export interface levelStates{
+    setSelectedFloorIndex: Dispatch<SetStateAction<FloorToIndex>>;
     startNode:Node;
     setStartNode: Dispatch<SetStateAction<Node>>;
     endNode:Node;
     setEndNode: Dispatch<SetStateAction<Node>>;
     locations:Node[];
+    setPathFindingType:Dispatch<SetStateAction<string>>;
+    textDirections:string[]
 }
 
-export default function MapSearchBar({startNode:startNode,setStartNode:setStartNode,
-                                         endNode:endNode,setEndNode:setEndNode,
-                                         locations:locations}:searchStates) {
+const searchOptions:string[] = ["A*","BFS","DFS"];
+
+export default function MapSearchBar({startNode:startNode,
+                                         setStartNode:setStartNode,
+                                         endNode:endNode,
+                                         setEndNode:setEndNode,
+                                         locations:locations,
+                                         setPathFindingType:setPathFindingType,
+                                         textDirections
+                                     }:levelStates) {
 
 
     const [resetDropdown, setResetDropdown] = useState(false);
@@ -37,6 +48,31 @@ export default function MapSearchBar({startNode:startNode,setStartNode:setStartN
             setEndNode,setSelectedText);
     }
 
+    function openLocations() {
+        const openLocationInput = document.getElementById("locationDropdown");
+        if (openLocationInput != null) {
+            openLocationInput.style.display = "block";
+        }
+    }
+
+    function closeLocations() {
+        const closeLocationInput = document.getElementById("locationDropdown");
+        if (closeLocationInput != null) {
+            closeLocationInput.style.display = "none";
+        }
+    }
+
+    const [selectedAlgoIndex, setSelectedAlgoIndex] =useState(-1);
+
+
+
+
+
+    if(selectedAlgoIndex!=-1){
+        setPathFindingType(searchOptions[selectedAlgoIndex]);
+        setSelectedAlgoIndex(-1);
+    }
+
     return (
         <div className="ml-5 relative flex flex-col">
             {/*<input*/}
@@ -44,19 +80,57 @@ export default function MapSearchBar({startNode:startNode,setStartNode:setStartN
             {/*    placeholder="Go to Location"*/}
             {/*    className="w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg"*/}
             {/*/>*/}
-            <CreateDropdown dropBtnName={selectedText} dropdownID={"Location"} isSearchable={true}
-                            populationArr={longNames} resetDropdown={resetDropdown}
-                             setSelected={setSelected}
-                            inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
-                            selectCSS={""}
-             resetOnSelect={true} setResetDropdown={setResetDropdown}>
-            </CreateDropdown>
-            <div className={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white"}>
-                <b>Start: </b>{startNode.longName}
+            <div onClick={openLocations}>
+                <CreateDropdown dropBtnName={selectedText} dropdownID={"Location"} isSearchable={true}
+                                populationArr={longNames} resetDropdown={resetDropdown}
+                                setSelected={setSelected}
+                                inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
+                                selectCSS={""}
+                                resetOnSelect={true} setResetDropdown={setResetDropdown}>
+                </CreateDropdown>
             </div>
-            <div className={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white"}>
-                <b>End: </b>{endNode.longName}
+
+
+            <div className={"hidden"} id={"locationDropdown"}>
+                <div className={"w-60 p-2 rounded-3xl border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white"}>
+                    <b>Start: </b>{startNode.longName}
+                </div>
+                <div className={"w-60 p-2 rounded-3xl border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white"}>
+                    <b>End: </b>{endNode.longName}
+                </div>
+
+                <div className={" mt-1"}>
+                    <CreateDropdown
+                        dropBtnName={"Search Type"} dropdownID={"Search Type"} populationArr={searchOptions}
+                        isSearchable={false}
+                        resetOnSelect={false} resetDropdown={resetDropdown}
+                        setResetDropdown={setResetDropdown} setSelected={setSelectedAlgoIndex}
+                        inputCSS={""}
+                        selectCSS={"transition-all hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}></CreateDropdown>
+                </div>
+
+
+                <div className="flex flex-col border-gray-500 border-2 w-60 max-h-[70vh] mt-1 bg-white rounded-3xl p-2">
+                    {/*<p className={"bg-[#024c96] p-1 rounded-xl w-full text-white font-semibold cursor-pointer flex justify-center m-auto "}>*/}
+                    {/*    Text Directions*/}
+                    {/*</p>*/}
+                    <div className="overflow-y-auto overflow-x-hidden">
+                        {textDirections.map((direction, index) => (
+                            <div key={index} className="flex w-[90%] rounded-3xl pl-2 pr-2 pt-1 pb-1 bg-gray-200 m-2">
+                                <b>{(index + 1).toString() + ":"}</b>{" " + direction}
+
+                            </div>
+                        ))}
+                    </div>
+                    <button
+                        className={"bg-[#024c96] p-1 rounded-xl w-full text-white font-semibold cursor-pointer flex justify-center m-auto "}
+                        onClick={closeLocations}>Close
+                    </button>
+                </div>
+
+
             </div>
+
 
             {/*populate div for locations*/}
         </div>
@@ -66,21 +140,19 @@ export default function MapSearchBar({startNode:startNode,setStartNode:setStartN
 }
 
 function onLocationSelect(node: Node, startNode: Node, endNode: Node, setStartNode: Dispatch<SetStateAction<Node>>
-    , setEndNode: Dispatch<SetStateAction<Node>>,setSelectedText:Dispatch<SetStateAction<string>>
-                          ){
+    , setEndNode: Dispatch<SetStateAction<Node>>, setSelectedText: Dispatch<SetStateAction<string>>
+) {
 
     console.log("select");
     console.log(node);
 
-    if(startNode == NULLNODE && endNode == NULLNODE){
+    if (startNode == NULLNODE && endNode == NULLNODE) {
         setStartNode(node);
         setSelectedText("End Location");
-    }
-    else if (endNode == NULLNODE){
+    } else if (endNode == NULLNODE) {
         setEndNode(node);
         setSelectedText("Start Location");
-    }
-    else{
+    } else {
         setStartNode(node);
         setEndNode(NULLNODE);
         setSelectedText("End Location");

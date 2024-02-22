@@ -5,10 +5,13 @@ import RequestButtons from "../../buttons/RequestButtons.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
-
+import {closeSanitationCard} from "../../service-request-cards/SanitationRequestCard.tsx";
+import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";
 let longNames:string[] = [];
 
-export default function Sanitation_input() {
+export default function Sanitation_input({
+    setIsPopupOpen
+                                         }: closeSanitationCard) {
     const [typeA,setTypeA] = useState("");
     const [extraInfo,setExtraInfo] = useState("");
 
@@ -19,6 +22,9 @@ export default function Sanitation_input() {
     const [selected, setSelected] = useState(-1);
 
     const [locations, setLocations] = useState<NodeDataBase[]>([]);
+
+    let interID = setInterval(fadeEffect, 100);
+    clearInterval(interID);
 
     const priorityArr = ["Low", "Medium", "High", "Emergency"];
 
@@ -45,7 +51,8 @@ export default function Sanitation_input() {
                 assignedUName: "No one",            //upon creation, no employee is assigned
                 status: "Unassigned",             //upon creation, nobody is assigned, so set status to unassigned
                 reqID:-1,
-                reqPriority: priorityArr[priorityIndex]
+                reqPriority: priorityArr[priorityIndex],
+                time: null
             };
 
             console.log(servReq);
@@ -67,8 +74,31 @@ export default function Sanitation_input() {
                     },
                 });
 
+            show();
         } catch {
             console.error("Error with trying to save Service Req in ServiceRequestPage.tsx");
+        }
+    }
+
+    function show() {
+        const tag: HTMLElement = document.getElementById("san-popup") as HTMLElement;
+        tag.style.opacity = "1";
+        interID = setInterval(fadeEffect, 100);
+    }
+
+    function fadeEffect() {
+        const target = document.getElementById("san-popup") as HTMLElement;
+        let opacity = target.style.opacity;
+        if(Number(opacity) >= 0.97) {
+            opacity = (Number(opacity) - 0.001).toString();
+            target.style.opacity = opacity;
+        } else if (Number(opacity) > 0) {
+            opacity = (Number(opacity) - 0.1).toString();
+            target.style.opacity = opacity;
+        }
+
+        if(Number(opacity) < 0) {
+            clearInterval(interID);
         }
     }
 
@@ -79,6 +109,10 @@ export default function Sanitation_input() {
         setResetDropdown(true);
     }
 
+    function closeSanitationForm(event: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) {
+        event.preventDefault();
+        setIsPopupOpen(false);
+    }
     return (
         <div
             className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
@@ -86,7 +120,7 @@ export default function Sanitation_input() {
                 <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Sanitation Request</h1> {/* Div Title */}
                 {/* Location */}
                 <div className="grid justify-center items-center my-1.5">
-                    <label className={"location"}>Location</label>
+                    <label className={"location"}>Location </label>
                     <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationSan"} isSearchable={true}
                                     populationArr={longNames} resetDropdown={resetDropdown}
                                     setSelected={setSelected}
@@ -103,7 +137,7 @@ export default function Sanitation_input() {
                 </SimpleTextInput>
                 {/* Priority */}
                 <div className="grid justify-center items-center my-1.5">
-                    <label className={"Priority"}>Priority</label>
+                    <label className={"Priority"}>Priority </label>
                     <CreateDropdown
                         dropBtnName={"Priority"}
                         dropdownID={"Priority"}
@@ -116,6 +150,7 @@ export default function Sanitation_input() {
                         selectCSS={""}
                         inputCSS={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
                     />
+
                 </div>
                 {/* Extra notes */}
                 <SimpleTextInput id={"additional"} labelContent={"Extra info:"}
@@ -125,9 +160,18 @@ export default function Sanitation_input() {
                                  placeHolderText={""}>
                 </SimpleTextInput>
                 <RequestButtons submit={submit}/>
+
             </form>
-            <div className={"flex justify-center items-center my-1.5"}>
-                <p>Created By: Antonio and Sameer</p>
+            <div className={"grid justify-center items-center m-auto my-1.5 mb-5"}>
+                <button onClick={(event) => closeSanitationForm(event)} className={
+                    "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-5"}>
+                    Close
+                </button>
+
+                <p className={"flex justify-center items-center mt-5"}>Created By: Antonio and Sameer</p>
+            </div>
+            <div id={"san-popup"} className={"text-center flex justify-center m-auto opacity-0 "}>
+                <RequestSubmitToast/>
             </div>
         </div>
     );
