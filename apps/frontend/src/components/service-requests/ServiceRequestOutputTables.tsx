@@ -124,7 +124,7 @@ export default function ServiceRequestOutputTables() {
                     <div className={"statusFilterDiv"}>
                         <label form={"designation"}><b>Status</b></label>
                         <select
-                            className={"bg-transparent border-black"}
+                            className={" border-black"}
                             value={statusFilter}
                             onChange={
                                 (e) => {
@@ -151,7 +151,7 @@ export default function ServiceRequestOutputTables() {
                     <div className={"statusFilterDiv"}>
                         <label form={"designation"}><b>Priority</b></label>
                         <select
-                            className={"bg-transparent border-black"}
+                            className={" border-black"}
                             value={priorityFilter}
                             onChange={
                                 (e) => {
@@ -179,7 +179,7 @@ export default function ServiceRequestOutputTables() {
                     <div className={"statusFilterDiv"}>
                         <label form={"designation"}><b>Location</b></label>
                         <select
-                            className={"bg-transparent"}
+                            className={""}
                             value={locationFilter}
                             onChange={
                                 (e) => {
@@ -214,7 +214,7 @@ export default function ServiceRequestOutputTables() {
                     <div className={"statusFilterDiv"}>
                         <label form={"designation"}><b>Employee</b></label>
                         <select
-                            className={"bg-transparent w-32"}
+                            className={" w-32"}
                             value={employeeFilter}
                             onChange={
                                 (e) => {

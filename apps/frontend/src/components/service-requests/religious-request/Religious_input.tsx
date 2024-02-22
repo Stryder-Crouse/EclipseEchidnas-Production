@@ -12,7 +12,7 @@ import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";
 
 let longNames:string[] = [];
 
-const priorityLevels =[Priority.low, Priority.normal, Priority.high, Priority.emergency];
+const priorityLevels =[Priority.low, "Medium", Priority.high, Priority.emergency];
 export default function Religious_input({
     setIsPopupOpen
                                         }: closeCard) {
