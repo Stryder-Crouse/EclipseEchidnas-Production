@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {MedReq, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import {MedReq, Priorities, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
 import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
 import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
-import {statusFilter} from "../serviceRequestInterface.ts";
+import {requestFilters} from "../serviceRequestInterface.ts";
 
 
-export default function Medicine_table({statusFilter:statusFilter}:statusFilter) {
+export default function Medicine_table({statusFilter, priorityFilter,employeeFilter,locationFilter}:requestFilters) {
     console.log(statusFilter);
 
     const [medRequestList, setMedRequestList] =
@@ -23,14 +23,14 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
             getEmployees().then(result => {
                 setMedEmployees(result);
             });
-            getMedRequests(statusFilter).then(result => {
+            getMedRequests(statusFilter, priorityFilter,employeeFilter,locationFilter).then(result => {
                 setMedRequestList(result);
             });
 
 
 
 
-    }, [statusFilter]);
+    }, [statusFilter, priorityFilter, employeeFilter, locationFilter]);
 
     return (
         <div>
@@ -38,14 +38,16 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
                         <table className={"requestTable"} id={"request-table"}>
                             <thead>
                             <tr className={"tableTRHead"}>
-                                <th className={"tableTD"}>Request Type</th>
+                                <th className={"tableTD"}>ID</th>
+                                <th className={"tableTD"}>Type</th>
+                                <th className={"tableTD"}>Status</th>
                                 <th className={"tableTD"}>Priority</th>
-                                <th className={"tableTD"}>Going To</th>
+                                <th className={"tableTD"}>Employee Assigned</th>
+                                <th className={"tableTD"}>Location ID</th>
                                 <th className={"tableTD"}>Medicine type</th>
                                 <th className={"tableTD"}>Dosage</th>
                                 <th className={"tableTD"}>Amount</th>
-                                <th className={"tableTD"}>Status</th>
-                                <th className={"tableTD"}>Employee</th>
+                                <th className={"tableTD"}>Extra Notes</th>
                             </tr>
                             </thead>
                             {/* populating here */}
@@ -55,31 +57,10 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
                                 medRequestList?.map((request, requestIndex) => {
                                     return (
                                         <tr className={"tableTR"} key={"Med_" + request[0].genReqID}>
-                                            <td className={"tableTD"} >{request[1].reqType}</td>
-                                            <td className={"tableTD"}>
-                                                <select
-                                                    value={request[1].reqPriority}
-                                                    id={"priorityDropdown" + request[1].reqID}
-                                                    onChange={
-                                                        (event) => {
-                                                            const eventHTML = event.target as HTMLSelectElement;
-                                                            onPriorityChange(eventHTML, requestIndex).then();/////todo RYAN (uncomment when done with function)
-                                                        }
-                                                    }
-                                                >
-                                                    <option className={"priorityDropdown"} value="Low">Low</option>
-                                                    <option className={"priorityDropdown"} value="Medium">Medium
-                                                    </option>
-                                                    <option className={"priorityDropdown"} value="High">High</option>
-                                                    <option className={"priorityDropdown"} value="Emergency">Emergency
-                                                    </option>
-                                                </select>
-                                            </td>
-                                            <td className={"tableTD"}>{request[1].reqLocationID}</td>
-                                            <td className={"tableTD"}>{request[0].medName}</td>
-                                            <td className={"tableTD"}>{request[0].medStrength}</td>
-                                            <td className={"tableTD"}>{request[0].quantity.toString()}</td>
-                                            <td className={"tableTD"}>
+                                            <td className={"tableTD"}>{request[1].reqID}</td>
+                                            <td className={"tableTD"}>{request[1].reqType}</td>
+                                            {/*type*/}
+                                            <td className={"tableTD"}> {/*status*/}
                                                 <select
                                                     value={request[1].status}
                                                     id={"medStatusDropdown" + request[1].reqID}
@@ -102,7 +83,26 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
                                                     </option>
                                                 </select>
                                             </td>
-                                            <td className={"tableTD"}>
+                                            <td className={"tableTD"}> {/*priority*/}
+                                                <select
+                                                    value={request[1].reqPriority}
+                                                    id={"priorityDropdown" + request[1].reqID}
+                                                    onChange={
+                                                        (event) => {
+                                                            const eventHTML = event.target as HTMLSelectElement;
+                                                            onPriorityChange(eventHTML, requestIndex).then();/////todo RYAN (uncomment when done with function)
+                                                        }
+                                                    }
+                                                >
+                                                    <option className={"priorityDropdown"} value="Low">Low</option>
+                                                    <option className={"priorityDropdown"} value="Medium">Medium
+                                                    </option>
+                                                    <option className={"priorityDropdown"} value="High">High</option>
+                                                    <option className={"priorityDropdown"} value="Emergency">Emergency
+                                                    </option>
+                                                </select>
+                                            </td>
+                                            <td className={"tableTD"}> {/*employee*/}
                                                 <select
                                                     value={request[1].assignedUName}
                                                     onChange={
@@ -119,6 +119,12 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
                                                     }
                                                 </select>
                                             </td>
+                                            <td className={"tableTD"}>{request[1].reqLocationID}</td>
+                                            {/*location*/}
+                                            <td className={"tableTD"}>{request[0].medName}</td>
+                                            <td className={"tableTD"}>{request[0].medStrength}</td>
+                                            <td className={"tableTD"}>{request[0].quantity.toString()}</td>
+                                            <td className={"tableTD"}>{request[1].extraInfo}</td>
                                         </tr>
 
                                     );
@@ -312,9 +318,11 @@ export default function Medicine_table({statusFilter:statusFilter}:statusFilter)
 
 }
 
-async function getMedRequests(statusFilter:Status) {
+async function getMedRequests(statusFilter:Status, priorityFilter:Priorities, employeeFilter:string, locationFilter:string) {
     const requests =
-        await axios.get<[MedReq[], ServiceRequest[]]>("/api/serviceRequests/medReq",{params: {status: statusFilter}});
+        await axios.get<[MedReq[], ServiceRequest[]]>("/api/serviceRequests/medReq/filter",{params: {status: statusFilter, priority: priorityFilter,
+                employee:employeeFilter, location:locationFilter
+            } });
 
     const medRequests: Array<[MedReq, ServiceRequest]> = [];
     for (let i = 0; i < requests.data[0].length; i++) {

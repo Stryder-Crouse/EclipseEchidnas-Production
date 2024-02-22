@@ -1,9 +1,3 @@
-import SideNavBarComponent, {SideBarItem} from "../components/SideNavBarComponent.tsx";
-import MapIcon from "../images/SideBar/map.png";
-import ServiceRequestIcon from "../images/SideBar/requestIcon.png";
-import EmployeeIcon from "../images/SideBar/user.png";
-import CSVIcon from "../images/SideBar/table.png";
-import LogIcon from "../images/SideBar/log-in.png";
 import TopMapButtons from "../components/TopMapButtons.tsx";
 import MapFeatureButtons from "../components/MapFeatureButtons.tsx";
 import {HospitalMap} from "../components/map/HospitalMap.tsx";
@@ -11,8 +5,7 @@ import {multipleNodeDataBaseToNode, NodeDataBase} from "../../../backend/src/Dat
 import axios from "axios";
 import {FloorToIndex, Node, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
 import {useEffect, useState} from "react";
-
-
+import FullSideNavBarComponent from "../components/FullSideNavBarComponent.tsx";
 
 /* Set the default floor to LL1 */
 const defaultFloor = FloorToIndex.LowerLevel1;
@@ -34,6 +27,7 @@ function TailwindMapPage() {
     const [locations, setLocations] = useState([] as Array<Node>);
     const [locationsWithHalls, setLocationsWithHalls] = useState([] as Array<Node>);
     const [pathFindingType, setPathFindingType] = useState("A*");
+    const [textDirections, setTextDirections] = useState([] as string[]);
 
     const [viewbox, setViewbox] =
         useState<{ x: number, y: number, width: number, height: number }>({x: 940, y: 490, width: 2160, height: 1900});
@@ -57,15 +51,10 @@ function TailwindMapPage() {
     return (
         <div className="flex">
             <div className="flex absolute w-screen h-screen">
-                <SideNavBarComponent>
-                    <SideBarItem icon={MapIcon} text="Map" link={window.location.pathname}/>
-                    <SideBarItem icon={ServiceRequestIcon} text="Services" link="ServiceRequest"/>
-                    <SideBarItem icon={EmployeeIcon} text="Employees" link="/EmployeeTable"/>
-                    <SideBarItem icon={CSVIcon} text=".CSV" link="/NodeEdgeTable"/>
-                    <hr className="my-3"/>
-                    {/*NEED THIS FIXED OR SUM */}
-                    <SideBarItem icon={LogIcon} text="Login" link={"/RegisterPage"}/>
-                </SideNavBarComponent>
+                <div className={"z-50"}>
+                    <FullSideNavBarComponent/>
+                </div>
+
 
                     <TopMapButtons
                         setSelectedFloorIndex={setSelectedFloorIndex}
@@ -75,6 +64,7 @@ function TailwindMapPage() {
                         setStartNode={setStartNode}
                         startNode={startNode}
                         setPathFindingType={setPathFindingType}
+                        textDirections={textDirections}
                     />
 
                     <MapFeatureButtons viewbox={viewbox} setViewbox={setViewbox}
@@ -91,6 +81,7 @@ function TailwindMapPage() {
                          pathFindingType={pathFindingType}
                          setViewbox={setViewbox} viewbox={viewbox} setZoomScale={setZoomScale}
                          zoomScale={zoomScale} drawEntirePathOptions={drawEntirePathOptions}
+                         setTextDirections={setTextDirections}
             />
         </div>
     );

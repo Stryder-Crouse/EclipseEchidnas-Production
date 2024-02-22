@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {sanReq, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
-import {statusFilter} from "../serviceRequestInterface.ts";
+import {Priorities, sanReq, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import { requestFilters} from "../serviceRequestInterface.ts";
 import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
 import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 
 
-export default function Sanitation_table({statusFilter:statusFilter}:statusFilter) {
+export default function Sanitation_table({statusFilter, priorityFilter,employeeFilter,locationFilter}:requestFilters) {
     console.log(statusFilter);
 
     const [sanRequestList, setSanRequestList] =
@@ -21,7 +21,7 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
             getEmployees().then(result=> {
                 setSanEmployees(result);
             });
-            getSanRequests(statusFilter).then(result=> {
+            getSanRequests(statusFilter, priorityFilter,employeeFilter,locationFilter).then(result=> {
                 setSanRequestList(result);
             });
 
@@ -31,7 +31,7 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
         };
 
 
-    },[statusFilter]);
+    },[statusFilter, priorityFilter, employeeFilter, locationFilter]);
 
     return (
         <div>
@@ -40,12 +40,13 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
                 <thead>
                 <tr className={"tableTRHead"}>
                     <th className={"tableTD"}>ID</th>
-                    <th className={"tableTD"}>Request Type</th>
-                    <th className={"tableTD"}>Priority</th>
-                    <th className={"tableTD"}>Going To</th>
-                    <th className={"tableTD"}>Why</th>
+                    <th className={"tableTD"}>Type</th>
                     <th className={"tableTD"}>Status</th>
-                    <th className={"tableTD"}>Employee</th>
+                    <th className={"tableTD"}>Priority</th>
+                    <th className={"tableTD"}>Employee Assigned</th>
+                    <th className={"tableTD"}>Location ID</th>
+                    <th className={"tableTD"}>Description</th>
+                    <th className={"tableTD"}>Extra Notes</th>
                 </tr>
                 </thead>
                 {/* populating here */}
@@ -57,27 +58,6 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
                             <tr className={"tableTR"} key={"San_" + request[0].serviceReqID}>
                                 <td className={"tableTD"}>{request[1].reqID}</td>
                                 <td className={"tableTD"}>{request[1].reqType}</td>
-                                <td className={"tableTD"}>
-                                    <select
-                                        value={request[1].reqPriority}
-                                        id={"priorityDropdown" + request[1].reqID}
-                                        onChange={
-                                            (event) => {
-                                                const eventHTML = event.target as HTMLSelectElement;
-                                                onPriorityChange(eventHTML, requestIndex).then();
-                                            }
-                                        }
-                                    >
-                                        <option className={"priorityDropdown"} value="Low">Low</option>
-                                        <option className={"priorityDropdown"} value="Medium">Medium
-                                        </option>
-                                        <option className={"priorityDropdown"} value="High">High</option>
-                                        <option className={"priorityDropdown"} value="Emergency">Emergency
-                                        </option>
-                                    </select>
-                                </td>
-                                <td className={"tableTD"}>{request[1].reqLocationID}</td>
-                                <td className={"tableTD"}>{request[0].type}</td>
                                 <td className={"tableTD"}>
                                     <select
                                         value={request[1].status}
@@ -103,6 +83,25 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
                                 </td>
                                 <td className={"tableTD"}>
                                     <select
+                                        value={request[1].reqPriority}
+                                        id={"priorityDropdown" + request[1].reqID}
+                                        onChange={
+                                            (event) => {
+                                                const eventHTML = event.target as HTMLSelectElement;
+                                                onPriorityChange(eventHTML, requestIndex).then();
+                                            }
+                                        }
+                                    >
+                                        <option className={"priorityDropdown"} value="Low">Low</option>
+                                        <option className={"priorityDropdown"} value="Medium">Medium
+                                        </option>
+                                        <option className={"priorityDropdown"} value="High">High</option>
+                                        <option className={"priorityDropdown"} value="Emergency">Emergency
+                                        </option>
+                                    </select>
+                                </td>
+                                <td className={"tableTD"}>
+                                    <select
                                         value={request[1].assignedUName}
                                         onChange={
                                             (event) => {
@@ -121,6 +120,9 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
                                         }
                                     </select>
                                 </td>
+                                <td className={"tableTD"}>{request[1].reqLocationID}</td>
+                                <td className={"tableTD"}>{request[0].type}</td>
+                                <td className={"tableTD"}>{request[1].extraInfo}</td>
                             </tr>
 
                         );
@@ -297,15 +299,20 @@ export default function Sanitation_table({statusFilter:statusFilter}:statusFilte
 
 }
 
-async function getSanRequests(statusFilter:Status) {
+async function getSanRequests(statusFilter:Status, priorityFilter:Priorities, employeeFilter:string, locationFilter:string) {
     const requests =
-        await axios.get<[sanReq[], ServiceRequest[]]>("/api/serviceRequests/sanReq", {params: {status: statusFilter}});
+        await axios.get<[sanReq[], ServiceRequest[]]>("/api/serviceRequests/sanReq/filter",
+            {params: {status: statusFilter, priority: priorityFilter,
+                    employee:employeeFilter, location:locationFilter
+                } });
 
     const sanRequests: Array<[sanReq, ServiceRequest]> = [];
     for (let i = 0; i < requests.data[0].length; i++) {
         sanRequests.push([requests.data[0][i], requests.data[1][i]]);
 
     }
+
+
     console.log("HI,HI");
     console.log(sanRequests);
 

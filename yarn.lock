@@ -549,6 +549,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@kurkle/color@npm:^0.3.0":
+  version: 0.3.2
+  resolution: "@kurkle/color@npm:0.3.2"
+  checksum: 079c4b7688061070f1d570cee4cf0e7c4085867b940688ff80356a56825a5ace7077257c9ec5863eb344a8eae78379388ab57cdf9d75c491389fad56f411cd43
+  languageName: node
+  linkType: hard
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -1115,6 +1122,13 @@ __metadata:
   version: 4.3.11
   resolution: "@types/chai@npm:4.3.11"
   checksum: c83a00359684bf06114d5ad0ffa62c78b2fbfe09a985eda56e55cd3c191fe176052aef6e297a8c8a3608efb8ea7a44598cf7e0ae1a3a9311af892417e95b0b28
+  languageName: node
+  linkType: hard
+
+"@types/chartjs@npm:^0":
+  version: 0.0.31
+  resolution: "@types/chartjs@npm:0.0.31"
+  checksum: ec862b8c8227e1f2e07a0e8842a93e520c0cd12aa0b029f1649d2d91634632f46822a151704d4d3cb4ff64dd7d0b3d78833f4c128012fa56a2ae1fdb0790134f
   languageName: node
   linkType: hard
 
@@ -2666,6 +2680,22 @@ __metadata:
   version: 5.3.0
   resolution: "chalk@npm:5.3.0"
   checksum: 6373caaab21bd64c405bfc4bd9672b145647fc9482657b5ea1d549b3b2765054e9d3d928870cdf764fb4aad67555f5061538ff247b8310f110c5c888d92397ea
+  languageName: node
+  linkType: hard
+
+"chart.js@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "chart.js@npm:4.4.1"
+  dependencies:
+    "@kurkle/color": "npm:^0.3.0"
+  checksum: bb58247349ed04b6a38c4c4b45d953d87dab40ecd70dd796da302cbcebf866dfc1ecf7bd32d95ecb44b89dccf9a4cfc6ff84f74ba69b024be9b5bd19b2930fbc
+  languageName: node
+  linkType: hard
+
+"chartjs@npm:^0.3.24":
+  version: 0.3.24
+  resolution: "chartjs@npm:0.3.24"
+  checksum: 06aa448014c3b56a2e96db8d9b9d302f0b44385c01a0ca94202b7ac167281790452eb511ad09b7bcb96acab947ca2b3facf975941d3ba34ccc8b35a28669afff
   languageName: node
   linkType: hard
 
@@ -4283,6 +4313,7 @@ __metadata:
     "@popperjs/core": "npm:^2.11.8"
     "@tanstack/react-table": "npm:^8.9.3"
     "@types/bootstrap": "npm:^5.2.6"
+    "@types/chartjs": "npm:^0"
     "@types/multer": "npm:^1"
     "@types/node": "npm:^20.2.5"
     "@types/prop-types": "npm:^15.7.5"
@@ -4295,6 +4326,8 @@ __metadata:
     autoprefixer: "npm:^10.4.17"
     axios: "npm:^1.4.0"
     bootstrap: "npm:^5.2.3"
+    chart.js: "npm:^4.4.1"
+    chartjs: "npm:^0.3.24"
     common: "workspace:*"
     database: "workspace:*"
     eslint: "npm:latest"
@@ -4310,6 +4343,7 @@ __metadata:
     prettier-config-custom: "workspace:*"
     react: "npm:^18.2.0"
     react-bootstrap: "npm:^2.7.4"
+    react-chartjs-2: "npm:^5.2.0"
     react-dom: "npm:^18.2.0"
     react-icons: "npm:^5.0.1"
     react-router-bootstrap: "npm:^0.26.2"
@@ -6968,6 +7002,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-chartjs-2@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "react-chartjs-2@npm:5.2.0"
+  peerDependencies:
+    chart.js: ^4.1.1
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 0a70b60e1a0d1f0cecdd69d70d9ac1c191618c1033d8f942d4728f5eb84c893c82c9e3318be8a3158eb3a7186c0251a8fe0356c9610ea0f0f3f2d4a9c4a0b388
+  languageName: node
+  linkType: hard
+
 "react-dom@npm:^18.2.0":
   version: 18.2.0
   resolution: "react-dom@npm:18.2.0"
@@ -7760,12 +7804,15 @@ __metadata:
   resolution: "softeng-starter-code@workspace:."
   dependencies:
     "@prisma/client": "npm:^5.8.1"
+    "@types/chartjs": "npm:^0"
     "@types/multer": "npm:^1"
     "@types/react": "npm:^18.0.37"
     "@types/react-dom": "npm:^18.0.11"
     "@vitest/ui": "npm:^0.33.0"
     "@yarnpkg/pnpify": "npm:^4.0.0-rc.45"
     autoprefixer: "npm:^10.4.17"
+    chart.js: "npm:^4.4.1"
+    chartjs: "npm:^0.3.24"
     eslint: "npm:^8.56.0"
     eslint-config-custom: "workspace:*"
     happy-dom: "npm:^10.6.3"
@@ -7777,6 +7824,7 @@ __metadata:
     prisma: "npm:^5.8.1"
     react: "npm:^18.2.0"
     react-bootstrap: "npm:^2.10.0"
+    react-chartjs-2: "npm:^5.2.0"
     react-dom: "npm:^18.2.0"
     tailwind: "npm:^4.0.0"
     tailwindcss: "npm:^3.4.1"

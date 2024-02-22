@@ -13,6 +13,9 @@ import {AStarStrategy} from "../../../../backend/src/algorithms/Search/Strategy/
 import {BFSStrategy} from "../../../../backend/src/algorithms/Search/Strategy/BFSStrategy.ts";
 import {DFSStrategy} from "../../../../backend/src/algorithms/Search/Strategy/DFSStrategy.ts";
 import {ServiceRequest} from "../../../../backend/src/algorithms/Requests/Request.ts";
+import {
+    generateTextDirections
+} from "../../../../backend/src/algorithms/Search/TextDirections/GenerateTextDirections.ts";
 
 /* - - - types - - - */
 /**
@@ -34,6 +37,7 @@ export type MapState = {
     zoomScale: number,
     setZoomScale: Dispatch<SetStateAction<number>>
     drawEntirePathOptions:boolean[]
+    setTextDirections:Dispatch<SetStateAction<string[]>>
 }
 
 /**
@@ -195,7 +199,8 @@ function updatePathEdges(startingNode: Node,
                          floorIndex: number,
                          drawAllEdges: boolean,
                          setPathFloorTransitionNodes: Dispatch<Array<Transition>>,
-                         pathFindingType:string) {
+                         pathFindingType:string,
+                         setTextDirections: Dispatch<SetStateAction<string[]>>) {
 
     /* actually first: check if the graph is ready */
     if (graph == null) {
@@ -260,6 +265,9 @@ function updatePathEdges(startingNode: Node,
         console.error("no path could be found between " + startingNode?.id + " and " + endingNode?.id);
         return;
     }
+    
+    //get and set text directions
+    setTextDirections(generateTextDirections(rawPath,graph)!);
 
     /* calculate the edges and transitions just on this floor */
     const floorEdgesAndTransitions: edgesAndTransitions = calculateFloorPath(rawPath, floorIndex);
@@ -383,6 +391,9 @@ function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndT
     return {edges: pathEdges, transitions: pathTransitions};
 }
 
+
+
+
 /**
  * Draw the map to the screen.
  * @param startNode part of a MapState
@@ -405,7 +416,7 @@ export function HospitalMap({
                         pathFindingType:pathFindingType,
                         viewbox: viewbox, setViewbox: setViewbox,
                         zoomScale: zoomScale, setZoomScale: setZoomScale
-                        ,drawEntirePathOptions
+                        ,drawEntirePathOptions,setTextDirections
                     }: MapState) {
 
 
@@ -413,8 +424,8 @@ export function HospitalMap({
     /* when the page updates, update the edges */
     useEffect(() => {
         updatePathEdges(startNode, endNode, setPathDrawnEdges, selectedFloorIndex, drawEntirePath,
-            setPathFloorTransitions, pathFindingType);
-    }, [drawEntirePath, endNode, selectedFloorIndex, startNode,pathFindingType]);
+            setPathFloorTransitions, pathFindingType,setTextDirections);
+    }, [drawEntirePath, endNode, selectedFloorIndex, startNode, pathFindingType, setTextDirections]);
 
     const [pathDrawnEdges, setPathDrawnEdges] = useState<Array<Edge>>([]);
     const [pathFloorTransitions, setPathFloorTransitions] =
