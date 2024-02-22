@@ -27,8 +27,13 @@ function EmployeeTable() {
     const [newLastName, setNewLastName] = useState("");
     const [newIsAdmin, setNewIsAdmin] = useState(false);
     const [newDesignation, setNewDesignation] = useState(Roles.None);
+    const [userID, setUserID] = useState("");
+
     // const [resetDesignation, setResetDesignation] = useState(false);
     const [editIndex, setEditIndex] = useState(-1);
+
+
+
 
 
 
@@ -196,10 +201,9 @@ function EmployeeTable() {
             isEditing=true;
         }
 
-        //todo FNFN fix this so that it works with Auth0 (the Auth0 token should
-        // be the UserID) or remove it all together
+
         const newEmployee: Employee = {
-            userID: "ERROR",
+            userID: userID,
             designation: newDesignation ,
             firstName: newFristName,
             isAdmin: newIsAdmin,
@@ -262,6 +266,7 @@ function EmployeeTable() {
         setNewFristName(employee.firstName);
         setNewUserName(employee.userName);
         setEditIndex(employeeIndex);
+        setUserID(employee.userID);
 
 
         openForm();
@@ -278,7 +283,14 @@ function EmployeeTable() {
 
         setEmployees(newEmployees);
 
-        const data:string[] = [employee.userName];
+        const data:string[] = [employee.userID];
+        console.log("Data: " + data);
+
+        //username is param
+        const responce = await axios.get("/api/cascadeDelete", {params: {userID: data[0]}});
+        console.log("Response: " + responce.status);
+
+
 
         await axios.post("/api/employees/deleteEmployee",
             data, {

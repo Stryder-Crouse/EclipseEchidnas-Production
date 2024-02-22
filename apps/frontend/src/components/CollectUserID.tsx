@@ -8,7 +8,8 @@ async function CollectUserName() {
         return null;
     }
 
-    if (isAuthenticated && user != null) {
+                                    //was null but undefined is what TS uses
+    if (isAuthenticated && user != undefined) {
         try {
             await axios.post("/api/employees/employee", {
                     userID: userName,
