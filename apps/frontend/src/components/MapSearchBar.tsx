@@ -99,6 +99,16 @@ export default function MapSearchBar({startNode:startNode,
                     <b>End: </b>{endNode.longName}
                 </div>
 
+                <div className={" mt-1"}>
+                    <CreateDropdown
+                        dropBtnName={"Search Type"} dropdownID={"Search Type"} populationArr={searchOptions}
+                        isSearchable={false}
+                        resetOnSelect={false} resetDropdown={resetDropdown}
+                        setResetDropdown={setResetDropdown} setSelected={setSelectedAlgoIndex}
+                        inputCSS={""}
+                        selectCSS={"transition-all hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}></CreateDropdown>
+                </div>
+
 
                 <div className="flex flex-col border-gray-500 border-2 w-60 max-h-[70vh] mt-1 bg-white rounded-3xl p-2">
                     {/*<p className={"bg-[#024c96] p-1 rounded-xl w-full text-white font-semibold cursor-pointer flex justify-center m-auto "}>*/}
@@ -107,12 +117,15 @@ export default function MapSearchBar({startNode:startNode,
                     <div className="overflow-y-auto overflow-x-hidden">
                         {textDirections.map((direction, index) => (
                             <div key={index} className="flex w-[90%] rounded-3xl pl-2 pr-2 pt-1 pb-1 bg-gray-200 m-2">
-                                <b>{(index+1).toString()+":"}</b>{" "+direction}
+                                <b>{(index + 1).toString() + ":"}</b>{" " + direction}
 
                             </div>
                         ))}
                     </div>
-                    <button className={"bg-[#024c96] p-1 rounded-xl w-full text-white font-semibold cursor-pointer flex justify-center m-auto "} onClick={closeLocations}>Close</button>
+                    <button
+                        className={"bg-[#024c96] p-1 rounded-xl w-full text-white font-semibold cursor-pointer flex justify-center m-auto "}
+                        onClick={closeLocations}>Close
+                    </button>
                 </div>
 
 
