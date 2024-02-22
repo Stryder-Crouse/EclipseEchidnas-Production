@@ -61,13 +61,16 @@ export default function RegisterForm() {
         console.log('User found');
         //setCurrEmail(JSON.stringify(thisEmail));
 
-        const email =JSON.stringify(thisEmail);
-        console.log(email);
+        // const email =JSON.stringify(thisEmail);
+        // console.log(email);
+        thisEmail!.replace('"','');
+        console.log(thisEmail);
+
 
         const employee: Employee = {
 
             userID: currUser.user!.sub!,
-            userName: JSON.stringify(thisEmail),
+            userName: thisEmail!,
             firstName: firstName,
             lastName: lastName,
             designation: Roles.None,
