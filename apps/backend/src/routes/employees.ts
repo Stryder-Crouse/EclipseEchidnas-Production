@@ -314,22 +314,58 @@ router.get("/current_employee", async function (req: Request, res: Response) {
 });
 
 
-router.get("/determineIfUniqueEmail", async function (req: Request, res: Response)  {
+router.post("/onLogin", async function (req: Request, res: Response)  {
     //param is specified in frontend to have an attribute of "email", which is what req.query is referencing
-    const emailStr: string = req.query.email as string;
+    const employeeData:Employee = req.body as Employee;
+
+    console.log("this is employee");
+    console.log(employeeData);
+
     // console.log("\n\n\n\nEmail String: " + emailStr + "\n\n\n");
 
     try {
-        const answer = await PrismaClient.employee.findUnique({where:{userID:emailStr}});
+        const answer = await PrismaClient.employee.findUnique(
+            {where:{userID:employeeData.userName}});
         console.log("Prisma Response: " + answer);
+        console.log(answer);
 
         if(answer == null)
         {
-            res.send(false);
+            //create
+            await PrismaClient.employee.create({
+                data: {
+                    userID: employeeData.userID,
+                    userName: employeeData.userName,
+                    firstName: employeeData.firstName,
+                    lastName: employeeData.lastName,
+                    designation: employeeData.designation,
+                    isAdmin: employeeData.isAdmin,
+                },
+            });
+
+
+            res.sendStatus(200);
         }
-        res.send(true);
-    } catch {
-        console.log("Could not figure out if email was already in the database");
+
+        //update
+        await PrismaClient.employee.update({
+            where: {
+                userID: employeeData.userID
+            },
+            data: {
+                //transfer all the info from the object into the database
+                userName: employeeData.userName,
+                firstName: employeeData.firstName,
+                lastName: employeeData.lastName,
+                designation: employeeData.designation,
+                isAdmin: employeeData.isAdmin
+            }
+        });
+
+        res.sendStatus(200);
+    } catch(err) {
+        console.log("could not update or add user on login");
+        console.log(err);
         res.sendStatus(400);
     }
 });
