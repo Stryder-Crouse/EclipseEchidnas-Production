@@ -15,55 +15,13 @@ const auth0 = new ManagementClient({
 });
 
 
-router.post("/", async function (req: Request, res: Response) {
-    const username = req.query.username as string;
-    console.log("UName: " + username);
+router.get("/", async function (req: Request, res: Response) {
+    const userID: string = req.query.userID as string;
+    console.log("UName: " + userID);
 
-    await auth0.users.delete({id: "auth0|65d66bda0177410b09a14e3c"}).then((authRes)=>{ console.log(authRes.data); });
+    await auth0.users.delete({id: userID}).then((authRes)=>{ console.log(authRes.data); });
 
-    res.send(200);
-
-    // const initialInfo: string = "https://dev-hca27okc2srfyen8.us.auth0.com/api/v2/auth0|65d66bda0177410b09a14e3c";
-    // //initialInfo += data[0];
-    // let accessToken = await getAccessTokenSilently({
-    //     authorizationParams: {
-    //         audience: "https://dev-hca27okc2srfyen8.us.auth0.com/api/v2/",
-    //         scope: "read:current_users",
-    //     }
-    // });
-    //
-    // console.log("User: " + user!.sub);
-    //
-    // const userDetails = `https://dev-hca27okc2srfyen8.us.auth0.com/api/v2/users/${user!.sub}`;
-    //
-    // console.log("User Details:" + userDetails);
-    //
-    // const response = await fetch(userDetails, {
-    //     headers: {
-    //         Authorization: `Bearer ${accessToken}`,
-    //     }
-    // });
-    //
-    // console.log((await response.json()));
-    //
-    //
-    // try
-    // {
-    //     const config = {
-    //         method: 'delete',
-    //         maxBodyLength: Infinity,
-    //         url: initialInfo,
-    //         headers: {
-    //             "authorization": "Bearer TOKEN"
-    //         }
-    //     };
-    //
-    //     axios.request(config).then((response) => {
-    //         console.log("Response from Auth0 deleting" + JSON.stringify(response.data));
-    //     });
-    // } catch {
-    //     console.log("Error with deleting from Auth0");
-    // }
+    res.sendStatus(200);
 });
 
 
