@@ -1,8 +1,8 @@
 import axios from "axios";
 import {useState,useEffect} from "react";
-import {FlowReq, Priorities, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
-import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
-import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
+import {FlowReq, Priorities, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
+import Status from "../../../../../../packages/common/src/algorithms/Requests/Status.ts";
+import {Employee} from "../../../../../../packages/common/src/algorithms/Employee/Employee.ts";
 import {requestFilters} from "../serviceRequestInterface.ts";
 // import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 // import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";

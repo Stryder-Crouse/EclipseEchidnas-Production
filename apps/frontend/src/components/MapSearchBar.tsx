@@ -1,5 +1,5 @@
 import {CreateDropdown} from "./CreateDropdown.tsx";
-import {FloorToIndex, Node, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, Node, NULLNODE} from "../../../../packages/common/src/algorithms/Graph/Node.ts";
 import {Dispatch, SetStateAction, useState} from "react";
 
 

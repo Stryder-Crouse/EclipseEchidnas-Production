@@ -1,7 +1,7 @@
-import {Buildings, Node, NodeType, stringToBuilding, stringToNodeType,} from "./Graph/Node.ts";
-import {Edge} from "./Graph/Edge.ts";
-import {Coordinate} from "./Graph/Coordinate.ts";
-import {Employee, stringToRoles} from "./Employee/Employee.ts";
+import {Buildings, Node, NodeType, stringToBuilding, stringToNodeType,} from "../../../../packages/common/src/algorithms/Graph/Node.ts";
+import {Edge} from "../../../../packages/common/src/algorithms/Graph/Edge.ts";
+import {Coordinate} from "../../../../packages/common/src/algorithms/Graph/Coordinate.ts";
+import {Employee, stringToRoles} from "../../../../packages/common/src/algorithms/Employee/Employee.ts";
 
 /** default value for a nodes fields if any values are not found*/
 const ERROR_STRING: string = "NO VALUE";

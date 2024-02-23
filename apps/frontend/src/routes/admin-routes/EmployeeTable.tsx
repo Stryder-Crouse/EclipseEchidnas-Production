@@ -2,7 +2,7 @@ import "../../css/route-css/EmployeeTable.css";
 import "../../css/route-css/EmployeeTableInput.css";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Employee, Roles} from "../../../../backend/src/algorithms/Employee/Employee.ts";
+import {Employee, Roles} from "../../../../../packages/common/src/algorithms/Employee/Employee.ts";
 import trashIcon from "../../images/Table Functions/trash-2.png";
 import editPen from "../../images/Table Functions/pencil.png";
 import ExportImportButtonEmployee from "../../components/EmployeeTableButtons/ExportImportButtonEmployee.tsx";

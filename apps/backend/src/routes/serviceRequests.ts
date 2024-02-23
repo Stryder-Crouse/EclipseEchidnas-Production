@@ -10,8 +10,8 @@ import {
     ReqTypes,
     sanReq,
     ServiceRequest
-} from "../algorithms/Requests/Request.ts";
-import Status from "../algorithms/Requests/Status.ts";
+} from "../../../../packages/common/src/algorithms/Requests/Request.ts";
+import Status from "../../../../packages/common/src/algorithms/Requests/Status.ts";
 //import {Employee} from "../algorithms/Employee/Employee.ts";
 // import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
 

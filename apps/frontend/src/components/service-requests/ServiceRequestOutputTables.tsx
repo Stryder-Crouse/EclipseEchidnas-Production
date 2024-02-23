@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import "../../css/component-css/ServicePage.css";
-import {ReqTypes, Priorities} from "../../../../backend/src/algorithms/Requests/Request.ts";
+import {ReqTypes, Priorities} from "../../../../../packages/common/src/algorithms/Requests/Request.ts";
 
 //from https://github.com/frontend-joe/react-widgets for css
 
 import Flower_table from "./flower-request/Flower_table.tsx";
 import Religious_table from "./religious-request/Religious_table.tsx";
 import Medicine_table from "./medicine-request/Medicine_table.tsx";
-import Status from "../../../../backend/src/algorithms/Requests/Status.ts";
+import Status from "../../../../../packages/common/src/algorithms/Requests/Status.ts";
 
 
 import Transportation_table from "./transportation-outside-request/Transportation_table.tsx";
@@ -15,10 +15,10 @@ import Sanitation_table from "./sanitation-request/Sanitation_table.tsx";
 import ServiceRequest_Table from "./service-request/ServiceRequest_Table.tsx";
 import PieChartStatsAll from "./StatsPie/PieChartStatsAll.tsx";
 import PieChartStatsServiceRequest from "./StatsPie/PieChartStatsServiceRequest.tsx";
-import {Employee} from "../../../../backend/src/algorithms/Employee/Employee.ts";
+import {Employee} from "../../../../../packages/common/src/algorithms/Employee/Employee.ts";
 import axios from "axios";
 
-import {NodeDataBase} from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import {NodeDataBase} from "../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 
 
 

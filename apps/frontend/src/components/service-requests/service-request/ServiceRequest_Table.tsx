@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import "../../../css/component-css/ServiceRequestTable.css";
-import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
-import {Priorities, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import Status from "../../../../../../packages/common/src/algorithms/Requests/Status.ts";
+import {Priorities, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
 import axios from "axios";
-import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
+import {Employee} from "../../../../../../packages/common/src/algorithms/Employee/Employee.ts";
 import {requestFilters} from "../serviceRequestInterface.ts";
 
 

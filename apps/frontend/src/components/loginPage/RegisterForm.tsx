@@ -1,7 +1,7 @@
 import React from "react";
 import {useState} from "react";
 import SimpleTextInput from "../inputComponents/SimpleTextInput.tsx";
-import {Employee, Roles} from "../../../../backend/src/algorithms/Employee/Employee.ts";
+import {Employee, Roles} from "../../../../../packages/common/src/algorithms/Employee/Employee.ts";
 
 import axios from "axios";
 // import {useEffect} from "react";

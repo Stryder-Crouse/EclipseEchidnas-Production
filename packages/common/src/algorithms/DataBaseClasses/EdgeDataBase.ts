@@ -1,6 +1,6 @@
-import { Edge } from "../algorithms/Graph/Edge.ts";
-import { Coordinate } from "../algorithms/Graph/Coordinate.ts";
-import { Buildings, Node, NodeType } from "../algorithms/Graph/Node.ts";
+import { Edge } from "../Graph/Edge.ts";
+import { Coordinate } from "../Graph/Coordinate.ts";
+import { Buildings, Node, NodeType } from "../Graph/Node.ts";
 
 /** Database repersentation of node */
 export type EdgeDataBase = {

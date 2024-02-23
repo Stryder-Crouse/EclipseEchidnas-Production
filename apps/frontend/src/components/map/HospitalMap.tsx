@@ -1,21 +1,21 @@
 import axios from "axios";
-import {FloorToIndex, floorToNumber, Node, NodeType, NULLNODE} from "../../../../backend/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, floorToNumber, Node, NodeType, NULLNODE} from "../../../../../packages/common/src/algorithms/Graph/Node.ts";
 import "../../css/component-css/Map.css";
-import {Edge, NULLEDGE} from "../../../../backend/src/algorithms/Graph/Edge.ts";
-import {Graph} from "../../../../backend/src/algorithms/Graph/Graph.ts";
+import {Edge, NULLEDGE} from "../../../../../packages/common/src/algorithms/Graph/Edge.ts";
+import {Graph} from "../../../../../packages/common/src/algorithms/Graph/Graph.ts";
 import {onNodeHover, onNodeLeave, onNodeRightClick,} from "../../event-logic/circleNodeEventHandlers.ts";
-import {NodeDataBase, nodeDataBaseToNode,} from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
-import {EdgeDataBase, edgeDataBasetoEdge,} from "../../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
+import {NodeDataBase, nodeDataBaseToNode,} from "../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
+import {EdgeDataBase, edgeDataBasetoEdge,} from "../../../../../packages/common/src/algorithms/DataBaseClasses/EdgeDataBase.ts";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {Coordinate} from "../../../../backend/src/algorithms/Graph/Coordinate.ts";
-import {SearchContext} from "../../../../backend/src/algorithms/Search/Strategy/SearchContext.ts";
-import {AStarStrategy} from "../../../../backend/src/algorithms/Search/Strategy/AStarStrategy.ts";
-import {BFSStrategy} from "../../../../backend/src/algorithms/Search/Strategy/BFSStrategy.ts";
-import {DFSStrategy} from "../../../../backend/src/algorithms/Search/Strategy/DFSStrategy.ts";
-import {ServiceRequest} from "../../../../backend/src/algorithms/Requests/Request.ts";
+import {Coordinate} from "../../../../../packages/common/src/algorithms/Graph/Coordinate.ts";
+import {SearchContext} from "../../../../../packages/common/src/algorithms/Search/Strategy/SearchContext.ts";
+import {AStarStrategy} from "../../../../../packages/common/src/algorithms/Search/Strategy/AStarStrategy.ts";
+import {BFSStrategy} from "../../../../../packages/common/src/algorithms/Search/Strategy/BFSStrategy.ts";
+import {DFSStrategy} from "../../../../../packages/common/src/algorithms/Search/Strategy/DFSStrategy.ts";
+import {ServiceRequest} from "../../../../../packages/common/src/algorithms/Requests/Request.ts";
 import {
     generateTextDirections
-} from "../../../../backend/src/algorithms/Search/TextDirections/GenerateTextDirections.ts";
+} from "../../../../../packages/common/src/algorithms/Search/TextDirections/GenerateTextDirections.ts";
 
 /* - - - types - - - */
 /**

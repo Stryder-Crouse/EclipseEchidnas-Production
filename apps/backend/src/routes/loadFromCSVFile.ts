@@ -1,19 +1,19 @@
 import express, {Router, Request, Response} from "express";
-import {Edge} from "../algorithms/Graph/Edge.ts";
-import {Node} from "../algorithms/Graph/Node.ts";
+import {Edge} from "../../../../packages/common/src/algorithms/Graph/Edge.ts";
+import {Node} from "../../../../packages/common/src/algorithms/Graph/Node.ts";
 
 import {
     NodeDataBase,
     nodeDataBaseToNode, nodeToNodeDataBase,
 
-} from "../DataBaseClasses/NodeDataBase.ts";
+} from "../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import {
     EdgeDataBase,
     edgeDataBasetoEdge, edgeToEdgeDataBase,
 
-} from "../DataBaseClasses/EdgeDataBase.ts";
+} from "../../../../packages/common/src/algorithms/DataBaseClasses/EdgeDataBase.ts";
 import PrismaClient from "../bin/database-connection.ts";
-import {Graph} from "../algorithms/Graph/Graph.ts";
+import {Graph} from "../../../../packages/common/src/algorithms/Graph/Graph.ts";
 
 
 import multer from "multer";

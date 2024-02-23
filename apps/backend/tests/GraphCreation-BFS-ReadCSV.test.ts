@@ -1,9 +1,9 @@
 import { expect, test } from "vitest";
-import { Buildings, Node, NodeType } from "../src/algorithms/Graph/Node.ts";
-import { Edge } from "../src/algorithms/Graph/Edge.ts";
+import { Buildings, Node, NodeType } from "../../../packages/common/src/algorithms/Graph/Node.ts";
+import { Edge } from "../../../packages/common/src/algorithms/Graph/Edge.ts";
 import { readEdgeCSV, readNodeCSV } from "../src/algorithms/readCSV.ts";
-import { Graph } from "../src/algorithms/Graph/Graph.ts";
-import { BFS } from "../src/algorithms/Search/BFS.ts";
+import { Graph } from "../../../packages/common/src/algorithms/Graph/Graph.ts";
+import { BFS } from "../../../packages/common/src/algorithms/Search/BFS.ts";
 
 //BFS test
 test("BFS test", () => {
