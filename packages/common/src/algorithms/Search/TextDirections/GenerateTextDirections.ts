@@ -185,7 +185,7 @@ export function removeExtraTransitions(rawPath: Array<Node>): Array<Node> {
     /* for every node in the path */
     for (let i = 0; i < rawPath.length; i++) {
         /* store this node and the next node */
-        const start = rawPath.at(i)!;
+        const start = rawPath[i]!;
 
         //break if last node
         if (i == rawPath.length - 1) {
@@ -193,7 +193,7 @@ export function removeExtraTransitions(rawPath: Array<Node>): Array<Node> {
             break;
         }
 
-        const end = rawPath.at(i + 1)!;
+        const end = rawPath[i+1]!;
 
         /* if both nodes are on the same floor */
         if (start.floor == end.floor) {
@@ -206,8 +206,8 @@ export function removeExtraTransitions(rawPath: Array<Node>): Array<Node> {
             /* iterate forward through the path */
             let currentEndNode = end;
             while (i < rawPath.length - 2) {
-                currentEndNode = rawPath.at(i + 1)!;
-                const nextEndNode = rawPath.at(i + 2)!;
+                currentEndNode = rawPath[i+1]!;
+                const nextEndNode = rawPath[i + 2]!;
 
                 //stopped transitioning though floors
                 if (currentEndNode.floor == nextEndNode.floor) {

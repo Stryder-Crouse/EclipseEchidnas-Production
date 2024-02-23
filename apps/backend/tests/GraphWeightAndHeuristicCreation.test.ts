@@ -1,9 +1,9 @@
 import {expect, test} from "vitest";
-import {Node} from "../src/algorithms/Graph/Node.ts";
-import {Edge} from "../src/algorithms/Graph/Edge.ts";
-import {Graph} from "../src/algorithms/Graph/Graph.ts";
+import {Node} from "../../../packages/common/src/algorithms/Graph/Node.ts";
+import {Edge} from "../../../packages/common/src/algorithms/Graph/Edge.ts";
+import {Graph} from "../../../packages/common/src/algorithms/Graph/Graph.ts";
 import {readEdgeCSV, readNodeCSV} from "../src/algorithms/readCSV.ts";
-import {euclideanDistance} from "../src/algorithms/Graph/Coordinate.ts";
+import {euclideanDistance} from "../../../packages/common/src/algorithms/Graph/Coordinate.ts";
 
 
 export const nodesString: string =

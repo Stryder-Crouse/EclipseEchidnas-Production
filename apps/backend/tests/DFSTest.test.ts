@@ -1,9 +1,9 @@
 import {expect, test} from "vitest";
-import {DFS} from "../src/algorithms/Search/DFS.ts";
-import {Node} from "../src/algorithms/Graph/Node.ts";
+import {DFS} from "../../../packages/common/src/algorithms/Search/DFS.ts";
+import {Node} from "../../../packages/common/src/algorithms/Graph/Node.ts";
 import {readEdgeCSV, readNodeCSV} from "../src/algorithms/readCSV.ts";
-import {Edge} from "../src/algorithms/Graph/Edge.ts";
-import {Graph} from "../src/algorithms/Graph/Graph.ts";
+import {Edge} from "../../../packages/common/src/algorithms/Graph/Edge.ts";
+import {Graph} from "../../../packages/common/src/algorithms/Graph/Graph.ts";
 import {nodesString, edgesString} from "./GraphWeightAndHeuristicCreation.test.ts";
 
 /* - - - resources - - - */

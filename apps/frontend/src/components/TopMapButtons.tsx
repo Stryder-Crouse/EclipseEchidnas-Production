@@ -1,5 +1,5 @@
 import MapSearchBar from "./MapSearchBar.tsx";
-import {FloorToIndex, Node} from "../../../backend/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, Node} from "../../../../packages/common/src/algorithms/Graph/Node.ts";
 import {Dispatch, SetStateAction} from "react";
 
 

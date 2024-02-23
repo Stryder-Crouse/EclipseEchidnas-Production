@@ -1,6 +1,6 @@
 import React, {Dispatch, SetStateAction} from "react";
 import "../../css/component-css/NavBar.css";
-import {FloorToIndex} from "../../../../backend/src/algorithms/Graph/Node.ts";
+import {FloorToIndex} from "../../../../../packages/common/src/algorithms/Graph/Node.ts";
 
 //import LocationsDropDown from "./LocationsDropDown.tsx";
 

@@ -6,7 +6,7 @@ import RequestButtons from "../components/buttons/RequestButtons.tsx";
 import ExitButton from "../components/buttons/ExitButton.tsx";
 
 import axios from "axios";
-import {MedReq, ReqTypes, ServiceRequest} from "../../../backend/src/algorithms/Requests/Request.ts";
+import {MedReq, ReqTypes, ServiceRequest} from "../../../../packages/common/src/algorithms/Requests/Request.ts";
 
 export default function OLDServiceRequestPage() {
 
