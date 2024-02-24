@@ -13,6 +13,7 @@ import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {closeTransportCard} from "../../service-request-cards/TransportationRequestCard.tsx";
 //import LocationsDropDown from "../../navigation-bar/LocationsDropDown.tsx";
 import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";
+import {Priority} from "../priorityAndStatusEnums.tsx";
 
 let longNames:string[] = [];
 
@@ -20,13 +21,7 @@ export default function Transportation_Input({
     setIsPopupOpen
                                              }: closeTransportCard) {
 
-    enum PriorityLevel {
-        Unchosen = "Priority: ",
-        Low = "Low",
-        Medium = "Medium",
-        High = "High",
-        Emergency = "Emergency"
-    }
+
 
     enum ModeTransport {
         Unchosen = "Mode of Transportation: ",
@@ -36,7 +31,9 @@ export default function Transportation_Input({
         Superhero = "Superhero"
     }
 
-    const [priority, setPriority] = useState(PriorityLevel.Unchosen);
+    const priorityLevels =[Priority.low, "Medium", Priority.high, Priority.emergency];
+    const [resetDropdownUrg, setResetDropdownUrg] = useState(false);
+    const [urgencyDDIndx, setUrgencyDDIndx] = useState(-1);
     const [patientName, setPatientName] = useState('');
 
 
@@ -78,7 +75,7 @@ export default function Transportation_Input({
                 assignedUName: "No one",            //upon creation, no employee is assigned
                 status: "Unassigned",             //upon creation, nobody is assigned, so set status to unassigned
                 reqID:-1,
-                reqPriority:"Low",
+                reqPriority:priorityLevels[urgencyDDIndx],
                 time: null
             };
 
@@ -127,7 +124,7 @@ export default function Transportation_Input({
     }
 
     function clear() {
-        setPriority(PriorityLevel.Unchosen);
+        setResetDropdownUrg(true);
         setPatientName("");
         setResetDropdown(true);
         setDestination("");
@@ -150,31 +147,27 @@ export default function Transportation_Input({
                     Transportation</h1> {/* Div Title */}
 
 
-                <div className={"flex justify-center items-center my-1.5"}> {/* Priority Dropdown */}
+                <div className={"grid justify-center items-center my-1.5"}> {/* Priority Dropdown */}
                     {/*<label
                             className={"mr-1"}
                             htmlFor={"priority"}
                         >Priority Level: </label>*/}
-                        <select
-                            className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
-                            value={priority}
-                            id={"priority"}
-                            onChange={(e) => setPriority(e.target.value as PriorityLevel)}
-                        >
-                            <option value={PriorityLevel.Unchosen}>Priority </option>
-                            <option value={PriorityLevel.Low}>Low</option>
-                            <option value={PriorityLevel.Medium}>Medium</option>
-                            <option value={PriorityLevel.High}>High</option>
-                            <option value={PriorityLevel.Emergency}>Emergency</option>
-                        </select>
-                    </div>
+                    <label className="label">Priority </label>
+                    <CreateDropdown dropBtnName={"Priority "} dropdownID={"UrgencyID"} isSearchable={false}
+                                    populationArr={priorityLevels}
+                                    setSelected={setUrgencyDDIndx}
+                                    resetDropdown={resetDropdownUrg}
+                                    resetOnSelect={false}
+                                    inputCSS={"n/a"} selectCSS={"dropdown"}
+                                    setResetDropdown={setResetDropdownUrg}/>
+                </div>
 
                 {/*patient name*/}
-                <SimpleTextInput id={"patientName"} labelContent={"Patient Name:"} inputStorage={patientName}
+                <SimpleTextInput id={"patientName"} labelContent={"Patient Name "} inputStorage={patientName}
                                  setInputStorage={setPatientName}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
-                                 placeHolderText={"Patient Name: "}>
+                                 placeHolderText={"e.g. Jane Smith"}>
                 </SimpleTextInput>
 
                 {/*room number*/}
@@ -191,17 +184,18 @@ export default function Transportation_Input({
                 </div>
 
                 {/*destination*/}
-                <SimpleTextInput id={"destination"} labelContent={"Destination:"} inputStorage={destination}
+                <SimpleTextInput id={"destination"} labelContent={"Destination "} inputStorage={destination}
                                  setInputStorage={setDestination}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
-                                 placeHolderText={"Destination: "}>
+                                 placeHolderText={"e.g. Mercy-Grey Hospital"}>
                 </SimpleTextInput>
 
                 <div className={"grid justify-center items-center my-1.5 mb-2"}>{/* Mode of Transportation Input */}
                     {/*<label
                             htmlFor={"modeTransport"}
                         >Mode of Transportation: </label>*/}
+                    {/* //todo FNFN make this a createDropdown component */}
                     <select
                         className={"p-1 w-60 bg-white text-black rounded-2xl border border-black shadow cursor-pointer"}
                         value={modeTransport}
@@ -216,15 +210,16 @@ export default function Transportation_Input({
                     </select>
                 </div>
 
-                    <div className={"grid justify-center items-center my-1.5 mb-2"}> {/* Additional notes textbox */}
-                        <textarea
-                            className={"p-1 min-h-full h-20 w-60 bg-white text-black rounded-xl border border-black drop-shadow align-text-top"}
-                            id={"additional"}
-                            placeholder={"Extra Info:"}
-                            value={additional}
-                            onChange={(e) => setAdditional(e.target.value)}
-                        />
-                    </div>
+                <div className={"grid justify-center items-center my-1.5 mb-2"}> {/* Additional notes textbox */}
+                    <label className="label">Extra Notes </label>
+                    <textarea
+                        className={"p-1 min-h-full h-20 w-60 bg-white text-black rounded-xl border border-black drop-shadow align-text-top"}
+                        id={"additional"}
+                        placeholder={"Extra Notes"}
+                        value={additional}
+                        onChange={(e) => setAdditional(e.target.value)}
+                    />
+                </div>
 
 
                 <RequestButtons submit={submit}/>
