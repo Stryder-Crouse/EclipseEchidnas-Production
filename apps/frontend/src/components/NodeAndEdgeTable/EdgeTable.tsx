@@ -1,79 +1,59 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import { EdgeDataBase } from "../../../../../packages/common/src/algorithms/DataBaseClasses/EdgeDataBase.ts";
 import axios from "axios";
 import "../../css/route-css/nodeEdgeTablePage.css";
+import ImportExportButtons from "./ImportExportButtons.tsx";
 
-let ran = false;
+
 
 function EdgeTable() {
+
+
+    const [edges , setEdges ] = useState([] as EdgeDataBase[]);
+
     //todo FNFN fix with proper population code
     useEffect(()=>{
-        if(!ran){
-            populateEdges().then();
-
-            ran=true;
-        }
+        getEdges().then((result)=>{
+            setEdges(result);
+        } );
 
     },[]);
   return (
-    <div className={"table-container"}>
-      <span className={"caption-container"}>
-        <span className={"table-title"}>Current Edge .CSV File</span>
-      </span>
-      <div className={"table-wrapper"}>
-        <table>
+    <div className={""}>
+      <ImportExportButtons></ImportExportButtons>
+      <div className={""}>
+        <table className={"requestTable"} >
           <thead>
-            <tr>
-              <th>edgeID</th>
-              <th>startNode</th>
-              <th>endNode</th>
+            <tr className={"tableTRHead"}>
+              <th className={"tableTD"}>edgeID</th>
+              <th className={"tableTD"}>startNode</th>
+              <th className={"tableTD"}>endNode</th>
             </tr>
           </thead>
-          <tbody id={"table-rows-edges"}></tbody>
+          <tbody id={"table-rows-edges"}>
+              {
+                  edges.map((edge)=>{
+                      return (
+                          <tr className={"tableTR"}>
+                              <td className={"tableTD"}>{edge.edgeID}</td>
+                              <td className={"tableTD"}>{edge.startNodeID}</td>
+                              <td className={"tableTD"}>{edge.endNodeID}</td>
+                          </tr>
+                      );
+                  })
+              }
+
+          </tbody>
         </table>
       </div>
     </div>
   );
 }
-onload = () => {
-  populateEdges().then();
-};
 
-//todo clean up -stryder
-async function populateEdges() {
-  const edgeData = await axios.get<EdgeDataBase[]>("/api/load-edges");
-
-  //fine dropdown div in the html on the page
-  const table = document.getElementById("table-rows-edges");
-
-  console.log(table);
-
-  //for each node
-  edgeData.data.forEach(function (newEdge: EdgeDataBase) {
-    //create tr element to store the record
-    const tableRow = document.createElement("tr");
-    //create td tags for data from record
-    const edgeID = document.createElement("td");
-    edgeID.textContent = newEdge.edgeID;
-    edgeID.setAttribute("class", "node-id");
-
-    const edgeStart = document.createElement("td");
-    edgeStart.textContent = newEdge.startNodeID;
-
-    const edgeEnd = document.createElement("td");
-    edgeEnd.textContent = newEdge.endNodeID;
-
-    //append data elements together to one row
-    tableRow.appendChild(edgeID);
-    tableRow.appendChild(edgeStart);
-    tableRow.appendChild(edgeEnd);
-    if (table == null) {
-      return;
-    }
-
-    //add new row element to table
-    table.appendChild(tableRow);
-  });
+async function getEdges() {
+    const edgeData = await axios.get<EdgeDataBase[]>("/api/load-edges");
+    return edgeData.data;
 }
+
 
 export default EdgeTable;

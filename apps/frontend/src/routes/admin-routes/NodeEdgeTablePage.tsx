@@ -1,8 +1,6 @@
 
 import FullSideNavBarComponent from "../../components/FullSideNavBarComponent.tsx";
-import ImportExportButtons from "../../components/NodeAndEdgeTable/ImportExportButtons.tsx";
-import NodeTable from "../../components/NodeAndEdgeTable/NodeTable.tsx";
-import EdgeTable from "../../components/NodeAndEdgeTable/EdgeTable.tsx";
+import CsvPageTableContainer from "../../components/csvPage/CsvPageTableContainer.tsx";
 
 function NodeEdgeTablePage() {
     return(
@@ -11,9 +9,7 @@ function NodeEdgeTablePage() {
                 <FullSideNavBarComponent/>
             </div>
             <div className="flex flex-col w-lvw -ml-10">
-                <ImportExportButtons/>
-                <NodeTable/>
-                <EdgeTable/>
+                <CsvPageTableContainer></CsvPageTableContainer>
             </div>
 
         </div>
