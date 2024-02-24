@@ -88,14 +88,12 @@ router.get("/serviceReq/statistics", async function (req: Request, res: Response
 
 // return all the stats of types, priority, status of service requests in each specific building in the database
 router.get("/serviceReq/building-statistics", async function (req: Request, res: Response) {
-    try{
+    try {
         const serviceRequest = await PrismaClient.serviceRequest.findMany({
             include: {
                 reqLocation: true
             },
         });
-        console.log(serviceRequest);
-
         const resultShapiro = {
             total: 0,
             medReq: 0,
@@ -176,9 +174,8 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
             inProgress: 0,
             completed: 0
         };
-
         for (const entry of serviceRequest) {
-            if (entry.reqLocation.building == "Shapiro"){
+            if (entry.reqLocation.building == "Shapiro") {
                 resultShapiro.total++;
                 if (entry.reqType == "medication") resultShapiro.medReq++;
                 if (entry.reqType == "religious") resultShapiro.religReq++;
@@ -194,7 +191,7 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
                 if (entry.status == "In Progress") resultShapiro.inProgress++;
                 if (entry.status == "Completed") resultShapiro.completed++;
             }
-            if (entry.reqLocation.building == "Tower"){
+            if (entry.reqLocation.building == "Tower") {
                 resultTower.total++;
                 if (entry.reqType == "medication") resultTower.medReq++;
                 if (entry.reqType == "religious") resultTower.religReq++;
@@ -210,7 +207,7 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
                 if (entry.status == "In Progress") resultTower.inProgress++;
                 if (entry.status == "Completed") resultTower.completed++;
             }
-            if (entry.reqLocation.building == "45 Francis"){
+            if (entry.reqLocation.building == "45 Francis") {
                 result45Francis.total++;
                 if (entry.reqType == "medication") result45Francis.medReq++;
                 if (entry.reqType == "religious") result45Francis.religReq++;
@@ -226,7 +223,7 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
                 if (entry.status == "In Progress") result45Francis.inProgress++;
                 if (entry.status == "Completed") result45Francis.completed++;
             }
-            if (entry.reqLocation.building == "15 Francis"){
+            if (entry.reqLocation.building == "15 Francis") {
                 result15Francis.total++;
                 if (entry.reqType == "medication") result15Francis.medReq++;
                 if (entry.reqType == "religious") result15Francis.religReq++;
@@ -242,7 +239,7 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
                 if (entry.status == "In Progress") result15Francis.inProgress++;
                 if (entry.status == "Completed") result15Francis.completed++;
             }
-            if (entry.reqLocation.building == "BTM"){
+            if (entry.reqLocation.building == "BTM") {
                 resultBTM.total++;
                 if (entry.reqType == "medication") resultBTM.medReq++;
                 if (entry.reqType == "religious") resultBTM.religReq++;
@@ -258,6 +255,7 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
                 if (entry.status == "In Progress") resultBTM.inProgress++;
                 if (entry.status == "Completed") resultBTM.completed++;
             }
+
         }
 
         const result = {
@@ -266,9 +264,10 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
 
         res.send(result);
         console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
         res.sendStatus(200);
-    }
-    catch(error){
+
+    } catch (error) {
         console.error("\nUnable to send requests\n");
         res.sendStatus(400); // Send error
     }
