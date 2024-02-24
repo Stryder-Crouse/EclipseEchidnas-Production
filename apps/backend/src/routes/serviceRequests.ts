@@ -184,6 +184,9 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
             if (entry.reqLocation.building == "Tower"){
                 resultTower.total++;
             }
+            if (entry.reqLocation.building == "45 Francis"){
+                result45Francis.total++;
+            }
         }
 
         const result = {
