@@ -86,9 +86,20 @@ router.get("/serviceReq/statistics", async function (req: Request, res: Response
 });
 
 
+// return all the stats of types, priority, status of service requests in each specific building in the database
 router.get("/serviceReq/building-statistics", async function (req: Request, res: Response) {
-    console.log(req.body);
-    res.send(req.body);
+    try{
+        const serviceRequest = await PrismaClient.serviceRequest.findMany({
+            include: {
+                reqLocation: true
+            },
+        });
+        console.log(serviceRequest);
+    }
+    catch(error){
+        console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
+    }
 });
 
 router.get("/serviceReq/filter", async function (req: Request, res: Response) {
