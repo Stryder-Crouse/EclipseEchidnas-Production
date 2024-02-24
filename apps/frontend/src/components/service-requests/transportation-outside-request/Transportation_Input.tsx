@@ -24,7 +24,6 @@ export default function Transportation_Input({
 
 
     enum ModeTransport {
-        Unchosen = "Mode of Transportation: ",
         Ambulance = "Ambulance",
         Helicopter = "Helicopter",
         Boat = "Boat",
@@ -34,11 +33,15 @@ export default function Transportation_Input({
     const priorityLevels =[Priority.low, "Medium", Priority.high, Priority.emergency];
     const [resetDropdownUrg, setResetDropdownUrg] = useState(false);
     const [urgencyDDIndx, setUrgencyDDIndx] = useState(-1);
+
+    const modeTrans = [ModeTransport.Ambulance, ModeTransport.Helicopter, ModeTransport.Boat, ModeTransport.Superhero];
+    const [resetDropdownTrans, setResetDropdownTrans] = useState(false);
+    const [transportIndex, setTransportIndex] = useState(-1);
+
     const [patientName, setPatientName] = useState('');
 
 
     const [destination, setDestination] = useState('');
-    const [modeTransport, setModeTransport] = useState(ModeTransport.Unchosen);
     const [additional, setAdditional] = useState('');
 
     const [resetDropdown, setResetDropdown] = useState(false);
@@ -82,7 +85,7 @@ export default function Transportation_Input({
             const transportData: OutsideTransport = {
                 patientName: patientName,
                 destination: destination,
-                modeOfTransport: modeTransport.valueOf(),
+                modeOfTransport: modeTrans[transportIndex],
                 serviceReqID: -1,
             };
             clear();
@@ -128,7 +131,7 @@ export default function Transportation_Input({
         setPatientName("");
         setResetDropdown(true);
         setDestination("");
-        setModeTransport(ModeTransport.Unchosen);
+        setResetDropdownTrans(true);
         setAdditional("");
     }
 
@@ -192,22 +195,17 @@ export default function Transportation_Input({
                 </SimpleTextInput>
 
                 <div className={"grid justify-center items-center my-1.5 mb-2"}>{/* Mode of Transportation Input */}
-                    {/*<label
-                            htmlFor={"modeTransport"}
-                        >Mode of Transportation: </label>*/}
-                    {/* //todo FNFN make this a createDropdown component */}
-                    <select
-                        className={"p-1 w-60 bg-white text-black rounded-2xl border border-black shadow cursor-pointer"}
-                        value={modeTransport}
-                        id={"modeTransport"}
-                        onChange={(e) => setModeTransport(e.target.value as ModeTransport)}
-                    >
-                        <option value={ModeTransport.Unchosen}>Mode of Transportation:</option>
-                        <option value={ModeTransport.Ambulance}>Ambulance</option>
-                        <option value={ModeTransport.Helicopter}>Helicopter</option>
-                        <option value={ModeTransport.Boat}>Boat</option>
-                        <option value={ModeTransport.Superhero}>Superhero</option>
-                    </select>
+
+                    <label className="label">Mode of Transportation </label>
+                    <CreateDropdown dropBtnName={"Mode of Transportation "} dropdownID={"transport"}
+                                    isSearchable={false}
+                                    populationArr={priorityLevels}
+                                    setSelected={setTransportIndex}
+                                    resetDropdown={resetDropdownTrans}
+                                    resetOnSelect={false}
+                                    inputCSS={"n/a"} selectCSS={"dropdown"}
+                                    setResetDropdown={setResetDropdownTrans}/>
+
                 </div>
 
                 <div className={"grid justify-center items-center my-1.5 mb-2"}> {/* Additional notes textbox */}
