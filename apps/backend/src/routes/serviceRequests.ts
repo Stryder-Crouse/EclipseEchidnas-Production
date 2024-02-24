@@ -228,6 +228,19 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
             }
             if (entry.reqLocation.building == "15 Francis"){
                 result15Francis.total++;
+                if (entry.reqType == "medication") result15Francis.medReq++;
+                if (entry.reqType == "religious") result15Francis.religReq++;
+                if (entry.reqType == "flower delivery") result15Francis.flowReq++;
+                if (entry.reqType == "sanitation") result15Francis.sanReq++;
+                if (entry.reqType == "transportation") result15Francis.tranReq++;
+                if (entry.reqPriority == "Low") result15Francis.lowPrio++;
+                if (entry.reqPriority == "Medium") result15Francis.medPrio++;
+                if (entry.reqPriority == "High") result15Francis.highPrio++;
+                if (entry.reqPriority == "Emergency") result15Francis.emergPrio++;
+                if (entry.status == "Unassigned") result15Francis.unassigned++;
+                if (entry.status == "Assigned") result15Francis.assigned++;
+                if (entry.status == "In Progress") result15Francis.inProgress++;
+                if (entry.status == "Completed") result15Francis.completed++;
             }
             if (entry.reqLocation.building == "BTM"){
                 resultBTM.total++;
