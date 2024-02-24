@@ -180,8 +180,10 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
         const result = {
             resultShapiro, resultTower, result45Francis, result15Francis, resultBTM
         };
-        console.log(result);
 
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        res.sendStatus(200);
     }
     catch(error){
         console.error("\nUnable to send requests\n");
