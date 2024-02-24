@@ -27,6 +27,7 @@ function PieChartStatsPriority({stats}:piePrioStats){
     const options = {
         maintainAspectRatio: false,
         plugins: {
+
             legend: {
                 align: 'start',
                 position: 'bottom',
@@ -45,8 +46,9 @@ function PieChartStatsPriority({stats}:piePrioStats){
                 position: "relative", height: "90%",
                 width: "30%"
             }}>
+            <p className="text-center"><b>Request Priority</b></p>
             {/*// @ts-expect-error asjhdska*/}
-            <Pie data={data} options={options}></Pie>
+            <Pie data={data} title={"Priority"} options={options}></Pie>
         </div>
     );
 }

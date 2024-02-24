@@ -2830,6 +2830,17 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["auth0", [\
+      ["npm:4.3.1", {\
+        "packageLocation": "./.yarn/cache/auth0-npm-4.3.1-a71089ad97-0fb7073718.zip/node_modules/auth0/",\
+        "packageDependencies": [\
+          ["auth0", "npm:4.3.1"],\
+          ["jose", "npm:4.15.4"],\
+          ["uuid", "npm:9.0.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["autoprefixer", [\
       ["npm:10.4.17", {\
         "packageLocation": "./.yarn/cache/autoprefixer-npm-10.4.17-8379be1d95-ac4416e726.zip/node_modules/autoprefixer/",\
@@ -2905,6 +2916,7 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:20.11.5"],\
           ["@types/pg", "npm:8.10.9"],\
           ["@types/supertest", "npm:2.0.16"],\
+          ["auth0", "npm:4.3.1"],\
           ["common", "workspace:packages/common"],\
           ["cookie-parser", "npm:1.4.6"],\
           ["database", "workspace:packages/database"],\
@@ -10294,6 +10306,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/uuid-npm-3.3.2-62715051ac-3834a82602.zip/node_modules/uuid/",\
         "packageDependencies": [\
           ["uuid", "npm:3.3.2"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:9.0.1", {\
+        "packageLocation": "./.yarn/cache/uuid-npm-9.0.1-39a8442bc6-9d0b6adb72.zip/node_modules/uuid/",\
+        "packageDependencies": [\
+          ["uuid", "npm:9.0.1"]\
         ],\
         "linkType": "HARD"\
       }]\

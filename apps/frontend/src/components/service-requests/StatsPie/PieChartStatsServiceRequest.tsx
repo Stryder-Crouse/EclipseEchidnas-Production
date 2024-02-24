@@ -50,7 +50,7 @@ function PieChartStatsServiceRequest({urlToGetStats}:requestStats){
     }, [urlToGetStats]);
     
     return (
-        <div className="flex flex-row h-full w-full">
+        <div className="flex flex-row justify-evenly m-auto h-full w-full">
             <PieChartStatsPriority stats={prioStats}></PieChartStatsPriority>
             <PieChartStatsStatus stats={assignedStats}></PieChartStatsStatus>
         </div>

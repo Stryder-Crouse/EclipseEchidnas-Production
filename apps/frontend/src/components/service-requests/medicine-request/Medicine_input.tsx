@@ -3,10 +3,10 @@ import React, {useEffect, useState} from "react";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 
 import axios from "axios";
-import {MedReq, ReqTypes, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import {MedReq, ReqTypes, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
-import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import {NodeDataBase} from "../../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import {closeMedicineCard} from "../../service-request-cards/MedicineRequestCard.tsx";
 //import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";

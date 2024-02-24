@@ -3,7 +3,7 @@ import RefreshIcon from "../images/MapFunctions/refresh-cw.png";
 import ZoomInIcon from "../images/MapFunctions/plus.png";
 import ZoomOutIcon from "../images/MapFunctions/minus.png";
 import {Dispatch, SetStateAction} from "react";
-import {Node, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
+import {Node, NULLNODE} from "../../../../packages/common/src/algorithms/Graph/Node.ts";
 import {Viewbox} from "./map/HospitalMap.tsx";
 
 /**
@@ -153,7 +153,13 @@ export default function MapFeatureButtons({
             <button className="flex self-end bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10"
                     onClick={() => {
                         setStartNode(NULLNODE);
+
                         setEndNode(NULLNODE);
+                        //close the drop down
+                        const openLocationInput = document.getElementById("locationDropdown");
+                        if (openLocationInput != null) {
+                            openLocationInput.style.display = "none";
+                        }
                     }}>
                 <img src={RefreshIcon} alt={"Refresh"}/>
             </button>

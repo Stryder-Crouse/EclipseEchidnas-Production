@@ -1,16 +1,16 @@
 import {expect, test} from "vitest";
-import {Node} from "../src/algorithms/Graph/Node.ts";
+import {Node} from "../../../packages/common/src/algorithms/Graph/Node.ts";
 import {
     Directions,
     findDeviation,
     generateTextDirections, removeExtraTransitions
-} from "../src/algorithms/Search/TextDirections/GenerateTextDirections.ts";
-import {Coordinate} from "../src/algorithms/Graph/Coordinate.ts";
+} from "../../../packages/common/src/algorithms/Search/TextDirections/GenerateTextDirections.ts";
+import {Coordinate} from "../../../packages/common/src/algorithms/Graph/Coordinate.ts";
 import {readEdgeCSV, readNodeCSV} from "../src/algorithms/readCSV.ts";
-import {Edge} from "../src/algorithms/Graph/Edge.ts";
-import {Graph} from "../src/algorithms/Graph/Graph.ts";
+import {Edge} from "../../../packages/common/src/algorithms/Graph/Edge.ts";
+import {Graph} from "../../../packages/common/src/algorithms/Graph/Graph.ts";
 import {nodesString, edgesString} from "./GraphWeightAndHeuristicCreation.test.ts";
-import {AStar} from "../src/algorithms/Search/AStar.ts";
+import {AStar} from "../../../packages/common/src/algorithms/Search/AStar.ts";
 
 /* - - - resources - - - */
 const nodes: Array<Node> = readNodeCSV(nodesString);

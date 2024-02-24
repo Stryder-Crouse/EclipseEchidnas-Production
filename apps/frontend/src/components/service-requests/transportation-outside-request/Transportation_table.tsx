@@ -1,11 +1,11 @@
 import React from "react";
 import {requestFilters} from "../serviceRequestInterface.ts";
 import {useState, useEffect} from "react";
-import {OutsideTransport, Priorities} from "../../../../../backend/src/algorithms/Requests/Request.ts";
-import {ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import {OutsideTransport, Priorities} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
+import {ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
 import axios from "axios";
-import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
-import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
+import {Employee} from "../../../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import Status from "../../../../../../packages/common/src/algorithms/Requests/Status.ts";
 
 async function getReqs(statusFilter: Status, priorityFilter:Priorities, employeeFilter:string, locationFilter:string) {
     const res =

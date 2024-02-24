@@ -2,17 +2,17 @@ import React, {useEffect, useState} from "react";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 import {Priority, Status} from "../priorityAndStatusEnums.tsx";
-import {ReligRequest, ReqTypes, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import {ReligRequest, ReqTypes, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
 import axios from "axios";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
-import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import {NodeDataBase} from "../../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import {closeCard} from "../../service-request-cards/ReligionRequestCard.tsx";
 import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";
 
 
 let longNames:string[] = [];
 
-const priorityLevels =[Priority.low, Priority.normal, Priority.high, Priority.emergency];
+const priorityLevels =[Priority.low, "Medium", Priority.high, Priority.emergency];
 export default function Religious_input({
     setIsPopupOpen
                                         }: closeCard) {
