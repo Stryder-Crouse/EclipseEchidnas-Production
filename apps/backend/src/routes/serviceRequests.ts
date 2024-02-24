@@ -94,7 +94,7 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
                 reqLocation: true
             },
         });
-        const resultShapiro = {
+        const shapiro = {
             total: 0,
             medReq: 0,
             religReq: 0,
@@ -110,7 +110,7 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
             inProgress: 0,
             completed: 0
         };
-        const resultTower = {
+        const tower = {
             total: 0,
             medReq: 0,
             religReq: 0,
@@ -126,7 +126,7 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
             inProgress: 0,
             completed: 0
         };
-        const result45Francis = {
+        const Francis45 = {
             total: 0,
             medReq: 0,
             religReq: 0,
@@ -142,7 +142,7 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
             inProgress: 0,
             completed: 0
         };
-        const result15Francis = {
+        const Francis15 = {
             total: 0,
             medReq: 0,
             religReq: 0,
@@ -158,7 +158,7 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
             inProgress: 0,
             completed: 0
         };
-        const resultBTM = {
+        const BTM = {
             total: 0,
             medReq: 0,
             religReq: 0,
@@ -176,90 +176,90 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
         };
         for (const entry of serviceRequest) {
             if (entry.reqLocation.building == "Shapiro") {
-                resultShapiro.total++;
-                if (entry.reqType == "medication") resultShapiro.medReq++;
-                if (entry.reqType == "religious") resultShapiro.religReq++;
-                if (entry.reqType == "flower delivery") resultShapiro.flowReq++;
-                if (entry.reqType == "sanitation") resultShapiro.sanReq++;
-                if (entry.reqType == "transportation") resultShapiro.tranReq++;
-                if (entry.reqPriority == "Low") resultShapiro.lowPrio++;
-                if (entry.reqPriority == "Medium") resultShapiro.medPrio++;
-                if (entry.reqPriority == "High") resultShapiro.highPrio++;
-                if (entry.reqPriority == "Emergency") resultShapiro.emergPrio++;
-                if (entry.status == "Unassigned") resultShapiro.unassigned++;
-                if (entry.status == "Assigned") resultShapiro.assigned++;
-                if (entry.status == "In Progress") resultShapiro.inProgress++;
-                if (entry.status == "Completed") resultShapiro.completed++;
+                shapiro.total++;
+                if (entry.reqType == "medication") shapiro.medReq++;
+                if (entry.reqType == "religious") shapiro.religReq++;
+                if (entry.reqType == "flower delivery") shapiro.flowReq++;
+                if (entry.reqType == "sanitation") shapiro.sanReq++;
+                if (entry.reqType == "transportation") shapiro.tranReq++;
+                if (entry.reqPriority == "Low") shapiro.lowPrio++;
+                if (entry.reqPriority == "Medium") shapiro.medPrio++;
+                if (entry.reqPriority == "High") shapiro.highPrio++;
+                if (entry.reqPriority == "Emergency") shapiro.emergPrio++;
+                if (entry.status == "Unassigned") shapiro.unassigned++;
+                if (entry.status == "Assigned") shapiro.assigned++;
+                if (entry.status == "In Progress") shapiro.inProgress++;
+                if (entry.status == "Completed") shapiro.completed++;
             }
             if (entry.reqLocation.building == "Tower") {
-                resultTower.total++;
-                if (entry.reqType == "medication") resultTower.medReq++;
-                if (entry.reqType == "religious") resultTower.religReq++;
-                if (entry.reqType == "flower delivery") resultTower.flowReq++;
-                if (entry.reqType == "sanitation") resultTower.sanReq++;
-                if (entry.reqType == "transportation") resultTower.tranReq++;
-                if (entry.reqPriority == "Low") resultTower.lowPrio++;
-                if (entry.reqPriority == "Medium") resultTower.medPrio++;
-                if (entry.reqPriority == "High") resultTower.highPrio++;
-                if (entry.reqPriority == "Emergency") resultTower.emergPrio++;
-                if (entry.status == "Unassigned") resultTower.unassigned++;
-                if (entry.status == "Assigned") resultTower.assigned++;
-                if (entry.status == "In Progress") resultTower.inProgress++;
-                if (entry.status == "Completed") resultTower.completed++;
+                tower.total++;
+                if (entry.reqType == "medication") tower.medReq++;
+                if (entry.reqType == "religious") tower.religReq++;
+                if (entry.reqType == "flower delivery") tower.flowReq++;
+                if (entry.reqType == "sanitation") tower.sanReq++;
+                if (entry.reqType == "transportation") tower.tranReq++;
+                if (entry.reqPriority == "Low") tower.lowPrio++;
+                if (entry.reqPriority == "Medium") tower.medPrio++;
+                if (entry.reqPriority == "High") tower.highPrio++;
+                if (entry.reqPriority == "Emergency") tower.emergPrio++;
+                if (entry.status == "Unassigned") tower.unassigned++;
+                if (entry.status == "Assigned") tower.assigned++;
+                if (entry.status == "In Progress") tower.inProgress++;
+                if (entry.status == "Completed") tower.completed++;
             }
             if (entry.reqLocation.building == "45 Francis") {
-                result45Francis.total++;
-                if (entry.reqType == "medication") result45Francis.medReq++;
-                if (entry.reqType == "religious") result45Francis.religReq++;
-                if (entry.reqType == "flower delivery") result45Francis.flowReq++;
-                if (entry.reqType == "sanitation") result45Francis.sanReq++;
-                if (entry.reqType == "transportation") result45Francis.tranReq++;
-                if (entry.reqPriority == "Low") result45Francis.lowPrio++;
-                if (entry.reqPriority == "Medium") result45Francis.medPrio++;
-                if (entry.reqPriority == "High") result45Francis.highPrio++;
-                if (entry.reqPriority == "Emergency") result45Francis.emergPrio++;
-                if (entry.status == "Unassigned") result45Francis.unassigned++;
-                if (entry.status == "Assigned") result45Francis.assigned++;
-                if (entry.status == "In Progress") result45Francis.inProgress++;
-                if (entry.status == "Completed") result45Francis.completed++;
+                Francis45.total++;
+                if (entry.reqType == "medication") Francis45.medReq++;
+                if (entry.reqType == "religious") Francis45.religReq++;
+                if (entry.reqType == "flower delivery") Francis45.flowReq++;
+                if (entry.reqType == "sanitation") Francis45.sanReq++;
+                if (entry.reqType == "transportation") Francis45.tranReq++;
+                if (entry.reqPriority == "Low") Francis45.lowPrio++;
+                if (entry.reqPriority == "Medium") Francis45.medPrio++;
+                if (entry.reqPriority == "High") Francis45.highPrio++;
+                if (entry.reqPriority == "Emergency") Francis45.emergPrio++;
+                if (entry.status == "Unassigned") Francis45.unassigned++;
+                if (entry.status == "Assigned") Francis45.assigned++;
+                if (entry.status == "In Progress") Francis45.inProgress++;
+                if (entry.status == "Completed") Francis45.completed++;
             }
             if (entry.reqLocation.building == "15 Francis") {
-                result15Francis.total++;
-                if (entry.reqType == "medication") result15Francis.medReq++;
-                if (entry.reqType == "religious") result15Francis.religReq++;
-                if (entry.reqType == "flower delivery") result15Francis.flowReq++;
-                if (entry.reqType == "sanitation") result15Francis.sanReq++;
-                if (entry.reqType == "transportation") result15Francis.tranReq++;
-                if (entry.reqPriority == "Low") result15Francis.lowPrio++;
-                if (entry.reqPriority == "Medium") result15Francis.medPrio++;
-                if (entry.reqPriority == "High") result15Francis.highPrio++;
-                if (entry.reqPriority == "Emergency") result15Francis.emergPrio++;
-                if (entry.status == "Unassigned") result15Francis.unassigned++;
-                if (entry.status == "Assigned") result15Francis.assigned++;
-                if (entry.status == "In Progress") result15Francis.inProgress++;
-                if (entry.status == "Completed") result15Francis.completed++;
+                Francis15.total++;
+                if (entry.reqType == "medication") Francis15.medReq++;
+                if (entry.reqType == "religious") Francis15.religReq++;
+                if (entry.reqType == "flower delivery") Francis15.flowReq++;
+                if (entry.reqType == "sanitation") Francis15.sanReq++;
+                if (entry.reqType == "transportation") Francis15.tranReq++;
+                if (entry.reqPriority == "Low") Francis15.lowPrio++;
+                if (entry.reqPriority == "Medium") Francis15.medPrio++;
+                if (entry.reqPriority == "High") Francis15.highPrio++;
+                if (entry.reqPriority == "Emergency") Francis15.emergPrio++;
+                if (entry.status == "Unassigned") Francis15.unassigned++;
+                if (entry.status == "Assigned") Francis15.assigned++;
+                if (entry.status == "In Progress") Francis15.inProgress++;
+                if (entry.status == "Completed") Francis15.completed++;
             }
             if (entry.reqLocation.building == "BTM") {
-                resultBTM.total++;
-                if (entry.reqType == "medication") resultBTM.medReq++;
-                if (entry.reqType == "religious") resultBTM.religReq++;
-                if (entry.reqType == "flower delivery") resultBTM.flowReq++;
-                if (entry.reqType == "sanitation") resultBTM.sanReq++;
-                if (entry.reqType == "transportation") resultBTM.tranReq++;
-                if (entry.reqPriority == "Low") resultBTM.lowPrio++;
-                if (entry.reqPriority == "Medium") resultBTM.medPrio++;
-                if (entry.reqPriority == "High") resultBTM.highPrio++;
-                if (entry.reqPriority == "Emergency") resultBTM.emergPrio++;
-                if (entry.status == "Unassigned") resultBTM.unassigned++;
-                if (entry.status == "Assigned") resultBTM.assigned++;
-                if (entry.status == "In Progress") resultBTM.inProgress++;
-                if (entry.status == "Completed") resultBTM.completed++;
+                BTM.total++;
+                if (entry.reqType == "medication") BTM.medReq++;
+                if (entry.reqType == "religious") BTM.religReq++;
+                if (entry.reqType == "flower delivery") BTM.flowReq++;
+                if (entry.reqType == "sanitation") BTM.sanReq++;
+                if (entry.reqType == "transportation") BTM.tranReq++;
+                if (entry.reqPriority == "Low") BTM.lowPrio++;
+                if (entry.reqPriority == "Medium") BTM.medPrio++;
+                if (entry.reqPriority == "High") BTM.highPrio++;
+                if (entry.reqPriority == "Emergency") BTM.emergPrio++;
+                if (entry.status == "Unassigned") BTM.unassigned++;
+                if (entry.status == "Assigned") BTM.assigned++;
+                if (entry.status == "In Progress") BTM.inProgress++;
+                if (entry.status == "Completed") BTM.completed++;
             }
 
         }
 
         const result = {
-            resultShapiro, resultTower, result45Francis, result15Francis, resultBTM
+            shapiro, tower, Francis45, Francis15, BTM
         };
 
         res.send(result);
