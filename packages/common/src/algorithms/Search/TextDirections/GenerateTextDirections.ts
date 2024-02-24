@@ -27,9 +27,18 @@ export function generateTextDirections(path: Array<Node> | null, graph: Graph): 
 
     let currentfloor= floorToNumber(path![0].floor);
 
+    if(path![0].nodeType == NodeType.ELEV || path![0].nodeType == NodeType.STAI ){
+        if (path![1].floor != path![0].floor) {
+            directions[currentfloor].push("1: Starting at " + path![0].longName +" go to floor "+ path![1].floor);
+        }
+        else{
+            directions[currentfloor].push("1: Starting at " + path![0].longName);
+        }
+    }
+    else{
+        directions[currentfloor].push("1: Starting at " + path![0].longName);
+    }
 
-
-    directions[currentfloor].push("1: Starting at " + path![0].longName);
 
     let currentDirectionNumber = 2;
 
