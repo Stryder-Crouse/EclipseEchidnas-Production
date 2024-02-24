@@ -1,29 +1,47 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import FullSideNavBarComponent from "./FullSideNavBarComponent.tsx";
 import ProfileIcon from "../images/Profile_icon.jpg";
 import {imageProps} from "./AboutPage.tsx";
 import {useAuth0} from "@auth0/auth0-react";
+//import PieChartStatsAll from "./StatsPie/PieChartStatsAll.tsx";
 //import {ServiceRequest} from "../../../backend/src/algorithms/Requests/Request.ts";
-import PieChartStatsServiceRequest from "./service-requests/StatsPie/PieChartStatsServiceRequest.tsx";
+//import PieChartStatsServiceRequest from "./service-requests/StatsPie/PieChartStatsServiceRequest.tsx";
 import ServiceRequest_Table from "./service-requests/service-request/ServiceRequest_Table.tsx";
 import Status from "../../../backend/src/algorithms/Requests/Status.ts";
 import {Priorities} from "../../../backend/src/algorithms/Requests/Request.ts";
+import {Employee} from "../../../backend/src/algorithms/Employee/Employee.ts";
+import axios from "axios";
+import PieChartStatsProfile from "./service-requests/StatsPie/PieChartStatsProfile.tsx";
+
 
 
 function ProfilePage() {
 
     const [statsToggle, setStatsToggle]
         = useState(false);
-    const [currentEmployee , setCurrentEmployee ] = useState("");
+
+    const [CurEmp, setCurEmp]
+        = useState("");
+
+
+    //const [currentEmployee , setCurrentEmployee ] = useState("");
     const currUser = useAuth0();
     const thisUsername = currUser?.user?.preferred_username;
-    const thisFirstname = currUser?.user?.name;
+    const thisFullname = currUser?.user?.name;
     const CurrEmployee = JSON.stringify(thisUsername);
-    const EmpName = JSON.stringify(thisFirstname);
+    const EmpName = JSON.stringify(thisFullname);
+    setCurEmp(CurrEmployee);
 
-    console.log(setCurrentEmployee);
-    console.log(CurrEmployee);
-    //console.log(getEmployees);
+    useEffect(() => {
+        getEmployees(CurEmp).then( (result)=>{
+            setCurEmp (result);
+
+        });
+    }, [CurEmp]);
+
+    //console.log(setCurrentEmployee);
+    // console.log(CurrEmployee);
+    console.log(getEmployees);
 
     return (
         <div className={"flex h-lvh flex-row"}>
@@ -70,19 +88,14 @@ function ProfilePage() {
         // For each div/request to overlay
 
         if (statsToggle) {
-            if (currentEmployee != "") {
-                return (<PieChartStatsServiceRequest
-                    urlToGetStats={"/api/serviceRequests/flowReq/statistics"}>
-                </PieChartStatsServiceRequest>);
-            }
-            {
-                return (<div> bad state</div>);
+            if (CurrEmployee != "") {
+                return ((<PieChartStatsProfile></PieChartStatsProfile>));
             }
 
         }
 
 
-        if (currentEmployee != "") {
+        if (CurrEmployee != "") {
             return (<ServiceRequest_Table employeeFilter={CurrEmployee} statusFilter={Status.Any} priorityFilter={Priorities.any}  locationFilter={"Any"}/>);
 
         }
@@ -94,7 +107,7 @@ function ProfilePage() {
 
     }
 
-export function ImageCard({img, name, role}: imageProps) {
+function ImageCard({img, name, role}: imageProps) {
 
     return (
         <div
@@ -114,3 +127,10 @@ export function ImageCard({img, name, role}: imageProps) {
 }
 
 export default ProfilePage;
+
+
+async function getEmployees(emp:string) {
+    const employees = await axios.get<Employee>("/api/employees/current_employee", {params:{userName: emp}});
+    return employees.data.designation;
+
+}
