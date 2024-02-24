@@ -180,6 +180,19 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
         for (const entry of serviceRequest) {
             if (entry.reqLocation.building == "Shapiro"){
                 resultShapiro.total++;
+                if (entry.reqType == "medication") resultShapiro.medReq++;
+                if (entry.reqType == "religious") resultShapiro.religReq++;
+                if (entry.reqType == "flower delivery") resultShapiro.flowReq++;
+                if (entry.reqType == "sanitation") resultShapiro.sanReq++;
+                if (entry.reqType == "transportation") resultShapiro.tranReq++;
+                if (entry.reqPriority == "Low") resultShapiro.lowPrio++;
+                if (entry.reqPriority == "Medium") resultShapiro.medPrio++;
+                if (entry.reqPriority == "High") resultShapiro.highPrio++;
+                if (entry.reqPriority == "Emergency") resultShapiro.emergPrio++;
+                if (entry.status == "Unassigned") resultShapiro.unassigned++;
+                if (entry.status == "Assigned") resultShapiro.assigned++;
+                if (entry.status == "In Progress") resultShapiro.inProgress++;
+                if (entry.status == "Completed") resultShapiro.completed++;
             }
             if (entry.reqLocation.building == "Tower"){
                 resultTower.total++;
