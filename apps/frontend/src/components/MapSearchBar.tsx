@@ -13,7 +13,7 @@ export interface levelStates{
     setEndNode: Dispatch<SetStateAction<Node>>;
     locations:Node[];
     setPathFindingType:Dispatch<SetStateAction<string>>;
-    textDirections:string[]
+    textDirections:string[][]
 }
 
 const searchOptions:string[] = ["A*","BFS","DFS"];

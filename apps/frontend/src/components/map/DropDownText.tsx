@@ -7,15 +7,16 @@ export type dropDownTextProps = {
     header:string
     headerCss:string
     bodyCss:string
+    dropDownTextCss:string
 }
-export function DropDownText({dropDownText,headerCss,header,bodyCss}:dropDownTextProps){
+export function DropDownText({dropDownText,headerCss,header,bodyCss,dropDownTextCss}:dropDownTextProps){
 
 
     const [toggled, setToggled] = useState(false);
 
     return (
         <div className="flex flex-col ">
-            <div className={headerCss + " cursor-pointer"} onClick={toggleDropdown}>
+            <div className={headerCss} onClick={toggleDropdown}>
                 {header}
             </div>
             {
@@ -30,12 +31,11 @@ export function DropDownText({dropDownText,headerCss,header,bodyCss}:dropDownTex
             return;
         }
 
-
         return(
             <div className={bodyCss}>
                 {dropDownText.map((direction, index) => (
-                    <div key={index} className="flex w-[90%] rounded-3xl pl-2 pr-2 pt-1 pb-1 bg-gray-200 m-2">
-                        <b className={"font-medium"}>{(index + 1).toString() + ": "}{" "}{direction}</b>
+                    <div key={index} className={dropDownTextCss}>
+                        <b className={"font-medium"}>{direction}</b>
 
                     </div>
                 ))}
