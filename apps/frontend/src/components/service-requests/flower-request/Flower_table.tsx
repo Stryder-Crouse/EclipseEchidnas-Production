@@ -1,15 +1,15 @@
-import {statusFilter} from "../serviceRequestInterface.ts";
-import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {FlowReq, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
-import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
-import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
+import {useState,useEffect} from "react";
+import {FlowReq, Priorities, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
+import Status from "../../../../../../packages/common/src/algorithms/Requests/Status.ts";
+import {Employee} from "../../../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import {requestFilters} from "../serviceRequestInterface.ts";
 // import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
 // import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
 
 
-export default function Flower_table({statusFilter: statusFilter}: statusFilter) {
-    console.log(statusFilter);
+export default function Flower_table({statusFilter, priorityFilter,employeeFilter,locationFilter}:requestFilters) {
+    console.log(statusFilter ,priorityFilter);
 
 
     const [flowerRequest, setFlowerRequest] =
@@ -22,11 +22,11 @@ export default function Flower_table({statusFilter: statusFilter}: statusFilter)
         getEmployees().then(result => {
             setFlowerEmployees(result);
         });
-        getflowerReq(statusFilter).then(result => {
+        getflowerReq(statusFilter, priorityFilter,employeeFilter,locationFilter).then(result => {
             console.log("hello");
             setFlowerRequest(result);
         });
-    }, [statusFilter]);
+    },[employeeFilter, locationFilter, priorityFilter, statusFilter]);
 
 
     return (
@@ -358,9 +358,11 @@ export default function Flower_table({statusFilter: statusFilter}: statusFilter)
 
 }
 
-async function getflowerReq(statusFilter: Status) {
-    const requests = await axios.get<[FlowReq[], ServiceRequest[]]>("/api/serviceRequests/flowReq",
-        {params: {status: statusFilter}});
+async function getflowerReq(statusFilter:Status, priorityFilter:Priorities, employeeFilter:string, locationFilter:string) {
+    const requests = await axios.get<[FlowReq[], ServiceRequest[]]>("/api/serviceRequests/flowReq/filter",
+        {params: {status: statusFilter, priority: priorityFilter,
+                employee:employeeFilter, location:locationFilter
+            } });
 
     const flowRequests: Array<[FlowReq, ServiceRequest]> = [];
     for (let i = 0; i < requests.data[0].length; i++) {

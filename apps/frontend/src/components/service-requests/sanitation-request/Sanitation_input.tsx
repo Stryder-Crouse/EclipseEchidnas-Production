@@ -1,9 +1,9 @@
 import React, { useEffect, useState} from "react";
-import {ReqTypes, sanReq, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import {ReqTypes, sanReq, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
 import axios from "axios";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
-import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import {NodeDataBase} from "../../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import {closeSanitationCard} from "../../service-request-cards/SanitationRequestCard.tsx";
 import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";

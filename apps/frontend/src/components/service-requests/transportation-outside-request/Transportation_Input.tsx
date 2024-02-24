@@ -4,11 +4,11 @@ import {
     OutsideTransport,
     ReqTypes,
     ServiceRequest
-} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
 import axios from "axios";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
-import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import {NodeDataBase} from "../../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {closeTransportCard} from "../../service-request-cards/TransportationRequestCard.tsx";
 //import LocationsDropDown from "../../navigation-bar/LocationsDropDown.tsx";

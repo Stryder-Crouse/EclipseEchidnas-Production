@@ -1,13 +1,16 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {ReligRequest, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
-import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
+import {Priorities, ReligRequest, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
+import {Employee} from "../../../../../../packages/common/src/algorithms/Employee/Employee.ts";
 //import AdminPageNavBar from "../../navigation-bar/AdminPageNavBar.tsx";
-import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
-import {statusFilter} from "../serviceRequestInterface.ts";
+import Status from "../../../../../../packages/common/src/algorithms/Requests/Status.ts";
+import {requestFilters} from "../serviceRequestInterface.ts";
 
-export default function Religious_table({statusFilter:statusFilter}:statusFilter) {
-    console.log(statusFilter);
+
+
+
+export default function Religious_table({statusFilter, priorityFilter,employeeFilter,locationFilter}:requestFilters) {
+    console.log(statusFilter,priorityFilter);
 
     const [religRequestList, setReligRequestList] =
         useState<Array<[ReligRequest, ServiceRequest, Employee[]]>>([]);
@@ -16,11 +19,15 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
 
     //todo FNFN fix with proper population code
     useEffect(() => {
-            getReligRequests(statusFilter).then(result => {
+
+            getReligRequests(statusFilter, priorityFilter,employeeFilter,locationFilter).then(result => {
                 setReligRequestList(result);
             });
 
-    }, [statusFilter]);
+
+
+
+    }, [statusFilter, priorityFilter, employeeFilter, locationFilter]);
 
     return (
         <div>
@@ -52,28 +59,6 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                             <td className={"tableTD"}>{request[1].reqType}</td>
                                             <td className={"tableTD"}>
                                                 <select
-                                                    value={request[1].reqPriority}
-                                                    id={"priorityDropdown" + request[1].reqID}
-                                                    onChange={
-                                                        (event) => {
-                                                            const eventHTML = event.target as HTMLSelectElement;
-                                                            onPriorityChange(eventHTML, requestIndex).then();/////todo RYAN (uncomment when done with function)
-                                                        }
-                                                    }
-                                                >
-                                                    <option className={"priorityDropdown"} value="Low">Low</option>
-                                                    <option className={"priorityDropdown"} value="Medium">Medium</option>
-                                                    <option className={"priorityDropdown"} value="High">High</option>
-                                                    <option className={"priorityDropdown"} value="Emergency">Emergency
-                                                    </option>
-                                                </select>
-                                            </td>
-                                            <td className={"tableTD"}>{request[1].reqLocationID}</td>
-                                            <td className={"tableTD"}>{request[0].patientName}</td>
-                                            <td className={"tableTD"}>{request[0].religion}</td>
-                                            <td className={"tableTD"}>{request[0].reqDescription}</td>
-                                            <td className={"tableTD"}>
-                                                <select
                                                     value={request[1].status}
                                                     id={"religStatusDropdown" + request[1].reqID}
                                                     onChange={
@@ -83,13 +68,19 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                                         }
                                                     }
                                                 >
-                                                    <option className={"status-dropdown"} value="Unassigned">Unassigned</option>
-                                                    <option className={"status-dropdown"} value="Assigned">Assigned</option>
-                                                    <option className={"status-dropdown"} value="In Progress">In Progress</option>
-                                                    <option className={"status-dropdown"} value="Completed">Completed</option>
+                                                    <option className={"status-dropdown"}
+                                                            value="Unassigned">Unassigned
+                                                    </option>
+                                                    <option className={"status-dropdown"} value="Assigned">Assigned
+                                                    </option>
+                                                    <option className={"status-dropdown"} value="In Progress">In
+                                                        Progress
+                                                    </option>
+                                                    <option className={"status-dropdown"} value="Completed">Completed
+                                                    </option>
                                                 </select>
                                             </td>
-                                            <td className={"tableTD"}> {/*priority*/}
+                                            <td className={"tableTD"}>
                                                 <select
                                                     value={request[1].reqPriority}
                                                     id={"priorityDropdown" + request[1].reqID}
@@ -120,7 +111,7 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                                     }
                                                 >
                                                     {
-                                                        request[2].map((employee) =>{
+                                                        request[2].map((employee) => {
                                                             console.log("\n\n");
                                                             return renderEmployees(employee, request[0].genReqID.toString());
                                                         })
@@ -128,7 +119,6 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
                                                 </select>
                                             </td>
                                             <td className={"tableTD"}>{request[1].reqLocationID}</td>
-                                            {/*location*/}
                                             <td className={"tableTD"}>{request[0].patientName}</td>
                                             <td className={"tableTD"}>{request[0].religion}</td>
                                             <td className={"tableTD"}>{request[0].reqDescription}</td>
@@ -145,7 +135,7 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
     );
 
     function renderEmployees(employee: Employee, religID: string) {
-        console.log(employee.userName+",");
+        console.log(employee.userName + ",");
         return (
             <option
 
@@ -327,9 +317,14 @@ export default function Religious_table({statusFilter:statusFilter}:statusFilter
 
 }
 
-async function getReligRequests(statusFilter:Status) {
+async function getReligRequests(statusFilter:Status, priorityFilter:Priorities, employeeFilter:string, locationFilter:string) {
     const requests =
-        await axios.get<[ReligRequest[], ServiceRequest[], Employee[][]]>("/api/serviceRequests/religiousRequest",{params: {status: statusFilter}});
+        await axios.get<[ReligRequest[], ServiceRequest[], Employee[][]]>("/api/serviceRequests/religiousRequest/filter",
+            {params: {  status: statusFilter,
+                        priority: priorityFilter,
+                        employee:employeeFilter,
+                        location:locationFilter,
+            } });
 
     const religRequests: Array<[ReligRequest, ServiceRequest, Employee[]]> = [];
     for (let i = 0; i < requests.data[0].length; i++) {

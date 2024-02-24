@@ -2,9 +2,9 @@ import "../../css/route-css/EmployeeTable.css";
 import "../../css/route-css/EmployeeTableInput.css";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Employee, Roles} from "../../../../backend/src/algorithms/Employee/Employee.ts";
-import trashIcon from "../../images/Table Functions/trash.png";
-import editPen from "../../images/Table Functions/editPen.png";
+import {Employee, Roles} from "../../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import trashIcon from "../../images/Table Functions/trash-2.png";
+import editPen from "../../images/Table Functions/pencil.png";
 import ExportImportButtonEmployee from "../../components/EmployeeTableButtons/ExportImportButtonEmployee.tsx";
 import FullSideNavBarComponent from "../../components/FullSideNavBarComponent.tsx";
 
@@ -14,9 +14,10 @@ import FullSideNavBarComponent from "../../components/FullSideNavBarComponent.ts
 
 
 const designations = [Roles.None,Roles.nurse,Roles.doctor,Roles.admin,
-    Roles.janitor,Roles.flowerDeliverer,Roles.religiousPersonnel,
-    Roles.buddhistPersonnel, Roles.catholicPersonnel, Roles.christianPersonnel, Roles.mormonPersonnel, Roles.protestantPersonnel,
-    Roles.jainPersonnel, Roles.jewishPersonnel, Roles.muslimPersonnel, Roles.sikhPersonnel, Roles.shintoPersonnel];
+    Roles.janitor,Roles.flowerDeliverer,Roles.religiousPersonnel, Roles.buddhistPersonnel,
+    Roles.catholicPersonnel, Roles.christianPersonnel, Roles.mormonPersonnel, Roles.protestantPersonnel,
+    Roles.hinduPersonnel, Roles.jainPersonnel, Roles.jewishPersonnel, Roles.muslimPersonnel,
+    Roles.sikhPersonnel, Roles.shintoPersonnel];
 
 function EmployeeTable() {
     
@@ -29,8 +30,11 @@ function EmployeeTable() {
     const [newLastName, setNewLastName] = useState("");
     const [newIsAdmin, setNewIsAdmin] = useState(false);
     const [newDesignation, setNewDesignation] = useState(Roles.None);
+    const [userID, setUserID] = useState("");
+
     // const [resetDesignation, setResetDesignation] = useState(false);
     const [editIndex, setEditIndex] = useState(-1);
+
 
 
 
@@ -42,7 +46,7 @@ function EmployeeTable() {
     },[]);
     //table-id is request-table
     return (
-        <div className="flex h-lvh flex-row overflow-x-hidden">
+        <div className="flex h-lvh flex-row overflow-hidden">
             <div className="z-10">
                 <FullSideNavBarComponent/>
             </div>
@@ -52,7 +56,14 @@ function EmployeeTable() {
                     <div className="flex">
                         <span className={"employee-caption-container"}>
                             <span className={"employee-table-title"}>Employee Table</span>
-                            <button onClick={openForm}
+                            <button onClick={
+                                ()=>{
+                                    alert("To create a new employee please log out and log in with a new email address." +
+                                        " Once you create your new account the new employee will show up here for you to edit it." +
+                                        " We plan at a later date to make this process more seamless");
+                                }
+                                //openForm
+                                }
                                     className="items- drop-shadow-lg transition-all hover:bg-navy w-48 text-white p-2 bg-navStart rounded-full h-min font-semibold ">Add Employee</button>
                         </span>
                     </div>
@@ -200,10 +211,9 @@ function EmployeeTable() {
             isEditing=true;
         }
 
-        //todo FNFN fix this so that it works with Auth0 (the Auth0 token should
-        // be the UserID) or remove it all together
+
         const newEmployee: Employee = {
-            userID: "ERROR",
+            userID: userID,
             designation: newDesignation ,
             firstName: newFristName,
             isAdmin: newIsAdmin,
@@ -266,6 +276,7 @@ function EmployeeTable() {
         setNewFristName(employee.firstName);
         setNewUserName(employee.userName);
         setEditIndex(employeeIndex);
+        setUserID(employee.userID);
 
 
         openForm();
@@ -282,7 +293,14 @@ function EmployeeTable() {
 
         setEmployees(newEmployees);
 
-        const data:string[] = [employee.userName];
+        const data:string[] = [employee.userID];
+        console.log("Data: " + data);
+
+        //username is param
+        const responce = await axios.get("/api/cascadeDelete", {params: {userID: data[0]}});
+        console.log("Response: " + responce.status);
+
+
 
         await axios.post("/api/employees/deleteEmployee",
             data, {

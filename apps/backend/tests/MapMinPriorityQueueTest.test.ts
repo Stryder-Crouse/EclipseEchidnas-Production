@@ -1,6 +1,6 @@
 import {expect, test} from "vitest";
-import {IPriorityQueue} from "../src/algorithms/Queue/IPriorityQueue.ts";
-import {MapMinPriorityQueue} from "../src/algorithms/Queue/MapMinPriorityQueue.ts";
+import {IPriorityQueue} from "../../../packages/common/src/algorithms/Queue/IPriorityQueue.ts";
+import {MapMinPriorityQueue} from "../../../packages/common/src/algorithms/Queue/MapMinPriorityQueue.ts";
 
 /* - - - test definitions - - - */
 /* isEmpty() */

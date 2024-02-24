@@ -1,7 +1,7 @@
 import express, {Router, Request, Response} from "express";
 //import { Prisma } from "database"; //may be very wrong
 import PrismaClient from "../bin/database-connection.ts";
-import {floorToString, NodeType} from "../algorithms/Graph/Node.ts"; //may also be wrong
+import {floorToString, NodeType} from "../../../../packages/common/src/algorithms/Graph/Node.ts"; //may also be wrong
 
 const router: Router = express.Router();
 
@@ -25,6 +25,33 @@ router.get("/", async function (req: Request, res: Response) {
             }),
         ); //end res.send (this is what will be sent to the client)
         console.info("\n\n\n\n\n\nSuccessfully gave you the nodes\n\n\n\n\n\n");
+    } catch (err) {
+        res.sendStatus(500);
+        console.error("\n\n\n\n\n\nUnable to send Nodes\n\n\n\n\n\n");
+    }
+});
+
+router.get("/byID", async function (req: Request, res: Response) {
+
+
+    try {
+        //try to send all the nodes to the client
+        //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
+        res.status(200).send(
+            await PrismaClient.nodeDB.findMany({
+                orderBy: {
+                    nodeID: "asc", //specify here that we are ordering the 'longName' field in ascending order (A->Z)
+                },
+                where: {
+                    NOT: {
+                        nodeType: NodeType.HALL
+                    }
+                }
+
+            }),
+        ); //end res.send (this is what will be sent to the client)
+        console.info("\n\n\n\n\n\nSuccessfully gave you the nodes\n\n\n\n\n\n");
+        res.sendStatus(200);
     } catch (err) {
         res.sendStatus(500);
         console.error("\n\n\n\n\n\nUnable to send Nodes\n\n\n\n\n\n");

@@ -1,10 +1,10 @@
 import React, {useState, useEffect,  ChangeEvent} from 'react';
 import axios from "axios";
-import {FlowReq, ReqTypes, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import {FlowReq, ReqTypes, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
-import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
-import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
+import {NodeDataBase} from "../../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
+import Status from "../../../../../../packages/common/src/algorithms/Requests/Status.ts";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import {closeFlowerCard} from "../../service-request-cards/FlowerRequestCard.tsx";
 import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";

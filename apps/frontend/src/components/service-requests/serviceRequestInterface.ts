@@ -1,6 +1,11 @@
-import Status from "../../../../backend/src/algorithms/Requests/Status.ts";
+import Status from "../../../../../packages/common/src/algorithms/Requests/Status.ts";
+import {Priorities} from "../../../../../packages/common/src/algorithms/Requests/Request.ts";
 
 
-export interface statusFilter{
+export interface requestFilters {
     statusFilter:Status;
+    priorityFilter: Priorities;
+    employeeFilter:string;
+    locationFilter:string;
 }
+

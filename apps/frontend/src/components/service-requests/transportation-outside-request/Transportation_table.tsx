@@ -1,16 +1,18 @@
 import React from "react";
-import {statusFilter} from "../serviceRequestInterface.ts";
+import {requestFilters} from "../serviceRequestInterface.ts";
 import {useState, useEffect} from "react";
-import { OutsideTransport} from "../../../../../backend/src/algorithms/Requests/Request.ts";
-import {ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import {OutsideTransport, Priorities} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
+import {ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
 import axios from "axios";
-import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
-import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
+import {Employee} from "../../../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import Status from "../../../../../../packages/common/src/algorithms/Requests/Status.ts";
 
-async function getReqs(statusFilter: Status) {
+async function getReqs(statusFilter: Status, priorityFilter:Priorities, employeeFilter:string, locationFilter:string) {
     const res =
         await axios.get<[OutsideTransport[],ServiceRequest[]]>
-        ("api/serviceRequests/outsideTransport", {params: {status: statusFilter}});
+        ("api/serviceRequests/outsideTransport/filter", {params: {status: statusFilter, priority: priorityFilter,
+                employee:employeeFilter, location:locationFilter
+            } });
     const requests: Array<[OutsideTransport, ServiceRequest]> = [];
     for (let i = 0; i < res.data[0].length; i++) {
         requests.push([res.data[0][i], res.data[1][i]]);
@@ -27,8 +29,8 @@ async function getEmployees() {
     return employees.data;
 }
 
-export default function Transportation_table({statusFilter:statusFilter}:statusFilter) {
-    console.log(statusFilter);
+export default function Transportation_table({statusFilter, priorityFilter,employeeFilter,locationFilter}:requestFilters) {
+    console.log(statusFilter,priorityFilter);
 
     const [reqList, setReqList] = useState<Array<[OutsideTransport, ServiceRequest]>>([]);
     const [transportEmployees, setTransportEmployees] = useState<Employee[]>([]);
@@ -40,14 +42,14 @@ export default function Transportation_table({statusFilter:statusFilter}:statusF
             getEmployees().then(result => {
                 setTransportEmployees(result);
             });
-            getReqs(statusFilter).then(result => {
+            getReqs(statusFilter,priorityFilter,employeeFilter,locationFilter).then(result => {
                 setReqList(result);
             });
         }
         return () => {
             queryDone = true;
         };
-    },[statusFilter]);
+    },[employeeFilter, locationFilter, priorityFilter, statusFilter]);
 
     function renderEmployees(employee:Employee, transportID:string) {
         return (

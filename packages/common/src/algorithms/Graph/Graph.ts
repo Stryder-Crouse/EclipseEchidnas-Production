@@ -293,8 +293,8 @@ export class Graph {
 
         //for each node convert it into a csv representation and add it to the string output
         for (let i = 0; i < this.getNodes().length; i++) {
-            if (this.getNodes().at(i) != null || undefined) {
-                str += nodeToString(this.getNodes().at(i) ?? failNode);
+            if (this.getNodes()[i] != null || undefined) {
+                str += nodeToString(this.getNodes()[i] ?? failNode);
             }
         }
         return str;
@@ -326,8 +326,8 @@ export class Graph {
 
         //for each edge convert it into a csv representation and add it to the string output
         for (let i = 0; i < this.getEdges().length; i++) {
-            if (this.getEdges().at(i) != null || undefined) {
-                str += edgeToString(this.getEdges().at(i) ?? failEdge);
+            if (this.getEdges()[i] != null || undefined) {
+                str += edgeToString(this.getEdges()[i] ?? failEdge);
             }
         }
         return str;
