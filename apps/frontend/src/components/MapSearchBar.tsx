@@ -1,6 +1,7 @@
 import {CreateDropdown} from "./CreateDropdown.tsx";
 import {FloorToIndex, Node, NULLNODE} from "../../../../packages/common/src/algorithms/Graph/Node.ts";
 import {Dispatch, SetStateAction, useState} from "react";
+import {TextDirectionsDropDown} from "./map/TextDirectionsDropDown.tsx";
 
 
 
@@ -152,24 +153,7 @@ export default function MapSearchBar({startNode:startNode,
                 </div>
 
 
-                <div
-                    className="flex flex-col border-gray-500 border-2 w-60 max-h-[62.5vh] mt-1 bg-white rounded-3xl p-2">
-                    {/*<p className={"bg-[#024c96] p-1 rounded-xl w-full text-white font-semibold cursor-pointer flex justify-center m-auto "}>*/}
-                    {/*    Text Directions*/}
-                    {/*</p>*/}
-                    <div className="overflow-y-auto overflow-x-hidden">
-                        {textDirections.map((direction, index) => (
-                            <div key={index} className="flex w-[90%] rounded-3xl pl-2 pr-2 pt-1 pb-1 bg-gray-200 m-2">
-                                <b className={"font-medium"}>{(index + 1).toString() + ": "}{" "}{direction}</b>
-
-                            </div>
-                        ))}
-                    </div>
-                    <button
-                        className={"bg-[#024c96] p-1 rounded-xl w-full text-white font-semibold cursor-pointer flex justify-center m-auto "}
-                        onClick={closeLocations}>Close
-                    </button>
-                </div>
+               <TextDirectionsDropDown closeLocations={closeLocations} textDirections={textDirections}></TextDirectionsDropDown>
 
 
             </div>

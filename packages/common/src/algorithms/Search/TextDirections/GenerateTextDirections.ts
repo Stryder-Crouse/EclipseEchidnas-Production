@@ -1,4 +1,4 @@
-import {Node, NodeType} from "../../Graph/Node.ts";
+import {floorToNumber, Node, NodeType} from "../../Graph/Node.ts";
 import {Coordinate, euclideanDistance} from "../../Graph/Coordinate.ts";
 import {Graph} from "../../Graph/Graph.ts";
 
@@ -25,6 +25,7 @@ export enum Directions {
 export function generateTextDirections(path: Array<Node> | null, graph: Graph): Array<string> | null {
     /* Cool */
     const directions: Array<string> = new Array<string>();
+
     directions.push("Starting at " + path![0].longName);
 
     /* typescript in the hood be like 😂 */
@@ -44,7 +45,16 @@ export function generateTextDirections(path: Array<Node> | null, graph: Graph): 
         if (path[i].nodeType == NodeType.ELEV) {
             /* if the elevator is used to transition, add it to the list of directions */
             if (path[i + 1].floor != path[i].floor) {
-                directions.push(Directions.TAKE_ELEV + " to floor " + path[i + 1].floor);
+
+                //going up
+                if(floorToNumber(path[i + 1].floor) >  floorToNumber(path[i].floor)){
+                    directions.push("🔺"+Directions.TAKE_ELEV + " to floor " + path[i + 1].floor);
+                }
+                //going down
+                if(floorToNumber(path[i + 1].floor) <  floorToNumber(path[i].floor)){
+                    directions.push("🔻"+Directions.TAKE_ELEV + " to floor " + path[i + 1].floor);
+                }
+
             }
             continue;
         }
@@ -52,9 +62,16 @@ export function generateTextDirections(path: Array<Node> | null, graph: Graph): 
         /* stair edge case */
         if (path[i].nodeType == NodeType.STAI) {
             /* if the stair is used to transition, add it to the list of directions */
-            if (path[i + 1].floor != path[i].floor) {
-                directions.push(Directions.TAKE_STAI + " to floor " + path[i + 1].floor);
+
+            //going up
+            if(floorToNumber(path[i + 1].floor) >  floorToNumber(path[i].floor)){
+                directions.push("🔺"+Directions.TAKE_STAI + " to floor " + path[i + 1].floor);
             }
+            //going down
+            if(floorToNumber(path[i + 1].floor) <  floorToNumber(path[i].floor)){
+                directions.push("🔻"+Directions.TAKE_STAI + " to floor " + path[i + 1].floor);
+            }
+
             continue;
         }
 
@@ -62,7 +79,7 @@ export function generateTextDirections(path: Array<Node> | null, graph: Graph): 
         if (turnAngle < BEAR_THRESHOLD) {
             /* don't populate multiple straights */
             if (directions[directions.length - 1] != Directions.FORWARD || directions.length == 0) {
-                directions.push(Directions.FORWARD);
+                directions.push("⏫"+ Directions.FORWARD);
             }
         }
 
@@ -75,11 +92,11 @@ export function generateTextDirections(path: Array<Node> | null, graph: Graph): 
             /* switch the direction and change it to bearing */
             switch (go) {
                 case Directions.LEFT: {
-                    directions.push(Directions.BEAR_LEFT + " near " + closestPointName);
+                    directions.push("↖️"+Directions.BEAR_LEFT + " near " + closestPointName);
                     break;
                 }
                 case Directions.RIGHT: {
-                    directions.push(Directions.BEAR_RIGHT + " near " + closestPointName);
+                    directions.push("↗️"+Directions.BEAR_RIGHT + " near " + closestPointName);
                     break;
                 }
                 default: {
@@ -91,11 +108,23 @@ export function generateTextDirections(path: Array<Node> | null, graph: Graph): 
 
         /* turning */
         else {
-            directions.push(
-                determineTurn(path[i - 1], path[i], path[i + 1])
-                + " near "
-                + graph.closestNonHallToNode(path[i], 200).longName
-            );
+            const go: Directions = determineTurn(path[i - 1], path[i], path[i + 1]);
+            const closestPointName = graph.closestNonHallToNode(path[i], 200).longName;
+            switch (go) {
+                case Directions.LEFT: {
+                    directions.push("◀️"+Directions.LEFT + " near " + closestPointName);
+                    break;
+                }
+                case Directions.RIGHT: {
+                    directions.push("▶️"+Directions.RIGHT + " near " + closestPointName);
+                    break;
+                }
+                default: {
+                    directions.push("honest mistake in bearing");
+                    break;
+                }
+            }
+
         }
     }
 
