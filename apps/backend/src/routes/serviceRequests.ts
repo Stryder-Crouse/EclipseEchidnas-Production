@@ -85,6 +85,12 @@ router.get("/serviceReq/statistics", async function (req: Request, res: Response
     }
 });
 
+
+router.get("/serviceReq/building-statistics", async function (req: Request, res: Response) {
+    console.log(req.body);
+    res.send(req.body);
+});
+
 router.get("/serviceReq/filter", async function (req: Request, res: Response) {
     try {
         let statusFilter: string = req.query.status as string;
