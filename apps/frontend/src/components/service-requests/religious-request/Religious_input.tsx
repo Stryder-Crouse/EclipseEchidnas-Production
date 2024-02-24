@@ -2,17 +2,17 @@ import React, {useEffect, useState} from "react";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 import {Priority, Status} from "../priorityAndStatusEnums.tsx";
-import {ReligRequest, ReqTypes, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import {ReligRequest, ReqTypes, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
 import axios from "axios";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
-import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import {NodeDataBase} from "../../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import {closeCard} from "../../service-request-cards/ReligionRequestCard.tsx";
 import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";
 
 
 let longNames:string[] = [];
 
-const priorityLevels =[Priority.low, Priority.normal, Priority.high, Priority.emergency];
+const priorityLevels =[Priority.low, "Medium", Priority.high, Priority.emergency];
 export default function Religious_input({
     setIsPopupOpen
                                         }: closeCard) {
@@ -153,14 +153,15 @@ export default function Religious_input({
 
 
                 {/* Patient Name */}
-                <SimpleTextInput id={"name"} labelContent={"Patient Name"}
+                <SimpleTextInput id={"name"} labelContent={"Patient Name "}
                                  inputStorage={nameP} setInputStorage={setNameP}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                  divCSS={"grid justify-center items-center my-1.5 mb-1"} labelCSS={"mb-1"}
-                                 placeHolderText={"Patient Name"}>
+                                 placeHolderText={"e.g. Tim Apple"}>
                 </SimpleTextInput>
                 {/* Religion */}
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
+                    <label className="label">Religion </label>
                     <CreateDropdown dropBtnName={"Religion"} dropdownID={"ReligionID"} isSearchable={false}
                                     populationArr={religions}
                                     setSelected={setReligionDDIndx}
@@ -171,7 +172,8 @@ export default function Religious_input({
                 </div>
                 {/* Description */}
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
-                    <textarea placeholder={"Describe the religious service to be performed here."}
+                    <label className="label">Services Required </label>
+                    <textarea placeholder={"e.g. Last Rights"}
                               className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
                               onChange={(e) => setService(e.target.value)}
                               id={"service"}
@@ -181,6 +183,7 @@ export default function Religious_input({
                 </div>
                 {/* Urgency */}
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
+                    <label className="label">Priority </label>
                     <CreateDropdown dropBtnName={"Priority "} dropdownID={"UrgencyID"} isSearchable={false}
                                     populationArr={priorityLevels}
                                     setSelected={setUrgencyDDIndx}
@@ -191,7 +194,8 @@ export default function Religious_input({
                 </div>
                 {/* Extra notes */}
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
-                    <textarea placeholder={"Extra Info: "}
+                    <label className="label">Extra Notes </label>
+                    <textarea placeholder={"Extra Notes"}
                               className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
                               onChange={(e) => setExtraInfo(e.target.value)}
                               id={"service"}

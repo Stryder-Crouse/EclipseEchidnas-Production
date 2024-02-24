@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import { EdgeDataBase } from "../../../../backend/src/DataBaseClasses/EdgeDataBase.ts";
+import { EdgeDataBase } from "../../../../../packages/common/src/algorithms/DataBaseClasses/EdgeDataBase.ts";
 import axios from "axios";
 import "../../css/route-css/nodeEdgeTablePage.css";
 

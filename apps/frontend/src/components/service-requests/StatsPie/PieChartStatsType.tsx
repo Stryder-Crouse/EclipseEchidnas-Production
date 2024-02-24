@@ -45,9 +45,11 @@ function PieChartStatsType({stats}:pieTypeStats){
                 position: "relative", height: "90%",
                 width: "30%"
             }}>
+            <p className="text-center"><b>Request Type</b></p>
             {/*// @ts-expect-error asjhdska*/}
             <Pie data={data} options={options}></Pie>
         </div>
     );
 }
+
 export default PieChartStatsType;

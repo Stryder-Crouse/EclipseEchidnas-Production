@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import {Employee} from "../../../../backend/src/algorithms/Employee/Employee.ts";
+import {Employee} from "../../../../../packages/common/src/algorithms/Employee/Employee.ts";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import {HTMLInputElement} from "happy-dom";

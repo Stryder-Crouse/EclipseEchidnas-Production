@@ -6,12 +6,12 @@ import {useAuth0} from "@auth0/auth0-react";
 //import {ServiceRequest} from "../../../backend/src/algorithms/Requests/Request.ts";
 //import PieChartStatsServiceRequest from "./service-requests/StatsPie/PieChartStatsServiceRequest.tsx";
 import ServiceRequest_Table from "./service-requests/service-request/ServiceRequest_Table.tsx";
-import Status from "../../../backend/src/algorithms/Requests/Status.ts";
-import {Priorities} from "../../../backend/src/algorithms/Requests/Request.ts";
-import {Employee} from "../../../backend/src/algorithms/Employee/Employee.ts";
+
 import axios from "axios";
 import PieChartStatsProfile from "./service-requests/StatsPie/PieChartStatsProfile.tsx";
-
+import {Employee} from "common/src/algorithms/Employee/Employee.ts";
+import Status from "common/src/algorithms/Requests/Status.ts";
+import {Priorities} from "common/src/algorithms/Requests/Request.ts";
 
 
 function ProfilePage() {

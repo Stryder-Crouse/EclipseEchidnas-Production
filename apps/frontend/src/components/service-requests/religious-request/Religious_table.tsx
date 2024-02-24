@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Priorities, ReligRequest, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
-import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
+import {Priorities, ReligRequest, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
+import {Employee} from "../../../../../../packages/common/src/algorithms/Employee/Employee.ts";
 //import AdminPageNavBar from "../../navigation-bar/AdminPageNavBar.tsx";
-import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
+import Status from "../../../../../../packages/common/src/algorithms/Requests/Status.ts";
 import {requestFilters} from "../serviceRequestInterface.ts";
 
 

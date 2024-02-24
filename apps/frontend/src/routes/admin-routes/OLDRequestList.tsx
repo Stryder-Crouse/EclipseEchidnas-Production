@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import AdminPageNavBar from "../../components/navigation-bar/AdminPageNavBar.tsx";
 import axios from "axios";
-import {MedReq, ServiceRequest} from "../../../../backend/src/algorithms/Requests/Request.ts";
-import {Employee} from "../../../../backend/src/algorithms/Employee/Employee.ts";
-import Status from "../../../../backend/src/algorithms/Requests/Status.ts";
+import {MedReq, ServiceRequest} from "../../../../../packages/common/src/algorithms/Requests/Request.ts";
+import {Employee} from "../../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import Status from "../../../../../packages/common/src/algorithms/Requests/Status.ts";
 
 
 function OLDRequestList() {

@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import "../../css/component-css/ServicePage.css";
-import {ReqTypes, Priorities} from "../../../../backend/src/algorithms/Requests/Request.ts";
+import {ReqTypes, Priorities} from "../../../../../packages/common/src/algorithms/Requests/Request.ts";
 
 //from https://github.com/frontend-joe/react-widgets for css
 
 import Flower_table from "./flower-request/Flower_table.tsx";
 import Religious_table from "./religious-request/Religious_table.tsx";
 import Medicine_table from "./medicine-request/Medicine_table.tsx";
-import Status from "../../../../backend/src/algorithms/Requests/Status.ts";
+import Status from "../../../../../packages/common/src/algorithms/Requests/Status.ts";
 
 
 import Transportation_table from "./transportation-outside-request/Transportation_table.tsx";
@@ -15,10 +15,10 @@ import Sanitation_table from "./sanitation-request/Sanitation_table.tsx";
 import ServiceRequest_Table from "./service-request/ServiceRequest_Table.tsx";
 import PieChartStatsAll from "./StatsPie/PieChartStatsAll.tsx";
 import PieChartStatsServiceRequest from "./StatsPie/PieChartStatsServiceRequest.tsx";
-import {Employee} from "../../../../backend/src/algorithms/Employee/Employee.ts";
+import {Employee} from "../../../../../packages/common/src/algorithms/Employee/Employee.ts";
 import axios from "axios";
 
-import {NodeDataBase} from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import {NodeDataBase} from "../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 
 
 
@@ -119,11 +119,12 @@ export default function ServiceRequestOutputTables() {
             </ul>
             <div className="tab-content-wrapper">
 
+
                 <div className={"filterDiv"}>
                     <div className={"statusFilterDiv"}>
                         <label form={"designation"}><b>Status</b></label>
                         <select
-                            className={"bg-transparent border-black"}
+                            className={" border-black"}
                             value={statusFilter}
                             onChange={
                                 (e) => {
@@ -150,7 +151,7 @@ export default function ServiceRequestOutputTables() {
                     <div className={"statusFilterDiv"}>
                         <label form={"designation"}><b>Priority</b></label>
                         <select
-                            className={"bg-transparent border-black"}
+                            className={" border-black"}
                             value={priorityFilter}
                             onChange={
                                 (e) => {
@@ -176,8 +177,44 @@ export default function ServiceRequestOutputTables() {
 
                     </div>
                     <div className={"statusFilterDiv"}>
+                        <label form={"designation"}><b>Location</b></label>
+                        <select
+                            className={""}
+                            value={locationFilter}
+                            onChange={
+                                (e) => {
+                                    //console.log(e.target.value);
+                                    setLocationFilter(e.target.value);
+                                }
+                            }
+                        >
+                            <option
+                                className={"statis-dropdown"}
+                                value={"Any"}
+
+                            >
+                                Any
+                            </option>
+                            {
+                                locations?.map((loc) => {
+                                    return (
+                                        <option
+                                            className={"statis-dropdown"}
+                                            value={loc.nodeID}
+                                            key={loc.nodeID + "_location"}
+                                        >
+                                            {loc.nodeID}
+                                        </option>
+                                    );
+                                })
+
+                            }
+                        </select>
+                    </div>
+                    <div className={"statusFilterDiv"}>
                         <label form={"designation"}><b>Employee</b></label>
                         <select
+                            className={" w-32"}
                             value={employeeFilter}
                             onChange={
                                 (e) => {
@@ -211,57 +248,26 @@ export default function ServiceRequestOutputTables() {
                         </select>
 
                     </div>
-                    <div className={"statusFilterDiv"}>
-                        <label form={"designation"}><b>Location</b></label>
-                        <select
-                            value={locationFilter}
-                            onChange={
-                                (e) => {
-                                    //console.log(e.target.value);
-                                    setLocationFilter(e.target.value);
-                                }
-                            }
-                        >
-                            <option
-                                className={"statis-dropdown"}
-                                value={"Any"}
 
-                            >
-                                Any
-                            </option>
-                            {
-                                locations?.map((loc) => {
-                                    return (
-                                        <option
-                                            className={"statis-dropdown"}
-                                            value={loc.nodeID}
-                                            key={loc.nodeID + "_location"}
-                                        >
-                                            {loc.nodeID}
-                                        </option>
-                                    );
-                                })
-
-                            }
-                        </select>
-                    </div>
-
-                    {/*toggle*/}
-                    <label className="flex items-center cursor-pointer ml-2">
-                        <input type="checkbox"
-                               checked={statsToggle}
-                               className="sr-only peer"
-                               onChange={(event) => {
-                                   setStatsToggle(event.target.checked);
-                               }}
-                        />
-                        <div
-                            className=" relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300
+                        {/*toggle*/}
+                        <label className="flex items-center cursor-pointer ml-2 bg-transparent">
+                            <input type="checkbox"
+                                   checked={statsToggle}
+                                   className="sr-only peer"
+                                   onChange={(event) => {
+                                       setStatsToggle(event.target.checked);
+                                   }}
+                            />
+                            <div
+                                className=" relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300
                             dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
                             peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border
                             after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                        <span className="ml-1"><b>Stats</b></span>
-                    </label>
+                            <span className="ml-1"><b>Stats</b></span>
+                        </label>
+
+
+
                 </div>
 
                 {/* the content to be populated with each request*/}

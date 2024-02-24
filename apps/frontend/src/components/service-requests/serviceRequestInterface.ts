@@ -1,5 +1,5 @@
-import Status from "../../../../backend/src/algorithms/Requests/Status.ts";
-import {Priorities} from "../../../../backend/src/algorithms/Requests/Request.ts";
+import Status from "../../../../../packages/common/src/algorithms/Requests/Status.ts";
+import {Priorities} from "../../../../../packages/common/src/algorithms/Requests/Request.ts";
 
 
 export interface requestFilters {

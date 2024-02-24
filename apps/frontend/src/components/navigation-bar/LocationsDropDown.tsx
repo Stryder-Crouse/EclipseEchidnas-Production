@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import "../../css/component-css/NavBar.css";
 import "../../css/component-css/Map.css";
 import axios from "axios";
-import { Node } from "../../../../backend/src/algorithms/Graph/Node.ts";
+import { Node } from "../../../../../packages/common/src/algorithms/Graph/Node.ts";
 import {
   onNodeHover,
   onNodeLeave,
@@ -10,7 +10,7 @@ import {
 import {
   NodeDataBase,
   nodeDataBaseToNode,
-} from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+} from "../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 
 let ran=false;
 export default function LocationsDropDown() {

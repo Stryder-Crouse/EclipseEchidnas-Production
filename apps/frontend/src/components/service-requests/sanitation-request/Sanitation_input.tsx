@@ -1,9 +1,9 @@
 import React, { useEffect, useState} from "react";
-import {ReqTypes, sanReq, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import {ReqTypes, sanReq, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
 import axios from "axios";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
-import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import {NodeDataBase} from "../../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import {closeSanitationCard} from "../../service-request-cards/SanitationRequestCard.tsx";
 import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";
@@ -133,7 +133,7 @@ export default function Sanitation_input({
                                  inputStorage={typeA} setInputStorage={setTypeA}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
-                                 placeHolderText={""}>
+                                 placeHolderText={"e.g. Liquid spill"}>
                 </SimpleTextInput>
                 {/* Priority */}
                 <div className="grid justify-center items-center my-1.5">
@@ -153,12 +153,17 @@ export default function Sanitation_input({
 
                 </div>
                 {/* Extra notes */}
-                <SimpleTextInput id={"additional"} labelContent={"Extra info:"}
-                                 inputStorage={extraInfo} setInputStorage={setExtraInfo}
-                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
-                                 placeHolderText={""}>
-                </SimpleTextInput>
+                <div className={"grid justify-center items-center my-1.5 mb-1"}>
+                    <label className="label">Extra Notes </label>
+                    <textarea placeholder={"Extra Notes"}
+                              className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
+                              onChange={(e) => setExtraInfo(e.target.value)}
+                              id={"service"}
+                              value={extraInfo}
+                              required>
+                    </textarea>
+                </div>
+
                 <RequestButtons submit={submit}/>
 
             </form>
