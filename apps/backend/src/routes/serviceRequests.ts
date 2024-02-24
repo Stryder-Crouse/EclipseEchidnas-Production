@@ -128,9 +128,25 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
             inProgress: 0,
             completed: 0
         };
+        const result45Francis = {
+            total: 0,
+            medReq: 0,
+            religReq: 0,
+            flowReq: 0,
+            sanReq: 0,
+            tranReq: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
 
         const result = {
-            resultShapiro, resultTower
+            resultShapiro, resultTower, result45Francis
         };
         console.log(result);
 
