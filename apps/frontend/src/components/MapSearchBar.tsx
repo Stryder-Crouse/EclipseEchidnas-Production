@@ -73,6 +73,9 @@ export default function MapSearchBar({startNode:startNode,
         setSelectedAlgoIndex(-1);
     }
 
+
+
+
     return (
         <div className="ml-5 relative flex flex-col">
             {/*<input*/}
@@ -84,7 +87,7 @@ export default function MapSearchBar({startNode:startNode,
                 <CreateDropdown dropBtnName={selectedText} dropdownID={"Location"} isSearchable={true}
                                 populationArr={longNames} resetDropdown={resetDropdown}
                                 setSelected={setSelected}
-                                inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
+                                inputCSS={"w-60 p-2 border-gray-500 text-black rounded-full border-2 pr-10 drop-shadow-lg "}
                                 selectCSS={""}
                                 resetOnSelect={true} setResetDropdown={setResetDropdown}>
                 </CreateDropdown>
@@ -92,12 +95,51 @@ export default function MapSearchBar({startNode:startNode,
 
 
             <div className={"hidden"} id={"locationDropdown"}>
-                <div className={"w-60 p-2 rounded-3xl border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white"}>
+                <div
+                    className={"w-60 p-2 rounded-3xl border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white overflow-hidden"}
+                    style={{
+                        width: "15rem", // Initial width set to match the same width as all other divs
+                        maxHeight: "50px",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        transition: "max-height 0.5s, width 0.5s",
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.maxHeight = "none";
+                        e.currentTarget.style.width = "15rem";  // Set the width to initial value
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.maxHeight = "50px";
+                        e.currentTarget.style.width = "15rem";  // Set the initial width here
+                    }}
+                    title={startNode.longName}
+                >
+
                     <b>Start: </b>{startNode.longName}
                 </div>
-                <div className={"w-60 p-2 rounded-3xl border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white"}>
+
+
+                <div
+                    className={"w-60 p-2 rounded-3xl border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white overflow-hidden"}
+                    style={{
+                        maxHeight: "50px",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        transition: "max-height 0.5s",
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.maxHeight = "none";
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.maxHeight = "50px";
+                    }}
+                    title={endNode.longName}
+                >
                     <b>End: </b>{endNode.longName}
                 </div>
+
 
                 <div className={" mt-1"}>
                     <CreateDropdown
@@ -105,19 +147,20 @@ export default function MapSearchBar({startNode:startNode,
                         isSearchable={false}
                         resetOnSelect={false} resetDropdown={resetDropdown}
                         setResetDropdown={setResetDropdown} setSelected={setSelectedAlgoIndex}
-                        inputCSS={""}
+                        inputCSS={"text-gray focus:outline-none p-2"}
                         selectCSS={"transition-all hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}></CreateDropdown>
                 </div>
 
 
-                <div className="flex flex-col border-gray-500 border-2 w-60 max-h-[70vh] mt-1 bg-white rounded-3xl p-2">
+                <div
+                    className="flex flex-col border-gray-500 border-2 w-60 max-h-[62.5vh] mt-1 bg-white rounded-3xl p-2">
                     {/*<p className={"bg-[#024c96] p-1 rounded-xl w-full text-white font-semibold cursor-pointer flex justify-center m-auto "}>*/}
                     {/*    Text Directions*/}
                     {/*</p>*/}
                     <div className="overflow-y-auto overflow-x-hidden">
                         {textDirections.map((direction, index) => (
                             <div key={index} className="flex w-[90%] rounded-3xl pl-2 pr-2 pt-1 pb-1 bg-gray-200 m-2">
-                                <b>{(index + 1).toString() + ":"}</b>{" " + direction}
+                                <b className={"font-medium"}>{(index + 1).toString() + ": "}{" "}{direction}</b>
 
                             </div>
                         ))}
