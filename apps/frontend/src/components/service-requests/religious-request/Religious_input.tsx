@@ -142,7 +142,8 @@ export default function Religious_input({
                 <div className="grid justify-center items-center my-1.5">
 
                     <label className="label">Location </label>
-                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationReli"} isSearchable={true}
+                    <CreateDropdown runOnChange={()=>{return -1;}}
+                                    dropBtnName={"Locations"} dropdownID={"LocationReli"} isSearchable={true}
                                     populationArr={longNames} resetDropdown={resetDropdownLoc}
                                     setSelected={setSelected}
                                     inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
@@ -161,7 +162,8 @@ export default function Religious_input({
                 </SimpleTextInput>
                 {/* Religion */}
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
-                    <CreateDropdown dropBtnName={"Religion"} dropdownID={"ReligionID"} isSearchable={false}
+                    <CreateDropdown runOnChange={()=>{return -1;}}
+                                    dropBtnName={"Religion"} dropdownID={"ReligionID"} isSearchable={false}
                                     populationArr={religions}
                                     setSelected={setReligionDDIndx}
                                     resetDropdown={resetDropdownRel}
@@ -181,7 +183,8 @@ export default function Religious_input({
                 </div>
                 {/* Urgency */}
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
-                    <CreateDropdown dropBtnName={"Priority "} dropdownID={"UrgencyID"} isSearchable={false}
+                    <CreateDropdown runOnChange={()=>{return -1;}}
+                                    dropBtnName={"Urgency"} dropdownID={"UrgencyID"} isSearchable={false}
                                     populationArr={priorityLevels}
                                     setSelected={setUrgencyDDIndx}
                                     resetDropdown={resetDropdownUrg}

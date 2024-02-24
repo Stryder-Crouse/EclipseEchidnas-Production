@@ -120,8 +120,9 @@ export default function Sanitation_input({
                 <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Sanitation Request</h1> {/* Div Title */}
                 {/* Location */}
                 <div className="grid justify-center items-center my-1.5">
-                    <label className={"location"}>Location </label>
-                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationSan"} isSearchable={true}
+                    <label className={"location"}>Location</label>
+                    <CreateDropdown runOnChange={()=>{return -1;}}
+                                    dropBtnName={"Locations"} dropdownID={"LocationSan"} isSearchable={true}
                                     populationArr={longNames} resetDropdown={resetDropdown}
                                     setSelected={setSelected}
                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow "}
@@ -139,6 +140,7 @@ export default function Sanitation_input({
                 <div className="grid justify-center items-center my-1.5">
                     <label className={"Priority"}>Priority </label>
                     <CreateDropdown
+                        runOnChange={()=>{return -1;}}
                         dropBtnName={"Priority"}
                         dropdownID={"Priority"}
                         populationArr={priorityArr}
