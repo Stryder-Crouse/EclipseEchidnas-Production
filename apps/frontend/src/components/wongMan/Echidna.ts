@@ -1,5 +1,5 @@
 import {Coordinate} from "common/src/algorithms/Graph/Coordinate.ts";
-
+import EchidnaImg from "../../images/WongMan/echidna.png";
 
 export class Echidna{
 
@@ -7,6 +7,7 @@ export class Echidna{
     private _width:number;
     private _height:number;
     private _direction:Directions_Game;
+
 
     constructor(coords:Coordinate,width:number,height:number,direction:Directions_Game) {
         this._coords = coords;
@@ -16,8 +17,10 @@ export class Echidna{
     }
 
     public render(renderer:CanvasRenderingContext2D){
-        renderer.fillStyle = "red";
-        renderer.fillRect(this._coords.x,this._coords.y,this._width,this._height);
+        const img = document.createElement("img");
+        img.src = EchidnaImg;
+        renderer.drawImage(img,this._coords.x,this._coords.y,this._width,this._height);
+
 
     }
 

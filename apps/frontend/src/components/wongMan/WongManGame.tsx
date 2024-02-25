@@ -14,8 +14,7 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
     const [showStart, setShowStart] =
         useState(true);
 
-    const [renderCount, setRenderCount] =
-        useState(0);
+
 
     const canvasArea = useRef<HTMLCanvasElement>(null);
     const canvasContext = useRef< CanvasRenderingContext2D | null>(null);
@@ -46,7 +45,7 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
             </div>
 
             <div className={showGameMap(showGame)}>
-                <canvas className={"w-screen h-screen bg-gray-300"} ref={canvasArea}>
+                <canvas id="hi" className={"bg-gray-300"}  ref={canvasArea}>
 
                 </canvas>
 
@@ -62,19 +61,26 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
         //create peaces
         echidna.current = new Echidna({x:200, y:200},40,40,Directions_Game.RIGHT);
 
+
         //set context
         canvasContext.current = canvasArea.current!.getContext("2d");
 
+        //set how large the rendering area is
+        canvasContext.current!.canvas.width = window.innerWidth;
+        canvasContext.current!.canvas.height = window.innerHeight;
+
+
         setInterval(mainLoop,20);
+        console.log("exited");
     }
 
     function mainLoop(){
-        console.log(renderCount);
+
         clear();
         echidna.current!.setXCoord(echidna.current!.getCoords().x+=1);
+        console.log(echidna.current?.getCoords());
         echidna.current?.render(canvasContext.current!);
-        //tell react to re-render
-        setRenderCount(renderCount+1);
+
     }
 
     function clear(){
