@@ -88,7 +88,7 @@ export default function RegisterForm() {
                 },
             });
 
-        window.location.href = "/AdminMapPage";
+        window.location.href = window.location.origin;
 
     }
 

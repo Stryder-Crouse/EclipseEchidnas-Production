@@ -1,9 +1,9 @@
 import TopMapButtons from "../components/TopMapButtons.tsx";
 import MapFeatureButtons from "../components/MapFeatureButtons.tsx";
 import {HospitalMap} from "../components/map/HospitalMap.tsx";
-import {multipleNodeDataBaseToNode, NodeDataBase} from "../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
+import {multipleNodeDataBaseToNode, NodeDataBase} from "common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import axios from "axios";
-import {FloorToIndex, Node, NULLNODE} from "../../../../packages/common/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, Node, NULLNODE} from "common/src/algorithms/Graph/Node.ts";
 import {useEffect, useState} from "react";
 import FullSideNavBarComponent from "../components/FullSideNavBarComponent.tsx";
 
@@ -27,7 +27,7 @@ function TailwindMapPage() {
     const [locations, setLocations] = useState([] as Array<Node>);
     const [locationsWithHalls, setLocationsWithHalls] = useState([] as Array<Node>);
     const [pathFindingType, setPathFindingType] = useState("A*");
-    const [textDirections, setTextDirections] = useState([] as string[]);
+    const [textDirections, setTextDirections] = useState([[],[],[],[],[],[]] as string[][]);
 
     const [viewbox, setViewbox] =
         useState<{ x: number, y: number, width: number, height: number }>({x: 940, y: 490, width: 2160, height: 1900});
@@ -50,7 +50,7 @@ function TailwindMapPage() {
 
     return (
         <div className="flex">
-            <div className="flex absolute w-screen h-screen">
+            <div className="flex absolute w-screen vh-100">
                 <div className={"z-50"}>
                     <FullSideNavBarComponent/>
                 </div>
