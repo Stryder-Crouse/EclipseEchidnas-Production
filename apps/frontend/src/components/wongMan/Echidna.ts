@@ -67,9 +67,10 @@ export class Echidna{
 }
 
 export enum Directions_Game{
-    UP=270,
-    DOWN=90,
-    RIGHT=0 ,
-    LEFT
+    LEFT,
+    RIGHT,
+    DOWN ,
+    UP,
+
 
 }

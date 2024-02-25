@@ -201,9 +201,11 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
 
     // function handleRotation(newCordnates:Coordinate){
     //
+    //     let newDirection = Directions_Game.RIGHT;
+    //
     //     //diagonal cases
     //     if(newCordnates.x!=0 && newCordnates.y!=0){
-    //         if(newCordnates.x > 0){
+    //         if(newCordnates.x > 0 && newCordnates.y>0){
     //
     //         }
     //
