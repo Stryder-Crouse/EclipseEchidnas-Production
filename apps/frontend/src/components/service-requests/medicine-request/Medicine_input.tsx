@@ -16,25 +16,28 @@ export default function Medicine_input({
     setIsPopupOpen
                                        }:closeMedicineCard) {
 
-    const [medRequestDoses, setMedRequestDose] = useState("");
-    const [medRequestForm, setMedRequestForm] = useState("");
+    const [medQuant, setMedQuant] = useState("");
+    const [medForm, setMedForm] = useState("");
     const [medRequestDosage, setMedRequestDosage] = useState("");
     const [patientName, setPatientName] = useState("");
     const [patientDob, setPatientDob] = useState(new Date());
-    const [medicineSig, setMedicineSig] = useState("");
+    const [medSig, setMedSig] = useState("");
     const [patientMedRec, setPatientMedrec] = useState("");
+    const [locations, setLocations] = useState<NodeDataBase[]>([]);
 
     //use state keeps info in boxes between renders (rerenders every now and then like a videogame)
     // in html, "value" is the variable being changed by the user's action
     // and onChange is the function specifier, so for example: value={medRequestLocale} and onChange={setMedRequestLocale}
     //reference html is at bottom of this file
 
+    const [priorityIndex, setPriorityIndex] = useState(-1);
     const [resetDropdown, setResetDropdown] = useState(false);
+    const [resetDropdownPriority, setResetDropdownPriority] = useState(false);
     const [resetMedFormDropdown, setResetMedFormDropdown] = useState(false);
     const [selectedName, setSelectedName] = useState(-1);
-    const [selected, setSelected] = useState(-1);
-    const [locations, setLocations] = useState<NodeDataBase[]>([]);
+    const [selectedLoc, setSelectedLoc] = useState(-1);
     const medArr = ["Tylenol", "Pepcid", "Ciprofloxacin"];
+    const priorityArr = ["Low", "Medium", "High", "Emergency"];
 
     let interID = setInterval(fadeEffect, 100);
     clearInterval(interID);
@@ -60,23 +63,23 @@ export default function Medicine_input({
 
         try {
             //Make a Service Request Data Type and then a Med Request Data Type
-            // this is bc Front End will beconfused if we pass it a bunch of data so use data structures
+            // this is bc Back End will be confused if we pass it a bunch of data so use data structures
             const servReq: ServiceRequest = {
                 reqType: ReqTypes.medReq,           //Set req type to med req automatically bc we only make med reqs
-                reqPriority: "Low",
-                reqLocationID: locations[selected].nodeID,    //Need to know location of where the service request needs to be
+                reqPriority: priorityArr[priorityIndex],
+                reqLocationID: locations[selectedLoc].nodeID,    //Need to know location of where the service request needs to be
                 extraInfo: extraInfo,
                 status: "Unassigned",             //upon creation, nobody is assigned, so set status to unassigned
                 assignedUName: "No one",            //upon creation, no employee is assigned
-                time: null,
+                time: null,   //the following two fields will be assigned by the back end function we call in a few lines
                 reqID: -1
             };
 
             if(isNaN(parseInt(patientMedRec))){
                 console.error("patientMedRec was supposed to be a number");
             }
-            if(isNaN(parseInt(medRequestDosage))){
-                console.error("medRequestDosage was supposed to be a number");
+            if(isNaN(parseInt(medQuant))){
+                console.error("medQuant was supposed to be a number");
             }
             //TODO FNFN Create Inputs for new variables below: patientName, patientDOB, patientMedRecordNum, medForm, medSig
             //Make a Med Req after the service req (Med req needs service req's id, so med req cannot be made before)
@@ -86,9 +89,9 @@ export default function Medicine_input({
                 patientMedRecordNum: parseInt(patientMedRec),
                 medStrength: medRequestDosage,
                 medName: medArr[selectedName],
-                quantity: parseInt(medRequestDoses),
-                medForm: medRequestForm,
-                medSig: medicineSig,
+                quantity: parseInt(medQuant),
+                medForm: medForm,
+                medSig: medSig,
                 genReqID: -1    // default is 0, but is always changed to the value of the newly created Service Req
             };
             clear();
@@ -134,15 +137,17 @@ export default function Medicine_input({
     function clear() {
         setMedRequestDosage("");
         setResetDropdown(true);
-        setMedRequestForm("");
-        setMedRequestDose("");
-        setMedicineSig("");
+        setResetDropdownPriority(true);
+        setMedForm("");
+        setMedQuant("");
+        setMedSig("");
         setPatientDob(new Date());
         setPatientName("");
         setPatientMedrec("");
         setResetMedFormDropdown(true);
         setExtraInfo("");
         setSelectedName(-1);
+        setSelectedLoc(-1);
     }
 
     function closeMedicineForm(event: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) {
@@ -160,9 +165,38 @@ export default function Medicine_input({
                                  labelContent={"Patient Name"}
                                  inputStorage={patientName} setInputStorage={setPatientName}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={""} placeHolderText={""}>
-
+                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
+                                 placeHolderText={"e.g. Geraldine Hudson"}>
                 </SimpleTextInput>
+
+                <div className="grid justify-center items-center my-1.5">
+
+                    <label className="label">Location </label>
+                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationMed"} isSearchable={true}
+                                    populationArr={longNames} resetDropdown={resetDropdown}
+                                    setSelected={setSelectedLoc}
+                                    inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
+                                    selectCSS={""}
+                                    resetOnSelect={false} setResetDropdown={setResetDropdown}/>
+
+                </div>
+
+                <div className="grid justify-center items-center my-1.5">
+                    <label className={"Priority"}>Priority </label>
+                    <CreateDropdown
+                        dropBtnName={"Priority"}
+                        dropdownID={"Priority"}
+                        populationArr={priorityArr}
+                        isSearchable={false}
+                        resetOnSelect={false}
+                        resetDropdown={resetDropdownPriority}
+                        setResetDropdown={setResetDropdownPriority}
+                        setSelected={setPriorityIndex}
+                        selectCSS={""}
+                        inputCSS={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
+                    />
+                </div>
+
                 <div className="grid justify-center items-center my-1.5">
 
                     <label className="label">Patient DoB </label>
@@ -177,23 +211,13 @@ export default function Medicine_input({
 
                     ></input>
                 </div>
+
                 <SimpleTextInput id={"patientMedRec"}
                                  labelContent={"Patient Medical Record Number"}
                                  inputStorage={patientMedRec} setInputStorage={setPatientMedrec}
                                  inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
                                  placeHolderText={""}></SimpleTextInput>
-                <div className="grid justify-center items-center my-1.5">
-
-                    <label className="label">Location </label>
-                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationMed"} isSearchable={true}
-                                    populationArr={longNames} resetDropdown={resetDropdown}
-                                    setSelected={setSelected}
-                                    inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
-                                    selectCSS={""}
-                                    resetOnSelect={false} setResetDropdown={setResetDropdown}/>
-
-                </div>
 
 
                 <div className={"grid justify-center items-center my-1.5"}>
@@ -212,11 +236,11 @@ export default function Medicine_input({
                     </CreateDropdown>
                 </div>
 
-                <SimpleTextInput id={"medRequestType"} labelContent={"Medicine Form"} inputStorage={medRequestForm}
-                                 setInputStorage={setMedRequestForm}
+                <SimpleTextInput id={"medRequestType"} labelContent={"Medicine Form"} inputStorage={medForm}
+                                 setInputStorage={setMedForm}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
-                                 placeHolderText={""}>
+                                 placeHolderText={"e.g. pill"}>
                 </SimpleTextInput>
 
 
@@ -225,16 +249,24 @@ export default function Medicine_input({
                                  setInputStorage={setMedRequestDosage}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
-                                 placeHolderText={""}>
+                                 placeHolderText={"e.g. 100 mg"}>
                 </SimpleTextInput>
 
 
-                <SimpleTextInput id={"medRequestSig"} labelContent={"SIG"} inputStorage={medicineSig}
-                                 setInputStorage={setMedicineSig}
+                <SimpleTextInput id={"medRequestSig"} labelContent={"SIG"} inputStorage={medSig}
+                                 setInputStorage={setMedSig}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
-                                 placeHolderText={""}>
+                                 placeHolderText={"e.g. take 1 pill orally daily, with water"}>
                 </SimpleTextInput>
+
+                <SimpleTextInput id={"medRequestQuant"} labelContent={"Number of Doses to Deliver"} inputStorage={medQuant}
+                                 setInputStorage={setMedQuant}
+                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
+                                 placeHolderText={"e.g. 5"}>
+                </SimpleTextInput>
+
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
                     <textarea placeholder={"Extra Info: "}
                               className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
