@@ -821,6 +821,12 @@ router.get("/medReq/statistics", async function (req: Request, res: Response) {
     }
 });
 
+// return all the stats of types, priority, status of med requests in each specific building in the database
+router.get("/medReq/building-statistics", async function (/*req: Request, res: Response*/) {
+    const serviceRequest = await PrismaClient.serviceRequest.findMany();
+    console.log(serviceRequest);
+});
+
 
 // ---------------------------------    Outside Transport DB Interaction    ---------------------------------
 
