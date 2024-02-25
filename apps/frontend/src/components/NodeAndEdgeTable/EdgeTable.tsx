@@ -8,16 +8,15 @@ import ImportExportButtons from "./ImportExportButtons.tsx";
 
 function EdgeTable() {
 
+    const [edges , setEdges  ] = useState([] as EdgeDataBase[]);
 
-    const [edges , setEdges ] = useState([] as EdgeDataBase[]);
-
-    //todo FNFN fix with proper population code
     useEffect(()=>{
         getEdges().then((result)=>{
             setEdges(result);
         } );
 
     },[]);
+
   return (
     <div className={""}>
       <ImportExportButtons></ImportExportButtons>

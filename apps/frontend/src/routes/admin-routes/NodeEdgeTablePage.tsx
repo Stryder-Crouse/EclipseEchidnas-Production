@@ -9,7 +9,7 @@ function NodeEdgeTablePage() {
                 <FullSideNavBarComponent/>
             </div>
             <div className="flex flex-col w-lvw -ml-10">
-                <CsvPageTableContainer></CsvPageTableContainer>
+                <CsvPageTableContainer/>
             </div>
 
         </div>

@@ -4,6 +4,7 @@ import "../../css/component-css/ServicePage.css";
 
 import NodeTable from "../NodeAndEdgeTable/NodeTable.tsx";
 import EdgeTable from "../NodeAndEdgeTable/EdgeTable.tsx";
+import EmployeeTableComponent from "../NodeAndEdgeTable/EmployeeTableComponent.tsx";
 
 
 
@@ -52,11 +53,11 @@ export default function CsvPageTableContainer() {
         // For each div/request to overlay
         switch (curentTable) {
             case "node":
-                return <NodeTable></NodeTable>;
+                return <NodeTable/>;
             case "edge":
                return <EdgeTable></EdgeTable>;
             case "employee":
-               return <div>employee table</div>;
+               return <EmployeeTableComponent/>;
             default:
                 return (<div> bad state</div>);
 
