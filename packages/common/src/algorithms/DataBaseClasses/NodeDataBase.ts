@@ -49,9 +49,13 @@ export function nodeDataBaseToNode(dbNode: NodeDataBase) {
 export function multipleNodeDataBaseToNode(dbNodes: Array<NodeDataBase>) {
     const nodes:Array<Node> = [];
 
-    dbNodes.forEach((dbnode)=>{
+    for(const dbnode of dbNodes){
         nodes.push(nodeDataBaseToNode(dbnode));
-    });
+    }
+    //todo remove
+    // dbNodes.forEach((dbnode)=>{
+    //     nodes.push(nodeDataBaseToNode(dbnode));
+    // });
 
 
     return nodes;

@@ -101,14 +101,25 @@ async function createGraph() {
     const nodes: Array<Node> = [];
 
     /* populate edges */
-    edgesDB.data.forEach((edgeDB) => {
+
+    for(const edgeDB of edgesDB.data){
         edges.push(edgeDataBasetoEdge(edgeDB));
-    });
+    }
+    //todo remove
+    // edgesDB.data.forEach((edgeDB) => {
+    //     edges.push(edgeDataBasetoEdge(edgeDB));
+    // });
 
     /* populate nodes */
-    nodesDB.data.forEach((nodeDB) => {
+
+    for(const nodeDB of nodesDB.data){
         nodes.push(nodeDataBaseToNode(nodeDB));
-    });
+    }
+    //todo remove
+    // nodesDB.data.forEach((nodeDB) => {
+    //     nodes.push(nodeDataBaseToNode(nodeDB));
+    // });
+
 
     /* construct a graph from the data */
     graph = new Graph(nodes, edges);
@@ -120,9 +131,14 @@ async function getNodeServiceRequests(){
 
     //setup map with empty strings for every node
 
-    graph?.getNodes().forEach((node)=>{
+
+    for (const node of graph!.getNodes()){
         nodeIDtoServiceRequest.set(node.id,[]);
-    });
+    }
+    //todo remove
+    // graph?.getNodes().forEach((node)=>{
+    //     nodeIDtoServiceRequest.set(node.id,[]);
+    // });
 
 
     //get all service requests
@@ -131,11 +147,18 @@ async function getNodeServiceRequests(){
     const serviceRequests =serviceRequestsRes.data;
 
     //add service requests to graph
-    serviceRequests.forEach((request)=>{
+
+    for (const request of serviceRequests){
         if(nodeIDtoServiceRequest.get(request.reqLocationID)!=undefined){
             nodeIDtoServiceRequest.get(request.reqLocationID)?.push(request);
         }
-    });
+    }
+    //todo remove
+    // serviceRequests.forEach((request)=>{
+    //     if(nodeIDtoServiceRequest.get(request.reqLocationID)!=undefined){
+    //         nodeIDtoServiceRequest.get(request.reqLocationID)?.push(request);
+    //     }
+    // });
 
 
 
@@ -214,11 +237,19 @@ function updatePathEdges(startingNode: Node,
         const thisFloorEdges: Array<Edge> = [];
 
         /* get the edges on this floor */
-        graph?.getEdges().forEach((edge) => {
+
+        for (const edge of graph!.getEdges()){
             if (floorToNumber(edge.startNode.floor) == floorIndex && floorToNumber(edge.endNode.floor) == floorIndex) {
                 thisFloorEdges.push(edge);
             }
-        });
+        }
+
+        //todo remove
+        // graph?.getEdges().forEach((edge) => {
+        //     if (floorToNumber(edge.startNode.floor) == floorIndex && floorToNumber(edge.endNode.floor) == floorIndex) {
+        //         thisFloorEdges.push(edge);
+        //     }
+        // });
 
         /* draw them */
         setPathEdges(thisFloorEdges);
@@ -304,11 +335,19 @@ function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndT
         /* if both nodes are on this floor */
         if (floorToNumber(start!.floor) == floorIndex && floorToNumber(end!.floor) == floorIndex) {
             /* find the edge that connects start to end and add it to pathEdges */
-            start!.edges.forEach((edge) => {
+
+            for (const edge of  start!.edges){
                 if (edge.endNode == end) {
                     pathEdges.push(edge);
                 }
-            });
+            }
+
+            //todo remove
+            // start!.edges.forEach((edge) => {
+            //     if (edge.endNode == end) {
+            //         pathEdges.push(edge);
+            //     }
+            // });
         }
 
         /* if start is on this floor, but end is on a different floor */
@@ -324,11 +363,19 @@ function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndT
 
                 /* find edge between transition floors */
                 let connectingEdge: Edge = NULLEDGE;
-                currentNode!.edges.forEach((edge) => {
+
+
+                for (const edge of currentNode!.edges){
                     if (edge.endNode == nextNode) {
                         connectingEdge = edge;
                     }
-                });
+                }
+                //todo remove
+                // currentNode!.edges.forEach((edge) => {
+                //     if (edge.endNode == nextNode) {
+                //         connectingEdge = edge;
+                //     }
+                // });
 
                 /* if we didn't find it */
                 if (connectingEdge == NULLEDGE) {
@@ -365,11 +412,19 @@ function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndT
 
                 /* find edge between transition floors */
                 let connectingEdge: Edge = NULLEDGE;
-                currentNode!.edges.forEach((edge) => {
+
+
+                for(const edge of  currentNode!.edges){
                     if (edge.endNode == prevNode) {
                         connectingEdge = edge;
                     }
-                });
+                }
+                //todo remove
+                // currentNode!.edges.forEach((edge) => {
+                //     if (edge.endNode == prevNode) {
+                //         connectingEdge = edge;
+                //     }
+                // });
 
                 /* if we didn't find it */
                 if (connectingEdge == NULLEDGE) {
@@ -705,9 +760,15 @@ export function HospitalMap({
 
         /* generate the edges for this node */
         let edgeConnections: string = " ";
-        connectedNode!.edges.forEach((edge) => {
+
+        for(const edge of connectedNode!.edges){
             edgeConnections += edge.endNode.id + ", ";
-        });
+        }
+
+        //todo remove
+        // connectedNode!.edges.forEach((edge) => {
+        //     edgeConnections += edge.endNode.id + ", ";
+        // });
         edgeConnections = edgeConnections.substring(0, edgeConnections.length - 2);
 
         /* draw the floating div */

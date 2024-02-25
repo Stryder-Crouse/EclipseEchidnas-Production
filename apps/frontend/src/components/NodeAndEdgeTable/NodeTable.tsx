@@ -53,7 +53,8 @@ async function populateNodes() {
     console.log(table);
 
     //for each node
-    nodeData.data.forEach(function (newNode: NodeDataBase) {
+
+    for(const newNode of nodeData.data){
         //create tr element to store the record
         const tableRow = document.createElement("tr");
         //create td tags for data from record
@@ -92,7 +93,49 @@ async function populateNodes() {
 
         //add new row element to table
         table.appendChild(tableRow);
-    });
+    }
+
+    //todo remove
+    // nodeData.data.forEach(function (newNode: NodeDataBase) {
+    //     //create tr element to store the record
+    //     const tableRow = document.createElement("tr");
+    //     //create td tags for data from record
+    //     const nodeID = document.createElement("td");
+    //     nodeID.textContent = newNode.nodeID;
+    //     nodeID.setAttribute("class", "node-id");
+    //
+    //     const nodeX = document.createElement("td");
+    //     nodeX.textContent = newNode.xcoord.toString();
+    //     const nodeY = document.createElement("td");
+    //     nodeY.textContent = newNode.ycoord.toString();
+    //     const nodeFloor = document.createElement("td");
+    //     nodeFloor.textContent = newNode.floor;
+    //     const nodeBuilding = document.createElement("td");
+    //     nodeBuilding.textContent = newNode.building;
+    //     const nodeNodeType = document.createElement("td");
+    //     nodeNodeType.textContent = newNode.nodeType;
+    //     const nodeLongName = document.createElement("td");
+    //     nodeLongName.textContent = newNode.longName;
+    //     const nodeShortName = document.createElement("td");
+    //     nodeShortName.textContent = newNode.shortName;
+    //
+    //     //append data elements together to one row
+    //     tableRow.appendChild(nodeID);
+    //     tableRow.appendChild(nodeX);
+    //     tableRow.appendChild(nodeY);
+    //     tableRow.appendChild(nodeFloor);
+    //     tableRow.appendChild(nodeBuilding);
+    //     tableRow.appendChild(nodeNodeType);
+    //     tableRow.appendChild(nodeLongName);
+    //     tableRow.appendChild(nodeShortName);
+    //
+    //     if (table == null) {
+    //         return;
+    //     }
+    //
+    //     //add new row element to table
+    //     table.appendChild(tableRow);
+    // });
 }
 
 export default NodeTable;
