@@ -93,6 +93,7 @@ export default function MapSearchBar({startNode:startNode,
                                 setSelected={setSelected}
                                 inputCSS={"w-60 p-2 border-gray-500 text-black rounded-full border-2 pr-10 drop-shadow-lg "}
                                 selectCSS={""}
+                                runOnChange={()=>{return -1;}}
                                 resetOnSelect={true} setResetDropdown={setResetDropdown}>
                 </CreateDropdown>
             </div>
@@ -151,6 +152,7 @@ export default function MapSearchBar({startNode:startNode,
                         isSearchable={false}
                         resetOnSelect={false} resetDropdown={resetDropdown}
                         setResetDropdown={setResetDropdown} setSelected={setSelectedAlgoIndex}
+                        runOnChange={()=>{return -1;}}
                         inputCSS={"text-gray focus:outline-none p-2"}
                         selectCSS={"transition-all hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}></CreateDropdown>
                 </div>
