@@ -144,13 +144,7 @@ export default function MapSearchBar({startNode:startNode,
                     <b>End: </b>{endNode.longName}
                 </div>
 
-                <div className={" mt-1"}>
-                    <QuickRouteButtons setEndNode={setEndNode} setStartNode={setStartNode} startNode={startNode}
-                                       setErrorNoStartLocation={setErrorNoStartLocation}></QuickRouteButtons>
-                    {
-                        drawNoStartLocationError()
-                    }
-                </div>
+
                 <div className={" mt-1"}>
                     <CreateDropdown
                         dropBtnName={"Search Type"} dropdownID={"Search Type"} populationArr={searchOptions}
@@ -161,8 +155,15 @@ export default function MapSearchBar({startNode:startNode,
                         selectCSS={"transition-all hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}></CreateDropdown>
                 </div>
 
-
-               <TextDirectionsDropDown closeLocations={closeLocations} textDirections={textDirections}></TextDirectionsDropDown>
+                <div className={" mt-1"}>
+                    <QuickRouteButtons setEndNode={setEndNode} startNode={startNode}
+                                       setErrorNoStartLocation={setErrorNoStartLocation}></QuickRouteButtons>
+                    {
+                        drawNoStartLocationError()
+                    }
+                </div>
+                <TextDirectionsDropDown closeLocations={closeLocations}
+                                        textDirections={textDirections}></TextDirectionsDropDown>
 
 
             </div>
@@ -172,17 +173,17 @@ export default function MapSearchBar({startNode:startNode,
         </div>
     );
 
-    function drawNoStartLocationError(){
+    function drawNoStartLocationError() {
 
 
-        if(startNode!=NULLNODE){
-            if(errorNoStartLocation) {
+        if (startNode != NULLNODE) {
+            if (errorNoStartLocation) {
                 setErrorNoStartLocation(false);
             }
             return;
         }
-        if(errorNoStartLocation){
-            return(
+        if (errorNoStartLocation) {
+            return (
                 <div className="w-60 p-2 rounded-3xl border-gray-500 border-2
                 drop-shadow-lg mt-1 bg-[#8A0E11] overflow-hidden text-white font-semibold ">
                     Error: Please Select a Starting location first</div>

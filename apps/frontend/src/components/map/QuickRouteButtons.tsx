@@ -5,9 +5,11 @@ import ElevatorIcon from "../../images/MapFunctions/elevator.png";
 import BathroomIcon from "../../images/MapFunctions/bathRoom.png";
 import ErIcon from "../../images/MapFunctions/ER.png";
 
+import axios from "axios";
+
 export type QuickRouteButtonsProps = {
     startNode: Node;
-    setStartNode: Dispatch<SetStateAction<Node>>;
+
     setEndNode: Dispatch<SetStateAction<Node>>;
     setErrorNoStartLocation: Dispatch<SetStateAction<boolean>>;
 }
@@ -16,9 +18,14 @@ const iconConatnerCss = " w-[25%] bg-[#024c96] p-2 hover:bg-[#024281] cursor-poi
 
 const iconCss = "w-full";
 
-export function QuickRouteButtons({startNode,setStartNode,setEndNode,setErrorNoStartLocation}:QuickRouteButtonsProps){
 
-    console.log(startNode,setStartNode,setEndNode);
+export function QuickRouteButtons({startNode,setEndNode,setErrorNoStartLocation}:QuickRouteButtonsProps){
+
+
+
+
+
+
 
     return (
         <div className="flex flex-row justify-content-center w-60 h-  rounded-3xl border-gray-500
@@ -43,13 +50,39 @@ export function QuickRouteButtons({startNode,setStartNode,setEndNode,setErrorNoS
         </div>
     );
 
-    function onQuickBoxClick(type:string){
+    async function onQuickBoxClick(type:string){
 
         console.log(type);
         if(startNode!=NULLNODE){
 
+            if(type == "ER"){
+                const emergncyNode:Node = {
+                    building: Buildings.Tower,
+                    coordinate: {x:2128,y:1300},
+                    edges: [],
+                    floor: "1",
+                    heuristic: 0,
+                    id: "FDEPT00501",
+                    longName: "Emergency Department",
+                    nodeType: NodeType.DEPT,
+                    shortName: "Emergency"
+
+                };
+                setEndNode(emergncyNode);
+                return;
+            }
+
             //todo replace with dystra algo
-            setEndNode(testLocations(type));
+            const closest = await getClosest(type as NodeType);
+
+            console.log(closest);
+
+            if(closest == null){
+                console.error("closest node does not exist");
+                return;
+            }
+
+            setEndNode(closest);
 
         }
         else{
@@ -61,84 +94,27 @@ export function QuickRouteButtons({startNode,setStartNode,setEndNode,setErrorNoS
     }
 
 
-    //todo remove
-    function testLocations(type:string){
+    async function getClosest(type: NodeType) {
 
-        let newNode:Node;
-        switch (type) {
-            case NodeType.EXIT:
-                newNode= {
-                    building: Buildings.UNDEFINED,
-                    coordinate: {x:-1,y:-1},
-                    edges: [],
-                    floor: "",
-                    heuristic: 0,
-                    id: "CCONF003L1",
-                    longName: "ab",
-                    nodeType: NodeType.ELEV,
-                    shortName: ""
-                };
-                return newNode;
-            case NodeType.REST:
-                newNode= {
-                    building: Buildings.UNDEFINED,
-                    coordinate: {x:-1,y:-1},
-                    edges: [],
-                    floor: "",
-                    heuristic: 0,
-                    id: "CDEPT002L1",
-                    longName: "de",
-                    nodeType: NodeType.ELEV,
-                    shortName: ""
-                };
-                return newNode;
-            case NodeType.ELEV:
-                newNode= {
-                    building: Buildings.UNDEFINED,
-                    coordinate: {x:-1,y:-1},
-                    edges: [],
-                    floor: "",
-                    heuristic: 0,
-                    id: "WELEV00ML1",
-                    longName: "pog",
-                    nodeType: NodeType.ELEV,
-                    shortName: ""
-                };
-                return newNode;
-            case "ER":
-                newNode= {
-                    building: Buildings.UNDEFINED,
-                    coordinate: {x:-1,y:-1},
-                    edges: [],
-                    floor: "",
-                    heuristic: 0,
-                    id: "CLABS005L1",
-                    longName: "22",
-                    nodeType: NodeType.ELEV,
-                    shortName: ""
-                };
-                return newNode;
+        const result = await axios.get<Node|null>("/api/Graph/ClosestType",
+            {params: {startNodeID: startNode.id, targetType:type}});
 
-            default:
-                newNode= {
-                    building: Buildings.UNDEFINED,
-                    coordinate: {x:-1,y:-1},
-                    edges: [],
-                    floor: "",
-                    heuristic: 0,
-                    id: "CLABS005L1",
-                    longName: "11",
-                    nodeType: NodeType.ELEV,
-                    shortName: ""
-                };
-                return newNode;
-
-
-        }
-
+        return result.data;
 
 
     }
 
 
+
+
+
+
+
+
+
+
+
 }
+
+
+
