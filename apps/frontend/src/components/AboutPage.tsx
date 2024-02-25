@@ -94,7 +94,7 @@ export function ImageCard({img, name, role, quote}: imageProps) {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}>
 
-            <div className={`bg-gray-800 bg-opacity-50 p-3 rounded-lg absolute bottom-0 left-0 w-full ${isHovered ? 'block' : 'hidden'}`} style={{ marginTop: '-50%' }}>
+            <div className={`bg-gray-800 bg-opacity-50 p-3 rounded-lg absolute bottom-[9rem] left-0 w-full ${isHovered ? 'block' : 'hidden'}`} style={{ marginTop: "calc(100% - 2rem)" }}>
                 <p className="text-white">{quote}</p>
             </div>
             <img className="h-fit w-full " src={img} alt="Stryder"/>
