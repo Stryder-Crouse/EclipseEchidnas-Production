@@ -285,23 +285,23 @@ export default function ServiceRequestOutputTables() {
             switch (curentServiceRequest) {
                 case ReqTypes.flowReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={"/api/serviceRequests/flowReq/statistics"}>
+                        urlToGetStats={"/api/serviceRequests/flowReq/statistics"} urlForBuildingStats={"/api/serviceRequests/flowReq/building-statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.religReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={"/api/serviceRequests/religiousRequest/statistics"}>
+                        urlToGetStats={"/api/serviceRequests/religiousRequest/statistics"} urlForBuildingStats={"/api/serviceRequests/religiousRequest/building-statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.medReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={"/api/serviceRequests/medReq/statistics"}>
+                        urlToGetStats={"/api/serviceRequests/medReq/statistics"} urlForBuildingStats={"/api/serviceRequests/medReq/building-statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.tranReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={"/api/serviceRequests/outsideTransport/statistics"}>
+                        urlToGetStats={"/api/serviceRequests/outsideTransport/statistics"} urlForBuildingStats={"/api/serviceRequests/outsideTransport/building-statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.sanReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={"/api/serviceRequests/sanReq/statistics"}>
+                        urlToGetStats={"/api/serviceRequests/sanReq/statistics"} urlForBuildingStats={"/api/serviceRequests/sanReq/building-statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.serviceRequest:
                     return (<PieChartStatsAll></PieChartStatsAll>);

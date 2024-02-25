@@ -36,7 +36,11 @@ export type buildingStats = {
     BTM: building
 }
 
-function StatsBarChart(){
+export type requestStats = {
+    urlForBuildingStats:string
+}
+
+function StatsBarChart({urlForBuildingStats}:requestStats){
 
     const [stats , setStats ]
         = useState<buildingStats>(
@@ -100,10 +104,10 @@ function StatsBarChart(){
     );
 
     useEffect(() => {
-        getAllBuildingStats().then((res)=>{
+        getAllBuildingStats(urlForBuildingStats).then((res)=>{
             setStats(res);
         });
-    }, []);
+    }, [urlForBuildingStats]);
 
 
     const data = {
@@ -114,7 +118,6 @@ function StatsBarChart(){
             'BTM'],
         datasets: [
             {
-                label: 'Requests',
                 data: [stats.shapiro.total,stats.tower.total,stats.Francis45.total,stats.Francis15.total,stats.BTM.total],
                 backgroundColor: ["#BA1215", "#003a96", "#0C8750", "#FFBA08", "#4F5459"]
             }
@@ -122,27 +125,32 @@ function StatsBarChart(){
     };
     const options = {
         indexAxis: 'y',
+        plugins: {
+            legend: {
+                display: false
+            },
+        },
         layout: {
             padding: {
-                top: 0
             }
         }
     };
     return (
         <div style={
-            {
-                display: "flex-row",
-
-            }}>
+            {}}>
             <p className="text-center"><b>Request per Building</b></p>
+            <div className="canvas-container">
+                <canvas width="150" height="100"></canvas>
+            </div>
+
             {/*// @ts-expect-error asjhdska*/}
             <Bar data={data} options={options}></Bar>
         </div>
     );
 }
 
-async function getAllBuildingStats() {
-    const getAllBuildingStats = await axios.get<buildingStats>("/api/serviceRequests/flowReq/building-statistics");
+async function getAllBuildingStats(url: string) {
+    const getAllBuildingStats = await axios.get<buildingStats>(url);
     return getAllBuildingStats.data;
 }
 
