@@ -1,8 +1,8 @@
-import EyeIcon from "../images/MapFunctions/eye.png";
+import LayersIcon from "../images/MapFunctions/layers-3.png";
 import RefreshIcon from "../images/MapFunctions/refresh-cw.png";
 import ZoomInIcon from "../images/MapFunctions/plus.png";
 import ZoomOutIcon from "../images/MapFunctions/minus.png";
-import {Dispatch, SetStateAction} from "react";
+import {Dispatch, SetStateAction, useState} from "react";
 import {Node, NULLNODE} from "../../../../packages/common/src/algorithms/Graph/Node.ts";
 import {Viewbox} from "./map/HospitalMap.tsx";
 
@@ -32,6 +32,7 @@ export default function MapFeatureButtons({
     /**
      * Handle when the all edges toggle is pressed.
      */
+    const [isButtonActive, setIsButtonActive] = useState(false);
     function handleAllEdgesToggle() {
         if (!drawEntirePath) {
             setDrawEntirePath(true);
@@ -40,6 +41,9 @@ export default function MapFeatureButtons({
             setDrawEntirePath(false);
             closeForm();
         }
+
+        // Toggle button active state
+        setIsButtonActive(!isButtonActive);
     }
 
 
@@ -146,11 +150,24 @@ export default function MapFeatureButtons({
 
             </div>
 
-            <button id={"optionTime"} className="flex self-end bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10"
-                    onClick={handleAllEdgesToggle}>
-                <img src={EyeIcon} alt={"See All Locations and Paths"}/>
+            <button
+                id={"optionTime"}
+                title={"Options"}
+                className={`bg-ivoryWhite flex self-end rounded-md p-2 mb-4 w-10 ${
+                    isButtonActive ? "bg-navStart" : "bg-ivoryWhite"
+                } drop-shadow-lg`}
+                onClick={handleAllEdgesToggle}
+            >
+                <img
+                    src={LayersIcon}
+                    alt={"See All Locations and Paths"}
+                    style={{filter: isButtonActive ? "invert(1)" : "invert(0)"}}
+                    className={"hover:invert"}
+                />
             </button>
-            <button className="flex self-end bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10"
+
+            <button className="flex self-end bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10 "
+                    title={"Refresh Zoom"}
                     onClick={() => {
                         setStartNode(NULLNODE);
 
@@ -161,26 +178,28 @@ export default function MapFeatureButtons({
                             openLocationInput.style.display = "none";
                         }
                     }}>
-                <img src={RefreshIcon} alt={"Refresh"}/>
+                <img src={RefreshIcon} alt={"Refresh"} />
             </button>
 
             {/*PLACE HOLDER*/}
 
 
             <div className="flex flex-col self-end ">
-                <button className="flex bg-ivoryWhite p-2 drop-shadow-lg rounded-t-md w-10"
+                <button className="flex bg-ivoryWhite p-2 drop-shadow-lg rounded-t-md w-10 "
                         onClick={() => {
                             zoomMap(1);
                         }}
+                        title={"Zoom In"}
                 >
-                    <img src={ZoomInIcon} alt={"Zoom In"}/>
+                    <img src={ZoomInIcon} alt={"Zoom In"} />
                 </button>
-                <button className="flex bg-ivoryWhite p-2 drop-shadow-lg rounded-b-md w-10"
+                <button className="flex bg-ivoryWhite p-2 drop-shadow-lg rounded-b-md w-10 "
                         onClick={() => {
                             zoomMap(-1);
                         }}
+                        title={"Zoom Out"}
                 >
-                    <img src={ZoomOutIcon} alt={"Zoom Out"}/>
+                    <img src={ZoomOutIcon} alt={"Zoom Out"} />
                 </button>
             </div>
         </div>
