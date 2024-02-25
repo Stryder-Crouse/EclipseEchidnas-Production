@@ -72,11 +72,12 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
     if(isSearchable){
         const datalistID = "datalistOf" + dropdownID;
         return (
-            <div  className="dropdown">
+            <div className="dropdown">
 
                 <input type="text" placeholder={dropBtnName} list={datalistID} id={dropdownID}
                        onChange={e => findValueIndex(e.target.value)}
-                       className={inputCSS}
+                       className={`w-60 p-2 pr-2 text-black rounded-full focus:outline-none ${inputCSS}`}
+                       required
 
                 />
                 <datalist className="dropbtn" id={datalistID}>
@@ -92,10 +93,12 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
     } else {
         return (
             <div className="dropdown">
-                <select id={dropdownID} className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"} name={dropBtnName} onChange={e => {
+                <select  required id={dropdownID} className={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"} name={dropBtnName} onChange={e => {
                     setValueCorrectly(e.target.selectedIndex - 1);
                     /*accounts for the extra unselectable option with the placeholder text*/
-                }}>
+                }}
+                        style={{ outline: 'gray' }}
+                >
                     <option disabled={true} selected={true} className={"dropdown-content unselectable"}>{dropBtnName}</option>
                     {
                         populationArr.map((option: string) => <option  className={"dropdown-content"}>{option}</option>)

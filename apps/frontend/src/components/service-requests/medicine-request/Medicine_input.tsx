@@ -47,6 +47,8 @@ export default function Medicine_input({
 
     },[]);
 
+
+
     //Changed for database
     async function submit() {
 
@@ -129,12 +131,41 @@ export default function Medicine_input({
         event.preventDefault();
         setIsPopupOpen(false);
     }
+
+    const handleNumericInputChange = (value: ((prevState: string) => string) | string, setter: React.Dispatch<React.SetStateAction<string>>) => {
+        // Check if the entered value is a number
+        if (!isNaN(Number(value))) {
+            setter(value);
+        }
+        // You can also provide feedback to the user if the input is not a number
+    };
+
     return (
         <div
             className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-4 align-self-center"}>
             <form className={"p-2"}>
                 <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Medicine Request</h1>
 
+                <SimpleTextInput id={"medRequestType"} labelContent={"Medicine Name"} inputStorage={medRequestType}
+                                 setInputStorage={setMedRequestType}
+                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
+                                 placeHolderText={"e.g. Prozac"}>
+                </SimpleTextInput>
+
+                <SimpleTextInput id={"medRequestDose"} labelContent={"Medicine Dose"} inputStorage={medRequestDoses}
+                                 setInputStorage={(value) => handleNumericInputChange(value, setMedRequestDose)}
+                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
+                                 placeHolderText={"e.g. 25 mg"}>
+                </SimpleTextInput>
+
+                <SimpleTextInput id={"medRequestDosage"} labelContent={"Amount"} inputStorage={medRequestDosage}
+                                 setInputStorage={(value) => handleNumericInputChange(value, setMedRequestDosage)}
+                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
+                                 placeHolderText={"e.g."}>
+                </SimpleTextInput>
 
                 <div className="grid justify-center items-center my-1.5">
 
@@ -148,29 +179,6 @@ export default function Medicine_input({
 
                 </div>
 
-
-                <SimpleTextInput id={"medRequestType"} labelContent={"Medicine Name"} inputStorage={medRequestType}
-                                 setInputStorage={setMedRequestType}
-                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
-                                 placeHolderText={"e.g. Prozac"}>
-                </SimpleTextInput>
-
-
-                <SimpleTextInput id={"medRequestDose"} labelContent={"Medicine Strength"} inputStorage={medRequestDoses}
-                                 setInputStorage={setMedRequestDose}
-                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
-                                 placeHolderText={"e.g. 25 mg"}>
-                </SimpleTextInput>
-
-                <SimpleTextInput id={"medRequestDosage"} labelContent={"Amount"} inputStorage={medRequestDosage}
-                                 setInputStorage={setMedRequestDosage}
-                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                 divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
-                                 placeHolderText={"e.g."}>
-                </SimpleTextInput>
-
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
                     <label className="label">Extra Notes </label>
                     <textarea placeholder={"Extra Notes"}
@@ -178,7 +186,7 @@ export default function Medicine_input({
                               onChange={(e) => setExtraInfo(e.target.value)}
                               id={"service"}
                               value={extraInfo}
-                              required>
+                              >
                     </textarea>
                 </div>
 

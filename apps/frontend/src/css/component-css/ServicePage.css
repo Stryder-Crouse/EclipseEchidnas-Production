@@ -55,9 +55,9 @@
 }
 
 
+
 .tab-content-wrapper {
-    overflow-y: auto;
-    overflow-x: auto;
+
     max-height: 100%;
     width: 100%;
 
@@ -69,6 +69,7 @@
     transition: all 0.45s ease-in-out;
     padding: 0 16px;
     transform: scale(95%);
+
 }
 
 .tab-content h2 {

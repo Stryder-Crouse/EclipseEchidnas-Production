@@ -2,10 +2,10 @@ import React, {useEffect, useState} from "react";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 import {Priority, Status} from "../priorityAndStatusEnums.tsx";
-import {ReligRequest, ReqTypes, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
+import {ReligRequest, ReqTypes, ServiceRequest} from "common/src/algorithms/Requests/Request.ts";
 import axios from "axios";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
-import {NodeDataBase} from "../../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
+import {NodeDataBase} from "common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import {closeCard} from "../../service-request-cards/ReligionRequestCard.tsx";
 import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";
 
@@ -137,72 +137,84 @@ export default function Religious_input({
             className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-2 align-self-center"}>
             <form className={"p-2"}>
                 <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Religious Request</h1> {/* Div Title */}
-                {/* Location */}
-
-                <div className="grid justify-center items-center my-1.5">
-
-                    <label className="label">Location </label>
-                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationReli"} isSearchable={true}
-                                    populationArr={longNames} resetDropdown={resetDropdownLoc}
-                                    setSelected={setSelected}
-                                    inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
-                                    selectCSS={""}
-                                    resetOnSelect={false} setResetDropdown={setResetDropdownLoc}/>
-
-                </div>
 
 
-                {/* Patient Name */}
-                <SimpleTextInput id={"name"} labelContent={"Patient Name "}
-                                 inputStorage={nameP} setInputStorage={setNameP}
-                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
-                                 divCSS={"grid justify-center items-center my-1.5 mb-1"} labelCSS={"mb-1"}
-                                 placeHolderText={"e.g. Tim Apple"}>
-                </SimpleTextInput>
-                {/* Religion */}
-                <div className={"grid justify-center items-center my-1.5 mb-1"}>
-                    <label className="label">Religion </label>
-                    <CreateDropdown dropBtnName={"Religion"} dropdownID={"ReligionID"} isSearchable={false}
-                                    populationArr={religions}
-                                    setSelected={setReligionDDIndx}
-                                    resetDropdown={resetDropdownRel}
-                                    resetOnSelect={false}
-                                    inputCSS={"n/a"} selectCSS={"dropdown"}
-                                    setResetDropdown={setResetDropdownRel}/>
-                </div>
-                {/* Description */}
-                <div className={"grid justify-center items-center my-1.5 mb-1"}>
-                    <label className="label">Services Required </label>
-                    <textarea placeholder={"e.g. Last Rights"}
-                              className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
-                              onChange={(e) => setService(e.target.value)}
-                              id={"service"}
-                              value={service}
-                              required>
+
+                <div className={"flex"}>
+                    {/* Patient Name */}
+                    <div className={"flex flex-col mr-6"}>
+                        <SimpleTextInput id={"name"} labelContent={"Patient Name "}
+                                         inputStorage={nameP} setInputStorage={setNameP}
+                                         inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                         divCSS={"grid justify-center items-center my-1.5 mb-1"} labelCSS={"mb-1"}
+                                         placeHolderText={"e.g. Tim Apple"}>
+                        </SimpleTextInput>
+
+                        <div className="grid justify-center items-center my-1.5">
+                            {/* Location */}
+                            <label className="label">Location </label>
+                            <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationReli"} isSearchable={true}
+                                            populationArr={longNames} resetDropdown={resetDropdownLoc}
+                                            setSelected={setSelected}
+                                            inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
+                                            selectCSS={""}
+                                            resetOnSelect={false} setResetDropdown={setResetDropdownLoc}/>
+
+                        </div>
+
+                        <div className={"grid justify-center items-center my-1.5 mb-1"}>
+                            <label className="label">Priority </label>
+                            <CreateDropdown dropBtnName={"Priority "} dropdownID={"UrgencyID"} isSearchable={false}
+                                            populationArr={priorityLevels}
+                                            setSelected={setUrgencyDDIndx}
+                                            resetDropdown={resetDropdownUrg}
+                                            resetOnSelect={false}
+                                            inputCSS={"n/a"} selectCSS={"dropdown"}
+                                            setResetDropdown={setResetDropdownUrg}/>
+                        </div>
+                    </div>
+                    <div className={"flex flex-col"}>
+                        {/* Religion */}
+                        <div className={"grid justify-center items-center my-1.5 mb-1"}>
+                            <label className="label">Religion </label>
+                            <CreateDropdown dropBtnName={"Religion"} dropdownID={"ReligionID"} isSearchable={false}
+                                            populationArr={religions}
+                                            setSelected={setReligionDDIndx}
+                                            resetDropdown={resetDropdownRel}
+                                            resetOnSelect={false}
+                                            inputCSS={"n/a"} selectCSS={"dropdown"}
+                                            setResetDropdown={setResetDropdownRel}/>
+                        </div>
+                        {/* Description */}
+                        <div className={"grid justify-center items-center my-1.5 mb-1"}>
+                            <label className="label">Services Required </label>
+                            <textarea placeholder={"e.g. Last Rights"}
+                                      className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
+                                      onChange={(e) => setService(e.target.value)}
+                                      id={"service"}
+                                      value={service}
+                                      required>
                     </textarea>
-                </div>
-                {/* Urgency */}
-                <div className={"grid justify-center items-center my-1.5 mb-1"}>
-                    <label className="label">Priority </label>
-                    <CreateDropdown dropBtnName={"Priority "} dropdownID={"UrgencyID"} isSearchable={false}
-                                    populationArr={priorityLevels}
-                                    setSelected={setUrgencyDDIndx}
-                                    resetDropdown={resetDropdownUrg}
-                                    resetOnSelect={false}
-                                    inputCSS={"n/a"} selectCSS={"dropdown"}
-                                    setResetDropdown={setResetDropdownUrg}/>
-                </div>
-                {/* Extra notes */}
-                <div className={"grid justify-center items-center my-1.5 mb-1"}>
-                    <label className="label">Extra Notes </label>
-                    <textarea placeholder={"Extra Notes"}
-                              className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
-                              onChange={(e) => setExtraInfo(e.target.value)}
-                              id={"service"}
-                              value={extraInfo}
-                              required>
+                        </div>
+                        {/* Urgency */}
+
+                        {/* Extra notes */}
+                        <div className={"grid justify-center items-center my-1.5 mb-1"}>
+                            <label className="label">Extra Notes </label>
+                            <textarea placeholder={"Extra Notes"}
+                                      className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
+                                      onChange={(e) => setExtraInfo(e.target.value)}
+                                      id={"service"}
+                                      value={extraInfo}
+                                      >
                     </textarea>
+                        </div>
+                    </div>
                 </div>
+
+
+
+
                 <RequestButtons submit={handleSubmit}/>
 
             </form>

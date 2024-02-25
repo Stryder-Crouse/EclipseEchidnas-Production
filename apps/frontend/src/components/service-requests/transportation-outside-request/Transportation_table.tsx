@@ -217,7 +217,7 @@ export default function Transportation_table({statusFilter, priorityFilter,emplo
     }
 
     return (
-        <div>
+        <div className={"h-100 w-[42.5rem] overflow-auto rounded-xl" }>
             <table>
                 <thead>
                 <tr className={"tableTRHead"}>
