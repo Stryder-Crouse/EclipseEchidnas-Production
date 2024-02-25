@@ -12,6 +12,7 @@ import {
     ServiceRequest
 } from "common/src/algorithms/Requests/Request.ts";
 import Status from "../../../../packages/common/src/algorithms/Requests/Status.ts";
+import {religEmployees} from "./employees.ts";
 //import {Employee} from "../algorithms/Employee/Employee.ts";
 // import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
 
@@ -511,7 +512,7 @@ router.post("/medReq", async function (req: Request, res: Response) {
                             firstName: "N/A",
                             lastName: "N/A",
                             designation: "N/A",
-                            isAdmin: true,
+                            isAdmin: false,
                         },
                         //second part of create or connect (the what-we-connect-to part)
                         where: {
@@ -564,13 +565,13 @@ router.get("/medReq", async function (req: Request, res: Response) {
 
             const medReqs = await PrismaClient.medReq.findMany({
                 orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                    genReqID: "desc", //order by service request id so the two arrays are parallel
                 }
             });
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "medication"
@@ -591,7 +592,7 @@ router.get("/medReq", async function (req: Request, res: Response) {
 
             const medReqs = await PrismaClient.medReq.findMany({
                 orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                    genReqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     genReq: {
@@ -603,7 +604,7 @@ router.get("/medReq", async function (req: Request, res: Response) {
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "medication",
@@ -954,7 +955,7 @@ router.post("/outsideTransport", async function (req: Request, res: Response) {
                             firstName: "N/A",
                             lastName: "N/A",
                             designation: "N/A",
-                            isAdmin: true,
+                            isAdmin: false,
                         },
                         //second part of create or connect (the what-we-connect-to part)
                         where: {
@@ -992,14 +993,14 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
 
             const transportReq = await PrismaClient.outsideTransport.findMany({
                 orderBy: {
-                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                    serviceReqID: "desc", //order by service request id so the two arrays are parallel
                 }
 
             });
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "transportation"
@@ -1020,7 +1021,7 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
 
             const transportReq = await PrismaClient.outsideTransport.findMany({
                 orderBy: {
-                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                    serviceReqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     serviceReq: {
@@ -1032,7 +1033,7 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "transportation",
@@ -1377,7 +1378,8 @@ router.post("/sanReq", async function (req: Request, res: Response) {
                             firstName: "N/A",
                             lastName: "N/A",
                             designation: "N/A",
-                            isAdmin: true,
+                            isAdmin: false
+                            ,
                         },
                         //second part of create or connect (the what-we-connect-to part)
                         where: {
@@ -1413,13 +1415,13 @@ router.get("/sanReq", async function (req: Request, res: Response) {
 
             const sanReq = await PrismaClient.sanReq.findMany({
                 orderBy: {
-                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                    serviceReqID: "desc", //order by service request id so the two arrays are parallel
                 }
             });
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "sanitation"
@@ -1439,7 +1441,7 @@ router.get("/sanReq", async function (req: Request, res: Response) {
 
             const sanReq = await PrismaClient.sanReq.findMany({
                 orderBy: {
-                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                    serviceReqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     serviceReq: {
@@ -1451,7 +1453,7 @@ router.get("/sanReq", async function (req: Request, res: Response) {
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "sanitation",
@@ -1825,7 +1827,7 @@ router.post("/flowReq", async function (req: Request, res: Response) {
                             firstName: "N/A",
                             lastName: "N/A",
                             designation: "N/A",
-                            isAdmin: true,
+                            isAdmin: false,
                         },
                         //second part of create or connect (the what-we-connect-to part)
                         where: {
@@ -1870,12 +1872,12 @@ router.get("/flowReq", async function (req: Request, res: Response) {
             //try to send all the nodes to the client
             const flowReqs = await PrismaClient.flowReq.findMany({
                 orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                    genReqID: "desc", //order by service request id so the two arrays are parallel
                 },
             });
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: ReqTypes.flowReq,
@@ -1887,7 +1889,7 @@ router.get("/flowReq", async function (req: Request, res: Response) {
             //try to send all the nodes to the client
             const flowReqs = await PrismaClient.flowReq.findMany({
                 orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                    genReqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     genReq: {
@@ -1897,7 +1899,7 @@ router.get("/flowReq", async function (req: Request, res: Response) {
             });
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: ReqTypes.flowReq,
@@ -2239,7 +2241,7 @@ router.post('/religiousRequest', async function (req: Request, res: Response) {
                             firstName: "N/A",
                             lastName: "N/A",
                             designation: "N/A",
-                            isAdmin: true,
+                            isAdmin: false,
                         },
                         //second part of create or connect (the what-we-connect-to part)
                         where: {
@@ -2268,6 +2270,9 @@ router.post('/religiousRequest', async function (req: Request, res: Response) {
         res.sendStatus(500);
     }
 });
+
+
+
 router.get("/religiousRequest", async function (req: Request, res: Response) {
 
     const statusFilter: Status = req.query.status as Status;
@@ -2277,21 +2282,71 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
 
             const religReq = await PrismaClient.religiousReq.findMany({
                 orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                    genReqID: "desc", //order by service request id so the two arrays are parallel
                 }
             });
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "religious"
                 }
             });
 
+            //even though we use push later, we should still use const here
+            const employeeReq =
+                [[await PrismaClient.employee.upsert({
+                    //upsert without update is essentially "find or create"
+                    where: {
+                        userID: "0"
+                    },
+                    update: {},
+                    create: {
+                        userID:"0",
+                        userName: "No one",
+                        firstName: "N/A",
+                        lastName: "N/A",
+                        designation: "N/A",
+                        isAdmin: false,
+                    },
+                })]];
+
+            //get all the data out of the database using religReqs' religion fields
+            for(let i = 0; i<religReq.length; i++){
+                const nextEmployeeArr = await religEmployees(religReq[i].religion);
+                if(i == 0 && nextEmployeeArr != undefined){ //remove the "No one" array from the first slot
+                    employeeReq[0] = nextEmployeeArr;
+                }
+                else if(nextEmployeeArr != undefined) {
+                    employeeReq.push(nextEmployeeArr);
+                }
+                else{
+                    console.error("nextEmployeeArr at index "+i+" of the religious requests list" +
+                        " was undefined!\n");
+                    employeeReq.push([await PrismaClient.employee.upsert({
+                        //upsert without update is essentially "find or create"
+                        where: {
+                            userID: "0"
+                        },
+                        update: {},
+                        create: {
+                            userID:"0",
+                            userName: "No one",
+                            firstName: "N/A",
+                            lastName: "N/A",
+                            designation: "N/A",
+                            isAdmin: false,
+                        },
+                    })]);
+                }
+            }
+
+            console.log(employeeReq);
+
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects
-            res.status(200).send([religReq, serviceReqs]);
+            res.status(200).send([religReq, serviceReqs, employeeReq]);
             console.info("\nSuccessfully gave you all of the Religious Requests\n");
             //send status unless 6 times bug occurs
         } catch (err) {
@@ -2303,7 +2358,7 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
 
             const religReq = await PrismaClient.religiousReq.findMany({
                 orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                    genReqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     genReq: {
@@ -2315,7 +2370,7 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "religious",
@@ -2344,6 +2399,8 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
         let emplFilter: string = req.query.employee as string;
         let locFilter: string = req.query.location as string;
 
+        let relFilter:string = "religious personnel";
+
         console.log("raw");
         console.log("statusfilter: \n" + statusFilter);
         console.log("priorityFilter: \n" + priorityFilter);
@@ -2353,20 +2410,17 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
         if(statusFilter==Status.Any){
             statusFilter="%";
         }
-
         if(priorityFilter==Priorities.any){
             priorityFilter="%";
         }
         if(emplFilter=="Any"){
             emplFilter="%";
         }
-
         if(locFilter=="Any"){
             locFilter="%";
         }
 
-
-        const sreviceRequest = await PrismaClient.serviceRequest.findMany({
+        const serviceRequest = await PrismaClient.serviceRequest.findMany({
             orderBy:{
                 reqID: "desc"
             },
@@ -2436,8 +2490,150 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
             }
         );
 
+        //monster of a duplicate functionality section to properly define emplRequestArr with the right type
+        //because if I didn't, there would be no way to access the type "Employee" from the db
+
+        //set relFilter appropriately
+        if (relReq[0].religion == "Other") {
+            relFilter = "religious personnel";
+
+        } else {
+            switch (relReq[0].religion) {
+                case "Buddhism":
+                    relFilter = "Buddhist personnel";
+                    break;
+                case "Christianity (Catholicism)":
+                    relFilter = "Catholic personnel";
+                    break;
+                case "Christianity (Mormonism)":
+                    relFilter = "Mormon personnel";
+                    break;
+                case "Christianity (Non-Denominational)":
+                    relFilter = "Christian (non-denominational) personnel";
+                    break;
+                case "Christianity (Protestantism)":
+                    relFilter = "Protestant personnel";
+                    break;
+                case "Hinduism":
+                    relFilter = "Hindu personnel";
+                    break;
+                case "Islam":
+                    relFilter = "Muslim personnel";
+                    break;
+                case "Jainism":
+                    relFilter = "Jain personnel";
+                    break;
+                case "Judaism":
+                    relFilter = "Jewish personnel";
+                    break;
+                case "Sikhism":
+                    relFilter = "Sikh personnel";
+                    break;
+                case "Shinto":
+                    relFilter = "Shinto personnel";
+                    break;
+                default:
+                    relFilter = "religious personnel";
+                    break;
+            }
+        }
+        //proper definition of emplRequestArr and end of monster
+        const emplRequestArr = [await PrismaClient.employee.findMany(
+            {
+                where: {
+                    OR: [
+                        {
+                            designation: relFilter
+                        },
+                        { //always pull "religious personnel", no matter the religion
+                            designation: "religious personnel"
+                        },
+                        {
+                            userName: "No one"
+                        }
+                    ]
+
+                }
+
+            }
+        )
+        ];
+
+        //oh, wait, here's where the monster was *supposed* to be
+        for(let i = 1; i<relReq.length; i++) {
+            //set relFilter appropriately
+            if (relReq[i].religion == "Other") {
+                relFilter = "religious personnel";
+
+            } else {
+                switch (relReq[i].religion) {
+                    case "Buddhism":
+                        relFilter = "Buddhist personnel";
+                        break;
+                    case "Christianity (Catholicism)":
+                        relFilter = "Catholic personnel";
+                        break;
+                    case "Christianity (Mormonism)":
+                        relFilter = "Mormon personnel";
+                        break;
+                    case "Christianity (Non-Denominational)":
+                        relFilter = "Christian (non-denominational) personnel";
+                        break;
+                    case "Christianity (Protestantism)":
+                        relFilter = "Protestant personnel";
+                        break;
+                    case "Hinduism":
+                        relFilter = "Hindu personnel";
+                        break;
+                    case "Islam":
+                        relFilter = "Muslim personnel";
+                        break;
+                    case "Jainism":
+                        relFilter = "Jain personnel";
+                        break;
+                    case "Judaism":
+                        relFilter = "Jewish personnel";
+                        break;
+                    case "Sikhism":
+                        relFilter = "Sikh personnel";
+                        break;
+                    case "Shinto":
+                        relFilter = "Shinto personnel";
+                        break;
+                    default:
+                        relFilter = "religious personnel";
+                        break;
+                }
+            }
+
+            emplRequestArr.push(
+                await PrismaClient.employee.findMany(
+                    {
+                        where: {
+                            OR: [
+                                {
+                                    designation: relFilter
+                                },
+                                { //always pull "religious personnel", no matter the religion
+                                    designation: "religious personnel"
+                                },
+                                {
+                                    userName: "No one"
+                                }
+                            ]
+
+                        }
+
+                    }
+                )
+            );
+        }
+
+
+
+
         //send the request to the user with the specified conditions
-        res.status(200).send([relReq,sreviceRequest]);
+        res.status(200).send([relReq,serviceRequest, emplRequestArr]);
 
         console.log("Res: " + res); //debugging info
 
