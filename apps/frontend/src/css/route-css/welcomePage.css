@@ -35,7 +35,7 @@
   object-fit: contain;
   position: absolute;
   z-index: -1;
-  margin-top: -1rem;
+  margin-top: -3rem;
 }
 
 /** Welcome to Text **/
