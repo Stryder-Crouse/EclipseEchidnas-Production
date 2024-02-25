@@ -1,4 +1,5 @@
 import {Dispatch, SetStateAction, useRef, useState} from "react";
+import {Directions_Game, Echidna} from "./Echidna.ts";
 
 
 export type WongManProps={
@@ -13,10 +14,13 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
     const [showStart, setShowStart] =
         useState(true);
 
+    const [renderCount, setRenderCount] =
+        useState(0);
+
     const canvasArea = useRef<HTMLCanvasElement>(null);
     const canvasContext = useRef< CanvasRenderingContext2D | null>(null);
 
-    //let echidna = useRef< CanvasRenderingContext2D | null>(null);
+    const echidna = useRef< Echidna| null>(null);
 
     return (
         <div
@@ -56,6 +60,7 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
 
     function startGame(){
         //create peaces
+        echidna.current = new Echidna({x:200, y:200},40,40,Directions_Game.RIGHT);
 
         //set context
         canvasContext.current = canvasArea.current!.getContext("2d");
@@ -64,8 +69,12 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
     }
 
     function mainLoop(){
+        console.log(renderCount);
         clear();
-
+        echidna.current!.setXCoord(echidna.current!.getCoords().x+=1);
+        echidna.current?.render(canvasContext.current!);
+        //tell react to re-render
+        setRenderCount(renderCount+1);
     }
 
     function clear(){
