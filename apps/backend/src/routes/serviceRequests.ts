@@ -1071,6 +1071,11 @@ router.get("/outsideTransport/statistics", async function (req: Request, res: Re
     }
 });
 
+// return all the stats of types, priority, status of transport requests in each specific building in the database
+router.get("/outsideTransport/building-statistics", async function (/*req: Request, res: Response*/) {
+    const serviceRequest = await PrismaClient.serviceRequest.findMany();
+    console.log(serviceRequest);
+});
 
 
 // ---------------------------------    Sanitation DB Interaction    ---------------------------------
