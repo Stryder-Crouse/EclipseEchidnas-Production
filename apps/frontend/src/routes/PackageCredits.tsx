@@ -4,7 +4,7 @@ import React from "react";
 import Auth0Logo from "../images/packageLogos/Auth0.jpg";
 import AxiosLogo from "../images/packageLogos/axios.png";
 import ChartJS from "../images/packageLogos/chartjs.png";
-import DockerLogo from "../images/packageLogos/docker.jpg";
+import DockerLogo from "../images/packageLogos/docker.png";
 import ExpressLogo from "../images/packageLogos/express.png";
 import NodeLogo from "../images/packageLogos/nodejs.png";
 import PrismaLogo from "../images/packageLogos/prisma.png";
