@@ -27,7 +27,7 @@ function TailwindMapPage() {
     const [locations, setLocations] = useState([] as Array<Node>);
     const [locationsWithHalls, setLocationsWithHalls] = useState([] as Array<Node>);
     const [pathFindingType, setPathFindingType] = useState("A*");
-    const [textDirections, setTextDirections] = useState([] as string[]);
+    const [textDirections, setTextDirections] = useState([[],[],[],[],[],[]] as string[][]);
 
     const [viewbox, setViewbox] =
         useState<{ x: number, y: number, width: number, height: number }>({x: 940, y: 490, width: 2160, height: 1900});
