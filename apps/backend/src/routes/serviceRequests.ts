@@ -10,7 +10,7 @@ import {
     ReqTypes,
     sanReq,
     ServiceRequest
-} from "../../../../packages/common/src/algorithms/Requests/Request.ts";
+} from "common/src/algorithms/Requests/Request.ts";
 import Status from "../../../../packages/common/src/algorithms/Requests/Status.ts";
 //import {Employee} from "../algorithms/Employee/Employee.ts";
 // import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
@@ -381,15 +381,15 @@ router.post("/medReq", async function (req: Request, res: Response) {
         //create a Med Req (use data from the second element since we always put med req data type in second)
         await PrismaClient.medReq.create({
             data: {
-                medStrength: sentData[1].medStrength,
-                medName: sentData[1].medName,
-                quantity: sentData[1].quantity,
-                genReqID: service.reqID,
                 patientName: sentData[1].patientName,
                 patientDOB: sentData[1].patientDOB,
                 patientMedRecNum: sentData[1].patientMedRecordNum,
+                medStrength: sentData[1].medStrength,
+                medName: sentData[1].medName,
+                quantity: sentData[1].quantity,
                 medForm: sentData[1].medForm,
                 medSig: sentData[1].medSig,
+                genReqID: service.reqID
             }
         });
         console.info("Successfully saved Med Req"); // Log that it was successful

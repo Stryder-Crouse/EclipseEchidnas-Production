@@ -3,10 +3,10 @@ import React, {useEffect, useState} from "react";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 
 import axios from "axios";
-import {MedReq, ReqTypes, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
+import {MedReq, ReqTypes, ServiceRequest} from "common/src/algorithms/Requests/Request.ts";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
-import {NodeDataBase} from "../../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
+import {NodeDataBase} from "common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import {closeMedicineCard} from "../../service-request-cards/MedicineRequestCard.tsx";
 //import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";
@@ -63,27 +63,33 @@ export default function Medicine_input({
             // this is bc Front End will beconfused if we pass it a bunch of data so use data structures
             const servReq: ServiceRequest = {
                 reqType: ReqTypes.medReq,           //Set req type to med req automatically bc we only make med reqs
-                reqLocationID: locations[selected].nodeID,    //Need to know location of where the service request needs to be
-                extraInfo: "",                      //no extra info is asked for a med req so just ignore (empty string)
-                assignedUName: "No one",            //upon creation, no employee is assigned
-                status: "Unassigned",             //upon creation, nobody is assigned, so set status to unassigned
-                reqID: -1,
                 reqPriority: "Low",
-                time: null
+                reqLocationID: locations[selected].nodeID,    //Need to know location of where the service request needs to be
+                extraInfo: extraInfo,
+                status: "Unassigned",             //upon creation, nobody is assigned, so set status to unassigned
+                assignedUName: "No one",            //upon creation, no employee is assigned
+                time: null,
+                reqID: -1
             };
 
+            if(isNaN(parseInt(patientMedRec))){
+                console.error("patientMedRec was supposed to be a number");
+            }
+            if(isNaN(parseInt(medRequestDosage))){
+                console.error("medRequestDosage was supposed to be a number");
+            }
             //TODO FNFN Create Inputs for new variables below: patientName, patientDOB, patientMedRecordNum, medForm, medSig
             //Make a Med Req after the service req (Med req needs service req's id, so med req cannot be made before)
             const medReqData: MedReq = {
                 patientName: patientName,
                 patientDOB: patientDob,
-                patientMedRecordNum: Number(patientMedRec),
+                patientMedRecordNum: parseInt(patientMedRec),
+                medStrength: medRequestDosage,
+                medName: medArr[selectedName],
+                quantity: parseInt(medRequestDoses),
                 medForm: medRequestForm,
                 medSig: medicineSig,
-                medStrength: medRequestDosage,               //
-                medName: medArr[selectedName],                //etc etc etc
-                quantity: parseInt(medRequestDoses),    //
-                genReqID: -1,    // default is 0, but is always changed to the value of the newly created Service Req
+                genReqID: -1    // default is 0, but is always changed to the value of the newly created Service Req
             };
             clear();
 
