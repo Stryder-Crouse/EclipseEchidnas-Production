@@ -4,11 +4,11 @@ import {
     OutsideTransport,
     ReqTypes,
     ServiceRequest
-} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
+} from "common/src/algorithms/Requests/Request.ts";
 import axios from "axios";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
-import {NodeDataBase} from "../../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
+import {NodeDataBase} from "common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {closeTransportCard} from "../../service-request-cards/TransportationRequestCard.tsx";
 //import LocationsDropDown from "../../navigation-bar/LocationsDropDown.tsx";
@@ -149,22 +149,6 @@ export default function Transportation_Input({
                 <h1 className={"flex mb-3 justify-center font-bold text-xl"}>External Patient
                     Transportation</h1> {/* Div Title */}
 
-
-                <div className={"grid justify-center items-center my-1.5"}> {/* Priority Dropdown */}
-                    {/*<label
-                            className={"mr-1"}
-                            htmlFor={"priority"}
-                        >Priority Level: </label>*/}
-                    <label className="label">Priority </label>
-                    <CreateDropdown dropBtnName={"Priority "} dropdownID={"UrgencyID"} isSearchable={false}
-                                    populationArr={priorityLevels}
-                                    setSelected={setUrgencyDDIndx}
-                                    resetDropdown={resetDropdownUrg}
-                                    resetOnSelect={false}
-                                    inputCSS={"n/a"} selectCSS={"dropdown"}
-                                    setResetDropdown={setResetDropdownUrg}/>
-                </div>
-
                 {/*patient name*/}
                 <SimpleTextInput id={"patientName"} labelContent={"Patient Name "} inputStorage={patientName}
                                  setInputStorage={setPatientName}
@@ -193,6 +177,21 @@ export default function Transportation_Input({
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
                                  placeHolderText={"e.g. Mercy-Grey Hospital"}>
                 </SimpleTextInput>
+
+                <div className={"grid justify-center items-center my-1.5"}> {/* Priority Dropdown */}
+                    {/*<label
+                            className={"mr-1"}
+                            htmlFor={"priority"}
+                        >Priority Level: </label>*/}
+                    <label className="label">Priority </label>
+                    <CreateDropdown dropBtnName={"Priority "} dropdownID={"UrgencyID"} isSearchable={false}
+                                    populationArr={priorityLevels}
+                                    setSelected={setUrgencyDDIndx}
+                                    resetDropdown={resetDropdownUrg}
+                                    resetOnSelect={false}
+                                    inputCSS={"n/a"} selectCSS={"dropdown"}
+                                    setResetDropdown={setResetDropdownUrg}/>
+                </div>
 
                 <div className={"grid justify-center items-center my-1.5 mb-2"}>{/* Mode of Transportation Input */}
 

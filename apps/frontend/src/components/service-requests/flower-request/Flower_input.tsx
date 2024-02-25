@@ -145,7 +145,7 @@ export default function Flower_input({
                 <h1 className={"grid mb-3 justify-center font-bold text-xl"}>Flower Request </h1>
 
                 <div className={"flex"}>
-                    <div className={"flex flex-col"}>
+                    <div className={"flex flex-col mr-6"}>
                         <SimpleTextInput id={"senderName"} labelContent={"Name"} inputStorage={sender}
                                          setInputStorage={setSender}
                                          inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}

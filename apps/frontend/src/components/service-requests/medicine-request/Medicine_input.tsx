@@ -135,20 +135,6 @@ export default function Medicine_input({
             <form className={"p-2"}>
                 <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Medicine Request</h1>
 
-
-                <div className="grid justify-center items-center my-1.5">
-
-                    <label className="label">Location </label>
-                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationMed"} isSearchable={true}
-                                    populationArr={longNames} resetDropdown={resetDropdown}
-                                    setSelected={setSelected}
-                                    inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
-                                    selectCSS={""}
-                                    resetOnSelect={false} setResetDropdown={setResetDropdown}/>
-
-                </div>
-
-
                 <SimpleTextInput id={"medRequestType"} labelContent={"Medicine Name"} inputStorage={medRequestType}
                                  setInputStorage={setMedRequestType}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
@@ -156,8 +142,7 @@ export default function Medicine_input({
                                  placeHolderText={"e.g. Prozac"}>
                 </SimpleTextInput>
 
-
-                <SimpleTextInput id={"medRequestDose"} labelContent={"Medicine Strength"} inputStorage={medRequestDoses}
+                <SimpleTextInput id={"medRequestDose"} labelContent={"Medicine Dose"} inputStorage={medRequestDoses}
                                  setInputStorage={setMedRequestDose}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
@@ -170,6 +155,18 @@ export default function Medicine_input({
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
                                  placeHolderText={"e.g."}>
                 </SimpleTextInput>
+
+                <div className="grid justify-center items-center my-1.5">
+
+                    <label className="label">Location </label>
+                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationMed"} isSearchable={true}
+                                    populationArr={longNames} resetDropdown={resetDropdown}
+                                    setSelected={setSelected}
+                                    inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
+                                    selectCSS={""}
+                                    resetOnSelect={false} setResetDropdown={setResetDropdown}/>
+
+                </div>
 
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
                     <label className="label">Extra Notes </label>
