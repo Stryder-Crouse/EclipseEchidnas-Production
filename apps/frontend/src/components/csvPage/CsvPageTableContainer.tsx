@@ -55,7 +55,7 @@ export default function CsvPageTableContainer() {
             case "node":
                 return <NodeTable/>;
             case "edge":
-               return <EdgeTable></EdgeTable>;
+               return <EdgeTable/>;
             case "employee":
                return <EmployeeTableComponent/>;
             default:

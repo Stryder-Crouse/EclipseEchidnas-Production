@@ -70,12 +70,12 @@ function ExportImportButtonEmployee() {
             <button
                 className={"transition-all hover:bg-navy w-40 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}
                 onClick={importEmployee}>
-                Import .csv
+                Import Employee .csv
             </button>
             <button
                 className={"transition-all hover:bg-navy w-40 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}
                 onClick={exportEmployee}>
-                Export Current
+                Export Employee .csv
             </button>
         </div>
     );

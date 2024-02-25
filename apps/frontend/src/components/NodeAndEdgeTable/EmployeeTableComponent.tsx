@@ -14,38 +14,38 @@ function EmployeeTableComponent() {
     return (
 
 
-        <div className={"employeeTable"}>
-            <ExportImportButtonEmployee/>
-            <table id={"request-table"}>
-                <thead>
-                <tr className={"tableTRHead"}>
-                    <th className={"tableTD"}>User Name</th>
-                    <th className={"tableTD"}>First Name</th>
-                    <th className={"tableTD"}>Last Name</th>
-                    <th className={"tableTD"}>Designation</th>
-                    <th className={"tableTD"}>Is Admin</th>
-                    <th className={"tableTD"}>Edit</th>
-                    <th className={"tableTD"}>Delete</th>
-                </tr>
-                </thead>
-                {/* populating here */}
-                <tbody>
-                {
-                    employees.map((employee) => {
-                        return(
-                            <tr>
-                                <td className={"tableTD"}>{employee.userID}</td>
-                                <td className={"tableTD"}>{employee.userName}</td>
-                                <td className={"tableTD"}>{employee.lastName}</td>
-                                <td className={"tableTD"}>{employee.firstName}</td>
-                                <td className={"tableTD"}>{employee.designation}</td>
-                                <td className={"tableTD"}>{employee.isAdmin}</td>
-                            </tr>
-                        );
-                    })
-                }
-                </tbody>
-            </table>
+        <div className={""}>
+            <div className={"justify-center p-2 pt-0"}>
+                <ExportImportButtonEmployee/>
+            </div>
+            <div className={""}>
+                <table id={"request-table"} className={"requestTable"}>
+                    <thead>
+                        <tr className={"tableTRHead"}>
+                            <th className={"tableTD"}>User Name</th>
+                            <th className={"tableTD"}>Last Name</th>
+                            <th className={"tableTD"}>First Name</th>
+                            <th className={"tableTD"}>Designation</th>
+                            <th className={"tableTD"}>Is Admin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {
+                        employees.map((employee) => {
+                            return(
+                                <tr className={"tableTR"}>
+                                    <td className={"tableTD"}>{employee.userName}</td>
+                                    <td className={"tableTD"}>{employee.lastName}</td>
+                                    <td className={"tableTD"}>{employee.firstName}</td>
+                                    <td className={"tableTD"}>{employee.designation}</td>
+                                    <td className={"tableTD"}>{String(employee.isAdmin)}</td>
+                                </tr>
+                            );
+                        })
+                    }
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }

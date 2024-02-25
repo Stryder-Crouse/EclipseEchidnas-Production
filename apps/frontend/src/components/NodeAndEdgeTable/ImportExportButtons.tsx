@@ -3,6 +3,7 @@ import axios from "axios";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import {HTMLInputElement} from "happy-dom";
+import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 
 function ImportExportButtons() {
 
@@ -86,6 +87,31 @@ function ImportExportButtons() {
 
         //click the link to save the file for the user
         documentSaverEdge.click();
+
+        const employeesGetRaw = await axios.get<Employee[]>("/api/employees/employees");
+        const employeesGet = employeesGetRaw.data;
+
+
+        let EmployeeString = "";
+
+        for (const employeesGetElement of employeesGet) {
+            EmployeeString += employeesGetElement.userID + ",";
+            EmployeeString += employeesGetElement.userName + ",";
+            EmployeeString += employeesGetElement.firstName + ",";
+            EmployeeString += employeesGetElement.lastName + ",";
+            EmployeeString += employeesGetElement.designation + ",";
+            EmployeeString += employeesGetElement.isAdmin + "\r\n";
+        }
+
+        const employeeFile = new Blob([EmployeeString], {
+            type: "text/csv",
+        });
+
+        const documentSaveEmployee = document.createElement("a");
+        documentSaveEmployee.download = "employee.csv";
+        documentSaveEmployee.href = window.URL.createObjectURL(employeeFile);
+
+        documentSaveEmployee.click();
     }
 
     /*const */
@@ -95,12 +121,12 @@ function ImportExportButtons() {
             <button
                 className={"transition-all hover:bg-navy w-40 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}
                 onClick={inputFiles}>
-                Import .csv
+                Import all .csv
             </button>
             <button
                 className={"transition-all hover:bg-navy w-40 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}
                 onClick={exportDataBase}>
-                Export Current
+                Export all .csv
             </button>
         </div>
     );

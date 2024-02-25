@@ -2,6 +2,7 @@ import "../../css/route-css/nodeEdgeTablePage.css";
 import axios from "axios";
 import { NodeDataBase } from "../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import {useEffect, useState} from "react";
+import ImportExportNode from "./ImportExportNode.tsx";
 
 
 function NodeTable() {
@@ -12,27 +13,31 @@ function NodeTable() {
         getNodes().then((result) => setNodes(result));
     },[]);
 
-  return (
-    <div className={""}>
+    return (
+        <div>
+
+            <div className={"justify-center p-2 pt-0"}>
+              <ImportExportNode/>
+            </div>
             <div className={""}>
-                <table>
+                <table className={"requestTable"}>
                     <thead>
-                        <tr>
-                            <th>nodeID</th>
-                            <th>xcoord</th>
-                            <th>ycoord</th>
-                            <th>floor</th>
-                            <th>building</th>
-                            <th>nodeType</th>
-                            <th>longName</th>
-                            <th>shortName</th>
+                        <tr className={"tableTRHead"}>
+                            <th className={"tableTD"}>nodeID</th>
+                            <th className={"tableTD"}>xcoord</th>
+                            <th className={"tableTD"}>ycoord</th>
+                            <th className={"tableTD"}>floor</th>
+                            <th className={"tableTD"}>building</th>
+                            <th className={"tableTD"}>nodeType</th>
+                            <th className={"tableTD"}>longName</th>
+                            <th className={"tableTD"}>shortName</th>
                         </tr>
                     </thead>
                     <tbody id={"table-rows-nodes"}>
                         {
                             node.map((node) => {
                                 return (
-                                    <tr>
+                                    <tr className={"tableTR"}>
                                         <td className={"tableTD"}>{node.nodeID}</td>
                                         <td className={"tableTD"}>{node.xcoord}</td>
                                         <td className={"tableTD"}>{node.ycoord}</td>
@@ -48,7 +53,7 @@ function NodeTable() {
                     </tbody>
                 </table>
             </div>
-        </div>
+      </div>
     );
 }
 
