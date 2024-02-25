@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {statusFilter} from "../serviceRequestInterface.ts";
 import "../../../css/component-css/ServiceRequestTable.css";
-import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
-import {Priorities, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import Status from "../../../../../../packages/common/src/algorithms/Requests/Status.ts";
+import {Priorities, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
 import axios from "axios";
-import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
+import {Employee} from "../../../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import {requestFilters} from "../serviceRequestInterface.ts";
 
 
 
@@ -15,11 +15,30 @@ import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.
 
  ********/
 
+// async function getStats(){
+//     const stats = await axios.get("/api/serviceRequests/serviceReq/statistics");
+// }
+//todo FNFN statistics get for AJ
+//const stats = await axios.get("/api/serviceRequests/serviceReq/statistics");
+// stats.data.total is num of service requests
+// stats.data.medReq is num of med requests
+// stats.data.religReq is num of relig req
+// stats.data.flowReq is num of flow req
+// stats.data.sanReq is num of san req
+// stats.data.tranReq is number tran req
+// stats.data.lowPrio is number of low prio
+// stats.data.medPrio is num of med prio
+// stats.data.highPrio num of high prio
+// stats.data.emergPrio num of emergency prio
+// stats.data.unassigned num of unassigned
+// stats.data.assigned num of assigned
+// stats.data.inProgress num of in progress
+// stats.data.completed num of completed
 
 
 
-export default function ServiceRequest_Table({statusFilter:statusFilter}:statusFilter) {
-
+export default function ServiceRequest_Table({statusFilter, priorityFilter,employeeFilter,locationFilter}:requestFilters) {
+    console.log(priorityFilter);
 
 
     //set the variable serviceRequests to the value returned when setServiceRequests is called
@@ -35,9 +54,9 @@ export default function ServiceRequest_Table({statusFilter:statusFilter}:statusF
     //will rerun every single time statusFilter is changed (updates table for new entries)
     useEffect(() => {
         //fetches servReqs from the db to update the frontend table
-        getServiceRequest(statusFilter).then((result)=>{setServiceRequests(result);});
+        getServiceRequest(statusFilter,priorityFilter,employeeFilter,locationFilter).then((result)=>{setServiceRequests(result);});
         getEmployees().then((result)=>{setEmployees(result);});
-    }, [statusFilter]);
+    }, [employeeFilter, locationFilter, priorityFilter, statusFilter]);
 
     //make table of Service Requests
     return (
@@ -66,6 +85,7 @@ export default function ServiceRequest_Table({statusFilter:statusFilter}:statusF
                                 <th className={"tableTD"}>{request.reqType}</th>
                                 <th className={"tableTD"}>
                                     <select
+                                        className={"bg-transparent"}
                                         value={request.status}
                                         id={"medStatusDropdown" + request.reqID}
                                         onChange={
@@ -83,6 +103,7 @@ export default function ServiceRequest_Table({statusFilter:statusFilter}:statusF
                                 </th>
                                 <th className={"tableTD"}>
                                     <select
+                                        className={"bg-transparent"}
                                         value={request.reqPriority}     //sets dropdown to request's value
                                         id={"medStatusDropdown" + request.reqID}
                                         onChange={
@@ -100,6 +121,7 @@ export default function ServiceRequest_Table({statusFilter:statusFilter}:statusF
                                 </th>
                                 <th className={"tableTD"}>
                                     <select
+                                        className={"bg-transparent"}
                                         value={request.assignedUName}
                                         onChange={
                                             (event) => {
@@ -315,9 +337,11 @@ export default function ServiceRequest_Table({statusFilter:statusFilter}:statusF
 
 
 //query the Database for all service requests that fit the current filter (filter can be empty)
-async function getServiceRequest(statusFilter: Status) {
+async function getServiceRequest(statusFilter:Status, priorityFilter:Priorities, employeeFilter:string, locationFilter:string) {
     const serviceRequest =
-        await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter", {params: {status: statusFilter, priority: Priorities.any, employee: "any"}});
+        await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter", {params: {status: statusFilter, priority: priorityFilter,
+                employee:employeeFilter, location:locationFilter
+            } });
     // console.log("sss");
     // console.log(serviceRequest.data);
     return serviceRequest.data;

@@ -1,6 +1,6 @@
-import { Buildings, NodeType } from "../algorithms/Graph/Node.ts";
-import { Node } from "../algorithms/Graph/Node.ts";
-import { Coordinate } from "../algorithms/Graph/Coordinate.ts";
+import { Buildings, NodeType } from "../Graph/Node.ts";
+import { Node } from "../Graph/Node.ts";
+import { Coordinate } from "../Graph/Coordinate.ts";
 export type NodeDataBase = {
   nodeID: string;
   floor: string;

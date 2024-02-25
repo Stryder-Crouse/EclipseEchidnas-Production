@@ -1,6 +1,6 @@
 import "../../css/route-css/nodeEdgeTablePage.css";
 import axios from "axios";
-import { NodeDataBase } from "../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import { NodeDataBase } from "../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import {useEffect} from "react";
 
 let ran = false;

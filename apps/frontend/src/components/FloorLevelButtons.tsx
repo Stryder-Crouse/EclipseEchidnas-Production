@@ -1,4 +1,4 @@
-import {FloorToIndex} from "../../../backend/src/algorithms/Graph/Node.ts";
+import {FloorToIndex} from "../../../../packages/common/src/algorithms/Graph/Node.ts";
 import {Dispatch, SetStateAction} from "react";
 
 export interface levelStates{

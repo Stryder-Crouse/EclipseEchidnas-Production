@@ -1,25 +1,40 @@
 import {CreateDropdown} from "./CreateDropdown.tsx";
-import { Node, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, Node, NULLNODE} from "../../../../packages/common/src/algorithms/Graph/Node.ts";
 import {Dispatch, SetStateAction, useState} from "react";
+import {TextDirectionsDropDown} from "./map/TextDirectionsDropDown.tsx";
+import {QuickRouteButtons} from "./map/QuickRouteButtons.tsx";
 
 
-export interface searchStates{
+
+export interface levelStates{
+    setSelectedFloorIndex: Dispatch<SetStateAction<FloorToIndex>>;
     startNode:Node;
     setStartNode: Dispatch<SetStateAction<Node>>;
     endNode:Node;
     setEndNode: Dispatch<SetStateAction<Node>>;
     locations:Node[];
+    setPathFindingType:Dispatch<SetStateAction<string>>;
+    textDirections:string[][]
 }
 
-export default function MapSearchBar({startNode:startNode,setStartNode:setStartNode,
-                                         endNode:endNode,setEndNode:setEndNode,
-                                         locations:locations}:searchStates) {
+const searchOptions:string[] = ["A*","BFS","DFS"];
+
+export default function MapSearchBar({startNode:startNode,
+                                         setStartNode:setStartNode,
+                                         endNode:endNode,
+                                         setEndNode:setEndNode,
+                                         locations:locations,
+                                         setPathFindingType:setPathFindingType,
+                                         textDirections
+                                     }:levelStates) {
 
 
     const [resetDropdown, setResetDropdown] = useState(false);
     const [selected, setSelected] = useState(-1);
 
     const [selectedText, setSelectedText] = useState("Start Location");
+
+    const [errorNoStartLocation, setErrorNoStartLocation] = useState(false);
 
     //create an array of longNames to pass to CreateDropDown
     const longNames:string[] = locations.map((node)=>{return node.longName; });
@@ -37,6 +52,34 @@ export default function MapSearchBar({startNode:startNode,setStartNode:setStartN
             setEndNode,setSelectedText);
     }
 
+    function openLocations() {
+        const openLocationInput = document.getElementById("locationDropdown");
+        if (openLocationInput != null) {
+            openLocationInput.style.display = "block";
+        }
+    }
+
+    function closeLocations() {
+        const closeLocationInput = document.getElementById("locationDropdown");
+        if (closeLocationInput != null) {
+            closeLocationInput.style.display = "none";
+        }
+    }
+
+    const [selectedAlgoIndex, setSelectedAlgoIndex] =useState(-1);
+
+
+
+
+
+    if(selectedAlgoIndex!=-1){
+        setPathFindingType(searchOptions[selectedAlgoIndex]);
+        setSelectedAlgoIndex(-1);
+    }
+
+
+
+
     return (
         <div className="ml-5 relative flex flex-col">
             {/*<input*/}
@@ -44,43 +87,129 @@ export default function MapSearchBar({startNode:startNode,setStartNode:setStartN
             {/*    placeholder="Go to Location"*/}
             {/*    className="w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg"*/}
             {/*/>*/}
-            <CreateDropdown dropBtnName={selectedText} dropdownID={"Location"} isSearchable={true}
-                            populationArr={longNames} resetDropdown={resetDropdown}
-                             setSelected={setSelected}
-                            inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
-                            selectCSS={""}
-             resetOnSelect={true} setResetDropdown={setResetDropdown}>
-            </CreateDropdown>
-            <div className={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white"}>
-                <b>Start: </b>{startNode.longName}
+            <div onClick={openLocations}>
+                <CreateDropdown dropBtnName={selectedText} dropdownID={"Location"} isSearchable={true}
+                                populationArr={longNames} resetDropdown={resetDropdown}
+                                setSelected={setSelected}
+                                inputCSS={"w-60 p-2 border-gray-500 text-black rounded-full border-2 pr-10 drop-shadow-lg "}
+                                selectCSS={""}
+                                resetOnSelect={true} setResetDropdown={setResetDropdown}>
+                </CreateDropdown>
             </div>
-            <div className={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white"}>
-                <b>End: </b>{endNode.longName}
+
+
+            <div className={"hidden"} id={"locationDropdown"}>
+                <div
+                    className={"w-60 p-2 rounded-3xl border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white overflow-hidden"}
+                    style={{
+                        width: "15rem", // Initial width set to match the same width as all other divs
+                        maxHeight: "50px",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        transition: "max-height 0.5s, width 0.5s",
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.maxHeight = "none";
+                        e.currentTarget.style.width = "15rem";  // Set the width to initial value
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.maxHeight = "50px";
+                        e.currentTarget.style.width = "15rem";  // Set the initial width here
+                    }}
+                    title={startNode.longName}
+                >
+
+                    <b>Start: </b>{startNode.longName}
+                </div>
+
+
+                <div
+                    className={"w-60 p-2 rounded-3xl border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white overflow-hidden"}
+                    style={{
+                        maxHeight: "50px",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        transition: "max-height 0.5s",
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.maxHeight = "none";
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.maxHeight = "50px";
+                    }}
+                    title={endNode.longName}
+                >
+                    <b>End: </b>{endNode.longName}
+                </div>
+
+
+                <div className={" mt-1"}>
+                    <CreateDropdown
+                        dropBtnName={"Search Type"} dropdownID={"Search Type"} populationArr={searchOptions}
+                        isSearchable={false}
+                        resetOnSelect={false} resetDropdown={resetDropdown}
+                        setResetDropdown={setResetDropdown} setSelected={setSelectedAlgoIndex}
+                        inputCSS={"text-gray focus:outline-none p-2"}
+                        selectCSS={"transition-all hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}></CreateDropdown>
+                </div>
+
+                <div className={" mt-1"}>
+                    <QuickRouteButtons setEndNode={setEndNode} startNode={startNode}
+                                       setErrorNoStartLocation={setErrorNoStartLocation}></QuickRouteButtons>
+                    {
+                        drawNoStartLocationError()
+                    }
+                </div>
+                <TextDirectionsDropDown closeLocations={closeLocations}
+                                        textDirections={textDirections}></TextDirectionsDropDown>
+
+
             </div>
+
 
             {/*populate div for locations*/}
         </div>
     );
 
+    function drawNoStartLocationError() {
+
+
+        if (startNode != NULLNODE) {
+            if (errorNoStartLocation) {
+                setErrorNoStartLocation(false);
+            }
+            return;
+        }
+        if (errorNoStartLocation) {
+            return (
+                <div className="w-60 p-2 rounded-3xl border-gray-500 border-2
+                drop-shadow-lg mt-1 bg-[#8A0E11] overflow-hidden text-white font-semibold ">
+                    Error: Please Select a Starting location first</div>
+            );
+        }
+
+    }
+
+
 
 }
 
 function onLocationSelect(node: Node, startNode: Node, endNode: Node, setStartNode: Dispatch<SetStateAction<Node>>
-    , setEndNode: Dispatch<SetStateAction<Node>>,setSelectedText:Dispatch<SetStateAction<string>>
-                          ){
+    , setEndNode: Dispatch<SetStateAction<Node>>, setSelectedText: Dispatch<SetStateAction<string>>
+) {
 
     console.log("select");
     console.log(node);
 
-    if(startNode == NULLNODE && endNode == NULLNODE){
+    if (startNode == NULLNODE && endNode == NULLNODE) {
         setStartNode(node);
         setSelectedText("End Location");
-    }
-    else if (endNode == NULLNODE){
+    } else if (endNode == NULLNODE) {
         setEndNode(node);
         setSelectedText("Start Location");
-    }
-    else{
+    } else {
         setStartNode(node);
         setEndNode(NULLNODE);
         setSelectedText("End Location");

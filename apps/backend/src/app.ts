@@ -9,6 +9,8 @@ import serviceRequests from "./routes/serviceRequests.ts";
 import loadNodes from "./routes/loadNodes.ts";
 import loadEdges from "./routes/loadEdges.ts";
 import employees from "./routes/employees.ts";
+import cascade from "./routes/CascadeDelete.ts";
+import graphRouter from "./routes/GraphRouter.ts";
 
 
 const app: Express = express(); // Setup the backend
@@ -34,6 +36,8 @@ app.use("/api/load-edges", loadEdges); //creates url for function of loading nod
 app.use("/api/loadCSVFile", fileLoading);
 app.use("/api/serviceRequests", serviceRequests);
 app.use("/api/employees", employees);
+app.use("/api/cascadeDelete", cascade);
+app.use("/api/Graph", graphRouter);
 
 /**
  * Catch all 404 errors, and forward them to the error handler

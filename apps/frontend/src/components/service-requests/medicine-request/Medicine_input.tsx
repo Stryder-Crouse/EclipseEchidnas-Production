@@ -3,13 +3,13 @@ import React, {useEffect, useState} from "react";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 
 import axios from "axios";
-import {MedReq, ReqTypes, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import {MedReq, ReqTypes, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
-import {NodeDataBase} from "../../../../../backend/src/DataBaseClasses/NodeDataBase.ts";
+import {NodeDataBase} from "../../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import {closeMedicineCard} from "../../service-request-cards/MedicineRequestCard.tsx";
 //import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
-
+import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";
 let longNames:string[] = [];
 
 export default function Medicine_input({
@@ -104,13 +104,13 @@ export default function Medicine_input({
     }
 
     function show() {
-        const tag: HTMLElement = document.getElementById("popup") as HTMLElement;
+        const tag: HTMLElement = document.getElementById("med-popup") as HTMLElement;
         tag.style.opacity = "1";
         interID = setInterval(fadeEffect, 100);
     }
 
     function fadeEffect() {
-        const target = document.getElementById("popup") as HTMLElement;
+        const target = document.getElementById("med-popup") as HTMLElement;
         let opacity = target.style.opacity;
         if(Number(opacity) >= 0.97) {
             opacity = (Number(opacity) - 0.001).toString();
@@ -247,12 +247,11 @@ export default function Medicine_input({
                     "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-5"}>
                     Close
                 </button>
-                <div id={"popup"} className={"text-center opacity-0 text-submitSuccess"}>
-                    <h3>
-                        Successfully submitted!
-                    </h3>
-                </div>
+
                 <p className={"flex justify-center items-center mt-5"}>Created By: Alex and Antonio</p>
+            </div>
+            <div id={"med-popup"} className={"text-center flex justify-center m-auto opacity-0 "}>
+                <RequestSubmitToast/>
             </div>
         </div>
 
