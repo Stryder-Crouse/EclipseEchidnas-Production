@@ -50,7 +50,7 @@ function TailwindMapPage() {
 
     return (
         <div className="flex">
-            <div className="flex absolute w-screen h-screen">
+            <div className="flex absolute w-screen vh-100">
                 <div className={"z-50"}>
                     <FullSideNavBarComponent/>
                 </div>
