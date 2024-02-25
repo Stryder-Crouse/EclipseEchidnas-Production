@@ -206,7 +206,7 @@ export default function Religious_input({
                                       onChange={(e) => setExtraInfo(e.target.value)}
                                       id={"service"}
                                       value={extraInfo}
-                                      required>
+                                      >
                     </textarea>
                         </div>
                     </div>

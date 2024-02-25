@@ -215,6 +215,7 @@ export default function Transportation_Input({
                         placeholder={"Extra Notes"}
                         value={additional}
                         onChange={(e) => setAdditional(e.target.value)}
+
                     />
                 </div>
 

@@ -136,6 +136,15 @@ export default function Flower_input({
         setIsPopupOpen(false);
     }
 
+    const handleFlowerNumericInputChange = (value: ((prevState: string) => string) | string, setter: React.Dispatch<React.SetStateAction<string>>) => {
+        // Check if the entered value is a number
+        if (!isNaN(Number(value))) {
+            setter(value);
+        }
+        // You can also provide feedback to the user if the input is not a number
+    };
+
+
     return(
         <div
             className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
@@ -188,7 +197,7 @@ export default function Flower_input({
                     <div className={"flex flex-col"}>
                         <SimpleTextInput id={"flowerquantity"} labelContent={"Flower Quantity"}
                                          inputStorage={flowerQuantity}
-                                         setInputStorage={setFlowerQuantity}
+                                         setInputStorage={(value) => handleFlowerNumericInputChange(value, setFlowerQuantity)}
                                          inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
                                          placeHolderText={"e.g. 14"}>
@@ -216,7 +225,7 @@ export default function Flower_input({
                                       onChange={(e) => setExtraInfo(e.target.value)}
                                       id={"service"}
                                       value={extraInfo}
-                                      required>
+                                      >
                         </textarea>
                         </div>
                     </div>

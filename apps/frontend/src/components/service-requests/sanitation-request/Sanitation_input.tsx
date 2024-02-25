@@ -163,7 +163,7 @@ export default function Sanitation_input({
                               onChange={(e) => setExtraInfo(e.target.value)}
                               id={"service"}
                               value={extraInfo}
-                              required>
+                              >
                     </textarea>
                 </div>
 
