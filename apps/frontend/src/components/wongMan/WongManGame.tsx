@@ -2,10 +2,19 @@ import {Dispatch, SetStateAction, useRef, useState} from "react";
 import {Directions_Game, Echidna} from "./Echidna.ts";
 
 
+import LowerLevel1Game from "../../images/WongMan/Maps/LowerLevel1.png";
+// @ts-expect-error idk why its fine
+import {KeyboardEvent} from "happy-dom";
+import {Coordinate} from "common/src/algorithms/Graph/Coordinate.ts";
+
 export type WongManProps={
     visable:boolean
     setVisable:Dispatch<SetStateAction<boolean>>
 }
+
+
+const playerSpeed =3;
+
 export default function WongManGame({visable,setVisable}:WongManProps) {
 
     const [showGame, setShowGame] =
@@ -20,6 +29,7 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
     const canvasContext = useRef< CanvasRenderingContext2D | null>(null);
 
     const echidna = useRef< Echidna| null>(null);
+    const keysDown = useRef< number[]>([0,0,0,0]);
 
     return (
         <div
@@ -59,7 +69,7 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
 
     function startGame(){
         //create peaces
-        echidna.current = new Echidna({x:200, y:200},40,40,Directions_Game.RIGHT);
+        echidna.current = new Echidna({x:200, y:200},50,50,Directions_Game.RIGHT);
 
 
         //set context
@@ -68,25 +78,147 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
         //set how large the rendering area is
         canvasContext.current!.canvas.width = window.innerWidth;
         canvasContext.current!.canvas.height = window.innerHeight;
+        //disable AA for better look
+        canvasContext.current!.imageSmoothingEnabled=false;
+        //add eventliseners 
+        window.addEventListener("keydown",(e)=>{
+
+            handleKeyDown(e);});
+        window.addEventListener("keyup",(e)=>{handleKeyUp(e);});
 
 
         setInterval(mainLoop,20);
-        console.log("exited");
+        //console.log("exited");
+    }
+    
+    function handleKeyDown(event:KeyboardEvent){
+        console.log(event.code);
+        switch (event.code) {
+            //left arrow
+            case "ArrowLeft":
+                keysDown.current[0]=1;
+                break;
+            //right arrow
+            case "ArrowRight":
+                keysDown.current[1]=1;
+                break;
+            
+            //up arrow
+            case "ArrowUp":
+                keysDown.current[2]=1;
+                break;
+            //down arrow
+            case "ArrowDown":
+                keysDown.current[3]=1;
+                break;
+        }
+    }
+
+    function handleKeyUp(event:KeyboardEvent){
+        switch (event.code) {
+            //left arrow
+            case "ArrowLeft":
+                keysDown.current[0]=0;
+                break;
+            //right arrow
+            case "ArrowRight":
+                keysDown.current[1]=0;
+                break;
+
+            //up arrow
+            case "ArrowUp":
+                keysDown.current[2]=0;
+                break;
+            //down arrow
+            case "ArrowDown":
+                keysDown.current[3]=0;
+                break;
+        }
     }
 
     function mainLoop(){
 
         clear();
-        echidna.current!.setXCoord(echidna.current!.getCoords().x+=1);
-        console.log(echidna.current?.getCoords());
+
+        //draw the level
+        drawLevel(0);
+
+        handlePlayerMovment();
         echidna.current?.render(canvasContext.current!);
 
-    }
 
+
+    }
     function clear(){
         canvasContext.current?.clearRect(0,0,canvasArea.current!.width,canvasArea.current!.height);
     }
 
+    function drawLevel(level:number) {
+
+        let levelSRC = "";
+        switch (level) {
+
+            case 0:
+                levelSRC = LowerLevel1Game; break;
+            default:
+                return "/src/images/maps/00_thelowerlevel1.png";
+        }
+
+        const img = document.createElement("img");
+        img.src=levelSRC;
+        canvasContext.current!.drawImage(img,0,0,window.innerWidth,window.innerHeight);
+
+    }
+    
+    function handlePlayerMovment(){
+        const playerMovementThisFrame:Coordinate = {x:0,y:0};
+        
+        //left arrow down
+        if(keysDown.current[0]){
+            playerMovementThisFrame.x = -playerSpeed;
+        }
+        //right arrow down
+        if(keysDown.current[1]){
+            playerMovementThisFrame.x = playerSpeed;
+        }
+        //up arrow down
+        if(keysDown.current[2]){
+            playerMovementThisFrame.y = -playerSpeed;
+        }
+        //down arrow down
+        if(keysDown.current[3]){
+            playerMovementThisFrame.y = playerSpeed;
+        }
+        
+        const newCordnates = echidna.current!.getCoords()!;
+        newCordnates.x = newCordnates.x + playerMovementThisFrame.x;
+        newCordnates.y = newCordnates.y + playerMovementThisFrame.y;
+
+        //handle rotation
+        
+        echidna.current?.setCoords(newCordnates);
+    }
+
+    // function handleRotation(newCordnates:Coordinate){
+    //
+    //     //diagonal cases
+    //     if(newCordnates.x!=0 && newCordnates.y!=0){
+    //         if(newCordnates.x > 0){
+    //
+    //         }
+    //
+    //     }
+    //     //right or left only
+    //     else if(newCordnates.x!=0){
+    //
+    //     }
+    //     //up or down only
+    //     else if(newCordnates.y!=0){
+    //
+    //     }
+    //
+    // }
+    
     function showWongMan(visable:boolean){
         if(visable){
             return "z-[100] bg-amber-200 w-screen h-screen";
