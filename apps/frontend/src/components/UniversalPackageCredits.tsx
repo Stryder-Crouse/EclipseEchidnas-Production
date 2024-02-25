@@ -23,34 +23,36 @@ export function UniversalPackageCredits({packageName, packageImage, useDescripti
     }
 
     return (
-        <div>
+        <div className={"border-black"}>
             <div
-                className="w-[10vw] rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl
+                className="w-40 h-56 rounded overflow-hidden shadow-lg text-black bg-ivoryWhite text-center drop-shadow-xl
             hover:border-b-teal border-b-8 border-ivoryWhite cursor-pointer transition-all
             hover:scale-105"
                 id={"base"}
                 onClick={openDescription}
             >
-                <img className="h-fit w-full " src={packageImage} alt="Logo"/>
-                <div className="px-6 py-4">
-                    <div className="font-bold text-xl mb-2 text-center">{packageName}</div>
+                <div className={"w-full flex justify-center bg-white"}>
+                    <img className="h-32 border-black" src={packageImage} alt="Logo"/>
+                </div>
+                <div className="px-6 py-4 flex-column col-1  justify-center h-24 w-40">
+                    <p className="font-bold text-xl  text-center align-middle m-auto">{packageName}</p>
                 </div>
             </div>
 
             {isPopupOpen && (
-                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-50" onClick={closeDescription}></div>
+                <div className="fixed inset-0 z-50" onClick={closeDescription}></div>
             )}
 
             <div className={`popupForm ${isPopupOpen ? "block" : "hidden"}`} id={"descriptionPopup"}>
-                <a href={link}>
+                <a href={link} target={"_blank"}>
                     <div
-                        className={"grid justify-items-center border rounded-2xl bg-ivoryWhite p-8 font-project w-80"}
+                        className={"grid justify-items-center border border-black rounded-2xl bg-ivoryWhite p-8 font-project w-80"}
                     >
                         <div>
                             <img
                                 src={packageImage}
                                 alt={"Logo"}
-                                className={"border border-transparent rounded-lg w-48 my-1"}
+                                className={"bg-white border border-transparent rounded-lg w-48 my-1"}
                             />
                         </div>
 
@@ -64,7 +66,7 @@ export function UniversalPackageCredits({packageName, packageImage, useDescripti
                             <p className={"border border-black rounded p-2 my-1"}>
                                 {useDescription}
                             </p>
-                            <p className={"text-sm my-1"}>
+                            <p className={"text-xs my-1"}>
                                 {copyright}
                             </p>
                         </div>
