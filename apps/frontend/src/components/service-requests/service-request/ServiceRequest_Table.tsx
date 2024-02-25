@@ -62,7 +62,7 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter,emplo
 
     //make table of Service Requests
     return (
-        <div className={"h-100 w-[42.5rem] overflow-auto"}>
+        <div className={"h-100 w-[42.5rem] overflow-auto rounded-xl"}>
 
             {/* make your table in here  */}
             <table className={"medTable"}>

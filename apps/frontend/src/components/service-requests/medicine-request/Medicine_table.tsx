@@ -33,7 +33,7 @@ export default function Medicine_table({statusFilter, priorityFilter,employeeFil
     }, [statusFilter, priorityFilter, employeeFilter, locationFilter]);
 
     return (
-        <div className={"h-100 w-[42.5rem] overflow-auto "}>
+        <div className={"h-100 w-[42.5rem] overflow-auto rounded-xl "}>
 
                         <table className={"requestTable"} id={"request-table"}>
                             <thead>

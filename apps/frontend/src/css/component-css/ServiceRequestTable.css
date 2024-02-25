@@ -1,7 +1,7 @@
 .medTable {
     overflow-x: scroll;
     overflow-y: scroll;
-
+    border-radius: 2rem;
     justify-content: left;
     border-collapse: collapse;
 }
