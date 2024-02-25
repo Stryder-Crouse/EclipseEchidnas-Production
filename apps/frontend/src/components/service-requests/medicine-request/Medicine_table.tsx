@@ -75,8 +75,10 @@ export default function Medicine_table({statusFilter, priorityFilter,employeeFil
                                                         }
                                                     }
                                                 >
-                                                    <option className={"status-dropdown"}
-                                                            value="Unassigned">Unassigned
+                                                    <option
+                                                        className={"status-dropdown"}
+                                                        value="Unassigned">
+                                                        Unassigned
                                                     </option>
                                                     <option className={"status-dropdown"} value="Assigned">Assigned
                                                     </option>

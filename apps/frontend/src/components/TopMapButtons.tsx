@@ -2,7 +2,6 @@ import MapSearchBar from "./MapSearchBar.tsx";
 import {FloorToIndex, Node} from "../../../../packages/common/src/algorithms/Graph/Node.ts";
 import {Dispatch, SetStateAction} from "react";
 
-
 export interface levelStates{
     setSelectedFloorIndex: Dispatch<SetStateAction<FloorToIndex>>;
     startNode:Node;
@@ -36,8 +35,8 @@ export default function TopMapButtons({setSelectedFloorIndex:setFloor,
                     setEndNode={setEndNode}
                     setStartNode={setStartNode}
                     startNode={startNode}
-                    setPathFindingType={setPathFindingType}  
-                    setSelectedFloorIndex={setFloor}        
+                    setPathFindingType={setPathFindingType}
+                    setSelectedFloorIndex={setFloor}
                  textDirections={textDirections}/>
 
             </div>
