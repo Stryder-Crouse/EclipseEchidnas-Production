@@ -172,7 +172,8 @@ export default function Medicine_input({
                 <div className="grid justify-center items-center my-1.5">
 
                     <label className="label">Location </label>
-                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationMed"} isSearchable={true}
+                    <CreateDropdown runOnChange={()=>{return -1;}}
+                                    dropBtnName={"Locations"} dropdownID={"LocationMed"} isSearchable={true}
                                     populationArr={longNames} resetDropdown={resetDropdown}
                                     setSelected={setSelectedLoc}
                                     inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
@@ -184,6 +185,7 @@ export default function Medicine_input({
                 <div className="grid justify-center items-center my-1.5">
                     <label className={"Priority"}>Priority </label>
                     <CreateDropdown
+                        runOnChange={()=>{return -1;}}
                         dropBtnName={"Priority"}
                         dropdownID={"Priority"}
                         populationArr={priorityArr}
@@ -223,6 +225,7 @@ export default function Medicine_input({
                 <div className={"grid justify-center items-center my-1.5"}>
                     <label className="label">Medicine Name</label>
                     <CreateDropdown
+                        runOnChange={()=>{return -1;}}
                         dropBtnName={"Form"}
                         dropdownID={"medicineForm"}
                         populationArr={medArr}
