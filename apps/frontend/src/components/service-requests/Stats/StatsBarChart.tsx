@@ -7,6 +7,8 @@ import {
     Tooltip,
     Legend
 } from 'chart.js';
+import axios from "axios";
+import {useEffect, useState} from 'react';
 
 ChartJS.register(
     BarElement,
@@ -15,8 +17,95 @@ ChartJS.register(
     Tooltip,
     Legend
 );
+export type building = {
+    total: number,
+    lowPrio: number,
+    medPrio: number,
+    highPrio: number,
+    emergPrio: number,
+    unassigned: number,
+    assigned: number,
+    inProgress: number,
+    completed: number
+}
+export type buildingStats = {
+    shapiro: building,
+    tower: building,
+    Francis45: building,
+    Francis15: building,
+    BTM: building
+}
 
 function StatsBarChart(){
+
+    const [stats , setStats ]
+        = useState<buildingStats>(
+        {
+            shapiro: {
+                total: 0,
+                lowPrio: 0,
+                medPrio: 0,
+                highPrio: 0,
+                emergPrio: 0,
+                unassigned: 0,
+                assigned: 0,
+                inProgress: 0,
+                completed: 0
+            },
+            tower: {
+                total: 0,
+                lowPrio: 0,
+                medPrio: 0,
+                highPrio: 0,
+                emergPrio: 0,
+                unassigned: 0,
+                assigned: 0,
+                inProgress: 0,
+                completed: 0
+            },
+            Francis45: {
+                total: 0,
+                lowPrio: 0,
+                medPrio: 0,
+                highPrio: 0,
+                emergPrio: 0,
+                unassigned: 0,
+                assigned: 0,
+                inProgress: 0,
+                completed: 0
+            },
+            Francis15: {
+                total: 0,
+                lowPrio: 0,
+                medPrio: 0,
+                highPrio: 0,
+                emergPrio: 0,
+                unassigned: 0,
+                assigned: 0,
+                inProgress: 0,
+                completed: 0
+            },
+            BTM: {
+                total: 0,
+                lowPrio: 0,
+                medPrio: 0,
+                highPrio: 0,
+                emergPrio: 0,
+                unassigned: 0,
+                assigned: 0,
+                inProgress: 0,
+                completed: 0
+            }
+        }
+    );
+
+    useEffect(() => {
+        getAllBuildingStats().then((res)=>{
+            setStats(res);
+        });
+    }, []);
+
+
     const data = {
         labels: ['Shapiro',
             'Tower',
@@ -26,7 +115,7 @@ function StatsBarChart(){
         datasets: [
             {
                 label: 'Requests',
-                data: [6, 3, 10, 8, 2],
+                data: [stats.shapiro.total,stats.tower.total,stats.Francis45.total,stats.Francis15.total,stats.BTM.total],
                 backgroundColor: ["#BA1215", "#003a96", "#0C8750", "#FFBA08", "#4F5459"]
             }
         ]
@@ -35,7 +124,7 @@ function StatsBarChart(){
         indexAxis: 'y',
         layout: {
             padding: {
-                top: 50
+                top: 0
             }
         }
     };
@@ -50,6 +139,11 @@ function StatsBarChart(){
             <Bar data={data} options={options}></Bar>
         </div>
     );
+}
+
+async function getAllBuildingStats() {
+    const getAllBuildingStats = await axios.get<buildingStats>("/api/serviceRequests/flowReq/building-statistics");
+    return getAllBuildingStats.data;
 }
 
 export default StatsBarChart;
