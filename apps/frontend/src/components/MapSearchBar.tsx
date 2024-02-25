@@ -2,6 +2,7 @@ import {CreateDropdown} from "./CreateDropdown.tsx";
 import {FloorToIndex, Node, NULLNODE} from "../../../../packages/common/src/algorithms/Graph/Node.ts";
 import {Dispatch, SetStateAction, useState} from "react";
 import {TextDirectionsDropDown} from "./map/TextDirectionsDropDown.tsx";
+import {QuickRouteButtons} from "./map/QuickRouteButtons.tsx";
 
 
 
@@ -32,6 +33,8 @@ export default function MapSearchBar({startNode:startNode,
     const [selected, setSelected] = useState(-1);
 
     const [selectedText, setSelectedText] = useState("Start Location");
+
+    const [errorNoStartLocation, setErrorNoStartLocation] = useState(false);
 
     //create an array of longNames to pass to CreateDropDown
     const longNames:string[] = locations.map((node)=>{return node.longName; });
@@ -141,7 +144,13 @@ export default function MapSearchBar({startNode:startNode,
                     <b>End: </b>{endNode.longName}
                 </div>
 
-
+                <div className={" mt-1"}>
+                    <QuickRouteButtons setEndNode={setEndNode} setStartNode={setStartNode} startNode={startNode}
+                                       setErrorNoStartLocation={setErrorNoStartLocation}></QuickRouteButtons>
+                    {
+                        drawNoStartLocationError()
+                    }
+                </div>
                 <div className={" mt-1"}>
                     <CreateDropdown
                         dropBtnName={"Search Type"} dropdownID={"Search Type"} populationArr={searchOptions}
@@ -162,6 +171,26 @@ export default function MapSearchBar({startNode:startNode,
             {/*populate div for locations*/}
         </div>
     );
+
+    function drawNoStartLocationError(){
+
+
+        if(startNode!=NULLNODE){
+            if(errorNoStartLocation) {
+                setErrorNoStartLocation(false);
+            }
+            return;
+        }
+        if(errorNoStartLocation){
+            return(
+                <div className="w-60 p-2 rounded-3xl border-gray-500 border-2
+                drop-shadow-lg mt-1 bg-[#8A0E11] overflow-hidden text-white font-semibold ">
+                    Error: Please Select a Starting location first</div>
+            );
+        }
+
+    }
+
 
 
 }
