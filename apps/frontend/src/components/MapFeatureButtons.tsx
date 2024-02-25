@@ -3,7 +3,7 @@ import RefreshIcon from "../images/MapFunctions/refresh-cw.png";
 import ZoomInIcon from "../images/MapFunctions/plus.png";
 import ZoomOutIcon from "../images/MapFunctions/minus.png";
 import {Dispatch, SetStateAction, useState} from "react";
-import {Node, NULLNODE} from "../../../../packages/common/src/algorithms/Graph/Node.ts";
+import {Node, NULLNODE} from "common/src/algorithms/Graph/Node.ts";
 import {Viewbox} from "./map/HospitalMap.tsx";
 
 /**
