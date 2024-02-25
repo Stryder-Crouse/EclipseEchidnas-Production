@@ -118,8 +118,7 @@ RUN yarn install --immutable
 # Run the build task
 RUN yarn turbo run build
 
-# This trims out all non-production items
-RUN yarn workspaces focus --all --production
+RUN yarn unplug
 
 # Use entrypoint (since this contianer should be run as-is)
 # Simply run the migrate:deploy and then deploy
