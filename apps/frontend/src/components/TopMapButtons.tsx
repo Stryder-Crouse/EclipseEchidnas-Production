@@ -28,7 +28,7 @@ export default function TopMapButtons({setSelectedFloorIndex:setFloor,
 
 
     return (
-        <div className="z-10 h-10 flex mt-5 justify-content-center">
+        <div className="z-10 h-10  flex mt-5 justify-content-center">
             <div className={"flex flex-col"}>
                 <MapSearchBar
                     endNode={endNode}

@@ -6,6 +6,7 @@ import axios from "axios";
 import {FloorToIndex, Node, NULLNODE} from "../../../../packages/common/src/algorithms/Graph/Node.ts";
 import {useEffect, useState} from "react";
 import FullSideNavBarComponent from "../components/FullSideNavBarComponent.tsx";
+import WongManGame from "../components/wongMan/WongManGame.tsx";
 
 /* Set the default floor to LL1 */
 const defaultFloor = FloorToIndex.LowerLevel1;
@@ -34,6 +35,9 @@ function TailwindMapPage() {
     const [zoomScale, setZoomScale] = useState(1);
 
 
+    const [showWongMan, setShowWongMan] =
+        useState(false);
+
     //useEffect for start up
     useEffect(() => {
 
@@ -50,42 +54,58 @@ function TailwindMapPage() {
 
     return (
         <div className="flex">
-            <div className="flex absolute w-screen h-screen">
-                <div className={"z-50"}>
-                    <FullSideNavBarComponent/>
+            <WongManGame visable={showWongMan} setVisable={setShowWongMan}></WongManGame>
+            <div className={hideMap()}>
+                <div className="flex absolute w-screen h-screen">
+
+                    <div className={"z-50"}>
+                        <FullSideNavBarComponent/>
+                    </div>
+
+
+                        <TopMapButtons
+                            setSelectedFloorIndex={setSelectedFloorIndex}
+                            endNode={endNode}
+                            locations={locations}
+                            setEndNode={setEndNode}
+                            setStartNode={setStartNode}
+                            startNode={startNode}
+                            setPathFindingType={setPathFindingType}
+                            textDirections={textDirections}
+                        />
+
+                        <MapFeatureButtons viewbox={viewbox} setViewbox={setViewbox}
+                                           setDrawEntirePath={setDrawEntirePath} drawEntirePath={drawEntirePath}
+                                           setZoomScale={setZoomScale} setEndNode={setEndNode}
+                                           setStartNode={setStartNode} drawEntirePathOptions={drawEntirePathOptions}
+                                           setDrawEntirePathOptions={setDrawEntirePathOptions}/>
+
+
                 </div>
-
-
-                    <TopMapButtons
-                        setSelectedFloorIndex={setSelectedFloorIndex}
-                        endNode={endNode}
-                        locations={locations}
-                        setEndNode={setEndNode}
-                        setStartNode={setStartNode}
-                        startNode={startNode}
-                        setPathFindingType={setPathFindingType}
-                        textDirections={textDirections}
-                    />
-
-                    <MapFeatureButtons viewbox={viewbox} setViewbox={setViewbox}
-                                       setDrawEntirePath={setDrawEntirePath} drawEntirePath={drawEntirePath}
-                                       setZoomScale={setZoomScale} setEndNode={setEndNode}
-                                       setStartNode={setStartNode} drawEntirePathOptions={drawEntirePathOptions}
-                                       setDrawEntirePathOptions={setDrawEntirePathOptions}/>
-
-
+                <HospitalMap startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
+                             selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
+                             drawEntirePath={drawEntirePath} setDrawEntirePath={setDrawEntirePath} locationsWithHalls={locationsWithHalls}
+                             pathFindingType={pathFindingType}
+                             setViewbox={setViewbox} viewbox={viewbox} setZoomScale={setZoomScale}
+                             zoomScale={zoomScale} drawEntirePathOptions={drawEntirePathOptions}
+                             setTextDirections={setTextDirections}  setShowWongMan={setShowWongMan}
+                />
             </div>
-            <HospitalMap startNode={startNode} setStartNode={setStartNode} endNode={endNode} setEndNode={setEndNode}
-                         selectedFloorIndex={selectedFloorIndex} setSelectedFloorIndex={setSelectedFloorIndex}
-                         drawEntirePath={drawEntirePath} setDrawEntirePath={setDrawEntirePath} locationsWithHalls={locationsWithHalls}
-                         pathFindingType={pathFindingType}
-                         setViewbox={setViewbox} viewbox={viewbox} setZoomScale={setZoomScale}
-                         zoomScale={zoomScale} drawEntirePathOptions={drawEntirePathOptions}
-                         setTextDirections={setTextDirections}
-            />
         </div>
     );
+
+
+    function hideMap(){
+        if(showWongMan){
+            return "hidden w-0 h-0";
+        }
+        return "";
+    }
+
 }
+
+
+
 
 async function getNodes(floor: number) {
     const res = await axios.get<NodeDataBase[]>("/api/load-nodes/floor", {params: {floor: floor}});

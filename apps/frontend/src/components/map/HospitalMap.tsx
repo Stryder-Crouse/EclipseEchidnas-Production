@@ -1,11 +1,23 @@
 import axios from "axios";
-import {FloorToIndex, floorToNumber, Node, NodeType, NULLNODE} from "../../../../../packages/common/src/algorithms/Graph/Node.ts";
+import {
+    FloorToIndex,
+    floorToNumber,
+    Node,
+    NodeType,
+    NULLNODE
+} from "../../../../../packages/common/src/algorithms/Graph/Node.ts";
 import "../../css/component-css/Map.css";
 import {Edge, NULLEDGE} from "../../../../../packages/common/src/algorithms/Graph/Edge.ts";
 import {Graph} from "../../../../../packages/common/src/algorithms/Graph/Graph.ts";
 import {onNodeHover, onNodeLeave, onNodeRightClick,} from "../../event-logic/circleNodeEventHandlers.ts";
-import {NodeDataBase, nodeDataBaseToNode,} from "../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
-import {EdgeDataBase, edgeDataBasetoEdge,} from "../../../../../packages/common/src/algorithms/DataBaseClasses/EdgeDataBase.ts";
+import {
+    NodeDataBase,
+    nodeDataBaseToNode,
+} from "../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
+import {
+    EdgeDataBase,
+    edgeDataBasetoEdge,
+} from "../../../../../packages/common/src/algorithms/DataBaseClasses/EdgeDataBase.ts";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {Coordinate} from "../../../../../packages/common/src/algorithms/Graph/Coordinate.ts";
 import {SearchContext} from "../../../../../packages/common/src/algorithms/Search/Strategy/SearchContext.ts";
@@ -13,9 +25,8 @@ import {AStarStrategy} from "../../../../../packages/common/src/algorithms/Searc
 import {BFSStrategy} from "../../../../../packages/common/src/algorithms/Search/Strategy/BFSStrategy.ts";
 import {DFSStrategy} from "../../../../../packages/common/src/algorithms/Search/Strategy/DFSStrategy.ts";
 import {ServiceRequest} from "../../../../../packages/common/src/algorithms/Requests/Request.ts";
-import {
-    generateTextDirections
-} from "common/src/algorithms/Search/TextDirections/GenerateTextDirections.ts";
+import {generateTextDirections} from "common/src/algorithms/Search/TextDirections/GenerateTextDirections.ts";
+
 
 /* - - - types - - - */
 /**
@@ -38,6 +49,7 @@ export type MapState = {
     setZoomScale: Dispatch<SetStateAction<number>>
     drawEntirePathOptions:boolean[]
     setTextDirections:Dispatch<SetStateAction<string[][]>>
+    setShowWongMan:Dispatch<SetStateAction<boolean>>
 }
 
 /**
@@ -423,7 +435,7 @@ export function HospitalMap({
                         pathFindingType:pathFindingType,
                         viewbox: viewbox, setViewbox: setViewbox,
                         zoomScale: zoomScale, setZoomScale: setZoomScale
-                        ,drawEntirePathOptions,setTextDirections
+                        ,drawEntirePathOptions,setTextDirections,setShowWongMan
                     }: MapState) {
 
 
@@ -443,6 +455,8 @@ export function HospitalMap({
         useState<Coordinate>({x: 0, y: 0});
     const [endOfClick, setEndOfClick] =
         useState<Coordinate>({x: 0, y: 0});
+
+
 
 
     //set map to zoom level for each level. Only do this when a diffrent floor is selected
@@ -477,6 +491,7 @@ export function HospitalMap({
                  stopPan(e);
              }}
         >
+
             {/* entire everything */}
             <svg
                 id="map"
@@ -493,6 +508,9 @@ export function HospitalMap({
                     height="3400"
                     href={setMapImage()}
                 ></image>
+                {
+                    drawWongMan()
+                }
                 {   /* draw the edges on the map */
                     pathDrawnEdges.map((edge) => {
                         return drawEdge(edge);
@@ -527,12 +545,25 @@ export function HospitalMap({
         </div>
     );
 
+    function drawWongMan(){
+        if(selectedFloorIndex == FloorToIndex.LowerLevel2){
+            return (
+                <a onClick={() => {
+                    setShowWongMan(true);
+                }} className={"cursor-pointer"}>
+                    <rect width={50} height={50} x={1250} y={2800}>
+                    </rect>
+                </a>
+            );
+        }
+        return;
+    }
+
     /**
      * Graphically draw an edge.
      * @param edge the edge to draw
      */
     function drawEdge(edge: Edge) {
-
 
 
         /* draw the solid edge for everything */
