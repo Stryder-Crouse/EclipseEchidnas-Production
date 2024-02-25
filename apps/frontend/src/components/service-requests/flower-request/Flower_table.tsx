@@ -30,7 +30,7 @@ export default function Flower_table({statusFilter, priorityFilter,employeeFilte
 
 
     return (
-        <div>
+        <div className={"h-100 w-[42.5rem] overflow-auto "}>
 
             <table className={"requestTable"} id={"request-table"}>
                 <thead>

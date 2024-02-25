@@ -34,7 +34,7 @@ export default function Sanitation_table({statusFilter, priorityFilter,employeeF
     },[statusFilter, priorityFilter, employeeFilter, locationFilter]);
 
     return (
-        <div>
+        <div className={"h-100 w-[42.5rem] overflow-auto "}>
 
             <table className={"requestTable"} id={"request-table"}>
                 <thead>

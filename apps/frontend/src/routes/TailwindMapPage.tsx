@@ -1,9 +1,9 @@
 import TopMapButtons from "../components/TopMapButtons.tsx";
 import MapFeatureButtons from "../components/MapFeatureButtons.tsx";
 import {HospitalMap} from "../components/map/HospitalMap.tsx";
-import {multipleNodeDataBaseToNode, NodeDataBase} from "../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
+import {multipleNodeDataBaseToNode, NodeDataBase} from "common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import axios from "axios";
-import {FloorToIndex, Node, NULLNODE} from "../../../../packages/common/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, Node, NULLNODE} from "common/src/algorithms/Graph/Node.ts";
 import {useEffect, useState} from "react";
 import FullSideNavBarComponent from "../components/FullSideNavBarComponent.tsx";
 
