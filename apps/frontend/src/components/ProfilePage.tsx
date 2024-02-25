@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from "react";
-// import { Button } from "@material-tailwind/react";
 import FullSideNavBarComponent from "./FullSideNavBarComponent.tsx";
-//import ProfileIcon from "../images/Profile_icon.jpg";
 import {useAuth0} from "@auth0/auth0-react";
 //import PieChartStatsAll from "./StatsPie/PieChartStatsAll.tsx";
 //import {ServiceRequest} from "../../../backend/src/algorithms/Requests/Request.ts";
@@ -20,11 +18,18 @@ function ProfilePage() {
     const [statsToggle, setStatsToggle]
         = useState(false);
 
-    const [CurEmp, setCurEmp]
+    const [designation, setDesignation]
+        = useState("");
+
+    const [firstName, setFirstName]
+        = useState("");
+
+    const [lastName, setLastName]
         = useState("");
 
 
-        const [activeButton, setActiveButton] = useState("table");
+
+    const [activeButton, setActiveButton] = useState("table");
 
         const handleButtonClick = (button: React.SetStateAction<string>) => {
             setActiveButton(button);
@@ -33,18 +38,19 @@ function ProfilePage() {
         //const [currentEmployee , setCurrentEmployee ] = useState("");
         const currUser = useAuth0();
         const Username = String(currUser?.user?.email);
-        const FirstName = String(currUser?.user?.given_name);
-        const LastName = String(currUser?.user?.family_name);
         const ProfilePicture = currUser?.user?.picture;
 
         useEffect(() => {
-            setCurEmp(Username); // Move this inside useEffect
-            getEmployees(Username).then((result) => {
-                setCurEmp(result);
-            });
-        }, [CurEmp, Username]);
+            getEmployees(Username).then((results) => {
 
-        console.log(getEmployees);
+                setFirstName(results.firstName);
+                setLastName(results.lastName);
+                setDesignation(results.designation);
+            });
+        }, [Username]);
+
+
+    console.log(getEmployees);
 
 
         return (
@@ -77,22 +83,22 @@ function ProfilePage() {
 
                             <div className="flex mb-2">
                                 <span className="font-bold text-xl mr-2">First Name:</span>
-                                <p className="text-xl">{FirstName}</p>
+                                <p className="text-xl">{firstName}</p>
                             </div>
 
                             <div className="flex mb-2">
                                 <span className="font-bold text-xl mr-2">Last Name:</span>
-                                <p className="text-xl">{LastName}</p>
+                                <p className="text-xl">{lastName}</p>
                             </div>
 
                             <div className="flex mb-2">
                                 <span className="font-bold text-xl mr-2">Role:</span>
-                                <p className="text-xl">{FirstName}</p>
+                                <p className="text-xl">{designation}</p>
                             </div>
 
                             <div className="flex mb-2">
                                 <span className="font-bold text-xl mr-2">Pending Tasks:</span>
-                                <p className="text-xl">{FirstName}</p>
+                                <p className="text-xl">{firstName}</p>
                             </div>
 
                             <div className="mt-10">
@@ -121,25 +127,6 @@ function ProfilePage() {
                                     Graph
                                 </button>
 
-                                {/*<button*/}
-                                {/*    type="button"*/}
-                                {/*    className="inline-block rounded bg-blue-700 px-9 pb-5 pt-5 text-xl font-medium uppercase leading-normal*/}
-                                {/*               text-white shadow-md transition duration-150 ease-in-out hover:bg-blue-600 hover:shadow-lg*/}
-                                {/*               focus:bg-blue-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-700*/}
-                                {/*               active:shadow-lg dark:shadow-md dark:hover:shadow-lg dark:focus:shadow-lg dark:active:shadow-lg"*/}
-
-                                {/*>*/}
-                                {/*    Table*/}
-                                {/*</button>*/}
-
-                                {/*<button*/}
-                                {/*    type="button"*/}
-                                {/*    className="inline-block rounded bg-blue-200 px-9 pb-5 pt-5 text-xl font-medium uppercase leading-normal*/}
-                                {/*    text-blue-700 transition duration-150 ease-in-out hover:bg-blue-100*/}
-                                {/*    focus:bg-blue-100 focus:outline-none focus:ring-0 active:bg-blue-200"*/}
-                                {/*>*/}
-                                {/*    Graphs*/}
-                                {/*</button>*/}
 
                             </div>
 
@@ -151,55 +138,12 @@ function ProfilePage() {
 
                 {/* Right Column - Content */}
                 <div className="flex-1 p-4">
-                    {/*<div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300*/}
-                    {/*        dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full*/}
-                    {/*        peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border*/}
-                    {/*        after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"*/}
-                    {/*></div>*/}
-                    {/*<span className="ml-1"><b>Stats</b></span>*/}
 
                     {/* Content to be populated with each request */}
                     {generateSelectedTable()}
                 </div>
             </div>
 
-            // <div className={"flex h-lvh flex-row"}>
-            //     <div className="flex">
-            //         <FullSideNavBarComponent/>
-            //     </div>
-            //     <div className="mt-5 flex flex-col m-auto">
-            //         <p className="mb-1 m-auto flex font-bold justify-center p-3 bg-white rounded-lg w-72 shadow dark:bg-gray-800">Profile
-            //             Page</p>
-            //
-            //         <div className="flex justify-center  flex-row scale-95">
-            //             <div className="flex justify-center gap-4">
-            //                 <ImageCard img={ProfileIcon} name={EmpName} role={"Role "}>
-            //                 </ImageCard>
-            //                 <label className="flex items-center cursor-pointer ml-2">
-            //                     <input type="checkbox"
-            //                            checked={statsToggle}
-            //                            className="sr-only peer"
-            //                            onChange={(event) => {
-            //                                setStatsToggle(event.target.checked);
-            //                            }}
-            //                     />
-            //                     <div
-            //                         className=" relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300
-            //                     dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
-            //                     peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border
-            //                     after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-            //                     <span className="ml-1"><b>Stats</b></span>
-            //                 </label>
-            //
-            //             </div>
-            //         </div>
-            //         {/* the content to be populated with each request*/}
-            //         {
-            //             generateSelectedTable()
-            //         }
-            //     </div>
-            //
-            // </div>
         );
 
 
@@ -241,8 +185,8 @@ export function ImageCard({ img }: { img: string }){
 
 export default ProfilePage;
 
-
 async function getEmployees(emp: string) {
     const employees = await axios.get<Employee>("/api/employees/current_employee", { params: { userName: emp } });
-    return employees.data.designation;
+    return employees.data;
+
 }
