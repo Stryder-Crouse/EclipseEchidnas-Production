@@ -451,48 +451,6 @@ router.post("/changePriority", async function (req: Request, res: Response) {
     }
 });
 
-// return all the stats of types, priority, status of transport requests in the database
-router.get("/outsideTransport/statistics", async function (req: Request, res: Response) {
-    try {
-        const statistics = await PrismaClient.serviceRequest.findMany({
-            where: {
-                reqType: "transportation"
-            }
-        });
-        const result = {
-            total: 0,
-            lowPrio: 0,
-            medPrio: 0,
-            highPrio: 0,
-            emergPrio: 0,
-            unassigned: 0,
-            assigned: 0,
-            inProgress: 0,
-            completed: 0
-        };
-
-        for (const entry of statistics) {
-            result.total++;
-            if (entry.reqPriority == "Low") result.lowPrio++;
-            if (entry.reqPriority == "Medium") result.medPrio++;
-            if (entry.reqPriority == "High") result.highPrio++;
-            if (entry.reqPriority == "Emergency") result.emergPrio++;
-            if (entry.status == "Unassigned") result.unassigned++;
-            if (entry.status == "Assigned") result.assigned++;
-            if (entry.status == "In Progress") result.inProgress++;
-            if (entry.status == "Completed") result.completed++;
-        }
-
-        res.send(result);
-        console.info("\nSuccessfully gave you all of the statistics\n");
-        //send status unless 6 times bug occurs
-        res.sendStatus(200);
-    } catch (err) {
-        console.error("Database issue with changing the Priority: " + err);
-        res.sendStatus(500);
-    }
-});
-
 router.post("/removeRequest", async function (req: Request, res: Response) {
     try {
         const data: ServiceRequest = req.body;
@@ -1070,6 +1028,49 @@ router.get("/outsideTransport/filter", async function (req: Request, res: Respon
         res.sendStatus(500); // Send error
     }
 });
+
+// return all the stats of types, priority, status of transport requests in the database
+router.get("/outsideTransport/statistics", async function (req: Request, res: Response) {
+    try {
+        const statistics = await PrismaClient.serviceRequest.findMany({
+            where: {
+                reqType: "transportation"
+            }
+        });
+        const result = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+
+        for (const entry of statistics) {
+            result.total++;
+            if (entry.reqPriority == "Low") result.lowPrio++;
+            if (entry.reqPriority == "Medium") result.medPrio++;
+            if (entry.reqPriority == "High") result.highPrio++;
+            if (entry.reqPriority == "Emergency") result.emergPrio++;
+            if (entry.status == "Unassigned") result.unassigned++;
+            if (entry.status == "Assigned") result.assigned++;
+            if (entry.status == "In Progress") result.inProgress++;
+            if (entry.status == "Completed") result.completed++;
+        }
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+    } catch (err) {
+        console.error("Database issue with changing the Priority: " + err);
+        res.sendStatus(500);
+    }
+});
+
 
 
 // ---------------------------------    Sanitation DB Interaction    ---------------------------------
