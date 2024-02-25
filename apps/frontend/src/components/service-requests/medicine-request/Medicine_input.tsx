@@ -105,8 +105,8 @@ export default function Medicine_input({
                 });
 
             show();
-        } catch {
-            console.error("Error with trying to save Service Req in ServiceRequestPage.tsx");
+        } catch (err) {
+            console.error("Error with trying to save Service Req in ServiceRequestPage.tsx: "+err);
         }
 
 

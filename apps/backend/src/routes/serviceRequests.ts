@@ -327,8 +327,8 @@ router.post("/removeRequest", async function (req: Request, res: Response) {
 //posts one new medicine request from the user to the database
 //the new medReq and the new serviceRequest both get their own auto-generated ID
 router.post("/medReq", async function (req: Request, res: Response) {
-    //console.log(req.body);
-    //console.log("Med Req Above");
+    console.log(req.body);
+    console.log("Successfully entered medReq post, service req and med req above");
     const sentData: [ServiceRequest, MedReq] = req.body;
     console.info(sentData);
 
@@ -381,14 +381,15 @@ router.post("/medReq", async function (req: Request, res: Response) {
         //create a Med Req (use data from the second element since we always put med req data type in second)
         await PrismaClient.medReq.create({
             data: {
+                //ID is auto created
                 patientName: sentData[1].patientName,
                 patientDOB: sentData[1].patientDOB,
                 patientMedRecNum: sentData[1].patientMedRecordNum,
                 medStrength: sentData[1].medStrength,
                 medName: sentData[1].medName,
-                quantity: sentData[1].quantity,
                 medForm: sentData[1].medForm,
                 medSig: sentData[1].medSig,
+                quantity: sentData[1].quantity,
                 genReqID: service.reqID
             }
         });
