@@ -13,7 +13,7 @@ export interface DropdownProps{
     selectCSS:string
 }
 
-export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populationArr, setSelected, resetDropdown,
+export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populationArr, resetDropdown, setSelected,
                                    setResetDropdown, inputCSS, resetOnSelect}: DropdownProps) {
 
     //every time this is reloaded, check to see if we need to reset the value of the dropdown
