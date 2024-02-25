@@ -65,10 +65,6 @@ RUN rm -r apps/backend/tests
 # Build the unplugged files and cache stuff for this specific OS
 RUN yarn install --immutable --immutable-cache --check-cache
 
-# This creates a trimmed image that is frontend and its dependencies only
-RUN yarn turbo prune --scope=backend --docker
-
-
 
 # Stage to run production frontend
 FROM prod-base AS prod-frontend
