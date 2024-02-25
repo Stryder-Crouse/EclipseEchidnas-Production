@@ -1956,4 +1956,10 @@ router.get("/religiousRequest/statistics", async function (req: Request, res: Re
     }
 });
 
+// return all the stats of types, priority, status of religious requests in each specific building in the database
+router.get("/religiousRequest/building-statistics", async function (/*req: Request, res: Response*/) {
+    const serviceRequest = await PrismaClient.serviceRequest.findMany();
+    console.log(serviceRequest);
+});
+
 export default router;
