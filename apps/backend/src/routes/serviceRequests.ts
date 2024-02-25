@@ -10,8 +10,9 @@ import {
     ReqTypes,
     sanReq,
     ServiceRequest
-} from "../../../../packages/common/src/algorithms/Requests/Request.ts";
+} from "common/src/algorithms/Requests/Request.ts";
 import Status from "../../../../packages/common/src/algorithms/Requests/Status.ts";
+import {religEmployees} from "./employees.ts";
 //import {Employee} from "../algorithms/Employee/Employee.ts";
 // import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
 
@@ -80,6 +81,194 @@ router.get("/serviceReq/statistics", async function (req: Request, res: Response
         //send status unless 6 times bug occurs
         res.sendStatus(200);
     } catch (err) {
+        console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
+    }
+});
+
+
+// return all the stats of types, priority, status of service requests in each specific building in the database
+router.get("/serviceReq/building-statistics", async function (req: Request, res: Response) {
+    try {
+        const serviceRequest = await PrismaClient.serviceRequest.findMany({
+            include: {
+                reqLocation: true
+            },
+        });
+        const shapiro = {
+            total: 0,
+            medReq: 0,
+            religReq: 0,
+            flowReq: 0,
+            sanReq: 0,
+            tranReq: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const tower = {
+            total: 0,
+            medReq: 0,
+            religReq: 0,
+            flowReq: 0,
+            sanReq: 0,
+            tranReq: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const Francis45 = {
+            total: 0,
+            medReq: 0,
+            religReq: 0,
+            flowReq: 0,
+            sanReq: 0,
+            tranReq: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const Francis15 = {
+            total: 0,
+            medReq: 0,
+            religReq: 0,
+            flowReq: 0,
+            sanReq: 0,
+            tranReq: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const BTM = {
+            total: 0,
+            medReq: 0,
+            religReq: 0,
+            flowReq: 0,
+            sanReq: 0,
+            tranReq: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        for (const entry of serviceRequest) {
+            if (entry.reqLocation.building == "Shapiro") {
+                shapiro.total++;
+                if (entry.reqType == "medication") shapiro.medReq++;
+                if (entry.reqType == "religious") shapiro.religReq++;
+                if (entry.reqType == "flower delivery") shapiro.flowReq++;
+                if (entry.reqType == "sanitation") shapiro.sanReq++;
+                if (entry.reqType == "transportation") shapiro.tranReq++;
+                if (entry.reqPriority == "Low") shapiro.lowPrio++;
+                if (entry.reqPriority == "Medium") shapiro.medPrio++;
+                if (entry.reqPriority == "High") shapiro.highPrio++;
+                if (entry.reqPriority == "Emergency") shapiro.emergPrio++;
+                if (entry.status == "Unassigned") shapiro.unassigned++;
+                if (entry.status == "Assigned") shapiro.assigned++;
+                if (entry.status == "In Progress") shapiro.inProgress++;
+                if (entry.status == "Completed") shapiro.completed++;
+            }
+            if (entry.reqLocation.building == "Tower") {
+                tower.total++;
+                if (entry.reqType == "medication") tower.medReq++;
+                if (entry.reqType == "religious") tower.religReq++;
+                if (entry.reqType == "flower delivery") tower.flowReq++;
+                if (entry.reqType == "sanitation") tower.sanReq++;
+                if (entry.reqType == "transportation") tower.tranReq++;
+                if (entry.reqPriority == "Low") tower.lowPrio++;
+                if (entry.reqPriority == "Medium") tower.medPrio++;
+                if (entry.reqPriority == "High") tower.highPrio++;
+                if (entry.reqPriority == "Emergency") tower.emergPrio++;
+                if (entry.status == "Unassigned") tower.unassigned++;
+                if (entry.status == "Assigned") tower.assigned++;
+                if (entry.status == "In Progress") tower.inProgress++;
+                if (entry.status == "Completed") tower.completed++;
+            }
+            if (entry.reqLocation.building == "45 Francis") {
+                Francis45.total++;
+                if (entry.reqType == "medication") Francis45.medReq++;
+                if (entry.reqType == "religious") Francis45.religReq++;
+                if (entry.reqType == "flower delivery") Francis45.flowReq++;
+                if (entry.reqType == "sanitation") Francis45.sanReq++;
+                if (entry.reqType == "transportation") Francis45.tranReq++;
+                if (entry.reqPriority == "Low") Francis45.lowPrio++;
+                if (entry.reqPriority == "Medium") Francis45.medPrio++;
+                if (entry.reqPriority == "High") Francis45.highPrio++;
+                if (entry.reqPriority == "Emergency") Francis45.emergPrio++;
+                if (entry.status == "Unassigned") Francis45.unassigned++;
+                if (entry.status == "Assigned") Francis45.assigned++;
+                if (entry.status == "In Progress") Francis45.inProgress++;
+                if (entry.status == "Completed") Francis45.completed++;
+            }
+            if (entry.reqLocation.building == "15 Francis") {
+                Francis15.total++;
+                if (entry.reqType == "medication") Francis15.medReq++;
+                if (entry.reqType == "religious") Francis15.religReq++;
+                if (entry.reqType == "flower delivery") Francis15.flowReq++;
+                if (entry.reqType == "sanitation") Francis15.sanReq++;
+                if (entry.reqType == "transportation") Francis15.tranReq++;
+                if (entry.reqPriority == "Low") Francis15.lowPrio++;
+                if (entry.reqPriority == "Medium") Francis15.medPrio++;
+                if (entry.reqPriority == "High") Francis15.highPrio++;
+                if (entry.reqPriority == "Emergency") Francis15.emergPrio++;
+                if (entry.status == "Unassigned") Francis15.unassigned++;
+                if (entry.status == "Assigned") Francis15.assigned++;
+                if (entry.status == "In Progress") Francis15.inProgress++;
+                if (entry.status == "Completed") Francis15.completed++;
+            }
+            if (entry.reqLocation.building == "BTM") {
+                BTM.total++;
+                if (entry.reqType == "medication") BTM.medReq++;
+                if (entry.reqType == "religious") BTM.religReq++;
+                if (entry.reqType == "flower delivery") BTM.flowReq++;
+                if (entry.reqType == "sanitation") BTM.sanReq++;
+                if (entry.reqType == "transportation") BTM.tranReq++;
+                if (entry.reqPriority == "Low") BTM.lowPrio++;
+                if (entry.reqPriority == "Medium") BTM.medPrio++;
+                if (entry.reqPriority == "High") BTM.highPrio++;
+                if (entry.reqPriority == "Emergency") BTM.emergPrio++;
+                if (entry.status == "Unassigned") BTM.unassigned++;
+                if (entry.status == "Assigned") BTM.assigned++;
+                if (entry.status == "In Progress") BTM.inProgress++;
+                if (entry.status == "Completed") BTM.completed++;
+            }
+
+        }
+
+        const result = {
+            shapiro, tower, Francis45, Francis15, BTM
+        };
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+
+    } catch (error) {
         console.error("\nUnable to send requests\n");
         res.sendStatus(400); // Send error
     }
@@ -263,48 +452,6 @@ router.post("/changePriority", async function (req: Request, res: Response) {
     }
 });
 
-// return all the stats of types, priority, status of transport requests in the database
-router.get("/outsideTransport/statistics", async function (req: Request, res: Response) {
-    try {
-        const statistics = await PrismaClient.serviceRequest.findMany({
-            where: {
-                reqType: "transportation"
-            }
-        });
-        const result = {
-            total: 0,
-            lowPrio: 0,
-            medPrio: 0,
-            highPrio: 0,
-            emergPrio: 0,
-            unassigned: 0,
-            assigned: 0,
-            inProgress: 0,
-            completed: 0
-        };
-
-        for (const entry of statistics) {
-            result.total++;
-            if (entry.reqPriority == "Low") result.lowPrio++;
-            if (entry.reqPriority == "Medium") result.medPrio++;
-            if (entry.reqPriority == "High") result.highPrio++;
-            if (entry.reqPriority == "Emergency") result.emergPrio++;
-            if (entry.status == "Unassigned") result.unassigned++;
-            if (entry.status == "Assigned") result.assigned++;
-            if (entry.status == "In Progress") result.inProgress++;
-            if (entry.status == "Completed") result.completed++;
-        }
-
-        res.send(result);
-        console.info("\nSuccessfully gave you all of the statistics\n");
-        //send status unless 6 times bug occurs
-        res.sendStatus(200);
-    } catch (err) {
-        console.error("Database issue with changing the Priority: " + err);
-        res.sendStatus(500);
-    }
-});
-
 router.post("/removeRequest", async function (req: Request, res: Response) {
     try {
         const data: ServiceRequest = req.body;
@@ -365,7 +512,7 @@ router.post("/medReq", async function (req: Request, res: Response) {
                             firstName: "N/A",
                             lastName: "N/A",
                             designation: "N/A",
-                            isAdmin: true,
+                            isAdmin: false,
                         },
                         //second part of create or connect (the what-we-connect-to part)
                         where: {
@@ -418,13 +565,13 @@ router.get("/medReq", async function (req: Request, res: Response) {
 
             const medReqs = await PrismaClient.medReq.findMany({
                 orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                    genReqID: "desc", //order by service request id so the two arrays are parallel
                 }
             });
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "medication"
@@ -445,7 +592,7 @@ router.get("/medReq", async function (req: Request, res: Response) {
 
             const medReqs = await PrismaClient.medReq.findMany({
                 orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                    genReqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     genReq: {
@@ -457,7 +604,7 @@ router.get("/medReq", async function (req: Request, res: Response) {
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "medication",
@@ -633,6 +780,146 @@ router.get("/medReq/statistics", async function (req: Request, res: Response) {
     }
 });
 
+// return all the stats of types, priority, status of med requests in each specific building in the database
+router.get("/medReq/building-statistics", async function (req: Request, res: Response) {
+    try {
+        const serviceRequest = await PrismaClient.serviceRequest.findMany({
+            where: {
+                reqType: "medication"
+            },
+            include: {
+                reqLocation: true
+            },
+        });
+        const shapiro = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const tower = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const Francis45 = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const Francis15 = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const BTM = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        for (const entry of serviceRequest) {
+            if (entry.reqLocation.building == "Shapiro") {
+                shapiro.total++;
+                if (entry.reqPriority == "Low") shapiro.lowPrio++;
+                if (entry.reqPriority == "Medium") shapiro.medPrio++;
+                if (entry.reqPriority == "High") shapiro.highPrio++;
+                if (entry.reqPriority == "Emergency") shapiro.emergPrio++;
+                if (entry.status == "Unassigned") shapiro.unassigned++;
+                if (entry.status == "Assigned") shapiro.assigned++;
+                if (entry.status == "In Progress") shapiro.inProgress++;
+                if (entry.status == "Completed") shapiro.completed++;
+            }
+            if (entry.reqLocation.building == "Tower") {
+                tower.total++;
+                if (entry.reqPriority == "Low") tower.lowPrio++;
+                if (entry.reqPriority == "Medium") tower.medPrio++;
+                if (entry.reqPriority == "High") tower.highPrio++;
+                if (entry.reqPriority == "Emergency") tower.emergPrio++;
+                if (entry.status == "Unassigned") tower.unassigned++;
+                if (entry.status == "Assigned") tower.assigned++;
+                if (entry.status == "In Progress") tower.inProgress++;
+                if (entry.status == "Completed") tower.completed++;
+            }
+            if (entry.reqLocation.building == "45 Francis") {
+                Francis45.total++;
+                if (entry.reqPriority == "Low") Francis45.lowPrio++;
+                if (entry.reqPriority == "Medium") Francis45.medPrio++;
+                if (entry.reqPriority == "High") Francis45.highPrio++;
+                if (entry.reqPriority == "Emergency") Francis45.emergPrio++;
+                if (entry.status == "Unassigned") Francis45.unassigned++;
+                if (entry.status == "Assigned") Francis45.assigned++;
+                if (entry.status == "In Progress") Francis45.inProgress++;
+                if (entry.status == "Completed") Francis45.completed++;
+            }
+            if (entry.reqLocation.building == "15 Francis") {
+                Francis15.total++;
+                if (entry.reqPriority == "Low") Francis15.lowPrio++;
+                if (entry.reqPriority == "Medium") Francis15.medPrio++;
+                if (entry.reqPriority == "High") Francis15.highPrio++;
+                if (entry.reqPriority == "Emergency") Francis15.emergPrio++;
+                if (entry.status == "Unassigned") Francis15.unassigned++;
+                if (entry.status == "Assigned") Francis15.assigned++;
+                if (entry.status == "In Progress") Francis15.inProgress++;
+                if (entry.status == "Completed") Francis15.completed++;
+            }
+            if (entry.reqLocation.building == "BTM") {
+                BTM.total++;
+                if (entry.reqPriority == "Low") BTM.lowPrio++;
+                if (entry.reqPriority == "Medium") BTM.medPrio++;
+                if (entry.reqPriority == "High") BTM.highPrio++;
+                if (entry.reqPriority == "Emergency") BTM.emergPrio++;
+                if (entry.status == "Unassigned") BTM.unassigned++;
+                if (entry.status == "Assigned") BTM.assigned++;
+                if (entry.status == "In Progress") BTM.inProgress++;
+                if (entry.status == "Completed") BTM.completed++;
+            }
+
+        }
+
+        const result = {
+            shapiro, tower, Francis45, Francis15, BTM
+        };
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+
+    } catch (error) {
+        console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
+    }
+});
+
 
 // ---------------------------------    Outside Transport DB Interaction    ---------------------------------
 
@@ -668,7 +955,7 @@ router.post("/outsideTransport", async function (req: Request, res: Response) {
                             firstName: "N/A",
                             lastName: "N/A",
                             designation: "N/A",
-                            isAdmin: true,
+                            isAdmin: false,
                         },
                         //second part of create or connect (the what-we-connect-to part)
                         where: {
@@ -706,14 +993,14 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
 
             const transportReq = await PrismaClient.outsideTransport.findMany({
                 orderBy: {
-                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                    serviceReqID: "desc", //order by service request id so the two arrays are parallel
                 }
 
             });
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "transportation"
@@ -734,7 +1021,7 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
 
             const transportReq = await PrismaClient.outsideTransport.findMany({
                 orderBy: {
-                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                    serviceReqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     serviceReq: {
@@ -746,7 +1033,7 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "transportation",
@@ -877,6 +1164,188 @@ router.get("/outsideTransport/filter", async function (req: Request, res: Respon
     }
 });
 
+// return all the stats of types, priority, status of transport requests in the database
+router.get("/outsideTransport/statistics", async function (req: Request, res: Response) {
+    try {
+        const statistics = await PrismaClient.serviceRequest.findMany({
+            where: {
+                reqType: "transportation"
+            }
+        });
+        const result = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+
+        for (const entry of statistics) {
+            result.total++;
+            if (entry.reqPriority == "Low") result.lowPrio++;
+            if (entry.reqPriority == "Medium") result.medPrio++;
+            if (entry.reqPriority == "High") result.highPrio++;
+            if (entry.reqPriority == "Emergency") result.emergPrio++;
+            if (entry.status == "Unassigned") result.unassigned++;
+            if (entry.status == "Assigned") result.assigned++;
+            if (entry.status == "In Progress") result.inProgress++;
+            if (entry.status == "Completed") result.completed++;
+        }
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+    } catch (err) {
+        console.error("Database issue with changing the Priority: " + err);
+        res.sendStatus(500);
+    }
+});
+
+// return all the stats of types, priority, status of transport requests in each specific building in the database
+router.get("/outsideTransport/building-statistics", async function (req: Request, res: Response) {
+    try {
+        const serviceRequest = await PrismaClient.serviceRequest.findMany({
+            where: {
+                reqType: "transportation"
+            },
+            include: {
+                reqLocation: true
+            },
+        });
+        const shapiro = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const tower = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const Francis45 = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const Francis15 = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const BTM = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        for (const entry of serviceRequest) {
+            if (entry.reqLocation.building == "Shapiro") {
+                shapiro.total++;
+                if (entry.reqPriority == "Low") shapiro.lowPrio++;
+                if (entry.reqPriority == "Medium") shapiro.medPrio++;
+                if (entry.reqPriority == "High") shapiro.highPrio++;
+                if (entry.reqPriority == "Emergency") shapiro.emergPrio++;
+                if (entry.status == "Unassigned") shapiro.unassigned++;
+                if (entry.status == "Assigned") shapiro.assigned++;
+                if (entry.status == "In Progress") shapiro.inProgress++;
+                if (entry.status == "Completed") shapiro.completed++;
+            }
+            if (entry.reqLocation.building == "Tower") {
+                tower.total++;
+                if (entry.reqPriority == "Low") tower.lowPrio++;
+                if (entry.reqPriority == "Medium") tower.medPrio++;
+                if (entry.reqPriority == "High") tower.highPrio++;
+                if (entry.reqPriority == "Emergency") tower.emergPrio++;
+                if (entry.status == "Unassigned") tower.unassigned++;
+                if (entry.status == "Assigned") tower.assigned++;
+                if (entry.status == "In Progress") tower.inProgress++;
+                if (entry.status == "Completed") tower.completed++;
+            }
+            if (entry.reqLocation.building == "45 Francis") {
+                Francis45.total++;
+                if (entry.reqPriority == "Low") Francis45.lowPrio++;
+                if (entry.reqPriority == "Medium") Francis45.medPrio++;
+                if (entry.reqPriority == "High") Francis45.highPrio++;
+                if (entry.reqPriority == "Emergency") Francis45.emergPrio++;
+                if (entry.status == "Unassigned") Francis45.unassigned++;
+                if (entry.status == "Assigned") Francis45.assigned++;
+                if (entry.status == "In Progress") Francis45.inProgress++;
+                if (entry.status == "Completed") Francis45.completed++;
+            }
+            if (entry.reqLocation.building == "15 Francis") {
+                Francis15.total++;
+                if (entry.reqPriority == "Low") Francis15.lowPrio++;
+                if (entry.reqPriority == "Medium") Francis15.medPrio++;
+                if (entry.reqPriority == "High") Francis15.highPrio++;
+                if (entry.reqPriority == "Emergency") Francis15.emergPrio++;
+                if (entry.status == "Unassigned") Francis15.unassigned++;
+                if (entry.status == "Assigned") Francis15.assigned++;
+                if (entry.status == "In Progress") Francis15.inProgress++;
+                if (entry.status == "Completed") Francis15.completed++;
+            }
+            if (entry.reqLocation.building == "BTM") {
+                BTM.total++;
+                if (entry.reqPriority == "Low") BTM.lowPrio++;
+                if (entry.reqPriority == "Medium") BTM.medPrio++;
+                if (entry.reqPriority == "High") BTM.highPrio++;
+                if (entry.reqPriority == "Emergency") BTM.emergPrio++;
+                if (entry.status == "Unassigned") BTM.unassigned++;
+                if (entry.status == "Assigned") BTM.assigned++;
+                if (entry.status == "In Progress") BTM.inProgress++;
+                if (entry.status == "Completed") BTM.completed++;
+            }
+
+        }
+
+        const result = {
+            shapiro, tower, Francis45, Francis15, BTM
+        };
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+
+    } catch (error) {
+        console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
+    }
+});
+
 
 // ---------------------------------    Sanitation DB Interaction    ---------------------------------
 
@@ -909,7 +1378,8 @@ router.post("/sanReq", async function (req: Request, res: Response) {
                             firstName: "N/A",
                             lastName: "N/A",
                             designation: "N/A",
-                            isAdmin: true,
+                            isAdmin: false
+                            ,
                         },
                         //second part of create or connect (the what-we-connect-to part)
                         where: {
@@ -945,13 +1415,13 @@ router.get("/sanReq", async function (req: Request, res: Response) {
 
             const sanReq = await PrismaClient.sanReq.findMany({
                 orderBy: {
-                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                    serviceReqID: "desc", //order by service request id so the two arrays are parallel
                 }
             });
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "sanitation"
@@ -971,7 +1441,7 @@ router.get("/sanReq", async function (req: Request, res: Response) {
 
             const sanReq = await PrismaClient.sanReq.findMany({
                 orderBy: {
-                    serviceReqID: "asc", //order by service request id so the two arrays are parallel
+                    serviceReqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     serviceReq: {
@@ -983,7 +1453,7 @@ router.get("/sanReq", async function (req: Request, res: Response) {
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "sanitation",
@@ -1174,6 +1644,146 @@ router.get("/sanReq/statistics", async function (req: Request, res: Response) {
     }
 });
 
+// return all the stats of types, priority, status of san requests in each specific building in the database
+router.get("/sanReq/building-statistics", async function (req: Request, res: Response) {
+    try {
+        const serviceRequest = await PrismaClient.serviceRequest.findMany({
+            where: {
+                reqType: "sanitation"
+            },
+            include: {
+                reqLocation: true
+            },
+        });
+        const shapiro = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const tower = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const Francis45 = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const Francis15 = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const BTM = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        for (const entry of serviceRequest) {
+            if (entry.reqLocation.building == "Shapiro") {
+                shapiro.total++;
+                if (entry.reqPriority == "Low") shapiro.lowPrio++;
+                if (entry.reqPriority == "Medium") shapiro.medPrio++;
+                if (entry.reqPriority == "High") shapiro.highPrio++;
+                if (entry.reqPriority == "Emergency") shapiro.emergPrio++;
+                if (entry.status == "Unassigned") shapiro.unassigned++;
+                if (entry.status == "Assigned") shapiro.assigned++;
+                if (entry.status == "In Progress") shapiro.inProgress++;
+                if (entry.status == "Completed") shapiro.completed++;
+            }
+            if (entry.reqLocation.building == "Tower") {
+                tower.total++;
+                if (entry.reqPriority == "Low") tower.lowPrio++;
+                if (entry.reqPriority == "Medium") tower.medPrio++;
+                if (entry.reqPriority == "High") tower.highPrio++;
+                if (entry.reqPriority == "Emergency") tower.emergPrio++;
+                if (entry.status == "Unassigned") tower.unassigned++;
+                if (entry.status == "Assigned") tower.assigned++;
+                if (entry.status == "In Progress") tower.inProgress++;
+                if (entry.status == "Completed") tower.completed++;
+            }
+            if (entry.reqLocation.building == "45 Francis") {
+                Francis45.total++;
+                if (entry.reqPriority == "Low") Francis45.lowPrio++;
+                if (entry.reqPriority == "Medium") Francis45.medPrio++;
+                if (entry.reqPriority == "High") Francis45.highPrio++;
+                if (entry.reqPriority == "Emergency") Francis45.emergPrio++;
+                if (entry.status == "Unassigned") Francis45.unassigned++;
+                if (entry.status == "Assigned") Francis45.assigned++;
+                if (entry.status == "In Progress") Francis45.inProgress++;
+                if (entry.status == "Completed") Francis45.completed++;
+            }
+            if (entry.reqLocation.building == "15 Francis") {
+                Francis15.total++;
+                if (entry.reqPriority == "Low") Francis15.lowPrio++;
+                if (entry.reqPriority == "Medium") Francis15.medPrio++;
+                if (entry.reqPriority == "High") Francis15.highPrio++;
+                if (entry.reqPriority == "Emergency") Francis15.emergPrio++;
+                if (entry.status == "Unassigned") Francis15.unassigned++;
+                if (entry.status == "Assigned") Francis15.assigned++;
+                if (entry.status == "In Progress") Francis15.inProgress++;
+                if (entry.status == "Completed") Francis15.completed++;
+            }
+            if (entry.reqLocation.building == "BTM") {
+                BTM.total++;
+                if (entry.reqPriority == "Low") BTM.lowPrio++;
+                if (entry.reqPriority == "Medium") BTM.medPrio++;
+                if (entry.reqPriority == "High") BTM.highPrio++;
+                if (entry.reqPriority == "Emergency") BTM.emergPrio++;
+                if (entry.status == "Unassigned") BTM.unassigned++;
+                if (entry.status == "Assigned") BTM.assigned++;
+                if (entry.status == "In Progress") BTM.inProgress++;
+                if (entry.status == "Completed") BTM.completed++;
+            }
+
+        }
+
+        const result = {
+            shapiro, tower, Francis45, Francis15, BTM
+        };
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+
+    } catch (error) {
+        console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
+    }
+});
+
 
 // ---------------------------------    Flower Request DB Interaction    ---------------------------------
 
@@ -1217,7 +1827,7 @@ router.post("/flowReq", async function (req: Request, res: Response) {
                             firstName: "N/A",
                             lastName: "N/A",
                             designation: "N/A",
-                            isAdmin: true,
+                            isAdmin: false,
                         },
                         //second part of create or connect (the what-we-connect-to part)
                         where: {
@@ -1262,12 +1872,12 @@ router.get("/flowReq", async function (req: Request, res: Response) {
             //try to send all the nodes to the client
             const flowReqs = await PrismaClient.flowReq.findMany({
                 orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                    genReqID: "desc", //order by service request id so the two arrays are parallel
                 },
             });
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: ReqTypes.flowReq,
@@ -1279,7 +1889,7 @@ router.get("/flowReq", async function (req: Request, res: Response) {
             //try to send all the nodes to the client
             const flowReqs = await PrismaClient.flowReq.findMany({
                 orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                    genReqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     genReq: {
@@ -1289,7 +1899,7 @@ router.get("/flowReq", async function (req: Request, res: Response) {
             });
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: ReqTypes.flowReq,
@@ -1461,6 +2071,146 @@ router.get("/flowReq/statistics", async function (req: Request, res: Response) {
     }
 });
 
+// return all the stats of types, priority, status of flower requests in each specific building in the database
+router.get("/flowReq/building-statistics", async function (req: Request, res: Response) {
+    try {
+        const serviceRequest = await PrismaClient.serviceRequest.findMany({
+            where: {
+                reqType: "flower delivery"
+            },
+            include: {
+                reqLocation: true
+            },
+        });
+        const shapiro = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const tower = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const Francis45 = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const Francis15 = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const BTM = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        for (const entry of serviceRequest) {
+            if (entry.reqLocation.building == "Shapiro") {
+                shapiro.total++;
+                if (entry.reqPriority == "Low") shapiro.lowPrio++;
+                if (entry.reqPriority == "Medium") shapiro.medPrio++;
+                if (entry.reqPriority == "High") shapiro.highPrio++;
+                if (entry.reqPriority == "Emergency") shapiro.emergPrio++;
+                if (entry.status == "Unassigned") shapiro.unassigned++;
+                if (entry.status == "Assigned") shapiro.assigned++;
+                if (entry.status == "In Progress") shapiro.inProgress++;
+                if (entry.status == "Completed") shapiro.completed++;
+            }
+            if (entry.reqLocation.building == "Tower") {
+                tower.total++;
+                if (entry.reqPriority == "Low") tower.lowPrio++;
+                if (entry.reqPriority == "Medium") tower.medPrio++;
+                if (entry.reqPriority == "High") tower.highPrio++;
+                if (entry.reqPriority == "Emergency") tower.emergPrio++;
+                if (entry.status == "Unassigned") tower.unassigned++;
+                if (entry.status == "Assigned") tower.assigned++;
+                if (entry.status == "In Progress") tower.inProgress++;
+                if (entry.status == "Completed") tower.completed++;
+            }
+            if (entry.reqLocation.building == "45 Francis") {
+                Francis45.total++;
+                if (entry.reqPriority == "Low") Francis45.lowPrio++;
+                if (entry.reqPriority == "Medium") Francis45.medPrio++;
+                if (entry.reqPriority == "High") Francis45.highPrio++;
+                if (entry.reqPriority == "Emergency") Francis45.emergPrio++;
+                if (entry.status == "Unassigned") Francis45.unassigned++;
+                if (entry.status == "Assigned") Francis45.assigned++;
+                if (entry.status == "In Progress") Francis45.inProgress++;
+                if (entry.status == "Completed") Francis45.completed++;
+            }
+            if (entry.reqLocation.building == "15 Francis") {
+                Francis15.total++;
+                if (entry.reqPriority == "Low") Francis15.lowPrio++;
+                if (entry.reqPriority == "Medium") Francis15.medPrio++;
+                if (entry.reqPriority == "High") Francis15.highPrio++;
+                if (entry.reqPriority == "Emergency") Francis15.emergPrio++;
+                if (entry.status == "Unassigned") Francis15.unassigned++;
+                if (entry.status == "Assigned") Francis15.assigned++;
+                if (entry.status == "In Progress") Francis15.inProgress++;
+                if (entry.status == "Completed") Francis15.completed++;
+            }
+            if (entry.reqLocation.building == "BTM") {
+                BTM.total++;
+                if (entry.reqPriority == "Low") BTM.lowPrio++;
+                if (entry.reqPriority == "Medium") BTM.medPrio++;
+                if (entry.reqPriority == "High") BTM.highPrio++;
+                if (entry.reqPriority == "Emergency") BTM.emergPrio++;
+                if (entry.status == "Unassigned") BTM.unassigned++;
+                if (entry.status == "Assigned") BTM.assigned++;
+                if (entry.status == "In Progress") BTM.inProgress++;
+                if (entry.status == "Completed") BTM.completed++;
+            }
+
+        }
+
+        const result = {
+            shapiro, tower, Francis45, Francis15, BTM
+        };
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+
+    } catch (error) {
+        console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
+    }
+});
+
 
 // ---------------------------------    Relig Req DB Interaction    ---------------------------------
 router.post('/religiousRequest', async function (req: Request, res: Response) {
@@ -1491,7 +2241,7 @@ router.post('/religiousRequest', async function (req: Request, res: Response) {
                             firstName: "N/A",
                             lastName: "N/A",
                             designation: "N/A",
-                            isAdmin: true,
+                            isAdmin: false,
                         },
                         //second part of create or connect (the what-we-connect-to part)
                         where: {
@@ -1520,6 +2270,9 @@ router.post('/religiousRequest', async function (req: Request, res: Response) {
         res.sendStatus(500);
     }
 });
+
+
+
 router.get("/religiousRequest", async function (req: Request, res: Response) {
 
     const statusFilter: Status = req.query.status as Status;
@@ -1529,21 +2282,71 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
 
             const religReq = await PrismaClient.religiousReq.findMany({
                 orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                    genReqID: "desc", //order by service request id so the two arrays are parallel
                 }
             });
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "religious"
                 }
             });
 
+            //even though we use push later, we should still use const here
+            const employeeReq =
+                [[await PrismaClient.employee.upsert({
+                    //upsert without update is essentially "find or create"
+                    where: {
+                        userID: "0"
+                    },
+                    update: {},
+                    create: {
+                        userID:"0",
+                        userName: "No one",
+                        firstName: "N/A",
+                        lastName: "N/A",
+                        designation: "N/A",
+                        isAdmin: false,
+                    },
+                })]];
+
+            //get all the data out of the database using religReqs' religion fields
+            for(let i = 0; i<religReq.length; i++){
+                const nextEmployeeArr = await religEmployees(religReq[i].religion);
+                if(i == 0 && nextEmployeeArr != undefined){ //remove the "No one" array from the first slot
+                    employeeReq[0] = nextEmployeeArr;
+                }
+                else if(nextEmployeeArr != undefined) {
+                    employeeReq.push(nextEmployeeArr);
+                }
+                else{
+                    console.error("nextEmployeeArr at index "+i+" of the religious requests list" +
+                        " was undefined!\n");
+                    employeeReq.push([await PrismaClient.employee.upsert({
+                        //upsert without update is essentially "find or create"
+                        where: {
+                            userID: "0"
+                        },
+                        update: {},
+                        create: {
+                            userID:"0",
+                            userName: "No one",
+                            firstName: "N/A",
+                            lastName: "N/A",
+                            designation: "N/A",
+                            isAdmin: false,
+                        },
+                    })]);
+                }
+            }
+
+            console.log(employeeReq);
+
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects
-            res.status(200).send([religReq, serviceReqs]);
+            res.status(200).send([religReq, serviceReqs, employeeReq]);
             console.info("\nSuccessfully gave you all of the Religious Requests\n");
             //send status unless 6 times bug occurs
         } catch (err) {
@@ -1555,7 +2358,7 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
 
             const religReq = await PrismaClient.religiousReq.findMany({
                 orderBy: {
-                    genReqID: "asc", //order by service request id so the two arrays are parallel
+                    genReqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     genReq: {
@@ -1567,7 +2370,7 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
 
             const serviceReqs = await PrismaClient.serviceRequest.findMany({
                 orderBy: {
-                    reqID: "asc", //order by service request id so the two arrays are parallel
+                    reqID: "desc", //order by service request id so the two arrays are parallel
                 },
                 where: {
                     reqType: "religious",
@@ -1596,6 +2399,8 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
         let emplFilter: string = req.query.employee as string;
         let locFilter: string = req.query.location as string;
 
+        let relFilter:string = "religious personnel";
+
         console.log("raw");
         console.log("statusfilter: \n" + statusFilter);
         console.log("priorityFilter: \n" + priorityFilter);
@@ -1605,20 +2410,17 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
         if(statusFilter==Status.Any){
             statusFilter="%";
         }
-
         if(priorityFilter==Priorities.any){
             priorityFilter="%";
         }
         if(emplFilter=="Any"){
             emplFilter="%";
         }
-
         if(locFilter=="Any"){
             locFilter="%";
         }
 
-
-        const sreviceRequest = await PrismaClient.serviceRequest.findMany({
+        const serviceRequest = await PrismaClient.serviceRequest.findMany({
             orderBy:{
                 reqID: "desc"
             },
@@ -1688,8 +2490,150 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
             }
         );
 
+        //monster of a duplicate functionality section to properly define emplRequestArr with the right type
+        //because if I didn't, there would be no way to access the type "Employee" from the db
+
+        //set relFilter appropriately
+        if (relReq[0].religion == "Other") {
+            relFilter = "religious personnel";
+
+        } else {
+            switch (relReq[0].religion) {
+                case "Buddhism":
+                    relFilter = "Buddhist personnel";
+                    break;
+                case "Christianity (Catholicism)":
+                    relFilter = "Catholic personnel";
+                    break;
+                case "Christianity (Mormonism)":
+                    relFilter = "Mormon personnel";
+                    break;
+                case "Christianity (Non-Denominational)":
+                    relFilter = "Christian (non-denominational) personnel";
+                    break;
+                case "Christianity (Protestantism)":
+                    relFilter = "Protestant personnel";
+                    break;
+                case "Hinduism":
+                    relFilter = "Hindu personnel";
+                    break;
+                case "Islam":
+                    relFilter = "Muslim personnel";
+                    break;
+                case "Jainism":
+                    relFilter = "Jain personnel";
+                    break;
+                case "Judaism":
+                    relFilter = "Jewish personnel";
+                    break;
+                case "Sikhism":
+                    relFilter = "Sikh personnel";
+                    break;
+                case "Shinto":
+                    relFilter = "Shinto personnel";
+                    break;
+                default:
+                    relFilter = "religious personnel";
+                    break;
+            }
+        }
+        //proper definition of emplRequestArr and end of monster
+        const emplRequestArr = [await PrismaClient.employee.findMany(
+            {
+                where: {
+                    OR: [
+                        {
+                            designation: relFilter
+                        },
+                        { //always pull "religious personnel", no matter the religion
+                            designation: "religious personnel"
+                        },
+                        {
+                            userName: "No one"
+                        }
+                    ]
+
+                }
+
+            }
+        )
+        ];
+
+        //oh, wait, here's where the monster was *supposed* to be
+        for(let i = 1; i<relReq.length; i++) {
+            //set relFilter appropriately
+            if (relReq[i].religion == "Other") {
+                relFilter = "religious personnel";
+
+            } else {
+                switch (relReq[i].religion) {
+                    case "Buddhism":
+                        relFilter = "Buddhist personnel";
+                        break;
+                    case "Christianity (Catholicism)":
+                        relFilter = "Catholic personnel";
+                        break;
+                    case "Christianity (Mormonism)":
+                        relFilter = "Mormon personnel";
+                        break;
+                    case "Christianity (Non-Denominational)":
+                        relFilter = "Christian (non-denominational) personnel";
+                        break;
+                    case "Christianity (Protestantism)":
+                        relFilter = "Protestant personnel";
+                        break;
+                    case "Hinduism":
+                        relFilter = "Hindu personnel";
+                        break;
+                    case "Islam":
+                        relFilter = "Muslim personnel";
+                        break;
+                    case "Jainism":
+                        relFilter = "Jain personnel";
+                        break;
+                    case "Judaism":
+                        relFilter = "Jewish personnel";
+                        break;
+                    case "Sikhism":
+                        relFilter = "Sikh personnel";
+                        break;
+                    case "Shinto":
+                        relFilter = "Shinto personnel";
+                        break;
+                    default:
+                        relFilter = "religious personnel";
+                        break;
+                }
+            }
+
+            emplRequestArr.push(
+                await PrismaClient.employee.findMany(
+                    {
+                        where: {
+                            OR: [
+                                {
+                                    designation: relFilter
+                                },
+                                { //always pull "religious personnel", no matter the religion
+                                    designation: "religious personnel"
+                                },
+                                {
+                                    userName: "No one"
+                                }
+                            ]
+
+                        }
+
+                    }
+                )
+            );
+        }
+
+
+
+
         //send the request to the user with the specified conditions
-        res.status(200).send([relReq,sreviceRequest]);
+        res.status(200).send([relReq,serviceRequest, emplRequestArr]);
 
         console.log("Res: " + res); //debugging info
 
@@ -1741,6 +2685,146 @@ router.get("/religiousRequest/statistics", async function (req: Request, res: Re
     } catch (err) {
         console.error("\nUnable to send requests\n" + err);
         res.sendStatus(500); // Send error
+    }
+});
+
+// return all the stats of types, priority, status of religious requests in each specific building in the database
+router.get("/religiousRequest/building-statistics", async function (req: Request, res: Response) {
+    try {
+        const serviceRequest = await PrismaClient.serviceRequest.findMany({
+            where: {
+                reqType: "religious"
+            },
+            include: {
+                reqLocation: true
+            },
+        });
+        const shapiro = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const tower = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const Francis45 = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const Francis15 = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const BTM = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        for (const entry of serviceRequest) {
+            if (entry.reqLocation.building == "Shapiro") {
+                shapiro.total++;
+                if (entry.reqPriority == "Low") shapiro.lowPrio++;
+                if (entry.reqPriority == "Medium") shapiro.medPrio++;
+                if (entry.reqPriority == "High") shapiro.highPrio++;
+                if (entry.reqPriority == "Emergency") shapiro.emergPrio++;
+                if (entry.status == "Unassigned") shapiro.unassigned++;
+                if (entry.status == "Assigned") shapiro.assigned++;
+                if (entry.status == "In Progress") shapiro.inProgress++;
+                if (entry.status == "Completed") shapiro.completed++;
+            }
+            if (entry.reqLocation.building == "Tower") {
+                tower.total++;
+                if (entry.reqPriority == "Low") tower.lowPrio++;
+                if (entry.reqPriority == "Medium") tower.medPrio++;
+                if (entry.reqPriority == "High") tower.highPrio++;
+                if (entry.reqPriority == "Emergency") tower.emergPrio++;
+                if (entry.status == "Unassigned") tower.unassigned++;
+                if (entry.status == "Assigned") tower.assigned++;
+                if (entry.status == "In Progress") tower.inProgress++;
+                if (entry.status == "Completed") tower.completed++;
+            }
+            if (entry.reqLocation.building == "45 Francis") {
+                Francis45.total++;
+                if (entry.reqPriority == "Low") Francis45.lowPrio++;
+                if (entry.reqPriority == "Medium") Francis45.medPrio++;
+                if (entry.reqPriority == "High") Francis45.highPrio++;
+                if (entry.reqPriority == "Emergency") Francis45.emergPrio++;
+                if (entry.status == "Unassigned") Francis45.unassigned++;
+                if (entry.status == "Assigned") Francis45.assigned++;
+                if (entry.status == "In Progress") Francis45.inProgress++;
+                if (entry.status == "Completed") Francis45.completed++;
+            }
+            if (entry.reqLocation.building == "15 Francis") {
+                Francis15.total++;
+                if (entry.reqPriority == "Low") Francis15.lowPrio++;
+                if (entry.reqPriority == "Medium") Francis15.medPrio++;
+                if (entry.reqPriority == "High") Francis15.highPrio++;
+                if (entry.reqPriority == "Emergency") Francis15.emergPrio++;
+                if (entry.status == "Unassigned") Francis15.unassigned++;
+                if (entry.status == "Assigned") Francis15.assigned++;
+                if (entry.status == "In Progress") Francis15.inProgress++;
+                if (entry.status == "Completed") Francis15.completed++;
+            }
+            if (entry.reqLocation.building == "BTM") {
+                BTM.total++;
+                if (entry.reqPriority == "Low") BTM.lowPrio++;
+                if (entry.reqPriority == "Medium") BTM.medPrio++;
+                if (entry.reqPriority == "High") BTM.highPrio++;
+                if (entry.reqPriority == "Emergency") BTM.emergPrio++;
+                if (entry.status == "Unassigned") BTM.unassigned++;
+                if (entry.status == "Assigned") BTM.assigned++;
+                if (entry.status == "In Progress") BTM.inProgress++;
+                if (entry.status == "Completed") BTM.completed++;
+            }
+
+        }
+
+        const result = {
+            shapiro, tower, Francis45, Francis15, BTM
+        };
+
+        res.send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+        //send status unless 6 times bug occurs
+        res.sendStatus(200);
+
+    } catch (error) {
+        console.error("\nUnable to send requests\n");
+        res.sendStatus(400); // Send error
     }
 });
 

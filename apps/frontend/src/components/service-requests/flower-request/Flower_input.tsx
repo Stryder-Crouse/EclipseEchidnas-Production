@@ -153,31 +153,33 @@ export default function Flower_input({
                         </SimpleTextInput>
 
 
-                        <div className="grid justify-center items-center my-1.5">
-                            <label id="priorityType">Priority </label>
-                            <select
-                                id={"priorityType"}
-                                name={"priorityType"}
-                                value={priority}
-                                onChange={handlePriority}
-                                className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
-                            >
-                                <option value="low">Low</option>
-                                <option value="medium">Medium</option>
-                                <option value="high">High</option>
-                                <option value="emergency">Emergency</option>
-                            </select>
-                        </div>
+                <div className="grid justify-center items-center my-1.5">
+                    <label id="priorityType">Priority </label>
+                    <select
+                        id={"priorityType"}
+                        name={"priorityType"}
+                        value={priority}
+                        onChange={handlePriority}
+                        className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
+                    >
+                        <option key="flower_priorityType_low" value="low">Low</option>
+                        <option key="flower_priorityType_med" value="medium">Medium</option>
+                        <option key="flower_priorityType_high" value="high">High</option>
+                        <option key="flower_priorityType_emerg" value="emergency">Emergency</option>
+                    </select>
+                </div>
 
                         <div className="grid justify-center items-center my-1.5">
 
-                            <label className="label">Location </label>
-                            <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationFlow"} isSearchable={true}
-                                            populationArr={longNames} resetDropdown={resetDropdown}
-                                            setSelected={setSelected}
-                                            inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
-                                            selectCSS={""}
-                                            resetOnSelect={false} setResetDropdown={setResetDropdown}/>
+                        <label className="label">Location </label>
+                        <CreateDropdown
+                            runOnChange={()=>{return -1;}}
+                            dropBtnName={"Locations"} dropdownID={"LocationFlow"} isSearchable={true}
+                                        populationArr={longNames} resetDropdown={resetDropdown}
+                                        setSelected={setSelected}
+                                        inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
+                                        selectCSS={""}
+                                        resetOnSelect={false} setResetDropdown={setResetDropdown}/>
 
                         </div>
 
