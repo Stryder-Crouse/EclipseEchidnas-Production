@@ -1,14 +1,11 @@
-.medTable{
-
-
-    max-height: 100%;
-    min-width: 140px;
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: auto;
+.medTable {
+    overflow-x: scroll;
+    overflow-y: scroll;
+    border-radius: 2rem;
     justify-content: left;
     border-collapse: collapse;
 }
+
 
 .tableTRHead{
 

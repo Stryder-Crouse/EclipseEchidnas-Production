@@ -22,10 +22,13 @@ export default function SideNavBarComponent({ children }: SideNavBarProps): JSX.
         <aside className="h-screen z-10">
             <nav className="h-full flex flex-col bg-navStart border-r shadow-sm">
                 <div className="p-4 pb-2 flex justify-between items-center mt-2">
-                    <img src={Logo} alt={"Mass General Brigham Women's Hospital"} className={`overflow-hidden transition-all ${expanded ? "w-32 ml-10 scale-150" : "w-0"}`} />
+                    <a href={"/"}>
+                        <img src={Logo} alt={"Mass General Brigham Women's Hospital"}
+                             className={`overflow-hidden scale-110 transition-all ${expanded ? "w-32 ml-4" : "w-0"}`}/>
+                    </a>
                     <button
                         onClick={() => setExpanded((curr) => !curr)}
-                        className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 mr-1.5 drop-shadow-lg"
+                        className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 drop-shadow-lg scale-90"
                     >
                         {expanded ? <img src={ChevronFirst} alt={"ChevronFirst"} /> : <img src={ChevronLast} alt={"ChevronLast"} />}
                     </button>
@@ -56,7 +59,7 @@ export function SideBarItem({ icon, text, link, onClick }: SideBarItemProps): JS
                 <img src={icon} alt={"Map Icon"} className={"absolute"}
                      style={{width: expanded ? '24' : '24', height: '24px'}}/>
                 <span
-                    className={`text-white overflow-hidden transition-all ${expanded ? "w-52 ml-8" : "w-0"}`}>{text}</span>
+                    className={`text-white overflow-hidden transition-all ${expanded ? "w-36 ml-8" : "w-0"}`}>{text}</span>
         {!expanded && (
         <div className={'absolute left-full rounded-md px-2 py-1 ml-6 bg-ivoryWhite text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible group-hover:opacity-100 group-hover:translate-x-0'}>
                     {text}

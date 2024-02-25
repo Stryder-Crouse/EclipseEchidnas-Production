@@ -25,7 +25,7 @@ export default function FullSideNavBarComponent() {
         <div>
             <div className="z-10">
                 <SideNavBarComponent>
-                    <SideBarItem icon={MapIcon} text="Map" link="/TailwindMapPage" />
+                    <SideBarItem icon={MapIcon} text="Map" link="/" />
                     <SideBarItem icon={ServiceRequestIcon} text="Services" link="ServiceRequest"/>
 
                     {isAuthenticated && (
