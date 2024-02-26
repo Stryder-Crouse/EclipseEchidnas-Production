@@ -14,6 +14,7 @@ import {BestFirstSearch} from "./BestFirstSearch.ts";
  *  if no such path exists in graph.
  */
 export function DijkstraSearch(source: Node | null, target: Node | null, graph: Graph): Array<Node> | null {
-    /* Simple wrapper; heuristic is initialised to zero so this is equivalent to Dijkstra */
+    /* Simple wrapper; heuristic is zeroed so this call is equivalent to Dijkstra */
+    graph.zeroNodeHeuristic();
     return BestFirstSearch(source, target, graph);
 }
