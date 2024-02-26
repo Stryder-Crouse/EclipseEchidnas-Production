@@ -37,18 +37,18 @@ function ProfilePage() {
 
         //const [currentEmployee , setCurrentEmployee ] = useState("");
         const currUser = useAuth0();
-        const email = currUser?.user?.email;
+        const decodedEmail = decodeURIComponent(String(currUser?.user?.email));
         const username = String(currUser?.user?.email);
         const ProfilePicture = currUser?.user?.picture;
 
         useEffect(() => {
-            getEmployees(email!).then((results) => {
+            getEmployees(decodedEmail!).then((results) => {
 
                 setFirstName(results.firstName);
                 setLastName(results.lastName);
                 setDesignation(results.designation);
             });
-        }, [email]);
+        }, [decodedEmail]);
 
 
     console.log(getEmployees);
