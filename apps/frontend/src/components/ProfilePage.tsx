@@ -37,18 +37,17 @@ function ProfilePage() {
 
         //const [currentEmployee , setCurrentEmployee ] = useState("");
         const currUser = useAuth0();
-        const eMail = currUser?.user?.email;
-        eMail!.replace('"',"");
+        const username = String(currUser?.user?.email);
         const ProfilePicture = currUser?.user?.picture;
 
         useEffect(() => {
-            getEmployees(eMail!).then((results) => {
+            getEmployees(username).then((results) => {
 
                 setFirstName(results.firstName);
                 setLastName(results.lastName);
                 setDesignation(results.designation);
             });
-        }, [eMail]);
+        }, [username]);
 
 
     console.log(getEmployees);
@@ -79,7 +78,7 @@ function ProfilePage() {
                         <div className="flex flex-col mt-9">
                             <div className="flex mb-2">
                                 <span className="font-bold text-xl mr-2">Username:</span>
-                                <p className="text-xl">{eMail}</p>
+                                <p className="text-xl">{username}</p>
                             </div>
 
                             <div className="flex mb-2">
@@ -152,15 +151,15 @@ function ProfilePage() {
         // For each div/request to overlay
 
         if (statsToggle) {
-            if (eMail != "") {
+            if (username != "") {
                 return ((<PieChartStatsProfile></PieChartStatsProfile>));
             }
 
         }
 
 
-        if (eMail != "") {
-            return (<ServiceRequest_Table employeeFilter={eMail!} statusFilter={Status.Any} priorityFilter={Priorities.any}  locationFilter={"Any"}/>);
+        if (username != "") {
+            return (<ServiceRequest_Table employeeFilter={username!} statusFilter={Status.Any} priorityFilter={Priorities.any}  locationFilter={"Any"}/>);
 
         }
         {
