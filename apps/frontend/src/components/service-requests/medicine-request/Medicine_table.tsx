@@ -44,9 +44,16 @@ export default function Medicine_table({statusFilter, priorityFilter,employeeFil
                                 <th className={"tableTD"}>Priority</th>
                                 <th className={"tableTD"}>Employee Assigned</th>
                                 <th className={"tableTD"}>Location ID</th>
-                                <th className={"tableTD"}>Medicine type</th>
-                                <th className={"tableTD"}>Dosage</th>
-                                <th className={"tableTD"}>Amount</th>
+
+                                <th className={"tableTD"}>Patient Name</th>
+                                <th className={"tableTD"}>Patient DOB</th>
+                                <th className={"tableTD"}>Patient Medical Rec. #</th>
+                                <th className={"tableTD"}>Medication Name</th>
+                                <th className={"tableTD"}>Medication Dosage</th>
+                                <th className={"tableTD"}>Quant. of Doses</th>
+                                <th className={"tableTD"}>Medication Form</th>
+                                <th className={"tableTD"}>Medication Sig</th>
+
                                 <th className={"tableTD"}>Extra Notes</th>
                             </tr>
                             </thead>
@@ -58,9 +65,10 @@ export default function Medicine_table({statusFilter, priorityFilter,employeeFil
                                     return (
                                         <tr className={"tableTR"} key={"Med_" + request[0].genReqID}>
                                             <td className={"tableTD"}>{request[1].reqID}</td>
+                                            {/*ID       ^^*/}
                                             <td className={"tableTD"}>{request[1].reqType}</td>
-                                            {/*type*/}
-                                            <td className={"tableTD"}> {/*status*/}
+                                            {/*type     ^^*/}
+                                            <td className={"tableTD"}>
                                                 <select
                                                     value={request[1].status}
                                                     id={"medStatusDropdown" + request[1].reqID}
@@ -85,7 +93,8 @@ export default function Medicine_table({statusFilter, priorityFilter,employeeFil
                                                     </option>
                                                 </select>
                                             </td>
-                                            <td className={"tableTD"}> {/*priority*/}
+                                            {/*status   ^^*/}
+                                            <td className={"tableTD"}>
                                                 <select
                                                     value={request[1].reqPriority}
                                                     id={"priorityDropdown" + request[1].reqID}
@@ -104,7 +113,8 @@ export default function Medicine_table({statusFilter, priorityFilter,employeeFil
                                                     </option>
                                                 </select>
                                             </td>
-                                            <td className={"tableTD"}> {/*employee*/}
+                                            {/*priority ^^*/}
+                                            <td className={"tableTD"}>
                                                 <select
                                                     value={request[1].assignedUName}
                                                     onChange={
@@ -121,12 +131,29 @@ export default function Medicine_table({statusFilter, priorityFilter,employeeFil
                                                     }
                                                 </select>
                                             </td>
+                                            {/*employee ^^*/}
                                             <td className={"tableTD"}>{request[1].reqLocationID}</td>
-                                            {/*location*/}
+                                            {/*location ^^*/}
+
+                                            <td className={"tableTD"}>{request[0].patientName}</td>
+                                            {/*patient name          ^^*/}
+                                            <td className={"tableTD"}>{attemptDOB(request[0])}</td>
+                                            {/*patient DOB           ^^*/}
+                                            <td className={"tableTD"}>{attemptMRN(request[0])}</td>
+                                            {/*patient medical rec # ^^*/}
                                             <td className={"tableTD"}>{request[0].medName}</td>
+                                            {/*medication name       ^^*/}
                                             <td className={"tableTD"}>{request[0].medStrength}</td>
-                                            <td className={"tableTD"}>{request[0].quantity.toString()}</td>
+                                            {/*medication dosage     ^^*/}
+                                            <td className={"tableTD"}>{attemptQuant(request[0])}</td>
+                                            {/*quant. of doses       ^^*/}
+                                            <td className={"tableTD"}>{request[0].medForm}</td>
+                                            {/*medication form       ^^*/}
+                                            <td className={"tableTD"}>{request[0].medSig}</td>
+                                            {/*medication sig        ^^*/}
+
                                             <td className={"tableTD"}>{request[1].extraInfo}</td>
+                                            {/*extra info ^^*/}
                                         </tr>
 
                                     );
@@ -139,6 +166,24 @@ export default function Medicine_table({statusFilter, priorityFilter,employeeFil
         </div>
     );
 
+    function attemptMRN (medReq :MedReq) :string {
+        if(medReq.patientMedRecordNum){
+            return medReq.patientMedRecordNum.toString();
+        }
+        else{ return "No med rec # provided";}
+    }
+    function attemptDOB (medReq :MedReq) :string {
+        if(medReq.patientDOB.toString()){
+            return medReq.patientDOB.toString();
+        }
+        else{ return "No date provided";}
+    }
+    function attemptQuant (medReq :MedReq) :string {
+        if(medReq.quantity.toString()){
+            return medReq.quantity.toString();
+        }
+        else{ return "No dosage quantity provided";}
+    }
     function renderEmployees(employee: Employee, medID: string) {
         return (
             <option

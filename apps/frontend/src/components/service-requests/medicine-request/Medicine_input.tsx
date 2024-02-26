@@ -142,6 +142,7 @@ export default function Medicine_input({
         setMedQuant("");
         setMedSig("");
         setPatientDob(new Date());
+
         setPatientName("");
         setPatientMedrec("");
         setResetMedFormDropdown(true);
