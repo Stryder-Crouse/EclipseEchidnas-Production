@@ -12,11 +12,8 @@ import {BestFirstSearch} from "./BestFirstSearch.ts";
  *
  * @returns  an array of node that stores the path from source to target if it exists or null
  *  if no such path exists in graph.
- *
- *  @see {https://en.wikipedia.org/wiki/A*_search_algorithm}
- *
  */
-export function Dijkstra(source: Node | null, target: Node | null, graph: Graph): Array<Node> | null {
+export function DijkstraSearch(source: Node | null, target: Node | null, graph: Graph): Array<Node> | null {
     /* Simple wrapper; heuristic is initialised to zero so this is equivalent to Dijkstra */
     return BestFirstSearch(source, target, graph);
 }
