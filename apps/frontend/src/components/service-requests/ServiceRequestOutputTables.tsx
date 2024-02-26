@@ -13,12 +13,12 @@ import Status from "../../../../../packages/common/src/algorithms/Requests/Statu
 import Transportation_table from "./transportation-outside-request/Transportation_table.tsx";
 import Sanitation_table from "./sanitation-request/Sanitation_table.tsx";
 import ServiceRequest_Table from "./service-request/ServiceRequest_Table.tsx";
-import PieChartStatsAll from "./StatsPie/PieChartStatsAll.tsx";
-import PieChartStatsServiceRequest from "./StatsPie/PieChartStatsServiceRequest.tsx";
-import {Employee} from "../../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import PieChartStatsAll from "./Stats/PieChartStatsAll.tsx";
+import PieChartStatsServiceRequest from "./Stats/PieChartStatsServiceRequest.tsx";
+import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 import axios from "axios";
 
-import {NodeDataBase} from "../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
+import {NodeDataBase} from "common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 
 
 
