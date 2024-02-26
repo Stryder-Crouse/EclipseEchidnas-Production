@@ -11,7 +11,8 @@
     overflow-x: hidden;
     overflow-y: auto;
     box-shadow: black;
-    border: 1rem black;
+    border: 2px solid gray;
+    border-radius: 1rem;
 }
 
 .employeeInputHidden{
@@ -23,22 +24,17 @@
 
 
 .formNewEmployee{
-
     padding-top: 16px;
     position: relative;
     /*make divs in the form into a colum*/
     display: flex;
     flex-direction: column;
-
     overflow-x: hidden;
     overflow-y: auto;
-
     align-items: center;
-
-
     padding-right: 4px;
     gap: 8px;
-
+    border: 1rem black;
 }
 
 
