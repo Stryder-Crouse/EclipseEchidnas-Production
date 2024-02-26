@@ -11,6 +11,7 @@ import ProtectedEmployeeTable from "./components/protected-pages/ProtectedEmploy
 import TailwindMapPage from "./routes/TailwindMapPage.tsx";
 import TestServiceReqPage from "./routes/TestServiceReqPage.tsx";
 import ProtectedRegisterPage from "./components/protected-pages/ProtectedRegisterPage.tsx";
+import NodeEdgeTablePage from "./routes/admin-routes/NodeEdgeTablePage.tsx";
 
 function App() {
     const router = createBrowserRouter([
@@ -66,6 +67,10 @@ function App() {
                 {
                     path: "/AboutPage",
                     element: <AboutPage/>,
+                },
+                {
+                    path: "/hi",
+                    element: <NodeEdgeTablePage/>,
                 },
             ],
         },
