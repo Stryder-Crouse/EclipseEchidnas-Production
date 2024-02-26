@@ -136,7 +136,7 @@ function StatsBarChart({urlForBuildingStats}:requestStats){
         }
     };
     return (
-        <div style={
+        <div className={"scale-90"} style={
             {}}>
             <p className="text-center"><b>Request per Building</b></p>
             <div className="canvas-container">
