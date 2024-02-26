@@ -30,7 +30,7 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
     }, [statusFilter, priorityFilter, employeeFilter, locationFilter]);
 
     return (
-        <div>
+        <div className={"h-100 w-[42.5rem] overflow-auto rounded-xl"}>
 
 
                         <table className={"requestTable"} id={"request-table"}>

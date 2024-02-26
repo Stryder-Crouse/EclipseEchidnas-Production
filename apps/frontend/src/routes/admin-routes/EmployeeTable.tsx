@@ -2,7 +2,7 @@ import "../../css/route-css/EmployeeTable.css";
 import "../../css/route-css/EmployeeTableInput.css";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Employee, Roles} from "../../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import {Employee, Roles} from "common/src/algorithms/Employee/Employee.ts";
 import trashIcon from "../../images/Table Functions/trash-2.png";
 import editPen from "../../images/Table Functions/pencil.png";
 import ExportImportButtonEmployee from "../../components/EmployeeTableButtons/ExportImportButtonEmployee.tsx";
@@ -20,8 +20,8 @@ const designations = [Roles.None,Roles.nurse,Roles.doctor,Roles.admin,
     Roles.sikhPersonnel, Roles.shintoPersonnel];
 
 function EmployeeTable() {
-    
-    
+
+
     const [employees, setEmployees] = useState<Employee[]>([]);
 
     //employee creation
@@ -41,9 +41,33 @@ function EmployeeTable() {
 
 
     /* populate the requests */
-    useEffect(()=>{
-        getEmployees().then((result)=>setEmployees(result));
-    },[]);
+
+
+
+    useEffect(() => {
+        getEmployees().then((result) => setEmployees(result));
+        const handleClickOutside = (event: MouseEvent) => {
+            const addEmployeeButton = document.getElementById("addEmployeeButton");
+            const addEmployeeForm = document.getElementById("addEmployeeForm");
+
+            if (
+                addEmployeeForm &&
+                !addEmployeeForm.contains(event.target as Node) &&
+                addEmployeeButton &&
+                !addEmployeeButton.contains(event.target as Node)
+            ) {
+                closeForm();
+            }
+        };
+        document.addEventListener("click", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
+
+
+
     //table-id is request-table
     return (
         <div className="flex h-lvh flex-row overflow-hidden">
@@ -69,8 +93,8 @@ function EmployeeTable() {
                     </div>
 
 
-                    <div className={"employeeTable"}>
-                        <table id={"request-table"}>
+                    <div className={"employeeTable "}>
+                        <table id={"request-table"} className={"rounded-xl"}>
                             <thead>
                             <tr className={"tableTRHead"}>
                                 <th className={"tableTD"}>User Name</th>
@@ -93,6 +117,7 @@ function EmployeeTable() {
                         </table>
                     </div>
                 </div>
+
                 {/*add employee form*/}
                 <div id={"addEmployeeForm"} className="employeeInputHidden">
                     <div><b>New Employee</b></div>
@@ -104,8 +129,7 @@ function EmployeeTable() {
                                    value={newUserName}
                                    onChange={(e) => {
                                        setNewUserName(e.target.value);
-                                   }}
-                            />
+                                   }}/>
                         </div>
                         <div>
                             <label form={"employeeFirst"}>First Name</label><br/>
@@ -114,8 +138,7 @@ function EmployeeTable() {
                                    value={newFristName}
                                    onChange={(e) => {
                                        setNewFristName(e.target.value);
-                                   }}
-                            />
+                                   }}/>
                         </div>
                         <div>
                             <label form={"employeeLast"}>Last Name</label><br/>
@@ -124,8 +147,7 @@ function EmployeeTable() {
                                    value={newLastName}
                                    onChange={(e) => {
                                        setNewLastName(e.target.value);
-                                   }}
-                            />
+                                   }}/>
                         </div>
                         <div>
                             <label form={"designation"}>Designation</label><br/>
@@ -143,8 +165,7 @@ function EmployeeTable() {
                                             <option
                                                 className={"statis-dropdown"}
                                                 value={des}
-                                                key={des+"_newEmployee"}
-                                            >
+                                                key={des+"_newEmployee"}>
                                                 {des}
                                             </option>
                                         );
@@ -172,8 +193,7 @@ function EmployeeTable() {
                                    onChange={(e) => {
                                        console.log(e.target.checked);
                                            setNewIsAdmin(e.target.checked);
-                                   }}
-                            />
+                                   }}/>
                         </div>
                         <div>
                             <button  type={"button"} className={"submitButtonEmployee"}
@@ -181,7 +201,7 @@ function EmployeeTable() {
                             >{formSubmitText()}</button>
                         </div>
                         <div>
-                            <button type={"button"} className={"submitButtonEmployee"}onClick={closeForm}>Close</button>
+                            <button type={"button"} className={"submitButtonEmployee"} onClick={closeForm}>Close</button>
                         </div>
                     </form>
                 </div>
@@ -191,16 +211,14 @@ function EmployeeTable() {
 
 
     function isCreating(){
-        if(editIndex!=-1){
-            return true;
-        }
-        return false;
+        return editIndex != -1;
+
     }
     function formSubmitText(){
         if(editIndex!=-1){
             return "Update Employee";
         }
-        return "Add Employeee";
+        return "Add Employee";
     }
 
     async function onSubmit() {

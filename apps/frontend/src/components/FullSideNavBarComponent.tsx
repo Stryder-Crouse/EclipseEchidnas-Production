@@ -26,7 +26,7 @@ export default function FullSideNavBarComponent() {
         <div>
             <div className="z-10">
                 <SideNavBarComponent>
-                    <SideBarItem icon={MapIcon} text="Map" link="/TailwindMapPage" />
+                    <SideBarItem icon={MapIcon} text="Map" link="/" />
                     <SideBarItem icon={ServiceRequestIcon} text="Services" link="ServiceRequest"/>
 
                     {isAuthenticated && (
@@ -38,9 +38,9 @@ export default function FullSideNavBarComponent() {
 
                     <hr className="my-3" />
                     {/* Conditionally render "Login" or "Log Out" based on authentication status */}
-                    <SideBarItem icon={isAuthenticated ? LogOutIcon : LogIcon} text={isAuthenticated ? "Log Out" : "Login"} onClick={handleLoginOrLogout} link={window.location.origin}/>
-                    <SideBarItem icon={AboutIcon} text={"About Us"} link={"/AboutPage"}/>
-                    <SideBarItem icon={CreditsIcon} text={"Package Credits"} link={"/Credits"}/>
+                    <SideBarItem icon={isAuthenticated ? LogOutIcon : LogIcon} text={isAuthenticated ? "Logout" : "Login"} onClick={handleLoginOrLogout} link={window.location.origin}/>
+                    <SideBarItem icon={AboutIcon} text={"About"} link={"/AboutPage"}/>
+                    <SideBarItem icon={CreditsIcon} text={"Credits"} link={"/Credits"}/>
                 </SideNavBarComponent>
             </div>
         </div>

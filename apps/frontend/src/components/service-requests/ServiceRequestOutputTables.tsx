@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import "../../css/component-css/ServicePage.css";
-import {ReqTypes, Priorities} from "../../../../../packages/common/src/algorithms/Requests/Request.ts";
+import {ReqTypes, Priorities} from "common/src/algorithms/Requests/Request.ts";
 
 //from https://github.com/frontend-joe/react-widgets for css
 
@@ -104,7 +104,7 @@ export default function ServiceRequestOutputTables() {
                        onClick={() => {
                            setCurentServiceRequest(ReqTypes.tranReq);
                        }}>
-                        Transportation Request
+                        Transport Request
                     </a>
                 </li>
                 <li>
