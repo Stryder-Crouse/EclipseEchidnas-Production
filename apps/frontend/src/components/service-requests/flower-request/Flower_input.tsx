@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
-import {FlowReq, ReqTypes, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
+import {FlowReq, ReqTypes, ServiceRequest} from "common/src/algorithms/Requests/Request.ts";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
-import {NodeDataBase} from "../../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
+import {NodeDataBase} from "common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import Status from "../../../../../../packages/common/src/algorithms/Requests/Status.ts";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import {closeFlowerCard} from "../../service-request-cards/FlowerRequestCard.tsx";
@@ -171,6 +171,7 @@ export default function Flower_input({
                                             setSelected={setUrgencyDDIndx}
                                             resetDropdown={resetDropdownUrg}
                                             resetOnSelect={false}
+                                            runOnChange={()=>{return -1;}}
                                             inputCSS={"n/a"} selectCSS={"dropdown"}
                                             setResetDropdown={setResetDropdownUrg}/>
                         </div>
@@ -182,6 +183,7 @@ export default function Flower_input({
                                 dropBtnName={"Locations"} dropdownID={"LocationFlow"} isSearchable={true}
                                 populationArr={longNames} resetDropdown={resetDropdown}
                                 setSelected={setSelected}
+                                runOnChange={()=>{return -1;}}
                                 inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
                                 selectCSS={""} resetOnSelect={false} setResetDropdown={setResetDropdown}
                             />
@@ -247,7 +249,7 @@ export default function Flower_input({
                     Close
                 </button>
 
-                <p className={"flex justify-center items-center mt-5"}>Created By: Shiivek and Syzmon</p>
+                <p className={"flex justify-center items-center mt-5"}>Created By: Shiivek and Szymon</p>
             </div>
             <div id={"flower-popup"} className={"text-center flex justify-center m-auto opacity-0 "}>
                 <RequestSubmitToast/>

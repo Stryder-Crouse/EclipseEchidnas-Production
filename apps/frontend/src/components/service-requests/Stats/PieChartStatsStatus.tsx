@@ -21,7 +21,7 @@ function PieChartStatsStatus ({stats}:pieAssignedStats){
                 label: 'Count',
                 data:[stats.unassigned, stats.assigned,
                     stats.inProgress, stats.completed],
-                backgroundColor: ["#BA1215", "#003a96", "#0C8750", "#FFBA08"]
+                backgroundColor: ["#0a9396", "#94d2bd", "#e9d8a6", "#ee9b00"]
             }
         ]
     };

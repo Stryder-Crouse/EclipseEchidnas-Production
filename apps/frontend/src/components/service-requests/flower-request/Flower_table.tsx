@@ -19,7 +19,7 @@ export default function Flower_table({statusFilter, priorityFilter,employeeFilte
 
     useEffect(() => {
         console.log("hello");
-        getEmployees().then(result=> {
+        getEmployees().then(result => {
             setFlowerEmployees(result);
         });
         getflowerReq(statusFilter, priorityFilter,employeeFilter,locationFilter).then(result => {
@@ -72,15 +72,29 @@ export default function Flower_table({statusFilter, priorityFilter,employeeFilte
                                             }
                                         }
                                     >
-                                        <option className={"status-dropdown"}
-                                                value="Unassigned">Unassigned
+                                        <option
+                                            key="flower_status_unas"
+                                            className={"status-dropdown"}
+                                            value="Unassigned">
+                                            Unassigned
                                         </option>
-                                        <option className={"status-dropdown"} value="Assigned">Assigned
+                                        <option
+                                            key="flower_status_assig"
+                                            className={"status-dropdown"}
+                                            value="Assigned">
+                                            Assigned
                                         </option>
-                                        <option className={"status-dropdown"} value="In Progress">In
-                                            Progress
+                                        <option
+                                            key="flower_status_inpro"
+                                            className={"status-dropdown"}
+                                            value="In Progress">
+                                            In Progress
                                         </option>
-                                        <option className={"status-dropdown"} value="Completed">Completed
+                                        <option
+                                            key="flower_status_comp"
+                                            className={"status-dropdown"}
+                                            value="Completed">
+                                            Completed
                                         </option>
                                     </select>
                                 </td>
@@ -95,11 +109,29 @@ export default function Flower_table({statusFilter, priorityFilter,employeeFilte
                                             }
                                         }
                                     >
-                                        <option className={"priorityDropdown"} value="Low">Low</option>
-                                        <option className={"priorityDropdown"} value="Medium">Medium
+                                        <option
+                                            key="flower_priorityType_low"
+                                            className={"priorityDropdown"}
+                                            value="Low">
+                                            Low
                                         </option>
-                                        <option className={"priorityDropdown"} value="High">High</option>
-                                        <option className={"priorityDropdown"} value="Emergency">Emergency
+                                        <option
+                                            key="flower_priorityType_med"
+                                            className={"priorityDropdown"}
+                                            value="Medium">
+                                            Medium
+                                        </option>
+                                        <option
+                                            key="flower_priorityType_high"
+                                            className={"priorityDropdown"}
+                                            value="High">
+                                            High
+                                        </option>
+                                        <option
+                                            key="flower_priorityType_emerg"
+                                            className={"priorityDropdown"}
+                                            value="Emergency">
+                                            Emergency
                                         </option>
                                     </select>
                                 </td>
@@ -202,7 +234,7 @@ export default function Flower_table({statusFilter, priorityFilter,employeeFilte
 
         const requests = [...flowerRequest]; //make a copy of the array to update
         const thisRequest = requests?.at(requestIndex);//use the copy to make changes
-        if(thisRequest== undefined){
+        if (thisRequest == undefined) {
             console.error("request not found from requesst index ");
             return;
         }
@@ -224,7 +256,7 @@ export default function Flower_table({statusFilter, priorityFilter,employeeFilte
             }
 
             //assign new status
-            thisRequest[1].status=select.value;
+            thisRequest[1].status = select.value;
 
             //set new record list to re render and update
             console.log("hello2");
@@ -246,7 +278,6 @@ export default function Flower_table({statusFilter, priorityFilter,employeeFilte
         } else {
 
 
-
             //todo visual error
             console.error("you cannot change the status of an unassigned request");
         }
@@ -260,7 +291,7 @@ export default function Flower_table({statusFilter, priorityFilter,employeeFilte
         const requests = [...flowerRequest]; //make a copy of the array to update
         const thisRequest = requests?.at(requestIndex);//use the copy to make changes
 
-        if(thisRequest== undefined){
+        if (thisRequest == undefined) {
             console.error("request not found from requesst index ");
             return;
         }
@@ -271,12 +302,11 @@ export default function Flower_table({statusFilter, priorityFilter,employeeFilte
         }
 
 
-
-        if(select.value!="No one"){
+        if (select.value != "No one") {
             //change record to assigned
-            thisRequest[1].status=Status.Assigned;
+            thisRequest[1].status = Status.Assigned;
             //change employee to the new employee
-            thisRequest[1].assignedUName=select.value;
+            thisRequest[1].assignedUName = select.value;
             //database
 
             //set new record list to re render and update (MAKE SURE BEFORE POST REQUST)
@@ -292,18 +322,16 @@ export default function Flower_table({statusFilter, priorityFilter,employeeFilte
                     });
 
 
-            }
-            catch (e) {
+            } catch (e) {
                 console.error("faild to change user" + e);
             }
 
 
-        }
-        else{
+        } else {
             //change record to assigned
-            thisRequest[1].status=Status.Unassigned;
+            thisRequest[1].status = Status.Unassigned;
             //change employee to the new employee
-            thisRequest[1].assignedUName=select.value;
+            thisRequest[1].assignedUName = select.value;
 
             //set new record list to re render and update
             console.log("hello2");
@@ -317,9 +345,8 @@ export default function Flower_table({statusFilter, priorityFilter,employeeFilte
                         },
                     });
 
-            }
-            catch (e) {
-                console.error("failed to change user "+e);
+            } catch (e) {
+                console.error("failed to change user " + e);
             }
         }
 

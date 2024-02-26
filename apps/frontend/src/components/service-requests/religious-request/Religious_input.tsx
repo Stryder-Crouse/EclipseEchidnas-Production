@@ -158,6 +158,7 @@ export default function Religious_input({
                                             setSelected={setSelected}
                                             inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
                                             selectCSS={""}
+                                            runOnChange={()=>{return -1;}}
                                             resetOnSelect={false} setResetDropdown={setResetDropdownLoc}/>
 
                         </div>
@@ -169,6 +170,7 @@ export default function Religious_input({
                                             setSelected={setUrgencyDDIndx}
                                             resetDropdown={resetDropdownUrg}
                                             resetOnSelect={false}
+                                            runOnChange={()=>{return -1;}}
                                             inputCSS={"n/a"} selectCSS={"dropdown"}
                                             setResetDropdown={setResetDropdownUrg}/>
                         </div>
@@ -182,6 +184,7 @@ export default function Religious_input({
                                             setSelected={setReligionDDIndx}
                                             resetDropdown={resetDropdownRel}
                                             resetOnSelect={false}
+                                            runOnChange={()=>{return -1;}}
                                             inputCSS={"n/a"} selectCSS={"dropdown"}
                                             setResetDropdown={setResetDropdownRel}/>
                         </div>

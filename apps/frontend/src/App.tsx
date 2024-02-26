@@ -12,6 +12,7 @@ import ProtectedEmployeeTable from "./components/protected-pages/ProtectedEmploy
 import TailwindMapPage from "./routes/TailwindMapPage.tsx";
 import TestServiceReqPage from "./routes/TestServiceReqPage.tsx";
 import ProtectedRegisterPage from "./components/protected-pages/ProtectedRegisterPage.tsx";
+import PackageCredits from "./routes/PackageCredits.tsx";
 
 function App() {
     const router = createBrowserRouter([
@@ -67,6 +68,10 @@ function App() {
                 {
                     path: "/AboutPage",
                     element: <AboutPage/>,
+                },
+                {
+                    path: "/Credits",
+                    element: <PackageCredits/>,
                 },
 
                 {

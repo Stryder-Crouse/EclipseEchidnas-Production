@@ -34,6 +34,11 @@ export default function Medicine_input({
 
     const [extraInfo, setExtraInfo] = useState("");
 
+    const priorityArr = ["Low", "Medium", "High", "Emergency"];
+    const [priorityIndex, setPriorityIndex] = useState(-1);
+    const [resetDropdownPriority, setResetDropdownPriority] = useState(false);
+
+
     useEffect(()=>{
         getLocations().then(
             (result)=>{
@@ -63,7 +68,7 @@ export default function Medicine_input({
                 assignedUName: "No one",            //upon creation, no employee is assigned
                 status: "Unassigned",             //upon creation, nobody is assigned, so set status to unassigned
                 reqID: -1,
-                reqPriority: "Low",
+                reqPriority: priorityArr[priorityIndex],
                 time: null
             };
 
@@ -170,12 +175,32 @@ export default function Medicine_input({
                 <div className="grid justify-center items-center my-1.5">
 
                     <label className="label">Location </label>
-                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationMed"} isSearchable={true}
+                    <CreateDropdown runOnChange={()=>{return -1;}}
+                                    dropBtnName={"Locations"} dropdownID={"LocationMed"} isSearchable={true}
                                     populationArr={longNames} resetDropdown={resetDropdown}
                                     setSelected={setSelected}
                                     inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
                                     selectCSS={""}
                                     resetOnSelect={false} setResetDropdown={setResetDropdown}/>
+
+                </div>
+
+                {/* Priority */}
+                <div className="grid justify-center items-center my-1.5">
+                    <label className={"Priority"}>Priority </label>
+                    <CreateDropdown
+                        runOnChange={()=>{return -1;}}
+                        dropBtnName={"Priority"}
+                        dropdownID={"Priority"}
+                        populationArr={priorityArr}
+                        isSearchable={false}
+                        resetOnSelect={false}
+                        resetDropdown={resetDropdownPriority}
+                        setResetDropdown={setResetDropdownPriority}
+                        setSelected={setPriorityIndex}
+                        selectCSS={""}
+                        inputCSS={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
+                    />
 
                 </div>
 

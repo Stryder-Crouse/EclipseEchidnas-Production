@@ -14,7 +14,7 @@ export type QuickRouteButtonsProps = {
     setErrorNoStartLocation: Dispatch<SetStateAction<boolean>>;
 }
 
-const iconConatnerCss = " w-[25%] bg-[#024c96] p-2 hover:bg-[#024281] cursor-pointer ";
+const iconConatnerCss = " w-[25%] bg-[#024c96] p-2 hover:bg-[#024281] transition-all cursor-pointer rounded-md";
 
 
 export function QuickRouteButtons({startNode,setEndNode,setErrorNoStartLocation}:QuickRouteButtonsProps){
@@ -42,7 +42,7 @@ export function QuickRouteButtons({startNode,setEndNode,setErrorNoStartLocation}
             </div>
 
             <div title={"ER"} className={iconConatnerCss} onClick={()=>{onQuickBoxClick("ER");}}>
-                <img src={ErIcon} className={'w-full scale-90'} alt={"Go to ER"}/>
+                <img src={ErIcon} className={'w-full scale-90 '} alt={"Go to ER"}/>
             </div>
 
         </div>
