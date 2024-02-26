@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import FullSideNavBarComponent from "./FullSideNavBarComponent.tsx";
 import {useAuth0} from "@auth0/auth0-react";
-//import PieChartStatsAll from "./StatsPie/PieChartStatsAll.tsx";
+//import PieChartStatsAll from "./Stats/PieChartStatsAll.tsx";
 //import {ServiceRequest} from "../../../backend/src/algorithms/Requests/Request.ts";
-//import PieChartStatsServiceRequest from "./service-requests/StatsPie/PieChartStatsServiceRequest.tsx";
+//import PieChartStatsServiceRequest from "./service-requests/Stats/PieChartStatsServiceRequest.tsx";
 import ServiceRequest_Table from "./service-requests/service-request/ServiceRequest_Table.tsx";
 
 import axios from "axios";
-import PieChartStatsProfile from "./service-requests/StatsPie/PieChartStatsProfile.tsx";
+import PieChartStatsProfile from "./service-requests/Stats/PieChartStatsProfile.tsx";
 import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 import Status from "common/src/algorithms/Requests/Status.ts";
 import {Priorities} from "common/src/algorithms/Requests/Request.ts";
