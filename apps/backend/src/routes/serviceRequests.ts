@@ -2200,10 +2200,9 @@ router.get("/flowReq/building-statistics", async function (req: Request, res: Re
             shapiro, tower, Francis45, Francis15, BTM
         };
 
-        res.send(result);
+        res.status(200).send(result);
         console.info("\nSuccessfully gave you all of the statistics\n");
         //send status unless 6 times bug occurs
-        res.sendStatus(200);
 
     } catch (error) {
         console.error("\nUnable to send requests\n");

@@ -248,7 +248,7 @@ export default function Flower_input({
                     Close
                 </button>
 
-                <p className={"flex justify-center items-center mt-5"}>Created By: Shiivek and Syzmon</p>
+                <p className={"flex justify-center items-center mt-5"}>Created By: Shiivek and Szymon</p>
             </div>
             <div id={"flower-popup"} className={"text-center flex justify-center m-auto opacity-0 "}>
                 <RequestSubmitToast/>
