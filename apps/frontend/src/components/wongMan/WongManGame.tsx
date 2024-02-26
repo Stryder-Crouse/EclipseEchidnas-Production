@@ -30,6 +30,7 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
 
     const echidna = useRef< Echidna| null>(null);
     const keysDown = useRef< number[]>([0,0,0,0]);
+    const renderCount = useRef(0);
 
     return (
         <div
@@ -79,7 +80,7 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
         canvasContext.current!.canvas.width = window.innerWidth;
         canvasContext.current!.canvas.height = window.innerHeight;
         //disable AA for better look
-        canvasContext.current!.imageSmoothingEnabled=false;
+        //canvasContext.current!.imageSmoothingEnabled=false;
         //add eventliseners 
         window.addEventListener("keydown",(e)=>{
 
@@ -144,10 +145,10 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
         drawLevel(0);
 
         handlePlayerMovment();
-        echidna.current?.render(canvasContext.current!);
+        echidna.current?.render(canvasContext.current!,renderCount.current);
 
 
-
+        renderCount.current++;
     }
     function clear(){
         canvasContext.current?.clearRect(0,0,canvasArea.current!.width,canvasArea.current!.height);
@@ -189,37 +190,66 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
         if(keysDown.current[3]){
             playerMovementThisFrame.y = playerSpeed;
         }
+
+        //if player is not moving or not tell it (for animation)
+        if(playerMovementThisFrame.x == 0 && playerMovementThisFrame.y == 0){
+            echidna.current?.setIsMoving(false);
+        }
+        else{
+            echidna.current?.setIsMoving(true);
+        }
+
         
         const newCordnates = echidna.current!.getCoords()!;
         newCordnates.x = newCordnates.x + playerMovementThisFrame.x;
         newCordnates.y = newCordnates.y + playerMovementThisFrame.y;
 
         //handle rotation
+        handleRotation(playerMovementThisFrame);
         
         echidna.current?.setCoords(newCordnates);
     }
 
-    // function handleRotation(newCordnates:Coordinate){
-    //
-    //     let newDirection = Directions_Game.RIGHT;
-    //
-    //     //diagonal cases
-    //     if(newCordnates.x!=0 && newCordnates.y!=0){
-    //         if(newCordnates.x > 0 && newCordnates.y>0){
-    //
-    //         }
-    //
-    //     }
-    //     //right or left only
-    //     else if(newCordnates.x!=0){
-    //
-    //     }
-    //     //up or down only
-    //     else if(newCordnates.y!=0){
-    //
-    //     }
-    //
-    // }
+    function handleRotation(playerMovementThisFrame:Coordinate){
+
+        let newDirection = echidna.current!.getDirection()!;
+
+        //diagonal cases
+        if(playerMovementThisFrame.x!=0 && playerMovementThisFrame.y!=0){
+
+            if(playerMovementThisFrame.x > 0 && playerMovementThisFrame.y < 0){
+                newDirection = Directions_Game.UPRIGHT;
+            }
+            else if (playerMovementThisFrame.x < 0 && playerMovementThisFrame.y < 0){
+                newDirection = Directions_Game.UPLEFT;
+            }
+            else if (playerMovementThisFrame.x < 0 && playerMovementThisFrame.y > 0){
+                newDirection = Directions_Game.DOWNLEFT;
+            }
+            else{
+                newDirection = Directions_Game.DOWNRIGHT;
+            }
+
+        }
+        //right or left only
+        else if(playerMovementThisFrame.x!=0){
+
+            if(playerMovementThisFrame.x < 0){ newDirection = Directions_Game.LEFT;}
+            else{newDirection = Directions_Game.RIGHT;}
+
+        }
+        //up or down only
+        else if(playerMovementThisFrame.y!=0){
+
+            if(playerMovementThisFrame.y < 0){ newDirection = Directions_Game.UP;}
+            else{newDirection = Directions_Game.DOWN;}
+
+        }
+
+        //console.log(newDirection);
+        echidna.current?.setDirection(newDirection);
+
+    }
     
     function showWongMan(visable:boolean){
         if(visable){
