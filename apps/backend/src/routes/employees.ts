@@ -15,14 +15,14 @@ const upload = multer({dest: 'uploadedCSVs/'});
  *
  */
 async function handleCSVImport(req: Request, res: Response): Promise<void> {
-    /* What the FUCK */
+    /* What the HECK */
     console.log("handleCSVImport: Employee CSV import requested");
 
-    /* Deadass */
+
     const employeeFile: Express.Multer.File[] = req.files as Express.Multer.File[];
     if (employeeFile == null) {
-        console.error("handleCSVImport: employee file was FUCKED");
-        res.status(500).send("FUCK");
+        console.error("handleCSVImport: employee file was BAD");
+        res.status(500).send("EMPLOYEE CSV DID NOT PROCESS");
         return;
     }
 
