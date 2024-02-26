@@ -119,7 +119,7 @@ function StatsBarChart({urlForBuildingStats}:requestStats){
         datasets: [
             {
                 data: [stats.shapiro.total,stats.tower.total,stats.Francis45.total,stats.Francis15.total,stats.BTM.total],
-                backgroundColor: ["#BA1215", "#003a96", "#0C8750", "#FFBA08", "#4F5459"]
+                backgroundColor: ["#0a9396", "#94d2bd", "#e9d8a6", "#ee9b00", "#bb3e03"]
             }
         ]
     };
