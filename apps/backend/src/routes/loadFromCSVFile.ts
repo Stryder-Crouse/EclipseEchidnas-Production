@@ -169,6 +169,7 @@ async function nodeHandleCSVImport(req: Request, res: Response): Promise<void> {
     try {
         /* DROP TABLE * */
         await PrismaClient.$transaction([
+            PrismaClient.edgeDB.deleteMany(),
             PrismaClient.medReq.deleteMany(),
             PrismaClient.sanReq.deleteMany(),
             PrismaClient.religiousReq.deleteMany(),
