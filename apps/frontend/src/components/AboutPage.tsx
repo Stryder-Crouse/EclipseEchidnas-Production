@@ -25,17 +25,17 @@ function AboutPage(){
                     <div className="flex grid grid-cols-6 gap-4">
                         <ImageCard img={StryderPic} name={"Stryder Crouse"} role={"Team Lead"} quote={"test quote"}>
                         </ImageCard>
-                        <ImageCard img={GracePic} name={"Grace Philips"} role={"Assistant Lead"} quote={"test quote"}>
+                        <ImageCard img={GracePic} name={"Grace Philips"} role={"Assistant Lead"} quote={"Stay mad"}>
                         </ImageCard>
-                        <ImageCard img={ChrisPic} name={"Chris Lam"} role={"Assistant Lead"} quote={"test quote"}>
+                        <ImageCard img={ChrisPic} name={"Chris Lam"} role={"Assistant Lead"} quote={"position: absolute?"}>
                         </ImageCard>
                         <ImageCard img={ShiivekPic} name={"Shiivek Agarwal"} role={"Project Manager"} quote={"test quote"}>
                         </ImageCard>
-                        <ImageCard img={SameerPic} name={"Sameer Augustine"} role={"Scrum Master"} quote={"test quote"}>
+                        <ImageCard img={SameerPic} name={"Sameer Augustine"} role={"Scrum Master"} quote={"This doesn't look like robots"}>
                         </ImageCard>
                         <ImageCard img={AlanaPic} name={"Alana Reid"} role={"Product Owner"} quote={"test quote"}>
                         </ImageCard>
-                        <ImageCard img={MikePic} name={"Mike Conroy"} role={"Documentation Analyst"} quote={"test quote"}>
+                        <ImageCard img={MikePic} name={"Mike Conroy"} role={"Documentation Analyst"} quote={"There's no point in being grown up if you can't act childish sometimes"}>
                         </ImageCard>
                         <ImageCard img={AJPic} name={"Antonio Aguiar"} role={"Frontend Engineer"} quote={"test quote"}>
                         </ImageCard>
@@ -95,7 +95,7 @@ export function ImageCard({img, name, role, quote}: imageProps) {
             onMouseLeave={() => setIsHovered(false)}>
 
             <div className={`bg-gray-800 bg-opacity-50 p-3 rounded-lg absolute bottom-[9rem] left-0 w-full ${isHovered ? 'block' : 'hidden'}`} style={{ marginTop: "calc(100% - 2rem)" }}>
-                <p className="text-white">{quote}</p>
+                <p className="text-white text-sm">{quote}</p>
             </div>
             <img className="h-fit w-full " src={img} alt="Stryder"/>
             <div className="px-6 py-4">
