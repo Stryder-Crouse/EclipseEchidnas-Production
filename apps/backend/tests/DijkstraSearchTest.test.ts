@@ -1,10 +1,10 @@
 import {expect, test} from "vitest";
-import {DijkstraSearch} from "../../../packages/common/src/algorithms/Search/DijkstraSearch.ts";
-import {Node} from "../../../packages/common/src/algorithms/Graph/Node.ts";
+import {DijkstraSearch} from "common/src/algorithms/Search/DijkstraSearch.ts";
+import {Node} from "common/src/algorithms/Graph/Node.ts";
 import {readEdgeCSV, readNodeCSV} from "../src/algorithms/readCSV.ts";
-import {Edge} from "../../../packages/common/src/algorithms/Graph/Edge.ts";
-import {Graph} from "../../../packages/common/src/algorithms/Graph/Graph.ts";
-import {nodesString, edgesString} from "./GraphWeightAndHeuristicCreation.test.ts";
+import {Edge} from "common/src/algorithms/Graph/Edge.ts";
+import {Graph} from "common/src/algorithms/Graph/Graph.ts";
+import {edgesString, nodesString} from "./GraphWeightAndHeuristicCreation.test.ts";
 
 /* - - - resources - - - */
 const nodes: Array<Node> = readNodeCSV(nodesString);
