@@ -124,7 +124,7 @@ export default function Sanitation_input({
                                  inputStorage={typeA} setInputStorage={setTypeA}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
-                                 placeHolderText={"e.g. Liquid spill"}>
+                                 placeHolderText={"e.g. Vomit"}>
                 </SimpleTextInput>
 
                 {/* Location */}

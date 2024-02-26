@@ -210,7 +210,7 @@ export default function Flower_input({
                                          setInputStorage={setFlowerRecipient}
                                          inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
-                                         placeHolderText={"e.g. Grandma Ren"}>
+                                         placeHolderText={"e.g. Ren Tanzer"}>
                         </SimpleTextInput>
 
 
@@ -218,7 +218,7 @@ export default function Flower_input({
                                          setInputStorage={setMessage}
                                          inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
-                                         placeHolderText={"e.g. Get well soon Gramma!"}>
+                                         placeHolderText={"e.g. Get well soon, Gramma!"}>
                         </SimpleTextInput>
                         <div className={"grid justify-center items-center my-1.5 mb-1"}>
                             <label className="label">Extra Notes </label>
