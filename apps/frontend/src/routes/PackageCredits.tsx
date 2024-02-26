@@ -19,10 +19,10 @@ export default function PackageCredits() {
             <div className="flex">
                 <FullSideNavBarComponent/>
             </div>
-            <div className="mt-5 flex flex-col m-auto">
+            <div className="mt-14 flex flex-col m-auto justify-center items-center">
                 <p className="mb-1 m-auto flex font-bold text-2xl justify-center p-3 bg-white rounded-lg w-72 shadow ">Package
                     Credits</p>
-                <div className="flex flex-row scale-95">
+                <div className="flex flex-row  justify-center scale-95">
                     <div className="grid grid-cols-6 gap-4">
 
                         <UniversalPackageCredits
@@ -128,7 +128,7 @@ export default function PackageCredits() {
                     </div>
                 </div>
 
-                <footer className="scale-95 justify-center bg-white rounded-lg shadow drop-shadow-xl">
+                <footer className="flex m-auto scale-90 w-[90%] justify-center bg-white rounded-lg shadow drop-shadow-xl">
                     <div className="text-center p-4 md:flex md:items-center md:justify-between">
                         <span className="text-sm text-gray-500 dark:text-gray-400">
                             For more details on what each package is and how we utilized it, click on the package you'd like to know more about. Order of cards determined by alphabetical order, not with regard to it's significance to our team's use of the packages.
