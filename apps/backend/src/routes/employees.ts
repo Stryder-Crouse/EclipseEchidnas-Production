@@ -4,9 +4,19 @@ import {Employee} from "../../../../packages/common/src/algorithms/Employee/Empl
 import fs from "fs";
 import {readEmployeeCSV} from "../algorithms/readCSV.ts";
 import multer from "multer";
+import {ManagementClient} from "auth0";
+
 
 const router: Router = express.Router();
 const upload = multer({dest: 'uploadedCSVs/'});
+
+
+const auth0 = new ManagementClient({
+    domain: 'dev-hca27okc2srfyen8.us.auth0.com',
+    clientId: 'sjOBn2g3OxSS11LMuXopKBZ4mao8drry',
+    clientSecret: 'B0rX2U4tbxl9fO_SNNfgOgQxo9lrqGd2ti2CPqNwUxUxcMESdONNeZcK52Ec4g4d',
+});
+
 
 /**
  * import the oh my goodnesses into the badness
@@ -48,6 +58,12 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
         ]);
 
         /* shove it into a clean prisma */
+        employeeArray.forEach((emp) => {
+            auth0.users.create({
+                email: emp.userName,
+                password: 'EclipseEchidnasDB',
+                connection: 'Username-Password-Authentication'}).then((authRes)=>{console.log(authRes.data);});
+        });
         await PrismaClient.employee.createMany({data: employeeArray});
     }
 
