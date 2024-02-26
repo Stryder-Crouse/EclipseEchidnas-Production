@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {MedReq, Priorities, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
-import {Employee} from "../../../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import {MedReq, Priorities, ServiceRequest} from "common/src/algorithms/Requests/Request.ts";
+import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 import Status from "../../../../../../packages/common/src/algorithms/Requests/Status.ts";
 import {requestFilters} from "../serviceRequestInterface.ts";
 
@@ -167,19 +167,19 @@ export default function Medicine_table({statusFilter, priorityFilter,employeeFil
     );
 
     function attemptMRN (medReq :MedReq) :string {
-        if(medReq.patientMedRecordNum){
-            return medReq.patientMedRecordNum.toString();
+        if(medReq.patientMedRecNum){
+            return medReq.patientMedRecNum.toString();
         }
-        else{ return "No med rec # provided";}
+        else{ return "No med rec # provided, medReq.patientMedRecNum is "+medReq.patientMedRecNum;}
     }
     function attemptDOB (medReq :MedReq) :string {
-        if(medReq.patientDOB.toString()){
+        if(medReq.patientDOB){
             return medReq.patientDOB.toString();
         }
         else{ return "No date provided";}
     }
     function attemptQuant (medReq :MedReq) :string {
-        if(medReq.quantity.toString()){
+        if(medReq.quantity){
             return medReq.quantity.toString();
         }
         else{ return "No dosage quantity provided";}

@@ -78,6 +78,9 @@ export default function Medicine_input({
             if(isNaN(parseInt(patientMedRec))){
                 console.error("patientMedRec was supposed to be a number");
             }
+            else{
+                console.log("patientMedRec, parsed for a number, is "+parseInt(patientMedRec));
+            }
             if(isNaN(parseInt(medQuant))){
                 console.error("medQuant was supposed to be a number");
             }
@@ -86,7 +89,7 @@ export default function Medicine_input({
             const medReqData: MedReq = {
                 patientName: patientName,
                 patientDOB: patientDob,
-                patientMedRecordNum: parseInt(patientMedRec),
+                patientMedRecNum: parseInt(patientMedRec),
                 medStrength: medRequestDosage,
                 medName: medArr[selectedName],
                 quantity: parseInt(medQuant),

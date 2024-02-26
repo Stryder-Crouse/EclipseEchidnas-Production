@@ -43,7 +43,7 @@ export default function OLDServiceRequestPage() {
         const medReqData: MedReq = {
             patientName: "CREATEINPUT",
             patientDOB: new Date(),
-            patientMedRecordNum: 0,
+            patientMedRecNum: 0,
             medForm: "CREATEINPUT",
             medSig: "CREATEINPUT",
             medStrength: medRequestDosage,               //

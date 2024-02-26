@@ -534,7 +534,7 @@ router.post("/medReq", async function (req: Request, res: Response) {
                 genReqID: service.reqID,
                 patientName: sentData[1].patientName,
                 patientDOB: sentData[1].patientDOB,
-                patientMedRecNum: sentData[1].patientMedRecordNum,
+                patientMedRecNum: sentData[1].patientMedRecNum,
                 medForm: sentData[1].medForm,
                 medSig: sentData[1].medSig,
             }
