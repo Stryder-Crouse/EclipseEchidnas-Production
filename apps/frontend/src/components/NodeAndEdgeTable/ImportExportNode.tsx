@@ -22,7 +22,7 @@ function ImportExportNode() {
 
             fileData.append("csv", nodeFile);
             try {
-                await axios.post("/api/loadCSVFile", fileData, {
+                await axios.post("/api/loadCSVFile/CSV-Import-Node", fileData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },

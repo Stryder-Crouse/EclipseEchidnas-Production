@@ -24,7 +24,7 @@ function ImportExportEdge() {
             fileData.append("csv", edgeFile);
 
             try {
-                await axios.post("/api/loadCSVFile", fileData, {
+                await axios.post("/api/loadCSVFile/CSV-Import-Edge", fileData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
