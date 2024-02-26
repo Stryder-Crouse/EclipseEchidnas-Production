@@ -3,10 +3,10 @@
   "extends": ["//"],
   "pipeline": {
     "build:dev": {
-      "cache": false
+      "cache": true
     },
     "build": {
-      "cache": false
+      "cache": true
     },
     "db:push": {
       "cache": false
