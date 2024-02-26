@@ -209,7 +209,7 @@ export default function Transportation_Input({
                             <label className="label">Mode of Transportation </label>
                             <CreateDropdown dropBtnName={"Mode of Transportation "} dropdownID={"transport"}
                                             isSearchable={false}
-                                            populationArr={priorityLevels}
+                                            populationArr={modeTrans}
                                             setSelected={setTransportIndex}
                                             resetDropdown={resetDropdownTrans}
                                             resetOnSelect={false}
