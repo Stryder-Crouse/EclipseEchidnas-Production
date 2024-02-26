@@ -1,4 +1,4 @@
-import {Buildings, floorToNumber, Node, nodeToString, NodeType, NULLNODE} from "./Node.ts";
+import {Buildings, floorToNumber, NodeForGraph, nodeToString, NodeType, NULLNODE} from "./NodeForGraph.ts";
 import {Edge, edgeToString} from "./Edge.ts";
 import {euclideanDistance} from "./Coordinate.ts";
 
@@ -7,13 +7,13 @@ import {euclideanDistance} from "./Coordinate.ts";
  */
 export class Graph {
     /* Stores all nodes in the graph */
-    private readonly nodes: Array<Node>;
+    private readonly nodes: Array<NodeForGraph>;
     /* Stores all edges in the graph */
     private readonly edges: Array<Edge>;
     /* Stores a map that maps a node obj to at list of node obj adjacent to it in the graph */
-    private readonly adjacent: Map<Node, Array<Node>>;
+    private readonly adjacent: Map<NodeForGraph, Array<NodeForGraph>>;
     /* Stores a map that maps a node id (string) to its corresponding node */
-    private readonly nodeIdLookup: Map<string, Node>;
+    private readonly nodeIdLookup: Map<string, NodeForGraph>;
     /* Stores a map that maps an edge id (string) to its corresponding edge */
     private readonly edgeIdLookup: Map<string, Edge>;
 
@@ -32,7 +32,7 @@ export class Graph {
      * 4 = level 2
      * 5 = level 3
      * */
-    private readonly transitionNodesByFloor: Array<Array<Node>>;
+    private readonly transitionNodesByFloor: Array<Array<NodeForGraph>>;
 
     /**
      * Constructs a graph based on the pass nodes and edges
@@ -41,22 +41,22 @@ export class Graph {
      * @param edges - edges to be added to the list of nodes to create the graph
      *
      */
-    constructor(unLinkedNodes: Array<Node>, edges: Array<Edge>) {
+    constructor(unLinkedNodes: Array<NodeForGraph>, edges: Array<Edge>) {
         // create map to relate node id strings to their corresponding node obj
-        const nodeMap = new Map<string, Node>();
+        const nodeMap = new Map<string, NodeForGraph>();
         // create map to relate edge id strings to their corresponding edge obj
         const edgeMap: Map<string, Edge> = new Map<string, Edge>();
         // create map relate a node obj to the list of nodes it is adjacent to
-        const adj = new Map<Node, Array<Node>>();
+        const adj = new Map<NodeForGraph, Array<NodeForGraph>>();
         // set up empty arrays for to be filled to set transitionNodesByFloor
-        const transitionNodesByFloor: Array<Array<Node>> = [[], [], [], [], [], []];
+        const transitionNodesByFloor: Array<Array<NodeForGraph>> = [[], [], [], [], [], []];
 
         //for each inputted node
         unLinkedNodes.forEach(function (node) {
             //map node id to its node
             nodeMap.set(node.id, node);
             //map node to and empty node array to be filled later
-            adj.set(node, new Array<Node>());
+            adj.set(node, new Array<NodeForGraph>());
 
             //set up transitionNodesByFloor array
             // if a node is a stair or an elevator then add it to is corresponding floor array
@@ -207,14 +207,14 @@ export class Graph {
      *  move to a closer floor to the goal node.
      */
     //todo need tests
-    public generateNodeHeuristic(goalNode: Node) {
+    public generateNodeHeuristic(goalNode: NodeForGraph) {
 
         const goalFloor = floorToNumber(goalNode.floor);
         // console.log(goalFloor);
 
         //for each node
         for (let i = 0; i < this.nodes.length; i++) {
-            const node: Node = this.nodes[i];
+            const node: NodeForGraph = this.nodes[i];
             const nodeFloor = floorToNumber(node.floor);
 
             //if the node is on the same floor as the goalNode
@@ -279,7 +279,7 @@ export class Graph {
         let str = "";
 
         //if an undefined node is found then uses this error node in place
-        const failNode: Node = {
+        const failNode: NodeForGraph = {
             building: Buildings.UNDEFINED,
             coordinate: {x: 1, y: 1},
             edges: [],
@@ -308,7 +308,7 @@ export class Graph {
         let str = "";
 
         //if an undefined node is found then uses this error node in place
-        const failNode: Node = {
+        const failNode: NodeForGraph = {
             building: Buildings.UNDEFINED,
             coordinate: {x: 1, y: 1},
             edges: [],
@@ -336,7 +336,7 @@ export class Graph {
     /**
      * @returns a array of nodes present in the graph
      */
-    public getNodes(): Array<Node> {
+    public getNodes(): Array<NodeForGraph> {
         return this.nodes;
     }
 
@@ -359,7 +359,7 @@ export class Graph {
      * @param nodeID - node id as a string
      * @returns returns a node with the corresponding ID or null if node not found
      */
-    public idToNode(nodeID: string): Node | null {
+    public idToNode(nodeID: string): NodeForGraph | null {
         return this.nodeIdLookup.get(nodeID) ?? null;
     }
 
@@ -378,7 +378,7 @@ export class Graph {
      * @returns an array of nodes that are adjacent to the passed node or null if node not found
      *
      */
-    public adjacentTo(someNode: Node): Array<Node> | null {
+    public adjacentTo(someNode: NodeForGraph): Array<NodeForGraph> | null {
         return this.adjacent.get(someNode) ?? null;
     }
 
@@ -412,7 +412,7 @@ export class Graph {
      *
      * @returns true if transitionNode has an edge that get you to a floor that is closer to goalNode, false if not
      */
-    private doesTransitionGetYouCloser(goalNode: Node, transitionNode: Node) {
+    private doesTransitionGetYouCloser(goalNode: NodeForGraph, transitionNode: NodeForGraph) {
 
         //set abs floor distance between trans node and goal node
         const floorDifference = Math.abs(floorToNumber(goalNode.floor) - floorToNumber(transitionNode.floor));
@@ -432,7 +432,7 @@ export class Graph {
     }
 
 
-    public closestNonHallToNode(goalNode:Node,maxDistance:number){
+    public closestNonHallToNode(goalNode:NodeForGraph, maxDistance:number){
 
         let closest = goalNode;
         let shortestDistnace = Number.MAX_VALUE;

@@ -1,6 +1,6 @@
 import express, {Router, Request, Response} from "express";
 import {Edge} from "../../../../packages/common/src/algorithms/Graph/Edge.ts";
-import {Node} from "../../../../packages/common/src/algorithms/Graph/Node.ts";
+import {NodeForGraph} from "common/src/algorithms/Graph/NodeForGraph.ts";
 
 import {
     NodeDataBase,
@@ -44,7 +44,7 @@ router.route("/").post(upload.array("csv", 2), async function (req: Request, res
     console.log("DATA 2");
     console.log(edgeString);
 
-    const nodes: Array<Node> = readNodeCSV(nodesString);
+    const nodes: Array<NodeForGraph> = readNodeCSV(nodesString);
     const edges: Array<Edge> = readEdgeCSV(edgeString);
 
     //convert to db node
@@ -102,7 +102,7 @@ router.get("/", async function (req: Request, res: Response) {
 
     //convert to use string methiods change???
     const edges: Array<Edge> = [];
-    const nodes: Array<Node> = [];
+    const nodes: Array<NodeForGraph> = [];
 
     edgesDB.forEach((edgeDB) => {
         edges.push(edgeDataBasetoEdge(edgeDB));

@@ -1,7 +1,7 @@
 import express, {Router, Request, Response} from "express";
 //import { Prisma } from "database"; //may be very wrong
 import PrismaClient from "../bin/database-connection.ts";
-import {floorToString, NodeType} from "../../../../packages/common/src/algorithms/Graph/Node.ts"; //may also be wrong
+import {floorToString, NodeType} from "common/src/algorithms/Graph/NodeForGraph.ts"; //may also be wrong
 
 const router: Router = express.Router();
 

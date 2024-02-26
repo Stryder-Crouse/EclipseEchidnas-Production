@@ -1,4 +1,4 @@
-import {Node} from "../Graph/Node.ts";
+import {NodeForGraph} from "../Graph/NodeForGraph.ts";
 import {Graph} from "../Graph/Graph.ts";
 import {SimpleQueue} from "../Queue/SimpleQueue.ts";
 import {IQueue} from "../Queue/IQueue.ts";
@@ -17,11 +17,11 @@ import {SimpleSearch} from "./SimpleSearch.ts";
  *
  */
 export function BFS(
-    source: Node | null,
-    target: Node | null,
+    source: NodeForGraph | null,
+    target: NodeForGraph | null,
     graph: Graph,
-): Array<Node> | null {
+): Array<NodeForGraph> | null {
     /* garbage */
-    const queue: IQueue<Node> = new SimpleQueue<Node>();
+    const queue: IQueue<NodeForGraph> = new SimpleQueue<NodeForGraph>();
     return SimpleSearch(source, target, graph, queue);
 }

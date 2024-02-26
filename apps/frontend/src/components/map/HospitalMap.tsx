@@ -1,5 +1,5 @@
 import axios from "axios";
-import {FloorToIndex, floorToNumber, Node, NodeType, NULLNODE} from "../../../../../packages/common/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, floorToNumber, NodeForGraph, NodeType, NULLNODE} from "common/src/algorithms/Graph/NodeForGraph.ts";
 import "../../css/component-css/Map.css";
 import {Edge, NULLEDGE} from "../../../../../packages/common/src/algorithms/Graph/Edge.ts";
 import {Graph} from "../../../../../packages/common/src/algorithms/Graph/Graph.ts";
@@ -22,15 +22,15 @@ import {
  * Struct to hold every possible state of the map.
  */
 export type MapState = {
-    startNode: Node;
-    setStartNode: Dispatch<SetStateAction<Node>>;
-    endNode: Node;
-    setEndNode: Dispatch<SetStateAction<Node>>;
+    startNode: NodeForGraph;
+    setStartNode: Dispatch<SetStateAction<NodeForGraph>>;
+    endNode: NodeForGraph;
+    setEndNode: Dispatch<SetStateAction<NodeForGraph>>;
     selectedFloorIndex: FloorToIndex;
     setSelectedFloorIndex: Dispatch<SetStateAction<FloorToIndex>>;
     drawEntirePath: boolean;
     setDrawEntirePath: Dispatch<SetStateAction<boolean>>;
-    locationsWithHalls: Node[];
+    locationsWithHalls: NodeForGraph[];
     pathFindingType:string;
     viewbox: Viewbox,
     setViewbox: Dispatch<SetStateAction<Viewbox>>;
@@ -44,8 +44,8 @@ export type MapState = {
  * Type to hold the two nodes of a transition.
  */
 type Transition = {
-    startTranNode: Node;
-    endTranNode: Node;
+    startTranNode: NodeForGraph;
+    endTranNode: NodeForGraph;
 }
 
 /**
@@ -98,7 +98,7 @@ async function createGraph() {
 
     /* allocate some space for the nodes and edges */
     const edges: Array<Edge> = [];
-    const nodes: Array<Node> = [];
+    const nodes: Array<NodeForGraph> = [];
 
     /* populate edges */
 
@@ -216,8 +216,8 @@ function createZoomEvent(viewbox: Viewbox, setViewbox: Dispatch<Viewbox>, setSca
 /**
  * sets the path to the path to be displayed on the page
  */
-function updatePathEdges(startingNode: Node,
-                         endingNode: Node,
+function updatePathEdges(startingNode: NodeForGraph,
+                         endingNode: NodeForGraph,
                          setPathEdges: Dispatch<SetStateAction<Edge[]>>,
                          floorIndex: number,
                          drawAllEdges: boolean,
@@ -268,7 +268,7 @@ function updatePathEdges(startingNode: Node,
 
 
     let algo:SearchContext;
-    let rawPath: Array<Node> | null;
+    let rawPath: Array<NodeForGraph> | null;
 
     switch (pathFindingType){
         case "A*":
@@ -321,7 +321,7 @@ function updatePathEdges(startingNode: Node,
  * @param rawPath the raw path to search in
  * @param floorIndex the floor to look at
  */
-function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndTransitions {
+function calculateFloorPath(rawPath: Array<NodeForGraph>, floorIndex: number): edgesAndTransitions {
     /* find the subset of edges from that path on this floor */
     const pathEdges: Array<Edge> = [];
     const pathTransitions: Array<Transition> = [];
@@ -623,7 +623,7 @@ export function HospitalMap({
      * Graphically draw a node.
      * @param node the node to draw
      */
-    function drawNode(node: Node) {
+    function drawNode(node: NodeForGraph) {
         /* symbols */
         const tag: string = "clickableAtag";
 
@@ -675,7 +675,7 @@ export function HospitalMap({
      * @param tagClass the tag, generally clickableAtag
      * @param nodeClass the class of the node
      */
-    function drawNodeHTML(node: Node, tagClass: string, nodeClass: string) {
+    function drawNodeHTML(node: NodeForGraph, tagClass: string, nodeClass: string) {
 
         if(node.id == startNode.id) {
             return(
@@ -745,7 +745,7 @@ export function HospitalMap({
      * Draw the info of a node when it is highlighted.
      * @param node the node to draw
      */
-    function drawNodeInfo(node: Node) {
+    function drawNodeInfo(node: NodeForGraph) {
         /* make sure the graph and serviceRequest map exists before getting the nodes */
         if (graph == null || nodeIDtoServiceRequest == null) {
             return;
@@ -781,7 +781,7 @@ export function HospitalMap({
      * @param connectedNode the node adjacent to node
      * @param edgeConnections the edges connected to node
      */
-    function drawNodeInfoHTML(node: Node, connectedNode: Node, edgeConnections: string) {
+    function drawNodeInfoHTML(node: NodeForGraph, connectedNode: NodeForGraph, edgeConnections: string) {
         return (
             <foreignObject key={"nodeInfo_" + node.id} id={"nodeInfo_" + node.id}
                            className={"foreignObjectNode"} x={node.coordinate.x + 20}
@@ -813,7 +813,7 @@ export function HospitalMap({
     }
 
 
-    function drawNodeServiceRequests(node: Node) {
+    function drawNodeServiceRequests(node: NodeForGraph) {
 
         if (nodeIDtoServiceRequest.get(node.id) == undefined) {
             return;
@@ -867,7 +867,7 @@ export function HospitalMap({
     }
 
 
-    function drawNodeLocationName(node: Node){
+    function drawNodeLocationName(node: NodeForGraph){
         if(drawEntirePathOptions[2] && drawEntirePath && node.nodeType!=NodeType.HALL){
             return (
                 <foreignObject key={"nodeLongName_" + node.id} id={"nodeLongName_" + node.id}
@@ -954,7 +954,7 @@ export function HospitalMap({
      * @param endNode the ending node from pathfinding
      * @param style the struct containing the style information
      */
-    function drawTransitionTextToHTML(startNode: Node, endNode: Node, style: TransitionTextStyle) {
+    function drawTransitionTextToHTML(startNode: NodeForGraph, endNode: NodeForGraph, style: TransitionTextStyle) {
         return (
             <a key={"transition_" + startNode.id}>
                 <rect x={startNode.coordinate.x + style.xTransform}
@@ -977,7 +977,7 @@ export function HospitalMap({
      * @param endNode the ending node from pathfinding
      * @param style the struct containing the style information
      */
-    function drawTransitionTextFromHTML(startNode: Node, endNode: Node, style: TransitionTextStyle) {
+    function drawTransitionTextFromHTML(startNode: NodeForGraph, endNode: NodeForGraph, style: TransitionTextStyle) {
         return (
             <a key={"transition_" + startNode.id}>
                 <rect x={endNode.coordinate.x + style.xTransform}

@@ -1,5 +1,5 @@
 import {ISearchStrategy} from "./ISearchStrategy.ts";
-import {Node} from "../../Graph/Node.ts";
+import {NodeForGraph} from "../../Graph/NodeForGraph.ts";
 import {Graph} from "../../Graph/Graph.ts";
 
 /**
@@ -22,7 +22,7 @@ export class SearchContext {
      * @param graph the graph in which to search
      * @return a path from source to target if it exists; null otherwise
      */
-    public search(source: Node, target: Node, graph: Graph): Array<Node> | null {
+    public search(source: NodeForGraph, target: NodeForGraph, graph: Graph): Array<NodeForGraph> | null {
         return this.strategy.search(source, target, graph);
     }
 }

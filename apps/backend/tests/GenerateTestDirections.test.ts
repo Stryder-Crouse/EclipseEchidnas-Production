@@ -1,5 +1,5 @@
 import {expect, test} from "vitest";
-import {Node} from "../../../packages/common/src/algorithms/Graph/Node.ts";
+import {NodeForGraph} from "common/src/algorithms/Graph/NodeForGraph.ts";
 import {
     Directions,
     findDeviation,
@@ -13,7 +13,7 @@ import {nodesString, edgesString} from "./GraphWeightAndHeuristicCreation.test.t
 import {AStar} from "../../../packages/common/src/algorithms/Search/AStar.ts";
 
 /* - - - resources - - - */
-const nodes: Array<Node> = readNodeCSV(nodesString);
+const nodes: Array<NodeForGraph> = readNodeCSV(nodesString);
 const edges: Array<Edge> = readEdgeCSV(edgesString);
 const graph: Graph = new Graph(nodes, edges);
 
@@ -23,7 +23,7 @@ const graph: Graph = new Graph(nodes, edges);
  * @return the new "node"
  */
 function newNodeWithCoordinate(coordinate: Coordinate) {
-    return <Node>{
+    return <NodeForGraph>{
         longName: "test",
         coordinate: coordinate,
     };
@@ -36,7 +36,7 @@ function newNodeWithCoordinate(coordinate: Coordinate) {
  * @return the new "node"
  */
 function newNodeWithFloor(longName: string, newFloor: string) {
-    return <Node>{
+    return <NodeForGraph>{
         longName: longName,
         floor: newFloor
     };
@@ -45,9 +45,9 @@ function newNodeWithFloor(longName: string, newFloor: string) {
 /* - - - test definitions - - - */
 function findDeviation_straight_line_vertical_negative(): void {
     /* make a $#177y straight line */
-    const A: Node = newNodeWithCoordinate({x: 2, y: 5});
-    const B: Node = newNodeWithCoordinate({x: 2, y: 3});
-    const C: Node = newNodeWithCoordinate({x: 2, y: 1});
+    const A: NodeForGraph = newNodeWithCoordinate({x: 2, y: 5});
+    const B: NodeForGraph = newNodeWithCoordinate({x: 2, y: 3});
+    const C: NodeForGraph = newNodeWithCoordinate({x: 2, y: 1});
 
     /* call the function and pray it's 0 */
     expect(findDeviation(A, B, C)).toBe(0);
@@ -55,9 +55,9 @@ function findDeviation_straight_line_vertical_negative(): void {
 
 function findDeviation_straight_line_vertical_positive(): void {
     /* make a $#177y straight line */
-    const A: Node = newNodeWithCoordinate({x: 2, y: 1});
-    const B: Node = newNodeWithCoordinate({x: 2, y: 3});
-    const C: Node = newNodeWithCoordinate({x: 2, y: 5});
+    const A: NodeForGraph = newNodeWithCoordinate({x: 2, y: 1});
+    const B: NodeForGraph = newNodeWithCoordinate({x: 2, y: 3});
+    const C: NodeForGraph = newNodeWithCoordinate({x: 2, y: 5});
 
     /* call the function and pray it's 0 */
     expect(findDeviation(A, B, C)).toBe(0);
@@ -65,9 +65,9 @@ function findDeviation_straight_line_vertical_positive(): void {
 
 function findDeviation_straight_line_horizontal_negative(): void {
     /* make a $#177y straight line */
-    const A: Node = newNodeWithCoordinate({x: 5, y: 2});
-    const B: Node = newNodeWithCoordinate({x: 3, y: 2});
-    const C: Node = newNodeWithCoordinate({x: 1, y: 2});
+    const A: NodeForGraph = newNodeWithCoordinate({x: 5, y: 2});
+    const B: NodeForGraph = newNodeWithCoordinate({x: 3, y: 2});
+    const C: NodeForGraph = newNodeWithCoordinate({x: 1, y: 2});
 
     /* call the function and pray it's 0 */
     expect(findDeviation(A, B, C)).toBe(0);
@@ -75,9 +75,9 @@ function findDeviation_straight_line_horizontal_negative(): void {
 
 function findDeviation_straight_line_horizontal_positive(): void {
     /* make a $#177y straight line */
-    const A: Node = newNodeWithCoordinate({x: 1, y: 2});
-    const B: Node = newNodeWithCoordinate({x: 3, y: 2});
-    const C: Node = newNodeWithCoordinate({x: 5, y: 2});
+    const A: NodeForGraph = newNodeWithCoordinate({x: 1, y: 2});
+    const B: NodeForGraph = newNodeWithCoordinate({x: 3, y: 2});
+    const C: NodeForGraph = newNodeWithCoordinate({x: 5, y: 2});
 
     /* call the function and pray it's 0 */
     expect(findDeviation(A, B, C)).toBe(0);
@@ -85,9 +85,9 @@ function findDeviation_straight_line_horizontal_positive(): void {
 
 function findDeviation_right_angle(): void {
     /* make a $#177y straight line */
-    const A: Node = newNodeWithCoordinate({x: 2, y: 0});
-    const B: Node = newNodeWithCoordinate({x: 2, y: 3});
-    const C: Node = newNodeWithCoordinate({x: 4, y: 3});
+    const A: NodeForGraph = newNodeWithCoordinate({x: 2, y: 0});
+    const B: NodeForGraph = newNodeWithCoordinate({x: 2, y: 3});
+    const C: NodeForGraph = newNodeWithCoordinate({x: 4, y: 3});
 
     /* call the function and pray it's 90 */
     expect(findDeviation(A, B, C)).toBe(90);
@@ -95,9 +95,9 @@ function findDeviation_right_angle(): void {
 
 function findDeviation_right_angle_other_way(): void {
     /* make a $#177y straight line */
-    const A: Node = newNodeWithCoordinate({x: 2, y: 0});
-    const B: Node = newNodeWithCoordinate({x: 2, y: 3});
-    const C: Node = newNodeWithCoordinate({x: 0, y: 3});
+    const A: NodeForGraph = newNodeWithCoordinate({x: 2, y: 0});
+    const B: NodeForGraph = newNodeWithCoordinate({x: 2, y: 3});
+    const C: NodeForGraph = newNodeWithCoordinate({x: 0, y: 3});
 
     /* call the function and pray it's 90 */
     expect(findDeviation(A, B, C)).toBe(90);
@@ -105,9 +105,9 @@ function findDeviation_right_angle_other_way(): void {
 
 function findDeviation_forty_five(): void {
     /* make a $#177y straight line */
-    const A: Node = newNodeWithCoordinate({x: 1, y: 4});
-    const B: Node = newNodeWithCoordinate({x: 1, y: 2});
-    const C: Node = newNodeWithCoordinate({x: 3, y: 0});
+    const A: NodeForGraph = newNodeWithCoordinate({x: 1, y: 4});
+    const B: NodeForGraph = newNodeWithCoordinate({x: 1, y: 2});
+    const C: NodeForGraph = newNodeWithCoordinate({x: 3, y: 0});
 
     /* call the function and pray it's 45 */
     expect(findDeviation(A, B, C)).toBeCloseTo(45);
@@ -115,9 +115,9 @@ function findDeviation_forty_five(): void {
 
 function findDeviation_thirty_three(): void {
     /* make a $#177y straight line */
-    const A: Node = newNodeWithCoordinate({x: 6, y: 3});
-    const B: Node = newNodeWithCoordinate({x: 4, y: 3});
-    const C: Node = newNodeWithCoordinate({x: 1, y: 1});
+    const A: NodeForGraph = newNodeWithCoordinate({x: 6, y: 3});
+    const B: NodeForGraph = newNodeWithCoordinate({x: 4, y: 3});
+    const C: NodeForGraph = newNodeWithCoordinate({x: 1, y: 1});
 
     /* call the function and pray it's 33 */
     expect(findDeviation(A, B, C)).toBeCloseTo(33.69);
@@ -125,9 +125,9 @@ function findDeviation_thirty_three(): void {
 
 function findDeviation_rotated_right_angle(): void {
     /* make a $#177y straight line */
-    const A: Node = newNodeWithCoordinate({x: 3, y: 4});
-    const B: Node = newNodeWithCoordinate({x: 1, y: 2});
-    const C: Node = newNodeWithCoordinate({x: 3, y: 0});
+    const A: NodeForGraph = newNodeWithCoordinate({x: 3, y: 4});
+    const B: NodeForGraph = newNodeWithCoordinate({x: 1, y: 2});
+    const C: NodeForGraph = newNodeWithCoordinate({x: 3, y: 0});
 
     /* call the function and pray it's 33 */
     expect(findDeviation(A, B, C)).toBe(90);
@@ -135,7 +135,7 @@ function findDeviation_rotated_right_angle(): void {
 
 function generateTextDirections_two_right_turns(): void {
     /* make the tested and expected paths */
-    const test_path: Array<Node> | null = AStar(graph.idToNode("1"), graph.idToNode("7"), graph);
+    const test_path: Array<NodeForGraph> | null = AStar(graph.idToNode("1"), graph.idToNode("7"), graph);
     const test_directions: Array<string> | null = generateTextDirections(test_path, graph);
     const expected_directions: Array<string> = new Array<string>();
 
@@ -152,7 +152,7 @@ function generateTextDirections_two_right_turns(): void {
 
 function generateTextDirections_long_path(): void {
     /* make the tested and expected paths */
-    const test_path: Array<Node> | null = AStar(graph.idToNode("7"), graph.idToNode("16"), graph);
+    const test_path: Array<NodeForGraph> | null = AStar(graph.idToNode("7"), graph.idToNode("16"), graph);
     const test_directions: Array<string> | null = generateTextDirections(test_path, graph);
     const expected_directions: Array<string> = new Array<string>();
 
@@ -181,7 +181,7 @@ function testRemoveExtraTransitions(): void {
     const n8 = newNodeWithFloor("n8", "3");
     const n9 = newNodeWithFloor("n9", "3");
 
-    const test_path: Array<Node> = [];
+    const test_path: Array<NodeForGraph> = [];
     test_path.push(n1);
     test_path.push(n2);
     test_path.push(n3);

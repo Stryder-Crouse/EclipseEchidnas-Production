@@ -1,5 +1,5 @@
 import {Graph} from "../../Graph/Graph.ts";
-import {Node} from "../../Graph/Node.ts";
+import {NodeForGraph} from "../../Graph/NodeForGraph.ts";
 
 /** This is a complete waste of time */
 export interface ISearchStrategy {
@@ -10,5 +10,5 @@ export interface ISearchStrategy {
      * @param graph the graph in which to search
      * @return a path from source to target if it exists; null otherwise
      */
-    search(source: Node, target: Node, graph: Graph): Array<Node> | null;
+    search(source: NodeForGraph, target: NodeForGraph, graph: Graph): Array<NodeForGraph> | null;
 }

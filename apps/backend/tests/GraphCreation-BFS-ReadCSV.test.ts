@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { Buildings, Node, NodeType } from "../../../packages/common/src/algorithms/Graph/Node.ts";
+import { Buildings, NodeForGraph, NodeType } from "common/src/algorithms/Graph/NodeForGraph.ts";
 import { Edge } from "../../../packages/common/src/algorithms/Graph/Edge.ts";
 import { readEdgeCSV, readNodeCSV } from "../src/algorithms/readCSV.ts";
 import { Graph } from "../../../packages/common/src/algorithms/Graph/Graph.ts";
@@ -7,7 +7,7 @@ import { BFS } from "../../../packages/common/src/algorithms/Search/BFS.ts";
 
 //BFS test
 test("BFS test", () => {
-  const nodes: Array<Node> = readNodes();
+  const nodes: Array<NodeForGraph> = readNodes();
   const edges: Array<Edge> = readEdges();
   const graph: Graph = new Graph(nodes, edges);
 
@@ -60,7 +60,7 @@ test("BFS test", () => {
 //readCSV/Graph creation test
 test("readCSV and Graph Creation", () => {
   const edges: Array<Edge> = readEdges();
-  const nodes: Array<Node> = readNodes();
+  const nodes: Array<NodeForGraph> = readNodes();
   const graph: Graph = new Graph(nodes, edges);
 
   //make sure we get the same node data back out
@@ -88,7 +88,7 @@ test("readCSV and Graph Creation", () => {
 
 function graphToString(g: Graph) {
   let str = "";
-  const failNode: Node = {
+  const failNode: NodeForGraph = {
     building: Buildings.UNDEFINED,
     coordinate: { x: 1, y: 1 },
     edges: [],
@@ -108,7 +108,7 @@ function graphToString(g: Graph) {
   return str;
 }
 
-function nodeToString(n: Node) {
+function nodeToString(n: NodeForGraph) {
   return (
     n.id +
     "," +

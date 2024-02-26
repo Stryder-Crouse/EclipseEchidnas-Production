@@ -1,7 +1,7 @@
 import { Edge } from "./Edge.ts";
 import { Coordinate } from "./Coordinate.ts";
 /** Type to store inputted nodes.*/
-export type Node = {
+export type NodeForGraph = {
   id: string;
   coordinate: Coordinate;
   floor: string;
@@ -70,7 +70,7 @@ export function floorToString(floor:number){
  *
  * @returns a csv representation of the passed node with a \r\n at the end
  */
-export function nodeToString(n: Node) {
+export function nodeToString(n: NodeForGraph) {
   return (
     n.id +
     "," +
@@ -190,7 +190,7 @@ export function stringToNodeType(nodeTypeName: string) {
   }
 }
 
-export const NULLNODE:Node = {
+export const NULLNODE:NodeForGraph = {
     building: Buildings.UNDEFINED,
     coordinate: {x:-100,y:-100},
     edges: [],

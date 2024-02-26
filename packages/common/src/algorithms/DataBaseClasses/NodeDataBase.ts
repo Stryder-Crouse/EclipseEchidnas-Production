@@ -1,5 +1,5 @@
-import { Buildings, NodeType } from "../Graph/Node.ts";
-import { Node } from "../Graph/Node.ts";
+import { Buildings, NodeType } from "../Graph/NodeForGraph.ts";
+import { NodeForGraph } from "../Graph/NodeForGraph.ts";
 import { Coordinate } from "../Graph/Coordinate.ts";
 export type NodeDataBase = {
   nodeID: string;
@@ -12,7 +12,7 @@ export type NodeDataBase = {
   ycoord: number;
 };
 
-export function nodeToNodeDataBase(algoNode: Node) {
+export function nodeToNodeDataBase(algoNode: NodeForGraph) {
   const nodeDB: NodeDataBase = {
     building: algoNode.building,
     floor: algoNode.floor,
@@ -32,7 +32,7 @@ export function nodeDataBaseToNode(dbNode: NodeDataBase) {
     y: dbNode.ycoord,
   };
 
-  const node: Node = {
+  const node: NodeForGraph = {
     building: dbNode.building,
     coordinate: cord,
     edges: [],
@@ -47,7 +47,7 @@ export function nodeDataBaseToNode(dbNode: NodeDataBase) {
 }
 
 export function multipleNodeDataBaseToNode(dbNodes: Array<NodeDataBase>) {
-    const nodes:Array<Node> = [];
+    const nodes:Array<NodeForGraph> = [];
 
     for(const dbnode of dbNodes){
         nodes.push(nodeDataBaseToNode(dbnode));
@@ -61,7 +61,7 @@ export function multipleNodeDataBaseToNode(dbNodes: Array<NodeDataBase>) {
     return nodes;
 }
 
-export function multipleNodeToNodeDataBase(nodes: Array<Node>) {
+export function multipleNodeToNodeDataBase(nodes: Array<NodeForGraph>) {
     const dbNodes:Array<NodeDataBase> = [];
 
     nodes.forEach((node)=>{

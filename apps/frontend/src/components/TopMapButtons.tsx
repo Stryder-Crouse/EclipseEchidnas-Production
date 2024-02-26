@@ -1,15 +1,15 @@
 import MapSearchBar from "./MapSearchBar.tsx";
-import {FloorToIndex, Node} from "../../../../packages/common/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, NodeForGraph} from "common/src/algorithms/Graph/NodeForGraph.ts";
 import {Dispatch, SetStateAction} from "react";
 
 
 export interface levelStates{
     setSelectedFloorIndex: Dispatch<SetStateAction<FloorToIndex>>;
-    startNode:Node;
-    setStartNode: Dispatch<SetStateAction<Node>>;
-    endNode:Node;
-    setEndNode: Dispatch<SetStateAction<Node>>;
-    locations:Node[];
+    startNode:NodeForGraph;
+    setStartNode: Dispatch<SetStateAction<NodeForGraph>>;
+    endNode:NodeForGraph;
+    setEndNode: Dispatch<SetStateAction<NodeForGraph>>;
+    locations:NodeForGraph[];
     setPathFindingType:Dispatch<SetStateAction<string>>;
     textDirections:string[]
 }

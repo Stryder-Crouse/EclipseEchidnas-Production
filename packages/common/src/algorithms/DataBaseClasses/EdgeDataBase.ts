@@ -1,6 +1,6 @@
 import { Edge } from "../Graph/Edge.ts";
 import { Coordinate } from "../Graph/Coordinate.ts";
-import { Buildings, Node, NodeType } from "../Graph/Node.ts";
+import { Buildings, NodeForGraph, NodeType } from "../Graph/NodeForGraph.ts";
 
 /** Database repersentation of node */
 export type EdgeDataBase = {
@@ -24,7 +24,7 @@ export function edgeDataBasetoEdge(eDB: EdgeDataBase) {
     y: -1.23456789,
   };
 
-  const start: Node = {
+  const start: NodeForGraph = {
     id: eDB.startNodeID,
     coordinate: emptyCoordinate,
     floor: "",
@@ -36,7 +36,7 @@ export function edgeDataBasetoEdge(eDB: EdgeDataBase) {
       heuristic:-1,
   };
 
-  const end: Node = {
+  const end: NodeForGraph = {
     id: eDB.endNodeID,
     coordinate: emptyCoordinate,
     floor: "",
