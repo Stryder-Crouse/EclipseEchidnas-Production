@@ -59,18 +59,28 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
 
 
         //delete all old users from auth0
-        PrismaClient.employee.findMany().then((allEmps) => {
-            allEmps.forEach((singleEmp) => {
-                auth0.users.delete({id: singleEmp.userID}).then((authRes) => { console.log(authRes.data); });
-            });
+        await PrismaClient.employee.findMany().then(async (allEmps) => {
+            for (const singleEmp of allEmps) {
+                console.log("trying to delete " + singleEmp.userName);
+
+                await new Promise(r => setTimeout(r, 200));
+
+                auth0.users.delete({id: singleEmp.userID}).then(
+                    (authRes) => {
+                        console.log("deleted " + singleEmp.userName);
+                        console.log(authRes.data);
+                    });
+            }
         });
+        console.log("ended");
 
         //now delete all users in the db
-        PrismaClient.employee.deleteMany();
+        await PrismaClient.employee.deleteMany();
+
 
         //add users to auth0
-        employeeArray.forEach((emp) => {
-
+        for (const emp of employeeArray) {
+            await new Promise(r => setTimeout(r, 200));
             try {
                 auth0.users.create({
                     email: emp.userName,
@@ -85,7 +95,7 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
                 console.log("auth0 errorr");
                 console.log(e);
             }
-        });
+        }
 
 
         /* shove it into a clean prisma */
