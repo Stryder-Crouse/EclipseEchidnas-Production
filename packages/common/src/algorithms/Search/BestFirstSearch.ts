@@ -36,9 +36,6 @@ export function BestFirstSearch(source: Node | null, target: Node | null, graph:
     const f_score: Map<Node, number> = new Map<Node, number>(); // best guess of cost from source to target through node
     const path: Array<Node> = new Array<Node>();
 
-    /* generate the heuristic */
-    graph.generateNodeHeuristic(target);
-
     /* add the starting node to the open list */
     open_set.push(source, 0);
     predecessor.set(source, null); // mark the source as visited
