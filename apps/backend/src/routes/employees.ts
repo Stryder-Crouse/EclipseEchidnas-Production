@@ -54,16 +54,33 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
             PrismaClient.flowReq.deleteMany(),
             PrismaClient.serviceRequest.deleteMany(),
             PrismaClient.nodeDB.deleteMany(),
-            PrismaClient.employee.deleteMany()
+            // PrismaClient.employee.deleteMany()
         ]);
 
-        /* shove it into a clean prisma */
+
+        //delete all old users from auth0
+        PrismaClient.employee.findMany().then((allEmps) => {
+            allEmps.forEach((singleEmp) => {
+                auth0.users.delete({id: singleEmp.userID}).then((authRes) => { console.log(authRes.data); });
+            });
+        });
+
+        //now delete all users in the db
+        PrismaClient.employee.deleteMany();
+
+        //add users to auth0
         employeeArray.forEach((emp) => {
             auth0.users.create({
                 email: emp.userName,
                 password: 'EclipseEchidnasDB',
-                connection: 'Username-Password-Authentication'}).then((authRes)=>{console.log(authRes.data);});
+                connection: 'Username-Password-Authentication'}).then((authRes)=>{
+                    console.log(authRes.data);
+                    emp.userID = authRes.data.user_id;
+                });
         });
+
+
+        /* shove it into a clean prisma */
         await PrismaClient.employee.createMany({data: employeeArray});
     }
 
