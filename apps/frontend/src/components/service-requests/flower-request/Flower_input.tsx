@@ -1,9 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
-import {FlowReq, ReqTypes, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
+import {FlowReq, ReqTypes, ServiceRequest} from "common/src/algorithms/Requests/Request.ts";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
-import {NodeDataBase} from "../../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
+import {NodeDataBase} from "common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import Status from "../../../../../../packages/common/src/algorithms/Requests/Status.ts";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import {closeFlowerCard} from "../../service-request-cards/FlowerRequestCard.tsx";
@@ -136,6 +136,15 @@ export default function Flower_input({
         setIsPopupOpen(false);
     }
 
+    const handleFlowerNumericInputChange = (value: ((prevState: string) => string) | string, setter: React.Dispatch<React.SetStateAction<string>>) => {
+        // Check if the entered value is a number
+        if (!isNaN(Number(value))) {
+            setter(value);
+        }
+        // You can also provide feedback to the user if the input is not a number
+    };
+
+
     return(
         <div
             className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
@@ -145,7 +154,7 @@ export default function Flower_input({
                 <h1 className={"grid mb-3 justify-center font-bold text-xl"}>Flower Request </h1>
 
                 <div className={"flex"}>
-                    <div className={"flex flex-col"}>
+                    <div className={"flex flex-col mr-6"}>
                         <SimpleTextInput id={"senderName"} labelContent={"Name"} inputStorage={sender}
                                          setInputStorage={setSender}
                                          inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
@@ -161,6 +170,7 @@ export default function Flower_input({
                                             setSelected={setUrgencyDDIndx}
                                             resetDropdown={resetDropdownUrg}
                                             resetOnSelect={false}
+                                            runOnChange={()=>{return -1;}}
                                             inputCSS={"n/a"} selectCSS={"dropdown"}
                                             setResetDropdown={setResetDropdownUrg}/>
                         </div>
@@ -172,6 +182,7 @@ export default function Flower_input({
                                 dropBtnName={"Locations"} dropdownID={"LocationFlow"} isSearchable={true}
                                 populationArr={longNames} resetDropdown={resetDropdown}
                                 setSelected={setSelected}
+                                runOnChange={()=>{return -1;}}
                                 inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
                                 selectCSS={""} resetOnSelect={false} setResetDropdown={setResetDropdown}
                             />
@@ -188,7 +199,7 @@ export default function Flower_input({
                     <div className={"flex flex-col"}>
                         <SimpleTextInput id={"flowerquantity"} labelContent={"Flower Quantity"}
                                          inputStorage={flowerQuantity}
-                                         setInputStorage={setFlowerQuantity}
+                                         setInputStorage={(value) => handleFlowerNumericInputChange(value, setFlowerQuantity)}
                                          inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
                                          placeHolderText={"e.g. 14"}>
@@ -216,7 +227,7 @@ export default function Flower_input({
                                       onChange={(e) => setExtraInfo(e.target.value)}
                                       id={"service"}
                                       value={extraInfo}
-                                      required>
+                                      >
                         </textarea>
                         </div>
                     </div>
@@ -237,7 +248,7 @@ export default function Flower_input({
                     Close
                 </button>
 
-                <p className={"flex justify-center items-center mt-5"}>Created By: Shiivek and Syzmon</p>
+                <p className={"flex justify-center items-center mt-5"}>Created By: Shiivek and Szymon</p>
             </div>
             <div id={"flower-popup"} className={"text-center flex justify-center m-auto opacity-0 "}>
                 <RequestSubmitToast/>

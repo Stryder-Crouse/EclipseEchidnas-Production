@@ -5,6 +5,9 @@ export interface DropdownProps{
     dropdownID:string,
     populationArr: string[],
     isSearchable: boolean,
+
+    runOnChange: ()=>void,
+
     resetOnSelect: boolean,
     resetDropdown: boolean,
     setResetDropdown: React.Dispatch<React.SetStateAction<boolean>>,
@@ -13,7 +16,7 @@ export interface DropdownProps{
     selectCSS:string
 }
 
-export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populationArr, setSelected, resetDropdown,
+export function CreateDropdown({dropBtnName, dropdownID, isSearchable, runOnChange, populationArr, setSelected, resetDropdown,
                                    setResetDropdown, inputCSS, resetOnSelect}: DropdownProps) {
 
     //every time this is reloaded, check to see if we need to reset the value of the dropdown
@@ -49,6 +52,7 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
 
     function setValueCorrectly(index:number){
         //const value = populationArr[index];
+        runOnChange();
         setSelected(index);
         if(resetOnSelect){
             resetInputBox();
@@ -77,13 +81,15 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
                 <input type="text" placeholder={dropBtnName} list={datalistID} id={dropdownID}
                        onChange={e => findValueIndex(e.target.value)}
                        className={`w-60 p-2 pr-2 text-black rounded-full focus:outline-none ${inputCSS}`}
+                       required
 
                 />
                 <datalist className="dropbtn" id={datalistID}>
                     {
-                        populationArr.map((option: string) => <option
-                                                                      className={"dropdown-content"}>{option}</option>)
-                        //key={dropdownID+option}
+                        //make all the options from the populationArr, and give them all unique keys
+                        populationArr.map((option: string, index:number) =>
+                            <option key={dropdownID+option+"_"+index}
+                                    className={"dropdown-content"}>{option}</option>)
                     }
                 </datalist>
 
@@ -92,16 +98,20 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, populatio
     } else {
         return (
             <div className="dropdown">
-                <select id={dropdownID} className={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"} name={dropBtnName} onChange={e => {
+                <select  required id={dropdownID} className={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"} name={dropBtnName} onChange={e => {
                     setValueCorrectly(e.target.selectedIndex - 1);
                     /*accounts for the extra unselectable option with the placeholder text*/
-                }}
-                        style={{ outline: 'gray' }}
-                >
-                    <option disabled={true} selected={true} className={"dropdown-content unselectable"}>{dropBtnName}</option>
+                }}>
+                    {/*make the first, unselectable option*/}
+                    <option disabled={true}
+                            selected={true}
+                            key={dropdownID+"_unselectable"}
+                            className={"dropdown-content unselectable"}>{dropBtnName}</option>
                     {
-                        populationArr.map((option: string) => <option  className={"dropdown-content"}>{option}</option>)
-                        //key={dropdownID+option+"s"}
+                        //make the rest of the options from the populationArr, and give them all unique keys
+                        populationArr.map((option: string, index) => <option
+                            key={dropdownID+option+"_"+index}
+                            className={"dropdown-content"}>{option}</option>)
                     }
                 </select>
 

@@ -5,7 +5,7 @@ import {
     Tooltip,
     Legend
 } from 'chart.js';
-import { pieAssignedStats} from "./PieChartStatsAll.tsx";
+import { piePrioStats} from "./PieChartStatsAll.tsx";
 
 ChartJS.register(
     ArcElement,
@@ -13,23 +13,23 @@ ChartJS.register(
     Legend
 );
 
-function PieChartStatsStatus ({stats}:pieAssignedStats){
+function PieChartStatsPriority({stats}:piePrioStats){
     const data = {
-        labels: ['Unassigned', 'Assigned', 'In Progress', 'Completed'],
+        labels: ['Low       ', 'Medium        ', 'High         ', 'Emergency'],
         datasets:[
             {
                 label: 'Count',
-                data:[stats.unassigned, stats.assigned,
-                    stats.inProgress, stats.completed],
-                backgroundColor: ["#BA1215", "#003a96", "#0C8750", "#FFBA08"]
+                data:[stats.lowPrio, stats.medPrio, stats.highPrio, stats.emergPrio],
+                backgroundColor: ["#0a9396", "#94d2bd", "#e9d8a6", "#ee9b00"]
             }
         ]
     };
     const options = {
         maintainAspectRatio: false,
         plugins: {
+
             legend: {
-                align:'start',
+                align: 'start',
                 position: 'bottom',
                 labels: {
                     font: {
@@ -46,11 +46,11 @@ function PieChartStatsStatus ({stats}:pieAssignedStats){
                 position: "relative", height: "90%",
                 width: "30%"
             }}>
-            <p className="text-center"><b>Request Status</b></p>
+            <p className="text-center"><b>Request Priority</b></p>
             {/*// @ts-expect-error asjhdska*/}
-            <Pie data={data} options={options}></Pie>
+            <Pie data={data} title={"Priority"} options={options}></Pie>
         </div>
     );
 }
 
-export default PieChartStatsStatus;
+export default PieChartStatsPriority;

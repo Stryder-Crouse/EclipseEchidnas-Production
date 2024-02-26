@@ -13,12 +13,12 @@ import Status from "../../../../../packages/common/src/algorithms/Requests/Statu
 import Transportation_table from "./transportation-outside-request/Transportation_table.tsx";
 import Sanitation_table from "./sanitation-request/Sanitation_table.tsx";
 import ServiceRequest_Table from "./service-request/ServiceRequest_Table.tsx";
-import PieChartStatsAll from "./StatsPie/PieChartStatsAll.tsx";
-import PieChartStatsServiceRequest from "./StatsPie/PieChartStatsServiceRequest.tsx";
-import {Employee} from "../../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import PieChartStatsAll from "./Stats/PieChartStatsAll.tsx";
+import PieChartStatsServiceRequest from "./Stats/PieChartStatsServiceRequest.tsx";
+import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 import axios from "axios";
 
-import {NodeDataBase} from "../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
+import {NodeDataBase} from "common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 
 
 
@@ -70,21 +70,26 @@ export default function ServiceRequestOutputTables() {
         <div className="tabs-container">
             <ul className="tabs">
                 <li>
-                    <a id={"button_" + ReqTypes.flowReq} title="Flower Request" className={"tabButton"} onClick={() => {
+                    <a id={"button_" + ReqTypes.flowReq} title="Service Request"
+                       className={`tabButton ${curentServiceRequest === ReqTypes.serviceRequest ? 'active' : ''}`}
+                       onClick={() => {
                         setCurentServiceRequest(ReqTypes.serviceRequest);
                     }}>
                         Service Requests
                     </a>
                 </li>
                 <li>
-                    <a id={"button_" + ReqTypes.flowReq} title="Flower Request" className={"tabButton"} onClick={() => {
+                    <a id={"button_" + ReqTypes.flowReq} title="Flower Request"
+                       className={`tabButton ${curentServiceRequest === ReqTypes.flowReq ? 'active' : ''}`}
+                       onClick={() => {
                         setCurentServiceRequest(ReqTypes.flowReq);
                     }}>
                         Flower Request
                     </a>
                 </li>
                 <li>
-                    <a id={"button_" + ReqTypes.religReq} title="Religious Request" className={"tabButton"}
+                    <a id={"button_" + ReqTypes.religReq} title="Religious Request"
+                       className={`tabButton ${curentServiceRequest === ReqTypes.religReq ? 'active' : ''}`}
                        onClick={() => {
                            setCurentServiceRequest(ReqTypes.religReq);
                        }}>
@@ -92,7 +97,8 @@ export default function ServiceRequestOutputTables() {
                     </a>
                 </li>
                 <li>
-                    <a id={"button_" + ReqTypes.medReq} title="Medicine Request" className={"tabButton"}
+                    <a id={"button_" + ReqTypes.medReq} title="Medicine Request"
+                       className={`tabButton ${curentServiceRequest === ReqTypes.medReq ? 'active' : ''}`}
                        onClick={() => {
                            setCurentServiceRequest(ReqTypes.medReq);
                        }}>
@@ -100,7 +106,8 @@ export default function ServiceRequestOutputTables() {
                     </a>
                 </li>
                 <li>
-                    <a id={"button_" + ReqTypes.tranReq} title="Transportation Request" className={"tabButton"}
+                    <a id={"button_" + ReqTypes.tranReq} title="Transportation Request"
+                       className={`tabButton ${curentServiceRequest === ReqTypes.tranReq ? 'active' : ''}`}
                        onClick={() => {
                            setCurentServiceRequest(ReqTypes.tranReq);
                        }}>
@@ -108,7 +115,8 @@ export default function ServiceRequestOutputTables() {
                     </a>
                 </li>
                 <li>
-                    <a id={"button_" + ReqTypes.sanReq} title="Sanitation Request" className={"tabButton"}
+                    <a id={"button_" + ReqTypes.sanReq} title="Sanitation Request"
+                       className={`tabButton ${curentServiceRequest === ReqTypes.sanReq ? 'active' : ''}`}
                        onClick={() => {
                            setCurentServiceRequest(ReqTypes.sanReq);
                        }}>
@@ -258,12 +266,13 @@ export default function ServiceRequestOutputTables() {
                                        setStatsToggle(event.target.checked);
                                    }}
                             />
+
                             <div
-                                className=" relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300
-                            dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
+                                className=" relative w-11 h-6 bg-gray-200
+                             rounded-full peer  peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full
                             peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border
                             after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                            <span className="ml-1"><b>Stats</b></span>
+                            <span className="ml-2"><b>Statistics</b></span>
                         </label>
 
 
@@ -285,23 +294,23 @@ export default function ServiceRequestOutputTables() {
             switch (curentServiceRequest) {
                 case ReqTypes.flowReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={"/api/serviceRequests/flowReq/statistics"}>
+                        urlToGetStats={"/api/serviceRequests/flowReq/statistics"} urlForBuildingStats={"/api/serviceRequests/flowReq/building-statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.religReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={"/api/serviceRequests/religiousRequest/statistics"}>
+                        urlToGetStats={"/api/serviceRequests/religiousRequest/statistics"} urlForBuildingStats={"/api/serviceRequests/religiousRequest/building-statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.medReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={"/api/serviceRequests/medReq/statistics"}>
+                        urlToGetStats={"/api/serviceRequests/medReq/statistics"} urlForBuildingStats={"/api/serviceRequests/medReq/building-statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.tranReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={"/api/serviceRequests/outsideTransport/statistics"}>
+                        urlToGetStats={"/api/serviceRequests/outsideTransport/statistics"} urlForBuildingStats={"/api/serviceRequests/outsideTransport/building-statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.sanReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={"/api/serviceRequests/sanReq/statistics"}>
+                        urlToGetStats={"/api/serviceRequests/sanReq/statistics"} urlForBuildingStats={"/api/serviceRequests/sanReq/building-statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.serviceRequest:
                     return (<PieChartStatsAll></PieChartStatsAll>);

@@ -34,6 +34,11 @@ export default function Medicine_input({
 
     const [extraInfo, setExtraInfo] = useState("");
 
+    const priorityArr = ["Low", "Medium", "High", "Emergency"];
+    const [priorityIndex, setPriorityIndex] = useState(-1);
+    const [resetDropdownPriority, setResetDropdownPriority] = useState(false);
+
+
     useEffect(()=>{
         getLocations().then(
             (result)=>{
@@ -46,6 +51,8 @@ export default function Medicine_input({
             });
 
     },[]);
+
+
 
     //Changed for database
     async function submit() {
@@ -61,7 +68,7 @@ export default function Medicine_input({
                 assignedUName: "No one",            //upon creation, no employee is assigned
                 status: "Unassigned",             //upon creation, nobody is assigned, so set status to unassigned
                 reqID: -1,
-                reqPriority: "Low",
+                reqPriority: priorityArr[priorityIndex],
                 time: null
             };
 
@@ -129,25 +136,20 @@ export default function Medicine_input({
         event.preventDefault();
         setIsPopupOpen(false);
     }
+
+    const handleNumericInputChange = (value: ((prevState: string) => string) | string, setter: React.Dispatch<React.SetStateAction<string>>) => {
+        // Check if the entered value is a number
+        if (!isNaN(Number(value))) {
+            setter(value);
+        }
+        // You can also provide feedback to the user if the input is not a number
+    };
+
     return (
         <div
             className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-4 align-self-center"}>
             <form className={"p-2"}>
                 <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Medicine Request</h1>
-
-
-                <div className="grid justify-center items-center my-1.5">
-
-                    <label className="label">Location </label>
-                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationMed"} isSearchable={true}
-                                    populationArr={longNames} resetDropdown={resetDropdown}
-                                    setSelected={setSelected}
-                                    inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
-                                    selectCSS={""}
-                                    resetOnSelect={false} setResetDropdown={setResetDropdown}/>
-
-                </div>
-
 
                 <SimpleTextInput id={"medRequestType"} labelContent={"Medicine Name"} inputStorage={medRequestType}
                                  setInputStorage={setMedRequestType}
@@ -156,20 +158,51 @@ export default function Medicine_input({
                                  placeHolderText={"e.g. Prozac"}>
                 </SimpleTextInput>
 
-
-                <SimpleTextInput id={"medRequestDose"} labelContent={"Medicine Strength"} inputStorage={medRequestDoses}
-                                 setInputStorage={setMedRequestDose}
+                <SimpleTextInput id={"medRequestDose"} labelContent={"Medicine Dose"} inputStorage={medRequestDoses}
+                                 setInputStorage={(value) => handleNumericInputChange(value, setMedRequestDose)}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
                                  placeHolderText={"e.g. 25 mg"}>
                 </SimpleTextInput>
 
                 <SimpleTextInput id={"medRequestDosage"} labelContent={"Amount"} inputStorage={medRequestDosage}
-                                 setInputStorage={setMedRequestDosage}
+                                 setInputStorage={(value) => handleNumericInputChange(value, setMedRequestDosage)}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
                                  placeHolderText={"e.g."}>
                 </SimpleTextInput>
+
+                <div className="grid justify-center items-center my-1.5">
+
+                    <label className="label">Location </label>
+                    <CreateDropdown runOnChange={()=>{return -1;}}
+                                    dropBtnName={"Locations"} dropdownID={"LocationMed"} isSearchable={true}
+                                    populationArr={longNames} resetDropdown={resetDropdown}
+                                    setSelected={setSelected}
+                                    inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
+                                    selectCSS={""}
+                                    resetOnSelect={false} setResetDropdown={setResetDropdown}/>
+
+                </div>
+
+                {/* Priority */}
+                <div className="grid justify-center items-center my-1.5">
+                    <label className={"Priority"}>Priority </label>
+                    <CreateDropdown
+                        runOnChange={()=>{return -1;}}
+                        dropBtnName={"Priority"}
+                        dropdownID={"Priority"}
+                        populationArr={priorityArr}
+                        isSearchable={false}
+                        resetOnSelect={false}
+                        resetDropdown={resetDropdownPriority}
+                        setResetDropdown={setResetDropdownPriority}
+                        setSelected={setPriorityIndex}
+                        selectCSS={""}
+                        inputCSS={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
+                    />
+
+                </div>
 
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
                     <label className="label">Extra Notes </label>
@@ -178,7 +211,7 @@ export default function Medicine_input({
                               onChange={(e) => setExtraInfo(e.target.value)}
                               id={"service"}
                               value={extraInfo}
-                              required>
+                              >
                     </textarea>
                 </div>
 

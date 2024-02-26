@@ -1,9 +1,9 @@
 import React, { useEffect, useState} from "react";
-import {ReqTypes, sanReq, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
+import {ReqTypes, sanReq, ServiceRequest} from "common/src/algorithms/Requests/Request.ts";
 import axios from "axios";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
-import {NodeDataBase} from "../../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
+import {NodeDataBase} from "common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import {closeSanitationCard} from "../../service-request-cards/SanitationRequestCard.tsx";
 import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";
@@ -118,16 +118,7 @@ export default function Sanitation_input({
             className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
             <form className={"px-1"}>
                 <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Sanitation Request</h1> {/* Div Title */}
-                {/* Location */}
-                <div className="grid justify-center items-center my-1.5">
-                    <label className={"location"}>Location </label>
-                    <CreateDropdown dropBtnName={"Locations"} dropdownID={"LocationSan"} isSearchable={true}
-                                    populationArr={longNames} resetDropdown={resetDropdown}
-                                    setSelected={setSelected}
-                                    inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow "}
-                                    selectCSS={""}
-                                    resetOnSelect={false} setResetDropdown={setResetDropdown}/>
-                </div>
+
                 {/* Description */}
                 <SimpleTextInput id={"typeA"} labelContent={"Description"}
                                  inputStorage={typeA} setInputStorage={setTypeA}
@@ -135,10 +126,24 @@ export default function Sanitation_input({
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
                                  placeHolderText={"e.g. Liquid spill"}>
                 </SimpleTextInput>
+
+                {/* Location */}
+                <div className="grid justify-center items-center my-1.5">
+                    <label className={"location"}>Location</label>
+                    <CreateDropdown runOnChange={()=>{return -1;}}
+                                    dropBtnName={"Locations"} dropdownID={"LocationSan"} isSearchable={true}
+                                    populationArr={longNames} resetDropdown={resetDropdown}
+                                    setSelected={setSelected}
+                                    inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow "}
+                                    selectCSS={""}
+                                    resetOnSelect={false} setResetDropdown={setResetDropdown}/>
+                </div>
+
                 {/* Priority */}
                 <div className="grid justify-center items-center my-1.5">
                     <label className={"Priority"}>Priority </label>
                     <CreateDropdown
+                        runOnChange={()=>{return -1;}}
                         dropBtnName={"Priority"}
                         dropdownID={"Priority"}
                         populationArr={priorityArr}
@@ -160,7 +165,7 @@ export default function Sanitation_input({
                               onChange={(e) => setExtraInfo(e.target.value)}
                               id={"service"}
                               value={extraInfo}
-                              required>
+                              >
                     </textarea>
                 </div>
 
