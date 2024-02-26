@@ -4,15 +4,16 @@ import {
     OutsideTransport,
     ReqTypes,
     ServiceRequest
-} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
+} from "common/src/algorithms/Requests/Request.ts";
 import axios from "axios";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
-import {NodeDataBase} from "../../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
+import {NodeDataBase} from "common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import {CreateDropdown} from "../../CreateDropdown.tsx";
 import {closeTransportCard} from "../../service-request-cards/TransportationRequestCard.tsx";
 //import LocationsDropDown from "../../navigation-bar/LocationsDropDown.tsx";
 import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";
+import {Priority} from "../priorityAndStatusEnums.tsx";
 
 let longNames:string[] = [];
 
@@ -20,28 +21,27 @@ export default function Transportation_Input({
     setIsPopupOpen
                                              }: closeTransportCard) {
 
-    enum PriorityLevel {
-        Unchosen = "Priority: ",
-        Low = "Low",
-        Medium = "Medium",
-        High = "High",
-        Emergency = "Emergency"
-    }
+
 
     enum ModeTransport {
-        Unchosen = "Mode of Transportation: ",
         Ambulance = "Ambulance",
         Helicopter = "Helicopter",
         Boat = "Boat",
         Superhero = "Superhero"
     }
 
-    const [priority, setPriority] = useState(PriorityLevel.Unchosen);
+    const priorityLevels =[Priority.low, "Medium", Priority.high, Priority.emergency];
+    const [resetDropdownUrg, setResetDropdownUrg] = useState(false);
+    const [urgencyDDIndx, setUrgencyDDIndx] = useState(-1);
+
+    const modeTrans = [ModeTransport.Ambulance, ModeTransport.Helicopter, ModeTransport.Boat, ModeTransport.Superhero];
+    const [resetDropdownTrans, setResetDropdownTrans] = useState(false);
+    const [transportIndex, setTransportIndex] = useState(-1);
+
     const [patientName, setPatientName] = useState('');
 
 
     const [destination, setDestination] = useState('');
-    const [modeTransport, setModeTransport] = useState(ModeTransport.Unchosen);
     const [additional, setAdditional] = useState('');
 
     const [resetDropdown, setResetDropdown] = useState(false);
@@ -78,14 +78,14 @@ export default function Transportation_Input({
                 assignedUName: "No one",            //upon creation, no employee is assigned
                 status: "Unassigned",             //upon creation, nobody is assigned, so set status to unassigned
                 reqID:-1,
-                reqPriority:"Low",
+                reqPriority:priorityLevels[urgencyDDIndx],
                 time: null
             };
 
             const transportData: OutsideTransport = {
                 patientName: patientName,
                 destination: destination,
-                modeOfTransport: modeTransport.valueOf(),
+                modeOfTransport: modeTrans[transportIndex],
                 serviceReqID: -1,
             };
             clear();
@@ -127,11 +127,11 @@ export default function Transportation_Input({
     }
 
     function clear() {
-        setPriority(PriorityLevel.Unchosen);
+        setResetDropdownUrg(true);
         setPatientName("");
         setResetDropdown(true);
         setDestination("");
-        setModeTransport(ModeTransport.Unchosen);
+        setResetDropdownTrans(true);
         setAdditional("");
     }
 
@@ -149,32 +149,12 @@ export default function Transportation_Input({
                 <h1 className={"flex mb-3 justify-center font-bold text-xl"}>External Patient
                     Transportation</h1> {/* Div Title */}
 
-
-                <div className={"flex justify-center items-center my-1.5"}> {/* Priority Dropdown */}
-                    {/*<label
-                            className={"mr-1"}
-                            htmlFor={"priority"}
-                        >Priority Level: </label>*/}
-                        <select
-                            className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
-                            value={priority}
-                            id={"priority"}
-                            onChange={(e) => setPriority(e.target.value as PriorityLevel)}
-                        >
-                            <option value={PriorityLevel.Unchosen}>Priority </option>
-                            <option value={PriorityLevel.Low}>Low</option>
-                            <option value={PriorityLevel.Medium}>Medium</option>
-                            <option value={PriorityLevel.High}>High</option>
-                            <option value={PriorityLevel.Emergency}>Emergency</option>
-                        </select>
-                    </div>
-
                 {/*patient name*/}
-                <SimpleTextInput id={"patientName"} labelContent={"Patient Name:"} inputStorage={patientName}
+                <SimpleTextInput id={"patientName"} labelContent={"Patient Name "} inputStorage={patientName}
                                  setInputStorage={setPatientName}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
-                                 placeHolderText={"Patient Name: "}>
+                                 placeHolderText={"e.g. Jane Smith"}>
                 </SimpleTextInput>
 
                 {/*room number*/}
@@ -192,40 +172,55 @@ export default function Transportation_Input({
                 </div>
 
                 {/*destination*/}
-                <SimpleTextInput id={"destination"} labelContent={"Destination:"} inputStorage={destination}
+                <SimpleTextInput id={"destination"} labelContent={"Destination "} inputStorage={destination}
                                  setInputStorage={setDestination}
                                  inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
-                                 placeHolderText={"Destination: "}>
+                                 placeHolderText={"e.g. Mercy-Grey Hospital"}>
                 </SimpleTextInput>
 
-                <div className={"grid justify-center items-center my-1.5 mb-2"}>{/* Mode of Transportation Input */}
+                <div className={"grid justify-center items-center my-1.5"}> {/* Priority Dropdown */}
                     {/*<label
-                            htmlFor={"modeTransport"}
-                        >Mode of Transportation: </label>*/}
-                    <select
-                        className={"p-1 w-60 bg-white text-black rounded-2xl border border-black shadow cursor-pointer"}
-                        value={modeTransport}
-                        id={"modeTransport"}
-                        onChange={(e) => setModeTransport(e.target.value as ModeTransport)}
-                    >
-                        <option value={ModeTransport.Unchosen}>Mode of Transportation:</option>
-                        <option value={ModeTransport.Ambulance}>Ambulance</option>
-                        <option value={ModeTransport.Helicopter}>Helicopter</option>
-                        <option value={ModeTransport.Boat}>Boat</option>
-                        <option value={ModeTransport.Superhero}>Superhero</option>
-                    </select>
+                            className={"mr-1"}
+                            htmlFor={"priority"}
+                        >Priority Level: </label>*/}
+                    <label className="label">Priority </label>
+                    <CreateDropdown dropBtnName={"Priority "} dropdownID={"UrgencyID"} isSearchable={false}
+                                    populationArr={priorityLevels}
+                                    setSelected={setUrgencyDDIndx}
+                                    resetDropdown={resetDropdownUrg}
+                                    resetOnSelect={false}
+                                    runOnChange={()=>{return -1;}}
+                                    inputCSS={"n/a"} selectCSS={"dropdown"}
+                                    setResetDropdown={setResetDropdownUrg}/>
                 </div>
 
-                    <div className={"grid justify-center items-center my-1.5 mb-2"}> {/* Additional notes textbox */}
-                        <textarea
-                            className={"p-1 min-h-full h-20 w-60 bg-white text-black rounded-xl border border-black drop-shadow align-text-top"}
-                            id={"additional"}
-                            placeholder={"Extra Info:"}
-                            value={additional}
-                            onChange={(e) => setAdditional(e.target.value)}
-                        />
-                    </div>
+                <div className={"grid justify-center items-center my-1.5 mb-2"}>{/* Mode of Transportation Input */}
+
+                    <label className="label">Mode of Transportation </label>
+                    <CreateDropdown dropBtnName={"Mode of Transportation "} dropdownID={"transport"}
+                                    isSearchable={false}
+                                    populationArr={priorityLevels}
+                                    setSelected={setTransportIndex}
+                                    resetDropdown={resetDropdownTrans}
+                                    resetOnSelect={false}
+                                    runOnChange={()=>{return -1;}}
+                                    inputCSS={"n/a"} selectCSS={"dropdown"}
+                                    setResetDropdown={setResetDropdownTrans}/>
+
+                </div>
+
+                <div className={"grid justify-center items-center my-1.5 mb-2"}> {/* Additional notes textbox */}
+                    <label className="label">Extra Notes </label>
+                    <textarea
+                        className={"p-1 min-h-full h-20 w-60 bg-white text-black rounded-xl border border-black drop-shadow align-text-top"}
+                        id={"additional"}
+                        placeholder={"Extra Notes"}
+                        value={additional}
+                        onChange={(e) => setAdditional(e.target.value)}
+
+                    />
+                </div>
 
 
                 <RequestButtons submit={submit}/>

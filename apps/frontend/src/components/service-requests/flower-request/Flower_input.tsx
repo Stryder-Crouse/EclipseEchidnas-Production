@@ -1,4 +1,4 @@
-import React, {useState, useEffect,  ChangeEvent} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from "axios";
 import {FlowReq, ReqTypes, ServiceRequest} from "common/src/algorithms/Requests/Request.ts";
 import RequestButtons from "../../buttons/RequestButtons.tsx";
@@ -8,6 +8,7 @@ import Status from "../../../../../../packages/common/src/algorithms/Requests/St
 import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import {closeFlowerCard} from "../../service-request-cards/FlowerRequestCard.tsx";
 import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";
+import {Priority} from "../priorityAndStatusEnums.tsx";
 
 let longNames:string[] = [];
 
@@ -15,7 +16,6 @@ export default function Flower_input({
     setIsPopupOpen
                                      }: closeFlowerCard) {
     const [sender,setSender] = useState("");
-    const [priority,setPriority] = useState("low");
     //const [location,setLocation] = useState("");
     const [flowerType,setFlowerType] = useState("");
     const [flowerQuantity,setFlowerQuantity] = useState("");
@@ -26,6 +26,10 @@ export default function Flower_input({
     const [resetDropdown, setResetDropdown] = useState(false);
     const [selected, setSelected] = useState(-1);
     const [locations, setLocations] = useState<NodeDataBase[]>([]);
+
+    const priorityLevels =[Priority.low, "Medium", Priority.high, Priority.emergency];
+    const [urgencyDDIndx, setUrgencyDDIndx] = useState(-1);
+    const [resetDropdownUrg, setResetDropdownUrg] = useState(false);
 
     let interID = setInterval(fadeEffect, 100);
     clearInterval(interID);
@@ -50,7 +54,7 @@ export default function Flower_input({
                 extraInfo: extraInfo,
                 status: Status.Unassigned,
                 assignedUName: "",
-                reqPriority: priority,
+                reqPriority: priorityLevels[urgencyDDIndx],
                 reqID: -1,
                 time: new Date()
             };
@@ -117,7 +121,7 @@ export default function Flower_input({
 
         function clear() {
             setSender('');
-            setPriority('');
+            setResetDropdownUrg(true);
             setFlowerType('');
             setFlowerQuantity('');
             setFlowerRecipient('');
@@ -127,20 +131,26 @@ export default function Flower_input({
         }
         // Optionally, you can reset the form fields after submission
 
-        function handlePriority(e: ChangeEvent<HTMLSelectElement>) {
-            setPriority(e.target.value);
-        }
-
-
     function closeFlowerForm(event: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) {
         event.preventDefault();
         setIsPopupOpen(false);
     }
 
+    const handleFlowerNumericInputChange = (value: ((prevState: string) => string) | string, setter: React.Dispatch<React.SetStateAction<string>>) => {
+        // Check if the entered value is a number
+        if (!isNaN(Number(value))) {
+            setter(value);
+        }
+        // You can also provide feedback to the user if the input is not a number
+    };
+
+
     return(
         <div
             className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
             <form className="p-2">
+
+
                 <h1 className={"grid mb-3 justify-center font-bold text-xl"}>Flower Request </h1>
 
                 <div className={"flex"}>
@@ -149,37 +159,33 @@ export default function Flower_input({
                                          setInputStorage={setSender}
                                          inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
-                                         placeHolderText={""}>
+                                         placeHolderText={"e.g. John Smith"}>
                         </SimpleTextInput>
 
-
-                <div className="grid justify-center items-center my-1.5">
-                    <label id="priorityType">Priority </label>
-                    <select
-                        id={"priorityType"}
-                        name={"priorityType"}
-                        value={priority}
-                        onChange={handlePriority}
-                        className={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
-                    >
-                        <option key="flower_priorityType_low" value="low">Low</option>
-                        <option key="flower_priorityType_med" value="medium">Medium</option>
-                        <option key="flower_priorityType_high" value="high">High</option>
-                        <option key="flower_priorityType_emerg" value="emergency">Emergency</option>
-                    </select>
-                </div>
+                        {/* //todo FNFN make this a createDropdown, assure theres a label without a colon and the placeholder is the name of the field (Priority) */}
+                        <div className="grid justify-center items-center my-1.5">
+                            <label id="priorityType">Priority </label>
+                            <CreateDropdown dropBtnName={"Priority "} dropdownID={"UrgencyID"} isSearchable={false}
+                                            populationArr={priorityLevels}
+                                            setSelected={setUrgencyDDIndx}
+                                            resetDropdown={resetDropdownUrg}
+                                            resetOnSelect={false}
+                                            runOnChange={()=>{return -1;}}
+                                            inputCSS={"n/a"} selectCSS={"dropdown"}
+                                            setResetDropdown={setResetDropdownUrg}/>
+                        </div>
 
                         <div className="grid justify-center items-center my-1.5">
 
-                        <label className="label">Location </label>
-                        <CreateDropdown
-                            runOnChange={()=>{return -1;}}
-                            dropBtnName={"Locations"} dropdownID={"LocationFlow"} isSearchable={true}
-                                        populationArr={longNames} resetDropdown={resetDropdown}
-                                        setSelected={setSelected}
-                                        inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
-                                        selectCSS={""}
-                                        resetOnSelect={false} setResetDropdown={setResetDropdown}/>
+                            <label className="label">Location </label>
+                            <CreateDropdown
+                                dropBtnName={"Locations"} dropdownID={"LocationFlow"} isSearchable={true}
+                                populationArr={longNames} resetDropdown={resetDropdown}
+                                setSelected={setSelected}
+                                runOnChange={()=>{return -1;}}
+                                inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
+                                selectCSS={""} resetOnSelect={false} setResetDropdown={setResetDropdown}
+                            />
 
                         </div>
 
@@ -187,16 +193,16 @@ export default function Flower_input({
                                          setInputStorage={setFlowerType}
                                          inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
-                                         placeHolderText={""}>
+                                         placeHolderText={"e.g. Orchids"}>
                         </SimpleTextInput>
                     </div>
                     <div className={"flex flex-col"}>
                         <SimpleTextInput id={"flowerquantity"} labelContent={"Flower Quantity"}
                                          inputStorage={flowerQuantity}
-                                         setInputStorage={setFlowerQuantity}
+                                         setInputStorage={(value) => handleFlowerNumericInputChange(value, setFlowerQuantity)}
                                          inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
-                                         placeHolderText={""}>
+                                         placeHolderText={"e.g. 14"}>
                         </SimpleTextInput>
 
                         <SimpleTextInput id={"flowerrecipient"} labelContent={"Flower Recipient"}
@@ -204,30 +210,28 @@ export default function Flower_input({
                                          setInputStorage={setFlowerRecipient}
                                          inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
-                                         placeHolderText={""}>
+                                         placeHolderText={"e.g. Grandma Ren"}>
                         </SimpleTextInput>
 
 
-                        <SimpleTextInput id={"additionalNotes"} labelContent={"Message"} inputStorage={message}
+                        <SimpleTextInput id={"message"} labelContent={"Message"} inputStorage={message}
                                          setInputStorage={setMessage}
                                          inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
-                                         placeHolderText={""}>
+                                         placeHolderText={"e.g. Get well soon Gramma!"}>
                         </SimpleTextInput>
                         <div className={"grid justify-center items-center my-1.5 mb-1"}>
-                        <textarea placeholder={"Extra Notes"}
-                                  className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
-                                  onChange={(e) => setExtraInfo(e.target.value)}
-                                  id={"service"}
-                                  value={extraInfo}
-                                  required>
+                            <label className="label">Extra Notes </label>
+                            <textarea placeholder={"Extra Notes"}
+                                      className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
+                                      onChange={(e) => setExtraInfo(e.target.value)}
+                                      id={"service"}
+                                      value={extraInfo}
+                                      >
                         </textarea>
                         </div>
                     </div>
                 </div>
-
-
-
 
 
 

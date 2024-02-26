@@ -81,6 +81,7 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, runOnChan
                 <input type="text" placeholder={dropBtnName} list={datalistID} id={dropdownID}
                        onChange={e => findValueIndex(e.target.value)}
                        className={`w-60 p-2 pr-2 text-black rounded-full focus:outline-none ${inputCSS}`}
+                       required
 
                 />
                 <datalist className="dropbtn" id={datalistID}>
@@ -97,7 +98,7 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, runOnChan
     } else {
         return (
             <div className="dropdown">
-                <select id={dropdownID} className={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"} name={dropBtnName} onChange={e => {
+                <select  required id={dropdownID} className={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"} name={dropBtnName} onChange={e => {
                     setValueCorrectly(e.target.selectedIndex - 1);
                     /*accounts for the extra unselectable option with the placeholder text*/
                 }}>
