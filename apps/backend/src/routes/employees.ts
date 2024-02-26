@@ -12,9 +12,9 @@ const upload = multer({dest: 'uploadedCSVs/'});
 
 
 const auth0 = new ManagementClient({
-    domain: 'dev-hca27okc2srfyen8.us.auth0.com',
-    clientId: 'sjOBn2g3OxSS11LMuXopKBZ4mao8drry',
-    clientSecret: 'B0rX2U4tbxl9fO_SNNfgOgQxo9lrqGd2ti2CPqNwUxUxcMESdONNeZcK52Ec4g4d',
+    domain: 'dev-w3apfgzf8dmf8bgm.us.auth0.com',
+    clientId: 'iGb2hrQNGmRDlIeWtp1su1FyxEESYIaQ',
+    clientSecret: 'X6dJjiFvyKGEpv0Wf32eRZp7wHclLhdDWC_qgt6URftYjvVagJ1fDzLL5foEz9hh',
 });
 
 
@@ -70,13 +70,21 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
 
         //add users to auth0
         employeeArray.forEach((emp) => {
-            auth0.users.create({
-                email: emp.userName,
-                password: 'EclipseEchidnasDB',
-                connection: 'Username-Password-Authentication'}).then((authRes)=>{
+
+            try {
+                auth0.users.create({
+                    email: emp.userName,
+                    password: 'EclipseEchidnasDB!',
+                    connection: 'Username-Password-Authentication'
+                }).then((authRes) =>
+                {
                     console.log(authRes.data);
                     emp.userID = authRes.data.user_id;
                 });
+            }catch (e){
+                console.log("auth0 errorr");
+                console.log(e);
+            }
         });
 
 
