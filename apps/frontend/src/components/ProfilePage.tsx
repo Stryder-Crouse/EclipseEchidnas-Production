@@ -37,18 +37,18 @@ function ProfilePage() {
 
         //const [currentEmployee , setCurrentEmployee ] = useState("");
         const currUser = useAuth0();
-        const decodedEmail = decodeURIComponent(String(currUser?.user?.email));
-        const username = String(currUser?.user?.email);
+        //const decodedEmail = decodeURIComponent(String(currUser?.user?.email));
+        const username = currUser?.user?.email;
         const ProfilePicture = currUser?.user?.picture;
 
         useEffect(() => {
-            getEmployees(decodedEmail!).then((results) => {
+            getEmployees(username!).then((results) => {
 
                 setFirstName(results.firstName);
                 setLastName(results.lastName);
                 setDesignation(results.designation);
             });
-        }, [decodedEmail]);
+        }, [username]);
 
 
     console.log(getEmployees);
@@ -187,7 +187,14 @@ export function ImageCard({ img }: { img: string }){
 export default ProfilePage;
 
 async function getEmployees(emp: string) {
-    const employees = await axios.get<Employee>("/api/employees/current_employee", { params: { userName: emp } });
+    console.log("GET EMPLOYEES: " + emp);
+    const employees = await axios.get<Employee>(`/api/employees/current_employee/${emp}`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+);
     return employees.data;
 
 }
