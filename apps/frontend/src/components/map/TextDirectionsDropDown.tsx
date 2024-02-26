@@ -21,7 +21,7 @@ export function TextDirectionsDropDown({textDirections,closeLocations}:textDirec
 
     return (
         <div
-            className="  flex flex-col border-gray-500 border-2 w-60 max-h-[62.5vh] mt-1 bg-white rounded-3xl overflow-hidden">
+            className="  flex flex-col border-gray-500 border-2 w-60 max-h-[58vh] mt-1 bg-white rounded-3xl overflow-hidden">
             {/*<p className={"bg-[#024c96] p-1 rounded-xl w-full text-white font-semibold cursor-pointer flex justify-center m-auto "}>*/}
             {/*    Text Directions*/}
             {/*</p>*/}
