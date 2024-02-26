@@ -18,10 +18,10 @@ x-db-loc: &db-loc
   POSTGRES_URL: "postgresql://postgres:2u9eN4lCNUSXn0nSR2xu@database-teame.cposc4gqwvhy.us-east-1.rds.amazonaws.com:5432/postgres?schema=public"
 
 # Health check for all processes
-#x-health-check: &health-check
-#  interval: 30s
-#  timeout: 30s
-#  retries: 3
+x-health-check: &health-check
+  interval: 30s
+  timeout: 30s
+  retries: 3
 
 # Running containers
 services:
@@ -58,11 +58,11 @@ services:
       # Mount the certificate, so that we don't try to renew the cert every time we start up
       - acme_cert:/etc/traefik/acme
     restart: always
-#    depends_on:
-#      frontend:
-#        condition: service_healthy
-#      backend:
-#        condition: service_healthy
+    depends_on:
+      frontend:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
 
   # Frontend (UI)
   frontend:
@@ -93,8 +93,8 @@ services:
       - "traefik.http.services.frontend-https.loadbalancer.server.port=80"
     image: strydercrouse/aws-team-e:frontend
     restart: always
-#    healthcheck:
-#      *health-check
+    healthcheck:
+      *health-check
 
   # Backend (API)
   backend:
@@ -128,7 +128,7 @@ services:
       - "traefik.http.services.backend-https.loadbalancer.server.port=80"
     image: strydercrouse/aws-team-e:backend
     restart: always
-#    healthcheck:
-#      *health-check
+    healthcheck:
+      *health-check
 volumes:
   acme_cert:

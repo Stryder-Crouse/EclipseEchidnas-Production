@@ -1,4 +1,4 @@
--- CreateTable
+A-- CreateTable
 CREATE TABLE "Node" (
     "nodeID" VARCHAR(256) NOT NULL,
     "floor" VARCHAR(256) NOT NULL,
