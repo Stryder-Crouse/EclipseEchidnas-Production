@@ -40,6 +40,7 @@ export type requestStats = {
     urlForBuildingStats:string
 }
 
+
 function StatsBarChart({urlForBuildingStats}:requestStats){
 
     const [stats , setStats ]
@@ -135,16 +136,23 @@ function StatsBarChart({urlForBuildingStats}:requestStats){
             }
         }
     };
+   
+    
     return (
-        <div className={"scale-90"} style={
+        <div className={""} style={
             {}}>
             <p className="text-center"><b>Request per Building</b></p>
             <div className="canvas-container">
                 <canvas width="150" height="100"></canvas>
             </div>
 
-            {/*// @ts-expect-error asjhdska*/}
-            <Bar data={data} options={options}></Bar>
+
+            <div className={"scale-90"}>
+                {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+                {/* @ts-expect-error */}
+                <Bar data={data} options={options}></Bar>
+            </div>
+
         </div>
     );
 }
