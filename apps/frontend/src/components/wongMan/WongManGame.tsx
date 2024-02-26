@@ -3,9 +3,12 @@ import {Directions_Game, Echidna} from "./Echidna.ts";
 
 
 import LowerLevel1Game from "../../images/WongMan/Maps/LowerLevel1.png";
+import EdibleBlue from "../../images/WongMan/Edible/EdibleBlue.png";
 // @ts-expect-error idk why its fine
 import {KeyboardEvent} from "happy-dom";
 import {Coordinate} from "common/src/algorithms/Graph/Coordinate.ts";
+import {Edible} from "./Edible.ts";
+import {lowerLevel1EdibleCoordinates} from "./LevelNodesLocationList.ts";
 
 export type WongManProps={
     visable:boolean
@@ -31,6 +34,10 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
     const echidna = useRef< Echidna| null>(null);
     const keysDown = useRef< number[]>([0,0,0,0]);
     const renderCount = useRef(0);
+
+    const currentlevel = useRef(0);
+    const fishedLevel = useRef(false);
+    const currentlevelEdibles = useRef([] as Edible[]);
 
     return (
         <div
@@ -88,8 +95,27 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
         window.addEventListener("keyup",(e)=>{handleKeyUp(e);});
 
 
+        //setup first levels nodes
+        currentlevelEdibles.current = setLevelNodes(lowerLevel1EdibleCoordinates);
+
+
         setInterval(mainLoop,20);
         //console.log("exited");
+    }
+
+    function setLevelNodes(cords:Coordinate[]){
+        const newEdibles:Edible[] = [];
+        for(const cord of cords){
+
+            switch (currentlevel.current) {
+                case 0:
+                    newEdibles.push(new Edible(cord,15,15,EdibleBlue));
+                    break;
+
+            }
+
+        }
+        return newEdibles;
     }
     
     function handleKeyDown(event:KeyboardEvent){
@@ -139,10 +165,19 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
 
     function mainLoop(){
 
+        //clear cavus
         clear();
 
+        //if a level has been finished then go to next level
+        if(fishedLevel){
+
+            fishedLevel.current=false;
+        }
+
         //draw the level
-        drawLevel(0);
+        drawLevelImg(currentlevel.current);
+        //draw Edibles
+        drawEdibles();
 
         handlePlayerMovment();
         echidna.current?.render(canvasContext.current!,renderCount.current);
@@ -154,7 +189,7 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
         canvasContext.current?.clearRect(0,0,canvasArea.current!.width,canvasArea.current!.height);
     }
 
-    function drawLevel(level:number) {
+    function drawLevelImg(level:number) {
 
         let levelSRC = "";
         switch (level) {
@@ -168,6 +203,14 @@ export default function WongManGame({visable,setVisable}:WongManProps) {
         const img = document.createElement("img");
         img.src=levelSRC;
         canvasContext.current!.drawImage(img,0,0,window.innerWidth,window.innerHeight);
+
+    }
+
+    function drawEdibles(){
+
+        for(const edible of currentlevelEdibles.current){
+            edible.render(canvasContext.current!);
+        }
 
     }
     
