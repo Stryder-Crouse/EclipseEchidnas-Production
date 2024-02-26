@@ -71,13 +71,13 @@ function ExportImportButtonEmployee() {
         <div className={"flex justify-center "}>
             <button
                 title={"Import New Set of Employees"}
-                className={"p-3  bg-navStart rounded-full h-min  drop-shadow-lg"}
+                className={"p-3 hover:bg-navy transition-all  bg-navStart rounded-full h-min  drop-shadow-lg"}
                 onClick={importEmployee}>
                 <img src={ImportIcon} alt={""} className={"invert"}/>
             </button>
             <button
                 title={"Export/Download Current Employee Data"}
-                className={"p-3 ml-4 mr-4 bg-navStart rounded-full h-min  drop-shadow-lg"}
+                className={"p-3 ml-4 mr-4 hover:bg-navy transition-all bg-navStart rounded-full h-min  drop-shadow-lg"}
                 onClick={exportEmployee}>
                 <img src={ExportIcon} alt={""} className={"invert"}/>
             </button>
