@@ -2828,4 +2828,5 @@ router.get("/religiousRequest/building-statistics", async function (req: Request
     }
 });
 
+
 export default router;
