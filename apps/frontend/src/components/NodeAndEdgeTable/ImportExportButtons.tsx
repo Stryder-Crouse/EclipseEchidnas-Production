@@ -7,6 +7,7 @@ import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 
 function ImportExportButtons() {
 
+    //employee -> edge -> nodes for the post stuff
     //todo clean up - stryder
     async function inputFiles() {
         //Get node file
