@@ -26,10 +26,14 @@ function ProfilePage() {
 
 
     const [activeButton, setActiveButton] = useState("table");
+    const [activeCompletedButton, setActiveCompletedButton] = useState("table");
 
-        const handleButtonClick = (button: React.SetStateAction<string>) => {
-            setActiveButton(button);
-        };
+    const handleGTButtonClick = (button: React.SetStateAction<string>) => {
+        setActiveButton(button);
+    };
+    const handleCompletedButtonClick = (button: React.SetStateAction<string>) => {
+        setActiveCompletedButton(button);
+    };
 
 
         const currUser = useAuth0();
@@ -107,7 +111,7 @@ function ProfilePage() {
                                             ? "bg-navy text-white hover:bg-navy focus:bg-navy active:bg-navy"
                                             : "bg-white  text-black hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"
                                     }`}
-                                    onClick={() => handleButtonClick("table")}>
+                                    onClick={() => handleGTButtonClick("table")}>
                                     Table
                                 </button>
 
@@ -118,8 +122,33 @@ function ProfilePage() {
                                             ? `bg-navy text-white hover:bg-navy focus:bg-navy active:bg-navy`
                                             : "bg-white text-black hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"
                                     }`}
-                                    onClick={() => handleButtonClick("graph")}>
+                                    onClick={() => handleGTButtonClick("graph")}>
                                     Graph
+                                </button>
+                            </div>
+                            <div className="mt-10">
+
+                                <button
+                                    type="button"
+                                    className={`inline-block rounded px-9 pb-5 pt-5 text-xl font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out 
+                                    ${
+                                        activeCompletedButton === "hide"
+                                            ? "bg-navy text-white hover:bg-navy focus:bg-navy active:bg-navy"
+                                            : "bg-white  text-black hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"
+                                    }`}
+                                    onClick={() => handleCompletedButtonClick("hide")}>
+                                    Hide Completed Tasks
+                                </button>
+
+                                <button
+                                    type="button"
+                                    className={`inline-block rounded px-9 pb-5 pt-5 text-xl font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out ${
+                                        activeCompletedButton === "show"
+                                            ? `bg-navy text-white hover:bg-navy focus:bg-navy active:bg-navy`
+                                            : "bg-white text-black hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"
+                                    }`}
+                                    onClick={() => handleCompletedButtonClick("show")}>
+                                    Show Completed Tasks
                                 </button>
                             </div>
                         </div>
@@ -142,28 +171,28 @@ function ProfilePage() {
         if (username != "") {
             if (activeButton === "graph") {
 
-                    return (<PieChartStatsProfile
-                        urlToGetStats={"/api/employees/current_employee/stats"}
-                        userEmail={username!}
-                        urlForBuildingStats={"/api/employees/current_employee/buildingStats"}>
-                    </PieChartStatsProfile>);
+                return (<PieChartStatsProfile
+                    urlToGetStats={"/api/employees/current_employee/stats"}
+                    userEmail={username!}
+                    urlForBuildingStats={"/api/employees/current_employee/buildingStats"}>
+                </PieChartStatsProfile>);
 
 
             }
 
             if (activeButton == "table") {
 
-                    return (<ServiceRequest_Table_Protected employeeFilter={username!} statusFilter={Status.Any}
-                                                            locationFilter={"Any"}/>);
+                return (<ServiceRequest_Table_Protected employeeFilter={username!} statusFilter={Status.Any}
+                                                        locationFilter={"Any"}/>);
 
 
             }
         }
     }
 
-    }
+}
 
-export function ImageCard({ img }: { img: string }){
+export function ImageCard({img}: { img: string }) {
 
     return (
         <div

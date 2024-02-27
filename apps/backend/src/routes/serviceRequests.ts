@@ -276,12 +276,12 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
 
 router.get("/serviceReq/filter/assigned_or_in_progress", async function (req: Request, res: Response) {
     try {
-        let statusFilter: string = req.query.status as string;
+        let priorityFilter: string = req.query.priority as string;
         let emplFilter: string = req.query.employee as string;
         let locFilter: string = req.query.location as string;
 
-        if(statusFilter==Status.Any){
-            statusFilter="%";
+        if(priorityFilter==Priorities.any){
+            priorityFilter="%";
         }
 
         if(emplFilter=="Any"){
@@ -299,15 +299,15 @@ router.get("/serviceReq/filter/assigned_or_in_progress", async function (req: Re
             where: {
                 AND:[
                     {
-                        status:{
-                            contains:statusFilter
+                        reqPriority:{
+                            contains:priorityFilter
                         }
                     },
                     { OR:[
-                            {reqPriority:{
+                            {status:{
                                 contains:"Assigned"
                             }},
-                            {reqPriority:{
+                            {status:{
                                 contains:"In Progress"
                             }}
                         ],
