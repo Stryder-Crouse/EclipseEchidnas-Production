@@ -3,7 +3,6 @@ import {useState} from "react";
 import SimpleTextInput from "../inputComponents/SimpleTextInput.tsx";
 import {Employee, Roles} from "common/src/algorithms/Employee/Employee.ts";
 
-
 import axios from "axios";
 import {useAuth0} from "@auth0/auth0-react";
 

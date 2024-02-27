@@ -37,7 +37,7 @@ export default function FullSideNavBarComponent() {
                         <>
                             <SideBarItem icon={ProfileIcon} text="Profile" link="ProfilePage" />
                             <SideBarItem icon={EmployeeIcon} text="Employees" link="/EmployeeTable" />
-                            <SideBarItem icon={CSVIcon} text="CSV" link="/NodeEdgeTable" />
+                            <SideBarItem icon={CSVIcon} text="Databases" link="/NodeEdgeTable" />
                         </>
                     )}
 
