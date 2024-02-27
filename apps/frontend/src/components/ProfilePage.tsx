@@ -11,7 +11,6 @@ import {Priorities, ServiceRequest} from "common/src/algorithms/Requests/Request
 
 function ProfilePage() {
 
-
     const [designation, setDesignation]
         = useState("");
 
@@ -62,7 +61,7 @@ function ProfilePage() {
             <div className="flex h-screen overflow-x-hidden overflow-y-hidden">
                 <FullSideNavBarComponent/>
                 {/* Left Column - User Information */}
-                <div className="w-1/3 max-w-[29%] bg-gray-200 p-4 bg-ivoryWhite rounded-lg">
+                <div className="w-1/3  bg-gray-200 p-4 bg-ivoryWhite rounded-lg">
                     <div className="flex flex-col items-center  justify-center text-center">
                         <h1 className="mb-5 font-bold text-2xl mt-5">Welcome, {firstName}</h1>
                         {ProfilePicture && <ImageCard img={ProfilePicture} />}
