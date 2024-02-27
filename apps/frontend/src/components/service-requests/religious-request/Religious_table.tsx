@@ -44,7 +44,7 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
                                 <th className={"tableTD"}>Location ID</th>
                                 <th className={"tableTD"}>Patient Name</th>
                                 <th className={"tableTD"}>Religion</th>
-                                <th className={"tableTD"}>Service requested</th>
+                                <th className={"tableTD"}>Service Requested</th>
                                 <th className={"tableTD"}>Extra Notes</th>
                             </tr>
                             </thead>

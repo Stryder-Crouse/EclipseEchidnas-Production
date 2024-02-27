@@ -148,7 +148,7 @@ export default function Flower_input({
 
     return(
         <div
-            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
+            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center scale-90"}>
             <form className="p-2">
 
 
@@ -211,7 +211,7 @@ export default function Flower_input({
                                          setInputStorage={setFlowerRecipient}
                                          inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
-                                         placeHolderText={"e.g. Grandma Ren"}>
+                                         placeHolderText={"e.g. Ren Tanzer"}>
                         </SimpleTextInput>
 
 
@@ -219,7 +219,7 @@ export default function Flower_input({
                                          setInputStorage={setMessage}
                                          inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
-                                         placeHolderText={"e.g. Get well soon Gramma!"}>
+                                         placeHolderText={"e.g. Get well soon, Gramma!"}>
                         </SimpleTextInput>
                         <div className={"grid justify-center items-center my-1.5 mb-1"}>
                             <label className="label">Extra Notes </label>

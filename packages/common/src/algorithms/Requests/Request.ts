@@ -21,7 +21,7 @@ export type MedReq = {
     medSig: string;
     patientName: string;
     patientDOB: Date;
-    patientMedReqNum: number;
+    patientMedRecNum: number;
     genReqID: number;
 };
 
