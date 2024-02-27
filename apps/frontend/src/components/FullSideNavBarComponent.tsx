@@ -32,9 +32,10 @@ export default function FullSideNavBarComponent() {
 
                     <hr className="my-3" />
                     {/* Conditionally render "Login" or "Log Out" based on authentication status */}
-                    <SideBarItem icon={ProfileIcon} text="Profile" link="ProfilePage" />
+
                     {isAuthenticated && (
                         <>
+                            <SideBarItem icon={ProfileIcon} text="Profile" link="ProfilePage" />
                             <SideBarItem icon={EmployeeIcon} text="Employees" link="/EmployeeTable" />
                             <SideBarItem icon={CSVIcon} text="CSV" link="/NodeEdgeTable" />
                         </>
