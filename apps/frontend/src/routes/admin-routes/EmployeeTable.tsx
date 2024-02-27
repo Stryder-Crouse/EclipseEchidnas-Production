@@ -8,6 +8,7 @@ import editPen from "../../images/Table Functions/pencil.png";
 import FullSideNavBarComponent from "../../components/FullSideNavBarComponent.tsx";
 
 
+
 //TODO IMPLEMENT THESE BUTTONS TO POPULATE WITH EVERY ROW
 //import TrashIcon from "../../images/Table Functions/trash-2.png";
 //import EditIcon from "../../images/Table Functions/pencil.png";

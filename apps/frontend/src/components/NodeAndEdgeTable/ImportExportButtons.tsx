@@ -1,12 +1,8 @@
 import React, {Dispatch, SetStateAction, useState} from "react";
-//import axios from "axios";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {HTMLInputElement} from "happy-dom";
-//import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 import ImportInput from "./ImportInput.tsx";
 import ExportOutput from "./ExportOutput.tsx";
+import ImportIcon from "../../images/Table Functions/import.png";
+import ExportIcon from "../../images/Table Functions/download.png";
 
 export type closeImportInput = {
     setIsImportOpen: Dispatch<SetStateAction<boolean>>;
@@ -153,14 +149,16 @@ function ImportExportButtons() {
             return (
                 <div className={"flex justify-center mt-5"}>
                     <button
-                        className={"transition-all hover:bg-navy w-40 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}
+                        title={"Import CSV Data"}
+                        className={"transition-all hover:bg-navy text-white p-3  bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}
                         onClick={openImportForm}>
-                        Import all .csv
+                        <img src={ImportIcon} alt={""} className={"invert"}/>
                     </button>
                     <button
-                        className={"transition-all hover:bg-navy w-40 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}
+                        title={"Export CSV Data"}
+                        className={"transition-all hover:bg-navy text-white p-3 ml-4 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}
                         onClick={openExportForm}>
-                        Export all .csv
+                        <img src={ExportIcon} alt={""} className={"invert"}/>
                     </button>
 
                     {isImportOpen && (

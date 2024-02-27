@@ -1,25 +1,19 @@
 
 import FullSideNavBarComponent from "../../components/FullSideNavBarComponent.tsx";
 import CsvPageTableContainer from "../../components/csvPage/CsvPageTableContainer.tsx";
-import ImportExportButtons from "../../components/NodeAndEdgeTable/ImportExportButtons.tsx";
+
 
 function NodeEdgeTablePage() {
     return(
-        <div className="flex h-lvh">
+        <div className="flex h-screen overflow-x-hidden">
             <div className="z-10">
                 <FullSideNavBarComponent/>
             </div>
-            <div className={"flex flex-col w-lvw -ml-10"}>
-                <div className={""}>
-                    <ImportExportButtons/>
-                </div>
-                <div >
-                    <CsvPageTableContainer/>
-                </div>
+            <div className="flex items-center justify-center w-full  min-w-[100%] mt-5 -ml-[7.5%]">
+                <CsvPageTableContainer/>
             </div>
-
-
         </div>
+
     );
 }
 

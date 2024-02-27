@@ -1,10 +1,10 @@
 import React, { useState} from "react";
 import "../../css/component-css/ServicePage.css";
 
-
+import ImportExportButtons from "../NodeAndEdgeTable/ImportExportButtons.tsx";
 import NodeTable from "../NodeAndEdgeTable/NodeTable.tsx";
 import EdgeTable from "../NodeAndEdgeTable/EdgeTable.tsx";
-import EmployeeTableComponent from "../NodeAndEdgeTable/EmployeeTableComponent.tsx";
+
 
 
 
@@ -14,7 +14,7 @@ export default function CsvPageTableContainer() {
     const [curentTable , setCurentTable ] = useState("node");
 
     return (
-        <div className="tabs-container">
+        <div className="tabs-container mx-auto w-full">
             <ul className="tabs">
                 <li>
                     <a id={"button_nodes"} title="Node Table" className={"tabButton"} onClick={() => {
@@ -31,12 +31,7 @@ export default function CsvPageTableContainer() {
                     </a>
                 </li>
                 <li>
-                    <a id={"button_employee"} title="Employee Table" className={"tabButton"}
-                       onClick={() => {
-                           setCurentTable("employee");
-                       }}>
-                        Employee Table
-                    </a>
+                    <ImportExportButtons/>
                 </li>
 
             </ul>
@@ -55,9 +50,8 @@ export default function CsvPageTableContainer() {
             case "node":
                 return <NodeTable/>;
             case "edge":
-               return <EdgeTable/>;
-            case "employee":
-               return <EmployeeTableComponent/>;
+               return(<EdgeTable/>);
+
             default:
                 return (<div> bad state</div>);
 
