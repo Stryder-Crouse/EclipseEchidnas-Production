@@ -166,7 +166,7 @@ export default function Medicine_input({
 
     return (
         <div
-            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-4 align-self-center scale-90"}>
+            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-4 align-self-center "}>
             <form className={"p-2"}>
                 <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Medicine Request</h1>
 
@@ -175,7 +175,7 @@ export default function Medicine_input({
                         <SimpleTextInput id={"patientName"}
                                          labelContent={"Patient Name"}
                                          inputStorage={patientName} setInputStorage={setPatientName}
-                                         inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                         inputCSS={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
                                          placeHolderText={"e.g. Geraldine Hudson"}>
                         </SimpleTextInput>
@@ -261,7 +261,7 @@ export default function Medicine_input({
 
                         <SimpleTextInput id={"medRequestType"} labelContent={"Medicine Form"} inputStorage={medForm}
                                          setInputStorage={setMedForm}
-                                         inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                         inputCSS={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
                                          placeHolderText={"e.g. pill"}>
                         </SimpleTextInput>
@@ -270,7 +270,7 @@ export default function Medicine_input({
                         <SimpleTextInput id={"medRequestDosage"} labelContent={"Medicine Strength"}
                                          inputStorage={medRequestDosage}
                                          setInputStorage={setMedRequestDosage}
-                                         inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                         inputCSS={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
                                          placeHolderText={"e.g. 100 mg"}>
                         </SimpleTextInput>
@@ -278,7 +278,7 @@ export default function Medicine_input({
 
                         <SimpleTextInput id={"medRequestSig"} labelContent={"SIG"} inputStorage={medSig}
                                          setInputStorage={setMedSig}
-                                         inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                         inputCSS={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
                                          placeHolderText={"e.g. take 1 pill orally daily, with water"}>
                         </SimpleTextInput>
@@ -286,7 +286,7 @@ export default function Medicine_input({
                         <SimpleTextInput id={"medRequestQuant"} labelContent={"Number of Doses to Deliver"}
                                          inputStorage={medQuant}
                                          setInputStorage={setMedQuant}
-                                         inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                         inputCSS={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={""}
                                          placeHolderText={"e.g. 5"}>
                         </SimpleTextInput>
@@ -294,7 +294,7 @@ export default function Medicine_input({
                         <div className={"grid justify-center items-center my-1.5 mb-1"}>
                             <label className="label">Extra Notes </label>
                             <textarea placeholder={"Extra Info: "}
-                                      className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
+                                      className={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer overflow-y-hidden h-12" /*className may need to be different to have a larger area*/}
                                       onChange={(e) => setExtraInfo(e.target.value)}
                                       id={"service"}
                                       value={extraInfo}

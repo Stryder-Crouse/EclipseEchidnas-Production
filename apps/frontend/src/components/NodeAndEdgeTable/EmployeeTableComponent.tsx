@@ -13,7 +13,7 @@ function EmployeeTableComponent() {
     return (
 
 
-        <div className={"overflow-y-scroll rounded-lg"}>
+        <div className={"overflow-y-scroll overflow-x-scroll rounded-lg"}>
             <div className={"overflow-y-scroll"}>
                 <table id={"request-table"} className={"requestTable"}>
                     <thead>
