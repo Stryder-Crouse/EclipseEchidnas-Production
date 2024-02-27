@@ -12,9 +12,9 @@ const upload = multer({dest: 'uploadedCSVs/'});
 
 
 const auth0 = new ManagementClient({
-    domain: 'dev-w3apfgzf8dmf8bgm.us.auth0.com',
-    clientId: 'iGb2hrQNGmRDlIeWtp1su1FyxEESYIaQ',
-    clientSecret: 'X6dJjiFvyKGEpv0Wf32eRZp7wHclLhdDWC_qgt6URftYjvVagJ1fDzLL5foEz9hh',
+    domain: 'dev-hca27okc2srfyen8.us.auth0.com',
+    clientId: 'sjOBn2g3OxSS11LMuXopKBZ4mao8drry',
+    clientSecret: 'B0rX2U4tbxl9fO_SNNfgOgQxo9lrqGd2ti2CPqNwUxUxcMESdONNeZcK52Ec4g4d',
 });
 
 
@@ -59,11 +59,14 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
         //delete all old users from auth0
         await PrismaClient.employee.findMany().then(async (allEmps) => {
             for (const singleEmp of allEmps) {
+                if(singleEmp.userName=="No one"){
+                    continue;
+                }
                 console.log("trying to delete " + singleEmp.userName);
 
-                await new Promise(r => setTimeout(r, 200));
+                await new Promise(r => setTimeout(r, 500));
 
-                auth0.users.delete({id: singleEmp.userID}).then(
+                await auth0.users.delete({id: singleEmp.userID}).then(
                     (authRes) => {
                         console.log("deleted " + singleEmp.userName);
                         console.log(authRes.data);
@@ -78,9 +81,9 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
 
         //add users to auth0
         for (const emp of employeeArray) {
-            await new Promise(r => setTimeout(r, 200));
+            await new Promise(r => setTimeout(r, 500));
             try {
-                auth0.users.create({
+                await auth0.users.create({
                     email: emp.userName,
                     password: 'EclipseEchidnasDB!',
                     connection: 'Username-Password-Authentication'
@@ -96,6 +99,15 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
         }
 
 
+        //create the no one employee
+        await PrismaClient.employee.create({data: {
+                userID: "0",
+                userName: "No one",
+                firstName: "N",
+                lastName: "/ A",
+                designation: "N/A",
+                isAdmin: false,
+            }});
         /* shove it into a clean prisma */
         await PrismaClient.employee.createMany({data: employeeArray});
     }
@@ -367,6 +379,37 @@ router.get("/current_employee", async function (req: Request, res: Response) {
         console.error("\nUnable to send employees\n");
     }
 });
+
+router.get("/current_employee/doesExist", async function (req: Request, res: Response) {
+    const email: string = req.query.email as string;
+    console.log("this is checked email " +email);
+    try {
+
+
+        const emp = await PrismaClient.employee.findUnique(
+            {
+                where: {userName: email}
+            }
+        );
+
+        if(emp == null){
+            res.status(200).send(null);
+        }
+        else{
+            res.status(200).send(emp);
+        }
+
+
+
+        console.info("\nSuccessfully checked a employee \n");
+    } catch (err) {
+        console.error("\nUnable to send employees\n");
+    }
+});
+
+
+
+
 export async function religEmployees(religion:string){
     console.log("abstract employees/rel");
     try {
