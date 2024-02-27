@@ -17,6 +17,15 @@ import {
     generateTextDirections
 } from "common/src/algorithms/Search/TextDirections/GenerateTextDirections.ts";
 import {setViewBoxForLevel} from "./mapLogic.ts";
+import LowerLevel2Image from "/src/images/maps/00_thelowerlevel2.png";
+import LowerLevel1Image from "/src/images/maps/00_thelowerlevel1.png";
+import GroundFloorImage from "/src/images/maps/00_thegroundfloor.png";
+import FirstFloorImage from "/src/images/maps/01_thefirstfloor.png";
+import SecondFloorImage from "/src/images/maps/02_thesecondfloor.png";
+import ThirdFloorImage from "/src/images/maps/03_thethirdfloor.png";
+import StarterPin from "/src/images/MapFunctions/mapPinGreen.png";
+import EndingPin from "/src/images/MapFunctions/mapPinRed.png";
+
 import {DijkstraSearchStrategy} from "common/src/algorithms/Search/Strategy/DijkstraSearchStrategy.ts";
 
 /* - - - types - - - */
@@ -646,7 +655,7 @@ export function HospitalMap({
                         y={node.coordinate.y - 50}
                         width="50"
                         height="50"
-                        href={"/src/images/MapFunctions/mapPinGreen.png"}
+                        href={StarterPin}
                     ></image>
 
                 </a>
@@ -669,7 +678,7 @@ export function HospitalMap({
                         y={node.coordinate.y - 50}
                         width="50"
                         height="50"
-                        href={"/src/images/MapFunctions/mapPinRed.png"}
+                        href={EndingPin}
                     ></image>
 
                 </a>
@@ -945,19 +954,19 @@ export function HospitalMap({
     function setMapImage(): string {
         switch (selectedFloorIndex) {
             case FloorToIndex.LowerLevel2:
-                return "/src/images/maps/00_thelowerlevel2.png";
+                return LowerLevel2Image;
             case FloorToIndex.LowerLevel1:
-                return "/src/images/maps/00_thelowerlevel1.png";
+                return LowerLevel1Image;
             case FloorToIndex.Ground:
-                return "/src/images/maps/00_thegroundfloor.png";
+                return GroundFloorImage;
             case FloorToIndex.Level1:
-                return "/src/images/maps/01_thefirstfloor.png";
+                return FirstFloorImage;
             case FloorToIndex.Level2:
-                return "/src/images/maps/02_thesecondfloor.png";
+                return SecondFloorImage;
             case FloorToIndex.Level3:
-                return "/src/images/maps/03_thethirdfloor.png";
+                return ThirdFloorImage;
             default:
-                return "/src/images/maps/00_thelowerlevel1.png";
+                return LowerLevel1Image;
         }
     }
 
