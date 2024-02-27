@@ -71,7 +71,8 @@ function TailwindMapPage() {
                                        setDrawEntirePath={setDrawEntirePath} drawEntirePath={drawEntirePath}
                                        setZoomScale={setZoomScale} setEndNode={setEndNode}
                                        setStartNode={setStartNode} drawEntirePathOptions={drawEntirePathOptions}
-                                       setDrawEntirePathOptions={setDrawEntirePathOptions}/>
+                                       setDrawEntirePathOptions={setDrawEntirePathOptions}
+                                       selectedFloorIndex={selectedFloorIndex}/>
 
 
             </div>

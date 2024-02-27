@@ -1,5 +1,5 @@
 import MapSearchBar from "./MapSearchBar.tsx";
-import {FloorToIndex, Node} from "common/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, Node, NULLNODE} from "common/src/algorithms/Graph/Node.ts";
 import React, {Dispatch, SetStateAction} from "react";
 import RefreshSelectionIcon from "../images/MapFunctions/rotate-ccw.png";
 
@@ -44,7 +44,19 @@ export default function TopMapButtons({setSelectedFloorIndex:setFloor,
             </div>
 
             <button className={`bg-ivoryWhite ml-3 flex self-end rounded-full p-2 w-10 drop-shadow-lg`}
-                title={"Refresh Selected Locations"}>
+                title={"Refresh Selected Locations"}
+                    onClick={() => {
+                        setStartNode(NULLNODE);
+
+                        setEndNode(NULLNODE);
+                        //close the drop down
+                        const openLocationInput = document.getElementById("locationDropdown");
+                        if (openLocationInput != null) {
+                            openLocationInput.style.display = "none";
+                        }
+                    }}
+            >
+
                 <img src={RefreshSelectionIcon} alt={"Refresh Selection"}/>
             </button>
 
