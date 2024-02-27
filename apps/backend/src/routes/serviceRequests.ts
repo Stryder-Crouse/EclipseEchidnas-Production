@@ -2391,7 +2391,7 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
         let emplFilter: string = req.query.employee as string;
         let locFilter: string = req.query.location as string;
 
-        let relFilter: string = "religious personnel";
+        let relFilter: string;
 
         console.log("raw");
         console.log("statusfilter: " + statusFilter);

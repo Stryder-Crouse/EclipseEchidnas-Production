@@ -1,6 +1,6 @@
 import express, {Request, Response, Router} from "express";
 import PrismaClient from "../bin/database-connection.ts";
-import {Employee} from "../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 import fs from "fs";
 import {readEmployeeCSV} from "../algorithms/readCSV.ts";
 import multer from "multer";
