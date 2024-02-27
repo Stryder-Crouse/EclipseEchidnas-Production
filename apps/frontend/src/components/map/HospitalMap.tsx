@@ -23,6 +23,8 @@ import GroundFloorImage from "/src/images/maps/00_thegroundfloor.png";
 import FirstFloorImage from "/src/images/maps/01_thefirstfloor.png";
 import SecondFloorImage from "/src/images/maps/02_thesecondfloor.png";
 import ThirdFloorImage from "/src/images/maps/03_thethirdfloor.png";
+import StarterPin from "/src/images/MapFunctions/mapPinGreen.png";
+import EndingPin from "/src/images/MapFunctions/mapPinRed.png";
 
 
 /* - - - types - - - */
@@ -647,7 +649,7 @@ export function HospitalMap({
                         y={node.coordinate.y - 50}
                         width="50"
                         height="50"
-                        href={"/src/images/MapFunctions/mapPinGreen.png"}
+                        href={StarterPin}
                     ></image>
 
                 </a>
@@ -670,7 +672,7 @@ export function HospitalMap({
                         y={node.coordinate.y - 50}
                         width="50"
                         height="50"
-                        href={"/src/images/MapFunctions/mapPinRed.png"}
+                        href={EndingPin}
                     ></image>
 
                 </a>
