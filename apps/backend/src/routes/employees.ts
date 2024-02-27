@@ -61,9 +61,9 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
             for (const singleEmp of allEmps) {
                 console.log("trying to delete " + singleEmp.userName);
 
-                await new Promise(r => setTimeout(r, 200));
+                await new Promise(r => setTimeout(r, 500));
 
-                auth0.users.delete({id: singleEmp.userID}).then(
+                await auth0.users.delete({id: singleEmp.userID}).then(
                     (authRes) => {
                         console.log("deleted " + singleEmp.userName);
                         console.log(authRes.data);
@@ -78,9 +78,9 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
 
         //add users to auth0
         for (const emp of employeeArray) {
-            await new Promise(r => setTimeout(r, 200));
+            await new Promise(r => setTimeout(r, 500));
             try {
-                auth0.users.create({
+                await auth0.users.create({
                     email: emp.userName,
                     password: 'EclipseEchidnasDB!',
                     connection: 'Username-Password-Authentication'
