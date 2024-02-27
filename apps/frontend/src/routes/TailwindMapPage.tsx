@@ -62,10 +62,6 @@ function TailwindMapPage() {
                         <FullSideNavBarComponent/>
                     </div>
 
-                    <div className={"z-50"}>
-                        <FullSideNavBarComponent/>
-                    </div>
-
                         <TopMapButtons
                             setSelectedFloorIndex={setSelectedFloorIndex}
                             endNode={endNode}
