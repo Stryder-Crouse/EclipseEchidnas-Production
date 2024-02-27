@@ -6,7 +6,6 @@ import {HTMLInputElement} from "happy-dom";
 
 function ImportExportNode() {
 
-
     async function inputNode() {
         const inputNode = document.createElement("input");
         inputNode.type = "file";
