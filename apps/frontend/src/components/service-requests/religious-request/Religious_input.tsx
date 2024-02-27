@@ -145,7 +145,7 @@ export default function Religious_input({
                     <div className={"flex flex-col mr-6"}>
                         <SimpleTextInput id={"name"} labelContent={"Patient Name "}
                                          inputStorage={nameP} setInputStorage={setNameP}
-                                         inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                         inputCSS={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"}
                                          divCSS={"grid justify-center items-center my-1.5 mb-1"} labelCSS={"mb-1"}
                                          placeHolderText={"e.g. Tim Apple"}>
                         </SimpleTextInput>
@@ -192,7 +192,7 @@ export default function Religious_input({
                         <div className={"grid justify-center items-center my-1.5 mb-1"}>
                             <label className="label">Services Required </label>
                             <textarea placeholder={"e.g. Last Rights"}
-                                      className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
+                                      className={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer h-10 overflow-y-hidden" /*className may need to be different to have a larger area*/}
                                       onChange={(e) => setService(e.target.value)}
                                       id={"service"}
                                       value={service}
@@ -205,7 +205,7 @@ export default function Religious_input({
                         <div className={"grid justify-center items-center my-1.5 mb-1"}>
                             <label className="label">Extra Notes </label>
                             <textarea placeholder={"Extra Notes"}
-                                      className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
+                                      className={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer h-10 overflow-y-hidden" /*className may need to be different to have a larger area*/}
                                       onChange={(e) => setExtraInfo(e.target.value)}
                                       id={"service"}
                                       value={extraInfo}
