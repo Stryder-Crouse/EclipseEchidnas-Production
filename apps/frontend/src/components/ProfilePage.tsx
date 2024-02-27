@@ -1,9 +1,6 @@
 import React, {useEffect, useState} from "react";
 import FullSideNavBarComponent from "./FullSideNavBarComponent.tsx";
 import {useAuth0} from "@auth0/auth0-react";
-//import PieChartStatsAll from "./Stats/PieChartStatsAll.tsx";
-//import {ServiceRequest} from "../../../backend/src/algorithms/Requests/Request.ts";
-//import PieChartStatsServiceRequest from "./service-requests/Stats/PieChartStatsServiceRequest.tsx";
 import ServiceRequest_Table from "./service-requests/service-request/ServiceRequest_Table.tsx";
 
 import axios from "axios";
@@ -11,12 +8,11 @@ import PieChartStatsProfile from "./service-requests/Stats/PieChartStatsProfile.
 import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 import Status from "common/src/algorithms/Requests/Status.ts";
 import {Priorities, ServiceRequest} from "common/src/algorithms/Requests/Request.ts";
+//import PieChartStatsServiceRequest from "./service-requests/Stats/PieChartStatsServiceRequest.tsx";
 
 
 function ProfilePage() {
 
-    // const [statsToggle, setStatsToggle]
-    //     = useState(false);
 
     const [designation, setDesignation]
         = useState("");
@@ -38,30 +34,43 @@ function ProfilePage() {
             setActiveButton(button);
         };
 
-        //const [currentEmployee , setCurrentEmployee ] = useState("");
+
         const currUser = useAuth0();
-        //const decodedEmail = decodeURIComponent(String(currUser?.user?.email));
         const username = currUser?.user?.email;
         const ProfilePicture = currUser?.user?.picture;
 
-        useEffect(() => {
-            getEmployees(username!).then((results) => {
 
-                setFirstName(results.firstName);
-                setLastName(results.lastName);
-                setDesignation(results.designation);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const employeeData = await getEmployees(username!);
+                const pendingTaskData = await getServiceRequestSize(username!);
 
-            });
-            getServiceRequestSize(username!).then((results) => {
-                setPendingTask(results);
+                setFirstName(employeeData.firstName);
+                setLastName(employeeData.lastName);
+                setDesignation(employeeData.designation);
+                setPendingTask(pendingTaskData);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
 
-            });
-        }, [username]);
-    //
-    // useEffect(() => {
-    //
-    // }, [username]);
+        fetchData().then();
+    }, [username]);
 
+        // useEffect(() => {
+        //     getEmployees(username!).then((results) => {
+        //
+        //         setFirstName(results.firstName);
+        //         setLastName(results.lastName);
+        //         setDesignation(results.designation);
+        //
+        //     });
+        //     getServiceRequestSize(username!).then((results) => {
+        //         setPendingTask(results);
+        //
+        //     });
+        // }, [username]);
 
     console.log(getEmployees);
 
@@ -155,18 +164,23 @@ function ProfilePage() {
 
     function generateSelectedTable() {
         // For each div/request to overlay
+        if (username != "") {
+            if (activeButton === "graph") {
 
-        if (activeButton === "graph") {
-            if (username != "") {
-                return ((<PieChartStatsProfile></PieChartStatsProfile>));
+                    return (<PieChartStatsProfile
+                        urlToGetStats={"/api/employees/current_employee/stats"}
+                        userEmail={username!}
+                        urlForBuildingStats={"/api/employees/current_employee/buildingStats"}>
+                    </PieChartStatsProfile>);
+
+
             }
 
-        }
+            if (activeButton == "table") {
 
-        if (activeButton == "table") {
-            if (username != "") {
-                return (<ServiceRequest_Table employeeFilter={username!} statusFilter={Status.Any}
-                                              priorityFilter={Priorities.any} locationFilter={"Any"}/>);
+                    return (<ServiceRequest_Table employeeFilter={username!} statusFilter={Status.Any}
+                                                  priorityFilter={Priorities.any} locationFilter={"Any"}/>);
+
 
             }
         }
@@ -207,7 +221,6 @@ async function getServiceRequestSize(emp : string) {
         await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter", {params: {status: "Any", priority: "Any",
                 employee:emp, location:"Any"
             } });
-    // console.log("sss");
-    // console.log(serviceRequest.data);
+
     return serviceRequest.data.length;
 }

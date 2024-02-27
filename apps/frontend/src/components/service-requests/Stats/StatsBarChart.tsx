@@ -7,8 +7,9 @@ import {
     Tooltip,
     Legend
 } from 'chart.js';
-import axios from "axios";
-import {useEffect, useState} from 'react';
+
+import {buildingStats} from "./PieChartStatsServiceRequest.tsx";
+
 
 ChartJS.register(
     BarElement,
@@ -17,98 +18,15 @@ ChartJS.register(
     Tooltip,
     Legend
 );
-export type building = {
-    total: number,
-    lowPrio: number,
-    medPrio: number,
-    highPrio: number,
-    emergPrio: number,
-    unassigned: number,
-    assigned: number,
-    inProgress: number,
-    completed: number
-}
-export type buildingStats = {
-    shapiro: building,
-    tower: building,
-    Francis45: building,
-    Francis15: building,
-    BTM: building
-}
+
 
 export type requestStats = {
-    urlForBuildingStats:string
+    buildingStats:buildingStats
 }
 
 
-function StatsBarChart({urlForBuildingStats}:requestStats){
+function StatsBarChart({buildingStats}:requestStats){
 
-    const [stats , setStats ]
-        = useState<buildingStats>(
-        {
-            shapiro: {
-                total: 0,
-                lowPrio: 0,
-                medPrio: 0,
-                highPrio: 0,
-                emergPrio: 0,
-                unassigned: 0,
-                assigned: 0,
-                inProgress: 0,
-                completed: 0
-            },
-            tower: {
-                total: 0,
-                lowPrio: 0,
-                medPrio: 0,
-                highPrio: 0,
-                emergPrio: 0,
-                unassigned: 0,
-                assigned: 0,
-                inProgress: 0,
-                completed: 0
-            },
-            Francis45: {
-                total: 0,
-                lowPrio: 0,
-                medPrio: 0,
-                highPrio: 0,
-                emergPrio: 0,
-                unassigned: 0,
-                assigned: 0,
-                inProgress: 0,
-                completed: 0
-            },
-            Francis15: {
-                total: 0,
-                lowPrio: 0,
-                medPrio: 0,
-                highPrio: 0,
-                emergPrio: 0,
-                unassigned: 0,
-                assigned: 0,
-                inProgress: 0,
-                completed: 0
-            },
-            BTM: {
-                total: 0,
-                lowPrio: 0,
-                medPrio: 0,
-                highPrio: 0,
-                emergPrio: 0,
-                unassigned: 0,
-                assigned: 0,
-                inProgress: 0,
-                completed: 0
-            }
-        }
-    );
-
-    useEffect(() => {
-        getAllBuildingStats(urlForBuildingStats).then((res)=>{
-            setStats(res);
-        });
-    }, [urlForBuildingStats]);
 
 
     const data = {
@@ -119,7 +37,8 @@ function StatsBarChart({urlForBuildingStats}:requestStats){
             'BTM'],
         datasets: [
             {
-                data: [stats.shapiro.total,stats.tower.total,stats.Francis45.total,stats.Francis15.total,stats.BTM.total],
+                data: [buildingStats.shapiro.total,buildingStats.tower.total,buildingStats.Francis45.total
+                    ,buildingStats.Francis15.total,buildingStats.BTM.total],
                 backgroundColor: ["#0a9396", "#94d2bd", "#e9d8a6", "#ee9b00", "#bb3e03"]
             }
         ]
@@ -157,9 +76,6 @@ function StatsBarChart({urlForBuildingStats}:requestStats){
     );
 }
 
-async function getAllBuildingStats(url: string) {
-    const getAllBuildingStats = await axios.get<buildingStats>(url);
-    return getAllBuildingStats.data;
-}
+
 
 export default StatsBarChart;
