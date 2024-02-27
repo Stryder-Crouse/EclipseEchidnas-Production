@@ -27,7 +27,6 @@ function ProfilePage() {
         = useState(-1);
 
 
-
     const [activeButton, setActiveButton] = useState("table");
 
         const handleButtonClick = (button: React.SetStateAction<string>) => {
@@ -58,22 +57,7 @@ function ProfilePage() {
         fetchData().then();
     }, [username]);
 
-        // useEffect(() => {
-        //     getEmployees(username!).then((results) => {
-        //
-        //         setFirstName(results.firstName);
-        //         setLastName(results.lastName);
-        //         setDesignation(results.designation);
-        //
-        //     });
-        //     getServiceRequestSize(username!).then((results) => {
-        //         setPendingTask(results);
-        //
-        //     });
-        // }, [username]);
-
     console.log(getEmployees);
-
 
         return (
 
@@ -125,8 +109,7 @@ function ProfilePage() {
                                             ? "bg-navy text-white hover:bg-navy focus:bg-navy active:bg-navy"
                                             : "bg-white  text-black hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"
                                     }`}
-                                    onClick={() => handleButtonClick("table")}
-                                >
+                                    onClick={() => handleButtonClick("table")}>
                                     Table
                                 </button>
 
@@ -137,17 +120,11 @@ function ProfilePage() {
                                             ? `bg-navy text-white hover:bg-navy focus:bg-navy active:bg-navy`
                                             : "bg-white text-black hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"
                                     }`}
-                                    onClick={() => handleButtonClick("graph")}
-                                >
+                                    onClick={() => handleButtonClick("graph")}>
                                     Graph
                                 </button>
-
-
                             </div>
-
                         </div>
-
-
                     </div>
                 </div>
 
