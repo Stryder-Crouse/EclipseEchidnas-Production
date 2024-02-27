@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import { EdgeDataBase } from "../../../../../packages/common/src/algorithms/DataBaseClasses/EdgeDataBase.ts";
 import axios from "axios";
 import "../../css/route-css/nodeEdgeTablePage.css";
-import ImportExportEdge from "./ImportExportEdge.tsx";
+
 
 
 
@@ -19,9 +19,6 @@ function EdgeTable() {
 
   return (
     <div className={""}>
-        <div className={"justify-center pt-0 p-2"}>
-            <ImportExportEdge/>
-        </div>
       <div className={"flex justify-center"}>
         <table className={"requestTable"} >
           <thead>

@@ -1,4 +1,3 @@
-import ExportImportButtonEmployee from "../../components/EmployeeTableButtons/ExportImportButtonEmployee.tsx";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Employee} from "../../../../../packages/common/src/algorithms/Employee/Employee.ts";
@@ -15,9 +14,6 @@ function EmployeeTableComponent() {
 
 
         <div className={""}>
-            <div className={"justify-center p-2 pt-0"}>
-                <ExportImportButtonEmployee/>
-            </div>
             <div className={""}>
                 <table id={"request-table"} className={"requestTable"}>
                     <thead>

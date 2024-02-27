@@ -5,7 +5,6 @@ import axios from "axios";
 import {Employee, Roles} from "../../../../../packages/common/src/algorithms/Employee/Employee.ts";
 import trashIcon from "../../images/Table Functions/trash-2.png";
 import editPen from "../../images/Table Functions/pencil.png";
-import ExportImportButtonEmployee from "../../components/EmployeeTableButtons/ExportImportButtonEmployee.tsx";
 import FullSideNavBarComponent from "../../components/FullSideNavBarComponent.tsx";
 
 //TODO IMPLEMENT THESE BUTTONS TO POPULATE WITH EVERY ROW
@@ -49,7 +48,6 @@ function EmployeeTable() {
             </div>
             {/*copy from here*/}
             <div className="flex flex-col w-lvw -ml-10">
-                <ExportImportButtonEmployee/>
                 <div className={"employee-table-container"}>
                     <div className="flex">
                         <span className={"employee-caption-container"}>

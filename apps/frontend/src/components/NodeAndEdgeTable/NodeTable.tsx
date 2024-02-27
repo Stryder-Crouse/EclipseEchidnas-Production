@@ -2,7 +2,7 @@ import "../../css/route-css/nodeEdgeTablePage.css";
 import axios from "axios";
 import { NodeDataBase } from "../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import {useEffect, useState} from "react";
-import ImportExportNode from "./ImportExportNode.tsx";
+
 
 
 function NodeTable() {
@@ -15,10 +15,6 @@ function NodeTable() {
 
     return (
         <div>
-
-            <div className={"justify-center p-2 pt-0"}>
-              <ImportExportNode/>
-            </div>
             <div className={""}>
                 <table className={"requestTable"}>
                     <thead>

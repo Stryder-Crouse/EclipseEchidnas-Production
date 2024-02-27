@@ -1,19 +1,25 @@
 import React, {Dispatch, SetStateAction, useState} from "react";
-import axios from "axios";
+//import axios from "axios";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {HTMLInputElement} from "happy-dom";
-import {Employee} from "common/src/algorithms/Employee/Employee.ts";
+//import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 import ImportInput from "./ImportInput.tsx";
+import ExportOutput from "./ExportOutput.tsx";
 
 export type closeImportInput = {
     setIsImportOpen: Dispatch<SetStateAction<boolean>>;
 }
 
+export type closeExportOutput = {
+    setIsExportOpen: Dispatch<SetStateAction<boolean>>;
+}
+
 function ImportExportButtons() {
 
     const [isImportOpen, setIsImportOpen] = useState(false);
+    const [isExportOpen , setIsExportOpen] = useState(false);
     //employee -> edge -> nodes for the post stuff
 
 
@@ -24,6 +30,15 @@ function ImportExportButtons() {
             function closeImportForm(event: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) {
                 event.preventDefault();
                 setIsImportOpen(false);
+            }
+
+            function openExportForm() {
+                setIsExportOpen(true);
+            }
+
+            function closeExportForm(event: React.MouseEvent<HTMLButtonElement | HTMLDivElement>) {
+                event.preventDefault();
+                setIsExportOpen(false);
             }
 
 
@@ -82,56 +97,56 @@ function ImportExportButtons() {
             // }
 
 
-            async function exportDataBase() {
-                const nodeAndEdgeStrings = await axios.get<string[]>("/api/loadCSVFile");
-
-                //save node file
-                const nodeFile = new Blob([nodeAndEdgeStrings.data[0]], {
-                    type: "text/csv",
-                });
-                const documentSaverNode = document.createElement("a");
-                documentSaverNode.download = "node.csv";
-                documentSaverNode.href = window.URL.createObjectURL(nodeFile);
-
-                //click the link to save the file for the user
-                documentSaverNode.click();
-
-                //save edge file
-                const edgeFile = new Blob([nodeAndEdgeStrings.data[1]], {
-                    type: "text/csv",
-                });
-                const documentSaverEdge = document.createElement("a");
-                documentSaverEdge.download = "edge.csv";
-                documentSaverEdge.href = window.URL.createObjectURL(edgeFile);
-
-                //click the link to save the file for the user
-                documentSaverEdge.click();
-
-                const employeesGetRaw = await axios.get<Employee[]>("/api/employees/employees");
-                const employeesGet = employeesGetRaw.data;
-
-
-                let EmployeeString = "";
-
-                for (const employeesGetElement of employeesGet) {
-                    EmployeeString += employeesGetElement.userID + ",";
-                    EmployeeString += employeesGetElement.userName + ",";
-                    EmployeeString += employeesGetElement.firstName + ",";
-                    EmployeeString += employeesGetElement.lastName + ",";
-                    EmployeeString += employeesGetElement.designation + ",";
-                    EmployeeString += employeesGetElement.isAdmin + "\r\n";
-                }
-
-                const employeeFile = new Blob([EmployeeString], {
-                    type: "text/csv",
-                });
-
-                const documentSaveEmployee = document.createElement("a");
-                documentSaveEmployee.download = "employee.csv";
-                documentSaveEmployee.href = window.URL.createObjectURL(employeeFile);
-
-                documentSaveEmployee.click();
-            }
+            // async function exportDataBase() {
+            //     const nodeAndEdgeStrings = await axios.get<string[]>("/api/loadCSVFile");
+            //
+            //     //save node file
+            //     const nodeFile = new Blob([nodeAndEdgeStrings.data[0]], {
+            //         type: "text/csv",
+            //     });
+            //     const documentSaverNode = document.createElement("a");
+            //     documentSaverNode.download = "node.csv";
+            //     documentSaverNode.href = window.URL.createObjectURL(nodeFile);
+            //
+            //     //click the link to save the file for the user
+            //     documentSaverNode.click();
+            //
+            //     //save edge file
+            //     const edgeFile = new Blob([nodeAndEdgeStrings.data[1]], {
+            //         type: "text/csv",
+            //     });
+            //     const documentSaverEdge = document.createElement("a");
+            //     documentSaverEdge.download = "edge.csv";
+            //     documentSaverEdge.href = window.URL.createObjectURL(edgeFile);
+            //
+            //     //click the link to save the file for the user
+            //     documentSaverEdge.click();
+            //
+            //     const employeesGetRaw = await axios.get<Employee[]>("/api/employees/employees");
+            //     const employeesGet = employeesGetRaw.data;
+            //
+            //
+            //     let EmployeeString = "";
+            //
+            //     for (const employeesGetElement of employeesGet) {
+            //         EmployeeString += employeesGetElement.userID + ",";
+            //         EmployeeString += employeesGetElement.userName + ",";
+            //         EmployeeString += employeesGetElement.firstName + ",";
+            //         EmployeeString += employeesGetElement.lastName + ",";
+            //         EmployeeString += employeesGetElement.designation + ",";
+            //         EmployeeString += employeesGetElement.isAdmin + "\r\n";
+            //     }
+            //
+            //     const employeeFile = new Blob([EmployeeString], {
+            //         type: "text/csv",
+            //     });
+            //
+            //     const documentSaveEmployee = document.createElement("a");
+            //     documentSaveEmployee.download = "employee.csv";
+            //     documentSaveEmployee.href = window.URL.createObjectURL(employeeFile);
+            //
+            //     documentSaveEmployee.click();
+            // }
 
             /*const */
 
@@ -144,7 +159,7 @@ function ImportExportButtons() {
                     </button>
                     <button
                         className={"transition-all hover:bg-navy w-40 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}
-                        onClick={exportDataBase}>
+                        onClick={openExportForm}>
                         Export all .csv
                     </button>
 
@@ -154,6 +169,14 @@ function ImportExportButtons() {
 
                     <div className={`popupForm ${isImportOpen ? "block" : "hidden"}`} id={"importPopupForm"}>
                         <ImportInput setIsImportOpen={setIsImportOpen}/>
+                    </div>
+
+                    {isExportOpen && (
+                        <div className={"fixed inset-0 bg-gray-800 bg-opacity-50 z-50"} onClick={closeExportForm}></div>
+                    )}
+
+                    <div className={`popupForm ${isExportOpen ? "block" : "hidden"}`} id={"exportPopupForm"}>
+                        <ExportOutput setIsExportOpen={setIsExportOpen}/>
                     </div>
                 </div>
             );
