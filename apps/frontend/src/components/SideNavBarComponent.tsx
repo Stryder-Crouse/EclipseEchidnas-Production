@@ -57,7 +57,7 @@ export function SideBarItem({icon, text, link, onClick}: SideBarItemProps): JSX.
 
 
     return (
-        <a href={link} className="flex mb-8 mt-8 cursor-pointer transition-colors group hover:bg-navy rounded-md"
+        <a href={link} className="flex mb-6 mt-6 cursor-pointer transition-colors group hover:bg-navy rounded-md"
            onClick={onClick}>
             <li className="relative flex items-center py-2 px-3 my-1 font-medium">
                 <img src={icon} alt={"Map Icon"} className={"absolute"}

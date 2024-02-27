@@ -7,5 +7,19 @@
     background: linear-gradient(141deg, rgba(241,241,241,1) 0%, rgba(1,45,90,0.3505996148459384) 100%);
 }
 
+*::-webkit-scrollbar {
+    width: 15px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #A0A7B1;
+    border-radius: 14px;
+    border: 3px solid transparent;
+}
 
 
