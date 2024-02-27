@@ -367,6 +367,37 @@ router.get("/current_employee", async function (req: Request, res: Response) {
         console.error("\nUnable to send employees\n");
     }
 });
+
+router.get("/current_employee/doesExist", async function (req: Request, res: Response) {
+    const email: string = req.query.email as string;
+    console.log("this is checked email " +email);
+    try {
+
+
+        const emp = await PrismaClient.employee.findUnique(
+            {
+                where: {userName: email}
+            }
+        );
+
+        if(emp == null){
+            res.status(200).send(null);
+        }
+        else{
+            res.status(200).send(emp);
+        }
+
+
+
+        console.info("\nSuccessfully checked a employee \n");
+    } catch (err) {
+        console.error("\nUnable to send employees\n");
+    }
+});
+
+
+
+
 export async function religEmployees(religion:string){
     console.log("abstract employees/rel");
     try {
