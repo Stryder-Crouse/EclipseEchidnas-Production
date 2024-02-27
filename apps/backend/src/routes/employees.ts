@@ -5,6 +5,7 @@ import fs from "fs";
 import {readEmployeeCSV} from "../algorithms/readCSV.ts";
 import multer from "multer";
 import {ManagementClient} from "auth0";
+import Status from "common/src/algorithms/Requests/Status.ts";
 
 
 const router: Router = express.Router();
@@ -398,6 +399,198 @@ router.get("/current_employee/doesExist", async function (req: Request, res: Res
         else{
             res.status(200).send(emp);
         }
+
+
+
+        console.info("\nSuccessfully checked a employee \n");
+    } catch (err) {
+        console.error("\nUnable to send employees\n");
+    }
+});
+
+router.get("/current_employee/stats", async function (req: Request, res: Response) {
+    const email: string = req.query.email as string;
+    console.log("this is checked email " +email);
+    try {
+        const statistics = await PrismaClient.serviceRequest.findMany({
+            where: {
+                assignedUName:email,
+                NOT:{
+                    status:Status.Completed
+                }
+
+            }
+        });
+        const result = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+
+        for (const entry of statistics) {
+            result.total++;
+            if (entry.reqPriority == "Low") result.lowPrio++;
+            if (entry.reqPriority == "Medium") result.medPrio++;
+            if (entry.reqPriority == "High") result.highPrio++;
+            if (entry.reqPriority == "Emergency") result.emergPrio++;
+            if (entry.status == "Unassigned") result.unassigned++;
+            if (entry.status == "Assigned") result.assigned++;
+            if (entry.status == "In Progress") result.inProgress++;
+            if (entry.status == "Completed") result.completed++;
+        }
+
+        res.status(200).send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+
+
+    } catch (err) {
+        console.error("\nUnable to send employees\n");
+    }
+});
+
+router.get("/current_employee/buildingStats", async function (req: Request, res: Response) {
+    const email: string = req.query.email as string;
+    console.log("this is checked email " +email);
+    try {
+        const serviceRequest = await PrismaClient.serviceRequest.findMany({
+            where: {
+                assignedUName:email,
+                NOT:{
+                    status:Status.Completed
+                }
+            },
+            include: {
+                reqLocation: true
+            }
+        });
+        const shapiro = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const tower = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const Francis45 = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const Francis15 = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        const BTM = {
+            total: 0,
+            lowPrio: 0,
+            medPrio: 0,
+            highPrio: 0,
+            emergPrio: 0,
+            unassigned: 0,
+            assigned: 0,
+            inProgress: 0,
+            completed: 0
+        };
+        for (const entry of serviceRequest) {
+            if (entry.reqLocation.building == "Shapiro") {
+                shapiro.total++;
+                if (entry.reqPriority == "Low") shapiro.lowPrio++;
+                if (entry.reqPriority == "Medium") shapiro.medPrio++;
+                if (entry.reqPriority == "High") shapiro.highPrio++;
+                if (entry.reqPriority == "Emergency") shapiro.emergPrio++;
+                if (entry.status == "Unassigned") shapiro.unassigned++;
+                if (entry.status == "Assigned") shapiro.assigned++;
+                if (entry.status == "In Progress") shapiro.inProgress++;
+                if (entry.status == "Completed") shapiro.completed++;
+            }
+            if (entry.reqLocation.building == "Tower") {
+                tower.total++;
+                if (entry.reqPriority == "Low") tower.lowPrio++;
+                if (entry.reqPriority == "Medium") tower.medPrio++;
+                if (entry.reqPriority == "High") tower.highPrio++;
+                if (entry.reqPriority == "Emergency") tower.emergPrio++;
+                if (entry.status == "Unassigned") tower.unassigned++;
+                if (entry.status == "Assigned") tower.assigned++;
+                if (entry.status == "In Progress") tower.inProgress++;
+                if (entry.status == "Completed") tower.completed++;
+            }
+            if (entry.reqLocation.building == "45 Francis") {
+                Francis45.total++;
+                if (entry.reqPriority == "Low") Francis45.lowPrio++;
+                if (entry.reqPriority == "Medium") Francis45.medPrio++;
+                if (entry.reqPriority == "High") Francis45.highPrio++;
+                if (entry.reqPriority == "Emergency") Francis45.emergPrio++;
+                if (entry.status == "Unassigned") Francis45.unassigned++;
+                if (entry.status == "Assigned") Francis45.assigned++;
+                if (entry.status == "In Progress") Francis45.inProgress++;
+                if (entry.status == "Completed") Francis45.completed++;
+            }
+            if (entry.reqLocation.building == "15 Francis") {
+                Francis15.total++;
+                if (entry.reqPriority == "Low") Francis15.lowPrio++;
+                if (entry.reqPriority == "Medium") Francis15.medPrio++;
+                if (entry.reqPriority == "High") Francis15.highPrio++;
+                if (entry.reqPriority == "Emergency") Francis15.emergPrio++;
+                if (entry.status == "Unassigned") Francis15.unassigned++;
+                if (entry.status == "Assigned") Francis15.assigned++;
+                if (entry.status == "In Progress") Francis15.inProgress++;
+                if (entry.status == "Completed") Francis15.completed++;
+            }
+            if (entry.reqLocation.building == "BTM") {
+                BTM.total++;
+                if (entry.reqPriority == "Low") BTM.lowPrio++;
+                if (entry.reqPriority == "Medium") BTM.medPrio++;
+                if (entry.reqPriority == "High") BTM.highPrio++;
+                if (entry.reqPriority == "Emergency") BTM.emergPrio++;
+                if (entry.status == "Unassigned") BTM.unassigned++;
+                if (entry.status == "Assigned") BTM.assigned++;
+                if (entry.status == "In Progress") BTM.inProgress++;
+                if (entry.status == "Completed") BTM.completed++;
+            }
+
+        }
+
+        const result = {
+            shapiro, tower, Francis45, Francis15, BTM
+        };
+
+        res.status(200).send(result);
+        console.info("\nSuccessfully gave you all of the statistics\n");
+
+
 
 
 

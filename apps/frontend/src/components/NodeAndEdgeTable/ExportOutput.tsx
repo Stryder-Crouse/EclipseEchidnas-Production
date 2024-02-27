@@ -78,7 +78,7 @@ export default function ExportOutput({setIsExportOpen}: closeExportOutput) {
     }
 
     return (
-        <div className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
+        <div className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 pl-14 pr-14 align-self-center"}>
             <form>
                 <h1 className={"grid mb-3 justify-center font-bold text-xl"}>Export Form</h1>
                 <h3>Node</h3>

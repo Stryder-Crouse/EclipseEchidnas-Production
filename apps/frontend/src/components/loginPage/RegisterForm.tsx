@@ -22,15 +22,15 @@ export default function RegisterForm() {
     thisEmail!.replace('"','');
 
     useEffect(() => {
-            doesUserExist(thisEmail!).then( (res)=>{
+        doesUserExist(thisEmail!).then( (res)=>{
 
-                if(res!=null){
-                    setFirstName(res.firstName);
-                    setLastName(res.lastName);
-                    setUserExistsEmp(res);
-                }
+            if(res!=null){
+                setFirstName(res.firstName);
+                setLastName(res.lastName);
+                setUserExistsEmp(res);
+            }
 
-            });
+        });
 
     }, [thisEmail]);
 
