@@ -1,5 +1,6 @@
 import {closeImportInput} from "./ImportExportButtons.tsx";
 import React, {useState} from "react";
+import axios from "axios";
 // import axios from "axios";
 
 
@@ -38,6 +39,71 @@ export default function ImportInput({setIsImportOpen}: closeImportInput) {
         console.log(importFileNode);
         console.log(importFileEmployee);
         console.log(importFileEdge);
+
+        if (importFileNode != null) {
+            // do the thing
+            //node
+            const nodeFileData = new FormData();
+            console.log("File Name: " + importFileNode?.name);
+            console.log("File Type: " + importFileNode?.type);
+
+            nodeFileData.append("csv", importFileNode as File);
+            try {
+                await axios.post("/api/loadCSVFile/CSV-Import-Node", nodeFileData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                });
+            } catch (err) {
+                throw new Error("Error with loading Nodes");
+            }
+        }
+
+
+
+
+        if(importFileEdge != null)
+        {
+            //edge
+            const edgeFileData = new FormData();
+            console.log("File Name: " + importFileEdge?.name);
+            console.log("File Type: " + importFileEdge?.type);
+
+            edgeFileData.append("csv", importFileEdge);
+
+            try {
+                await axios.post("/api/loadCSVFile/CSV-Import-Edge", edgeFileData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                });
+            } catch (err) {
+                throw new Error("Error with loading Edges");
+            }
+        }
+
+
+
+
+        if(importFileEmployee != null)
+        {
+            //edge
+            const employeeFileData = new FormData();
+            console.log("File Name: " + importFileEmployee?.name);
+            console.log("File Type: " + importFileEmployee?.type);
+
+            employeeFileData.append("csv", importFileEmployee);
+
+            try {
+                await axios.post("/api/employees/employee_csv_import", employeeFileData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                });
+            } catch (err) {
+                throw new Error("Error with loading Edges");
+            }
+        }
 
         //Get node file
         // const inputNode = document.createElement("input");

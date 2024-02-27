@@ -46,14 +46,12 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
     try {
         /* DROP TABLE * */
         await PrismaClient.$transaction([
-            PrismaClient.edgeDB.deleteMany(),
             PrismaClient.medReq.deleteMany(),
             PrismaClient.sanReq.deleteMany(),
             PrismaClient.religiousReq.deleteMany(),
             PrismaClient.outsideTransport.deleteMany(),
             PrismaClient.flowReq.deleteMany(),
             PrismaClient.serviceRequest.deleteMany(),
-            PrismaClient.nodeDB.deleteMany(),
             // PrismaClient.employee.deleteMany()
         ]);
 
