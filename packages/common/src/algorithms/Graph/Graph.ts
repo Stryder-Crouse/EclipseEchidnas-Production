@@ -272,6 +272,15 @@ export class Graph {
     }
 
     /**
+     * Zero out the node heuristic for Dijkstra.
+     */
+    public zeroNodeHeuristic(): void {
+        for (const node of this.nodes) {
+            node.heuristic = 0;
+        }
+    }
+
+    /**
      * @returns outputs a string in csv formats of all the nodes in the graph
      *
      * */
