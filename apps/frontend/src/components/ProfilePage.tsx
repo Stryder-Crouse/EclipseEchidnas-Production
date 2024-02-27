@@ -170,20 +170,35 @@ function ProfilePage() {
         // For each div/request to overlay
         if (username != "") {
             if (activeButton === "graph") {
-
-                return (<PieChartStatsProfile
-                    urlToGetStats={"/api/employees/current_employee/stats"}
-                    userEmail={username!}
-                    urlForBuildingStats={"/api/employees/current_employee/buildingStats"}>
-                </PieChartStatsProfile>);
-
-
+                    if(activeCompletedButton === "hide") {
+                        //todo make this actually differ from the other branch
+                        return (<PieChartStatsProfile
+                            urlToGetStats={"/api/employees/current_employee/stats"}
+                            userEmail={username!}
+                            urlForBuildingStats={"/api/employees/current_employee/buildingStats"}>
+                        </PieChartStatsProfile>);
+                    }
+                    else{
+                        return (
+                            <PieChartStatsProfile
+                            urlToGetStats={"/api/employees/current_employee/stats"}
+                            userEmail={username!}
+                            urlForBuildingStats={"/api/employees/current_employee/buildingStats"}>
+                        </PieChartStatsProfile>);
+                    }
             }
 
             if (activeButton == "table") {
+                if(activeCompletedButton === "hide") {
 
-                return (<ServiceRequest_Table_Protected employeeFilter={username!} statusFilter={Status.Any}
-                                                        locationFilter={"Any"}/>);
+                    return (<ServiceRequest_Table_Protected employeeFilter={username!} statusFilter={Status.Any}
+                                                            locationFilter={"Any"} showCompleted={false}/>);
+                }
+                else{
+
+                    return (<ServiceRequest_Table_Protected employeeFilter={username!} statusFilter={Status.Any}
+                                                            locationFilter={"Any"} showCompleted={true} />);
+                }
 
 
             }

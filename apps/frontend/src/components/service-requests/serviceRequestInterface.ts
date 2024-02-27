@@ -13,4 +13,5 @@ export interface requestFiltersForProtectedTable {
     statusFilter:Status;
     employeeFilter:string;
     locationFilter:string;
+    showCompleted:boolean;
 }

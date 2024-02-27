@@ -26,7 +26,7 @@ import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 
 
 
-export default function ServiceRequest_Table_Protected({statusFilter, employeeFilter, locationFilter}:requestFiltersForProtectedTable) {
+export default function ServiceRequest_Table_Protected({statusFilter, employeeFilter, locationFilter,showCompleted}:requestFiltersForProtectedTable) {
     //set the variable serviceRequests to the value returned when setServiceRequests is called
     const [serviceRequests, setServiceRequests]
         = useState<ServiceRequest[]>([]);
@@ -37,7 +37,7 @@ export default function ServiceRequest_Table_Protected({statusFilter, employeeFi
     //will rerun every single time statusFilter is changed (updates table for new entries)
     useEffect(() => {
         //fetches servReqs from the db to update the frontend table
-        getServiceRequest(statusFilter, employeeFilter, locationFilter).then((result) => {
+        getServiceRequest(statusFilter, employeeFilter, locationFilter, showCompleted).then((result) => {
             setServiceRequests(result);
 
             const uNameList :string[] = [];
@@ -50,7 +50,7 @@ export default function ServiceRequest_Table_Protected({statusFilter, employeeFi
             getEmployees(uNameList).then((result2)=>{setEmployeeNames(result2);});
         });
 
-    }, [employeeFilter, locationFilter, statusFilter]);
+    }, [showCompleted, employeeFilter, locationFilter, statusFilter]);
 
 
     //make table of Service Requests
@@ -170,11 +170,26 @@ export default function ServiceRequest_Table_Protected({statusFilter, employeeFi
 }
 
 //query the Database for all service requests that fit the current filter (filter can be empty)
-async function getServiceRequest(statusFilter:Status, employeeFilter:string, locationFilter:string) {
-    const serviceRequest =
-        await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter/assigned_or_in_progress", {params: {status: statusFilter,
-                employee:employeeFilter, location:locationFilter
-            } });
+async function getServiceRequest(statusFilter:Status, employeeFilter:string, locationFilter:string, showCompleted:boolean) {
+    let serviceRequest;
+    if(showCompleted) {
+        serviceRequest =
+            await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter/assigned_or_in_progress", {
+                params: {
+                    status: statusFilter,
+                    employee: employeeFilter, location: locationFilter
+                }
+            });
+    }
+    else{
+        serviceRequest =
+            await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter/assigned_in_progress_or_completed", {
+                params: {
+                    status: statusFilter,
+                    employee: employeeFilter, location: locationFilter
+                }
+            });
+    }
     // console.log("sss");
     // console.log(serviceRequest.data);
     return serviceRequest.data;
