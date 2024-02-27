@@ -3,7 +3,6 @@ import {useState} from "react";
 import SimpleTextInput from "../inputComponents/SimpleTextInput.tsx";
 import {Employee, Roles} from "common/src/algorithms/Employee/Employee.ts";
 
-
 import axios from "axios";
 // import {useEffect} from "react";
 import {useAuth0} from "@auth0/auth0-react";
@@ -23,15 +22,15 @@ export default function RegisterForm() {
     thisEmail!.replace('"','');
 
     useEffect(() => {
-            doesUserExist(thisEmail!).then( (res)=>{
+        doesUserExist(thisEmail!).then( (res)=>{
 
-                if(res!=null){
-                    setFirstName(res.firstName);
-                    setLastName(res.lastName);
-                    setUserExistsEmp(res);
-                }
+            if(res!=null){
+                setFirstName(res.firstName);
+                setLastName(res.lastName);
+                setUserExistsEmp(res);
+            }
 
-            });
+        });
 
     }, [thisEmail]);
 
@@ -117,22 +116,21 @@ export default function RegisterForm() {
                 </div>
 
 
-                <div className={"flex justify-center w-full mt-5"}>
 
+                <div className={"flex justify-center w-full mt-5"}>
                     <button
-                        className="p-2 w-40 text-white bg-navStart hover:bg-navy rounded-3xl border border-black drop-shadow"
-                        onClick={handleSubmit}>
+                        className={"p-2 w-40 text-white bg-navStart hover:bg-navy rounded-3xl border border-black drop-shadow"}
+                        onClick={
+                            handleSubmit}
+                    >
                         Register
                     </button>
-
-
                 </div>
 
             </form>
 
         </div>
-    )
-        ;
+    );
 }
 
 

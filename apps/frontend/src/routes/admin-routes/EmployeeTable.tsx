@@ -6,7 +6,6 @@ import {Employee, Roles} from "common/src/algorithms/Employee/Employee.ts";
 import trashIcon from "../../images/Table Functions/trash-2.png";
 import editPen from "../../images/Table Functions/pencil.png";
 import FullSideNavBarComponent from "../../components/FullSideNavBarComponent.tsx";
-import ExportImportButtonEmployee from "../../components/EmployeeTableButtons/ExportImportButtonEmployee.tsx";
 
 
 //TODO IMPLEMENT THESE BUTTONS TO POPULATE WITH EVERY ROW
@@ -76,7 +75,7 @@ function EmployeeTable() {
                         <span className={"employee-caption-container"}>
                             <span className={"employee-table-title"}>Employee Table</span>
                             <div className={"flex"}>
-                                <ExportImportButtonEmployee/>
+
                                 <button onClick={
                                 () => {
                                     alert("To create a new employee please log out and log in with a new email address." +
