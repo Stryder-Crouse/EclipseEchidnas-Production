@@ -52,14 +52,15 @@ function ProfilePage() {
                 setDesignation(results.designation);
 
             });
+            getServiceRequestSize(username!).then((results) => {
+                setPendingTask(results);
+
+            });
         }, [username]);
-
-    useEffect(() => {
-        getServiceRequestSize().then((results) => {
-            setPendingTask(results);
-
-        });
-    }, [username]);
+    //
+    // useEffect(() => {
+    //
+    // }, [username]);
 
 
     console.log(getEmployees);
@@ -201,14 +202,11 @@ async function getEmployees(emp: string) {
 
 }
 
-async function getServiceRequestSize() {
+async function getServiceRequestSize(emp : string) {
     const serviceRequest =
-        await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter/${emp}",{
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        );
+        await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter", {params: {status: "Any", priority: "Any",
+                employee:emp, location:"Any"
+            } });
     // console.log("sss");
     // console.log(serviceRequest.data);
     return serviceRequest.data.length;
