@@ -14,9 +14,7 @@ export type QuickRouteButtonsProps = {
     setErrorNoStartLocation: Dispatch<SetStateAction<boolean>>;
 }
 
-const iconConatnerCss = " w-[25%] bg-[#024c96] p-2 hover:bg-[#024281] cursor-pointer ";
-
-const iconCss = "w-full";
+const iconConatnerCss = " w-[25%] bg-[#024c96] p-2 hover:bg-[#024281] transition-all cursor-pointer rounded-md";
 
 
 export function QuickRouteButtons({startNode,setEndNode,setErrorNoStartLocation}:QuickRouteButtonsProps){
@@ -28,23 +26,23 @@ export function QuickRouteButtons({startNode,setEndNode,setErrorNoStartLocation}
 
 
     return (
-        <div className="flex flex-row justify-content-center w-60 h-  rounded-3xl border-gray-500
+        <div className="flex flex-row justify-content-center w-60  p-2 rounded-3xl border-gray-500
         border-2  drop-shadow-lg mt-1  bg-[#024c96] overflow-hidden">
 
-            <div className={iconConatnerCss} onClick={()=>{onQuickBoxClick(NodeType.REST);}}>
-                <img src={BathroomIcon} className={iconCss} alt={"Go to closest bathroom"}/>
+            <div title={"Bathroom"} className={iconConatnerCss} onClick={()=>{onQuickBoxClick(NodeType.REST);}}>
+                <img src={BathroomIcon} className={'w-full scale-90'} alt={"Go to closest bathroom"}/>
             </div>
 
-            <div className={iconConatnerCss} onClick={()=>{onQuickBoxClick(NodeType.ELEV);}}>
-                <img src={ElevatorIcon} className="w-full " alt={"Go to closest elevator"}/>
+            <div title={"Elevator"} className={iconConatnerCss} onClick={()=>{onQuickBoxClick(NodeType.ELEV);}}>
+                <img src={ElevatorIcon} className="w-full scale-90 " alt={"Go to closest elevator"}/>
             </div>
 
-            <div className={iconConatnerCss} onClick={()=>{onQuickBoxClick(NodeType.EXIT);}}>
-                <img src={ExitIcon} className={iconCss} alt={"Go to closest exit"}/>
+            <div title={"Closest Exit"} className={iconConatnerCss} onClick={()=>{onQuickBoxClick(NodeType.EXIT);}}>
+                <img src={ExitIcon} className={'w-full scale-90'} alt={"Go to closest exit"}/>
             </div>
 
-            <div className={iconConatnerCss} onClick={()=>{onQuickBoxClick("ER");}}>
-                <img src={ErIcon} className={iconCss} alt={"Go to ER"}/>
+            <div title={"ER"} className={iconConatnerCss} onClick={()=>{onQuickBoxClick("ER");}}>
+                <img src={ErIcon} className={'w-full scale-90 '} alt={"Go to ER"}/>
             </div>
 
         </div>

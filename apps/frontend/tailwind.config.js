@@ -16,6 +16,7 @@ export default {
         tableHeader: '#f4f5fc',
         tableText: '#A0A7B1',
         submitSuccess: '#008000',
+        serviceList: '#d9ffff'
       },
       fontFamily: {
         project: ['Roboto', 'sans-serif']

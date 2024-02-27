@@ -1,5 +1,5 @@
 import {CreateDropdown} from "./CreateDropdown.tsx";
-import {FloorToIndex, Node, NULLNODE} from "../../../../packages/common/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, Node, NULLNODE} from "common/src/algorithms/Graph/Node.ts";
 import {Dispatch, SetStateAction, useState} from "react";
 import {TextDirectionsDropDown} from "./map/TextDirectionsDropDown.tsx";
 import {QuickRouteButtons} from "./map/QuickRouteButtons.tsx";
@@ -93,6 +93,7 @@ export default function MapSearchBar({startNode:startNode,
                                 setSelected={setSelected}
                                 inputCSS={"w-60 p-2 border-gray-500 text-black rounded-full border-2 pr-10 drop-shadow-lg "}
                                 selectCSS={""}
+                                runOnChange={()=>{return -1;}}
                                 resetOnSelect={true} setResetDropdown={setResetDropdown}>
                 </CreateDropdown>
             </div>
@@ -151,6 +152,7 @@ export default function MapSearchBar({startNode:startNode,
                         isSearchable={false}
                         resetOnSelect={false} resetDropdown={resetDropdown}
                         setResetDropdown={setResetDropdown} setSelected={setSelectedAlgoIndex}
+                        runOnChange={()=>{return -1;}}
                         inputCSS={"text-gray focus:outline-none p-2"}
                         selectCSS={"transition-all hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}></CreateDropdown>
                 </div>
@@ -184,8 +186,8 @@ export default function MapSearchBar({startNode:startNode,
         }
         if (errorNoStartLocation) {
             return (
-                <div className="w-60 p-2 rounded-3xl border-gray-500 border-2
-                drop-shadow-lg mt-1 bg-[#8A0E11] overflow-hidden text-white font-semibold ">
+                <div className="w-60 p-2 rounded-3xl border-red-950
+                drop-shadow-lg mt-1 bg-[#8A0E11] overflow-hidden text-white font-semibold text-center">
                     Error: Please Select a Starting location first</div>
             );
         }
