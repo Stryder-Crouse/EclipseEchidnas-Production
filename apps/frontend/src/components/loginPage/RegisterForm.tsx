@@ -19,15 +19,15 @@ export default function RegisterForm() {
     thisEmail!.replace('"','');
 
     useEffect(() => {
-        doesUserExist(thisEmail!).then( (res)=>{
+            doesUserExist(thisEmail!).then( (res)=>{
 
-            if(res!=null){
-                setFirstName(res.firstName);
-                setLastName(res.lastName);
-                setUserExistsEmp(res);
-            }
+                if(res!=null){
+                    setFirstName(res.firstName);
+                    setLastName(res.lastName);
+                    setUserExistsEmp(res);
+                }
 
-        });
+            });
 
     }, [thisEmail]);
 
@@ -104,8 +104,6 @@ export default function RegisterForm() {
                                      placeHolderText={"Last Name: "}>
                     </SimpleTextInput>
                 </div>
-
-
 
                 <div className={"flex justify-center w-full mt-5"}>
                     <button

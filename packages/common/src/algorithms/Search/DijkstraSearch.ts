@@ -3,7 +3,7 @@ import {Graph} from "../Graph/Graph.ts";
 import {BestFirstSearch} from "./BestFirstSearch.ts";
 
 /**
- * A* search algorithm to find a path from source to target on the passed
+ * Dijkstra search algorithm to find a path from source to target on the passed
  * weighted graph.
  *
  * @param source - staring node obj for the search
@@ -12,14 +12,9 @@ import {BestFirstSearch} from "./BestFirstSearch.ts";
  *
  * @returns  an array of node that stores the path from source to target if it exists or null
  *  if no such path exists in graph.
- *
- *  @see {https://en.wikipedia.org/wiki/A*_search_algorithm}
- *
  */
-export function AStar(source: Node | null, target: Node | null, graph: Graph): Array<Node> | null {
-    /* Simple wrapper */
-    if (target != null) {
-        graph.generateNodeHeuristic(target);
-    }
+export function DijkstraSearch(source: Node | null, target: Node | null, graph: Graph): Array<Node> | null {
+    /* Simple wrapper; heuristic is zeroed so this call is equivalent to Dijkstra */
+    graph.zeroNodeHeuristic();
     return BestFirstSearch(source, target, graph);
 }
