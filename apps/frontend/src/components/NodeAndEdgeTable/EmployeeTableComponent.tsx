@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Employee} from "../../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 
 function EmployeeTableComponent() {
 
@@ -13,8 +13,8 @@ function EmployeeTableComponent() {
     return (
 
 
-        <div className={""}>
-            <div className={""}>
+        <div className={"overflow-y-scroll rounded-lg"}>
+            <div className={"overflow-y-scroll"}>
                 <table id={"request-table"} className={"requestTable"}>
                     <thead>
                         <tr className={"tableTRHead"}>
