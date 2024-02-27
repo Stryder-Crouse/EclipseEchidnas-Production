@@ -25,7 +25,7 @@ export default function FullSideNavBarComponent() {
 
     return (
         <div>
-            <div className="z-10">
+            <div className="">
                 <SideNavBarComponent>
                     <SideBarItem icon={MapIcon} text="Map" link="/" />
                     <SideBarItem icon={ServiceRequestIcon} text="Services" link="ServiceRequest"/>
