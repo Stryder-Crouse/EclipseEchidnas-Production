@@ -1,9 +1,6 @@
 import React, {useEffect, useState} from "react";
 import FullSideNavBarComponent from "./FullSideNavBarComponent.tsx";
 import {useAuth0} from "@auth0/auth0-react";
-//import PieChartStatsAll from "./Stats/PieChartStatsAll.tsx";
-//import {ServiceRequest} from "../../../backend/src/algorithms/Requests/Request.ts";
-//import PieChartStatsServiceRequest from "./service-requests/Stats/PieChartStatsServiceRequest.tsx";
 import ServiceRequest_Table from "./service-requests/service-request/ServiceRequest_Table.tsx";
 
 import axios from "axios";
@@ -11,12 +8,11 @@ import PieChartStatsProfile from "./service-requests/Stats/PieChartStatsProfile.
 import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 import Status from "common/src/algorithms/Requests/Status.ts";
 import {Priorities, ServiceRequest} from "common/src/algorithms/Requests/Request.ts";
+//import PieChartStatsServiceRequest from "./service-requests/Stats/PieChartStatsServiceRequest.tsx";
 
 
 function ProfilePage() {
 
-    // const [statsToggle, setStatsToggle]
-    //     = useState(false);
 
     const [designation, setDesignation]
         = useState("");
@@ -38,9 +34,8 @@ function ProfilePage() {
             setActiveButton(button);
         };
 
-        //const [currentEmployee , setCurrentEmployee ] = useState("");
+
         const currUser = useAuth0();
-        //const decodedEmail = decodeURIComponent(String(currUser?.user?.email));
         const username = currUser?.user?.email;
         const ProfilePicture = currUser?.user?.picture;
 
@@ -57,11 +52,6 @@ function ProfilePage() {
 
             });
         }, [username]);
-    //
-    // useEffect(() => {
-    //
-    // }, [username]);
-
 
     console.log(getEmployees);
 
@@ -158,7 +148,9 @@ function ProfilePage() {
 
         if (activeButton === "graph") {
             if (username != "") {
-                return ((<PieChartStatsProfile></PieChartStatsProfile>));
+                return (<PieChartStatsProfile
+                    urlToGetStats={"/api/serviceRequests/flowReq/statistics"} urlForBuildingStats={"/api/serviceRequests/flowReq/building-statistics"}>
+                </PieChartStatsProfile>);
             }
 
         }
@@ -207,7 +199,6 @@ async function getServiceRequestSize(emp : string) {
         await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter", {params: {status: "Any", priority: "Any",
                 employee:emp, location:"Any"
             } });
-    // console.log("sss");
-    // console.log(serviceRequest.data);
+
     return serviceRequest.data.length;
 }
