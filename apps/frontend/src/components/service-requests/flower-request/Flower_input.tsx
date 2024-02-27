@@ -148,7 +148,7 @@ export default function Flower_input({
 
     return(
         <div
-            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center scale-90"}>
+            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center "}>
             <form className="p-2">
 
 
@@ -163,7 +163,7 @@ export default function Flower_input({
                                          placeHolderText={"e.g. John Smith"}>
                         </SimpleTextInput>
 
-                        {/* //todo FNFN make this a createDropdown, assure theres a label without a colon and the placeholder is the name of the field (Priority) */}
+
                         <div className="grid justify-center items-center my-1.5">
                             <label id="priorityType">Priority </label>
                             <CreateDropdown dropBtnName={"Priority "} dropdownID={"UrgencyID"} isSearchable={false}
@@ -172,7 +172,7 @@ export default function Flower_input({
                                             resetDropdown={resetDropdownUrg}
                                             resetOnSelect={false}
                                             runOnChange={()=>{return -1;}}
-                                            inputCSS={"n/a"} selectCSS={"dropdown"}
+                                            inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"} selectCSS={"dropdown"}
                                             setResetDropdown={setResetDropdownUrg}/>
                         </div>
 
