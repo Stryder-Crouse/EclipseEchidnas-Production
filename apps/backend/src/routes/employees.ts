@@ -59,6 +59,9 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
         //delete all old users from auth0
         await PrismaClient.employee.findMany().then(async (allEmps) => {
             for (const singleEmp of allEmps) {
+                if(singleEmp.userName=="No one"){
+                    continue;
+                }
                 console.log("trying to delete " + singleEmp.userName);
 
                 await new Promise(r => setTimeout(r, 500));
@@ -96,6 +99,15 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
         }
 
 
+        //create the no one employee
+        await PrismaClient.employee.create({data: {
+                userID: "0",
+                userName: "No one",
+                firstName: "N",
+                lastName: "/ A",
+                designation: "N/A",
+                isAdmin: false,
+            }});
         /* shove it into a clean prisma */
         await PrismaClient.employee.createMany({data: employeeArray});
     }

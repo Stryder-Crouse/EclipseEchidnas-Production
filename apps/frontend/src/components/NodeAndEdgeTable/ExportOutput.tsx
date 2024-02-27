@@ -52,12 +52,15 @@ export default function ExportOutput({setIsExportOpen}: closeExportOutput) {
             let EmployeeString = "";
 
             for (const employeesGetElement of employeesGet) {
-                EmployeeString += employeesGetElement.userID + ",";
-                EmployeeString += employeesGetElement.userName + ",";
-                EmployeeString += employeesGetElement.firstName + ",";
-                EmployeeString += employeesGetElement.lastName + ",";
-                EmployeeString += employeesGetElement.designation + ",";
-                EmployeeString += employeesGetElement.isAdmin + "\r\n";
+                //dont output the no one user
+                if(employeesGetElement.userName!="No one") {
+                    EmployeeString += employeesGetElement.userID + ",";
+                    EmployeeString += employeesGetElement.userName + ",";
+                    EmployeeString += employeesGetElement.firstName + ",";
+                    EmployeeString += employeesGetElement.lastName + ",";
+                    EmployeeString += employeesGetElement.designation + ",";
+                    EmployeeString += employeesGetElement.isAdmin + "\r\n";
+                }
             }
 
             const employeeFile = new Blob([EmployeeString], {
