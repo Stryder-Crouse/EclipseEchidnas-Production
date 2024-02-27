@@ -3,8 +3,8 @@ import PieChartStatsStatus from "./PieChartStatsStatus.tsx";
 import axios from "axios";
 import {prioStats,assignedStats} from "./PieChartStatsAll.tsx";
 import {useEffect, useState} from "react";
-import StatsBarChart from "./StatsBarChart.tsx";
 import {buildingStats} from "./PieChartStatsServiceRequest.tsx";
+import StatsBarChartProfile from "./StatsBarChartProfile.tsx";
 
 
 export type servStats = {
@@ -116,10 +116,10 @@ function PieChartStatsServiceRequest({urlToGetStats,urlForBuildingStats,userEmai
     }, [urlToGetStats,urlForBuildingStats,userEmail]);
 
     return (
-        <div className="flex flex-row justify-evenly m-auto h-full w-full ">
+        <div className="flex flex-row justify-evenly m-auto h-full w-full">
             <PieChartStatsPriority stats={prioStats}></PieChartStatsPriority>
             <PieChartStatsStatus stats={assignedStats}></PieChartStatsStatus>
-            <StatsBarChart buildingStats={buildingStats}></StatsBarChart>
+            <StatsBarChartProfile buildingStats={buildingStats}></StatsBarChartProfile>
         </div>
     );
 }
