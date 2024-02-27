@@ -14,7 +14,7 @@ export default function CsvPageTableContainer() {
     const [curentTable , setCurentTable ] = useState("node");
 
     return (
-        <div className="tabs-container mx-auto w-full">
+        <div className="tabs-container ">
             <ul className="tabs">
                 <li>
                     <a id={"button_nodes"} title="Node Table" className={"tabButton"} onClick={() => {
