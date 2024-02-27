@@ -1,6 +1,6 @@
 import React, { useState} from "react";
 import "../../css/component-css/ServicePage.css";
-
+import EmployeeTableComponent from "../NodeAndEdgeTable/EmployeeTableComponent.tsx";
 import ImportExportButtons from "../NodeAndEdgeTable/ImportExportButtons.tsx";
 import NodeTable from "../NodeAndEdgeTable/NodeTable.tsx";
 import EdgeTable from "../NodeAndEdgeTable/EdgeTable.tsx";
@@ -31,6 +31,14 @@ export default function CsvPageTableContainer() {
                     </a>
                 </li>
                 <li>
+                    <a id={"button_employee"} title="Employee Table" className={"tabButton"}
+                       onClick={() => {
+                           setCurentTable("employee");
+                       }}>
+                        Employee Table
+                    </a>
+                </li>
+                <li>
                     <ImportExportButtons/>
                 </li>
 
@@ -50,8 +58,9 @@ export default function CsvPageTableContainer() {
             case "node":
                 return <NodeTable/>;
             case "edge":
-               return(<EdgeTable/>);
-
+                return <EdgeTable/>;
+            case "employee":
+                return <EmployeeTableComponent/>;
             default:
                 return (<div> bad state</div>);
 
