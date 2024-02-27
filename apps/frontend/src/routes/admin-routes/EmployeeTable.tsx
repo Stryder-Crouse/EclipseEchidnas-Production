@@ -2,22 +2,26 @@ import "../../css/route-css/EmployeeTable.css";
 import "../../css/route-css/EmployeeTableInput.css";
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Employee, Roles} from "../../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import {Employee, Roles} from "common/src/algorithms/Employee/Employee.ts";
 import trashIcon from "../../images/Table Functions/trash-2.png";
 import editPen from "../../images/Table Functions/pencil.png";
 import FullSideNavBarComponent from "../../components/FullSideNavBarComponent.tsx";
+
 
 //TODO IMPLEMENT THESE BUTTONS TO POPULATE WITH EVERY ROW
 //import TrashIcon from "../../images/Table Functions/trash-2.png";
 //import EditIcon from "../../images/Table Functions/pencil.png";
 
 
-const designations = [Roles.None,Roles.nurse,Roles.doctor,Roles.admin,
-    Roles.janitor,Roles.flowerDeliverer,Roles.religiousPersonnel];
+const designations = [Roles.None, Roles.nurse, Roles.doctor, Roles.admin,
+    Roles.janitor, Roles.flowerDeliverer, Roles.religiousPersonnel, Roles.buddhistPersonnel,
+    Roles.catholicPersonnel, Roles.christianPersonnel, Roles.mormonPersonnel, Roles.protestantPersonnel,
+    Roles.hinduPersonnel, Roles.jainPersonnel, Roles.jewishPersonnel, Roles.muslimPersonnel,
+    Roles.sikhPersonnel, Roles.shintoPersonnel];
 
 function EmployeeTable() {
-    
-    
+
+
     const [employees, setEmployees] = useState<Employee[]>([]);
 
     //employee creation
@@ -32,14 +36,32 @@ function EmployeeTable() {
     const [editIndex, setEditIndex] = useState(-1);
 
 
-
-
-
-
     /* populate the requests */
-    useEffect(()=>{
-        getEmployees().then((result)=>setEmployees(result));
-    },[]);
+
+
+    useEffect(() => {
+        getEmployees().then((result) => setEmployees(result));
+        const handleClickOutside = (event: MouseEvent) => {
+            const addEmployeeButton = document.getElementById("addEmployeeButton");
+            const addEmployeeForm = document.getElementById("addEmployeeForm");
+
+            if (
+                addEmployeeForm &&
+                !addEmployeeForm.contains(event.target as Node) &&
+                addEmployeeButton &&
+                !addEmployeeButton.contains(event.target as Node)
+            ) {
+                closeForm();
+            }
+        };
+        document.addEventListener("click", handleClickOutside);
+
+        return () => {
+            document.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
+
+
     //table-id is request-table
     return (
         <div className="flex h-lvh flex-row overflow-hidden">
@@ -52,21 +74,23 @@ function EmployeeTable() {
                     <div className="flex">
                         <span className={"employee-caption-container"}>
                             <span className={"employee-table-title"}>Employee Table</span>
+                            <div className={"flex"}>
                             <button onClick={
-                                ()=>{
+                                () => {
                                     alert("To create a new employee please log out and log in with a new email address." +
                                         " Once you create your new account the new employee will show up here for you to edit it." +
                                         " We plan at a later date to make this process more seamless");
                                 }
                                 //openForm
-                                }
-                                    className="items- drop-shadow-lg transition-all hover:bg-navy w-48 text-white p-2 bg-navStart rounded-full h-min font-semibold ">Add Employee</button>
+                            }
+                                    className="drop-shadow-lg transition-all hover:bg-navy w-48 text-white p-2 bg-navStart rounded-full h-min font-semibold ">Add Employee</button>
+                            </div>
                         </span>
                     </div>
 
 
-                    <div className={"employeeTable"}>
-                        <table id={"request-table"}>
+                    <div className={"employeeTable "}>
+                        <table id={"request-table"} className={"rounded-xl"}>
                             <thead>
                             <tr className={"tableTRHead"}>
                                 <th className={"tableTD"}>User Name</th>
@@ -82,26 +106,27 @@ function EmployeeTable() {
                             <tbody>
                             {
                                 employees.map((employee, employeeIndex) => {
-                                    return drawEmployeeRecord(employee,employeeIndex);
+                                    return drawEmployeeRecord(employee, employeeIndex);
                                 })
                             }
                             </tbody>
                         </table>
                     </div>
                 </div>
+
                 {/*add employee form*/}
                 <div id={"addEmployeeForm"} className="employeeInputHidden">
                     <div><b>New Employee</b></div>
                     <form className={"formNewEmployee"}>
                         <div>
                             <label form={"employeeUsername"}>Username</label><br/>
-                            <input disabled={isCreating()} type={"text"} placeholder={"Enter Username"} className={"inputText"}
+                            <input disabled={isCreating()} type={"text"} placeholder={"Enter Username"}
+                                   className={"inputText"}
                                    name={"employeeUsername"} required
                                    value={newUserName}
                                    onChange={(e) => {
                                        setNewUserName(e.target.value);
-                                   }}
-                            />
+                                   }}/>
                         </div>
                         <div>
                             <label form={"employeeFirst"}>First Name</label><br/>
@@ -110,8 +135,7 @@ function EmployeeTable() {
                                    value={newFristName}
                                    onChange={(e) => {
                                        setNewFristName(e.target.value);
-                                   }}
-                            />
+                                   }}/>
                         </div>
                         <div>
                             <label form={"employeeLast"}>Last Name</label><br/>
@@ -120,8 +144,7 @@ function EmployeeTable() {
                                    value={newLastName}
                                    onChange={(e) => {
                                        setNewLastName(e.target.value);
-                                   }}
-                            />
+                                   }}/>
                         </div>
                         <div>
                             <label form={"designation"}>Designation</label><br/>
@@ -134,13 +157,12 @@ function EmployeeTable() {
                                 }
                             >
                                 {
-                                    designations?.map((des)=>{
+                                    designations?.map((des) => {
                                         return (
                                             <option
                                                 className={"statis-dropdown"}
                                                 value={des}
-                                                key={des+"_newEmployee"}
-                                            >
+                                                key={des + "_newEmployee"}>
                                                 {des}
                                             </option>
                                         );
@@ -163,21 +185,21 @@ function EmployeeTable() {
                             <label form={"isAdmin"}>Is Admin</label><br/>
                             <input type={"checkbox"}
                                    name={"isAdmin"} required
-                                     className={"inputText"}
+                                   className={"inputText"}
                                    id={"isAdminCheck"}
                                    onChange={(e) => {
                                        console.log(e.target.checked);
-                                           setNewIsAdmin(e.target.checked);
-                                   }}
-                            />
+                                       setNewIsAdmin(e.target.checked);
+                                   }}/>
                         </div>
                         <div>
-                            <button  type={"button"} className={"submitButtonEmployee"}
-                            onClick={onSubmit}
+                            <button type={"button"} className={"submitButtonEmployee"}
+                                    onClick={onSubmit}
                             >{formSubmitText()}</button>
                         </div>
                         <div>
-                            <button type={"button"} className={"submitButtonEmployee"}onClick={closeForm}>Close</button>
+                            <button type={"button"} className={"submitButtonEmployee"} onClick={closeForm}>Close
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -186,31 +208,30 @@ function EmployeeTable() {
     );
 
 
-    function isCreating(){
-        if(editIndex!=-1){
-            return true;
-        }
-        return false;
+    function isCreating() {
+        return editIndex != -1;
+
     }
-    function formSubmitText(){
-        if(editIndex!=-1){
+
+    function formSubmitText() {
+        if (editIndex != -1) {
             return "Update Employee";
         }
-        return "Add Employeee";
+        return "Add Employee";
     }
 
     async function onSubmit() {
 
         let isEditing = false;
 
-        if(editIndex!=-1){
-            isEditing=true;
+        if (editIndex != -1) {
+            isEditing = true;
         }
 
 
         const newEmployee: Employee = {
             userID: userID,
-            designation: newDesignation ,
+            designation: newDesignation,
             firstName: newFristName,
             isAdmin: newIsAdmin,
             lastName: newLastName,
@@ -221,11 +242,11 @@ function EmployeeTable() {
         const newEmployees = [...employees];
 
         //editing
-        if(isEditing){
-            newEmployees[editIndex]=newEmployee;
+        if (isEditing) {
+            newEmployees[editIndex] = newEmployee;
         }
         //creating
-        else{
+        else {
             newEmployees.push(newEmployee);
         }
 
@@ -234,7 +255,7 @@ function EmployeeTable() {
 
         closeForm();
 
-        if(isEditing) {
+        if (isEditing) {
 
             await axios.post("/api/employees/updateEmployee",
                 newEmployee, {
@@ -243,8 +264,7 @@ function EmployeeTable() {
                     },
                 });
 
-        }
-        else{
+        } else {
             await axios.post("/api/employees/employee",
                 newEmployee, {
                     headers: {
@@ -256,13 +276,12 @@ function EmployeeTable() {
 
     }
 
-    function handleEdit(employee: Employee , employeeIndex:number){
+    function handleEdit(employee: Employee, employeeIndex: number) {
 
-        if(employee.isAdmin) {
+        if (employee.isAdmin) {
             const checkbox = document?.getElementById("isAdminCheck") as HTMLInputElement;
             checkbox.checked = true;
-        }
-        else{
+        } else {
             const checkbox = document?.getElementById("isAdminCheck") as HTMLInputElement;
             checkbox.checked = false;
         }
@@ -289,13 +308,12 @@ function EmployeeTable() {
 
         setEmployees(newEmployees);
 
-        const data:string[] = [employee.userID];
+        const data: string[] = [employee.userID];
         console.log("Data: " + data);
 
         //username is param
         const responce = await axios.get("/api/cascadeDelete", {params: {userID: data[0]}});
         console.log("Response: " + responce.status);
-
 
 
         await axios.post("/api/employees/deleteEmployee",
@@ -313,7 +331,7 @@ function EmployeeTable() {
      * @param employee the employee to draw.
      * @param employeeIndex
      */
-    function drawEmployeeRecord(employee: Employee , employeeIndex:number) {
+    function drawEmployeeRecord(employee: Employee, employeeIndex: number) {
         return (
             <tr className={"tableTR"} key={"Employee_" + employee.userName}>
                 <td className={"tableTD"}>{employee.userName}</td>
@@ -347,12 +365,11 @@ function EmployeeTable() {
     function openForm() {
         const openSesame = document.getElementById("addEmployeeForm");
         if (openSesame != null) {
-            openSesame.setAttribute("class","employeeInputVisible");
+            openSesame.setAttribute("class", "employeeInputVisible");
 
 
         }
     }
-
 
 
     /**
@@ -361,11 +378,11 @@ function EmployeeTable() {
     function closeForm(): void {
         const close = document.getElementById("addEmployeeForm");
         if (close != null) {
-            close.setAttribute("class","employeeInputHidden");
+            close.setAttribute("class", "employeeInputHidden");
 
             //clear form
-            const checkbox = document?.getElementById("isAdminCheck")as HTMLInputElement;
-            checkbox.checked=false;
+            const checkbox = document?.getElementById("isAdminCheck") as HTMLInputElement;
+            checkbox.checked = false;
             setNewDesignation(Roles.None);
             setNewIsAdmin(false);
             setNewLastName("");
@@ -378,14 +395,7 @@ function EmployeeTable() {
 }
 
 
-
-
-
-
-
-
-
-async function getEmployees()  {
+async function getEmployees() {
     const employees = await axios.get<Employee[]>("/api/employees/employees");
     return employees.data;
 }
@@ -398,9 +408,6 @@ async function getEmployees()  {
 //     console.log("Tried to delete employee " + employee);
 //     return;
 // }
-
-
-
 
 
 export default EmployeeTable;

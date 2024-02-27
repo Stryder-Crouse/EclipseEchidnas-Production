@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
-import {Employee} from "../../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import {Employee} from "common/src/algorithms/Employee/Employee.ts";
+//import ImportIcon from "../../images/Table Functions/import.png";
+//import ExportIcon from "../../images/Table Functions/download.png";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import {HTMLInputElement} from "happy-dom";
@@ -70,12 +72,12 @@ function ExportImportButtonEmployee() {
             <button
                 className={"transition-all hover:bg-navy w-40 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}
                 onClick={importEmployee}>
-                Import Employee .csv
+                Import .csv
             </button>
             <button
                 className={"transition-all hover:bg-navy w-40 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}
                 onClick={exportEmployee}>
-                Export Employee .csv
+                Export Current
             </button>
         </div>
     );

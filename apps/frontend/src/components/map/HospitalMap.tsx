@@ -15,7 +15,7 @@ import {DFSStrategy} from "../../../../../packages/common/src/algorithms/Search/
 import {ServiceRequest} from "../../../../../packages/common/src/algorithms/Requests/Request.ts";
 import {
     generateTextDirections
-} from "../../../../../packages/common/src/algorithms/Search/TextDirections/GenerateTextDirections.ts";
+} from "common/src/algorithms/Search/TextDirections/GenerateTextDirections.ts";
 
 /* - - - types - - - */
 /**
@@ -37,7 +37,7 @@ export type MapState = {
     zoomScale: number,
     setZoomScale: Dispatch<SetStateAction<number>>
     drawEntirePathOptions:boolean[]
-    setTextDirections:Dispatch<SetStateAction<string[]>>
+    setTextDirections:Dispatch<SetStateAction<string[][]>>
 }
 
 /**
@@ -200,7 +200,7 @@ function updatePathEdges(startingNode: Node,
                          drawAllEdges: boolean,
                          setPathFloorTransitionNodes: Dispatch<Array<Transition>>,
                          pathFindingType:string,
-                         setTextDirections: Dispatch<SetStateAction<string[]>>) {
+                         setTextDirections: Dispatch<SetStateAction<string[][]>>) {
 
     /* actually first: check if the graph is ready */
     if (graph == null) {
@@ -229,7 +229,7 @@ function updatePathEdges(startingNode: Node,
     if (startingNode == NULLNODE || endingNode == NULLNODE) {
         setPathEdges([]);
         setPathFloorTransitionNodes([]);
-        setTextDirections([]);
+        setTextDirections([[],[],[],[],[],[]]);
         return;
     }
 

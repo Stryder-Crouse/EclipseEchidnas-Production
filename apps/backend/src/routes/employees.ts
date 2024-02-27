@@ -346,8 +346,31 @@ router.get("/employees/flow", async function (req: Request, res: Response) {
 
 //gets all employees with religiousRequest permissions
 router.get("/employees/rel", async function (req: Request, res: Response) {
+    res.send(
+        religEmployees(req.body)
+    ); //end res.send (this is what will be sent to the client)
+});
+
+//gets the employee with the username of the Auth0 login
+router.get("/current_employee", async function (req: Request, res: Response) {
+    const currentUser: Employee = req.body;
     try {
-        const religion: string = req.body;
+        //try to send all the employees to the client
+        //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
+        res.send(await PrismaClient.employee.findUnique(
+            {
+                where: {userName: currentUser.userName}
+            }
+        )); //end res.send (this is what will be sent to the client)
+        console.info("\nSuccessfully gave you the employee\n");
+    } catch (err) {
+        console.error("\nUnable to send employees\n");
+    }
+});
+export async function religEmployees(religion:string){
+    console.log("abstract employees/rel");
+    try {
+        console.log("religion is "+religion+"\n");
         let typeOfReligiousPersonnel = "religious personnel";
         switch (religion) {
             case "Buddhism":
@@ -387,8 +410,8 @@ router.get("/employees/rel", async function (req: Request, res: Response) {
                 typeOfReligiousPersonnel = "religious personnel";
                 break;*/ //already covered by the definition of the var
         }
-
-        res.status(200).send(await PrismaClient.employee.findMany(
+        console.info("\nSuccessfully gave you the the employees\n");
+        return await PrismaClient.employee.findMany(
             {
                 where: {
                     OR: [
@@ -406,13 +429,11 @@ router.get("/employees/rel", async function (req: Request, res: Response) {
                 }
 
             }
-        )); //end res.send (this is what will be sent to the client)
-        console.info("\nSuccessfully gave you the the employees\n");
+        ); //end res.send (this is what will be sent to the client)
     } catch (err) {
         console.error("\nUnable to send employees\n" + err);
-        res.sendStatus(500);
     }
-});
+}
 
 //gets the employee with the username of the Auth0 login
 router.get("/current_employee", async function (req: Request, res: Response) {
