@@ -55,7 +55,7 @@ function ProfilePage() {
             }
         };
 
-        fetchData();
+        fetchData().then();
     }, [username]);
 
         // useEffect(() => {
@@ -164,20 +164,23 @@ function ProfilePage() {
 
     function generateSelectedTable() {
         // For each div/request to overlay
+        if (username != "") {
+            if (activeButton === "graph") {
 
-        if (activeButton === "graph") {
-            if (username != "") {
-                return (<PieChartStatsProfile
-                    urlToGetStats={"/api/serviceRequests/flowReq/statistics"} urlForBuildingStats={"/api/serviceRequests/flowReq/building-statistics"}>
-                </PieChartStatsProfile>);
+                    return (<PieChartStatsProfile
+                        urlToGetStats={"/api/employees/current_employee/stats"}
+                        userEmail={username!}
+                        urlForBuildingStats={"/api/employees/current_employee/buildingStats"}>
+                    </PieChartStatsProfile>);
+
+
             }
 
-        }
+            if (activeButton == "table") {
 
-        if (activeButton == "table") {
-            if (username != "") {
-                return (<ServiceRequest_Table employeeFilter={username!} statusFilter={Status.Any}
-                                              priorityFilter={Priorities.any} locationFilter={"Any"}/>);
+                    return (<ServiceRequest_Table employeeFilter={username!} statusFilter={Status.Any}
+                                                  priorityFilter={Priorities.any} locationFilter={"Any"}/>);
+
 
             }
         }

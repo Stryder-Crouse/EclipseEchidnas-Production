@@ -162,6 +162,7 @@ import axios from "axios";
 import {prioStats,assignedStats} from "./PieChartStatsAll.tsx";
 import {useEffect, useState} from "react";
 import StatsBarChart from "./StatsBarChart.tsx";
+import {buildingStats} from "./PieChartStatsServiceRequest.tsx";
 
 
 
@@ -180,8 +181,70 @@ export type servStats = {
 export type requestStats = {
     urlToGetStats:string
     urlForBuildingStats:string
+    userEmail:string
 }
-function PieChartStatsServiceRequest({urlToGetStats,urlForBuildingStats}:requestStats){
+function PieChartStatsServiceRequest({urlToGetStats,urlForBuildingStats,userEmail}:requestStats){
+
+    const [buildingStats , setBuildingStats ]
+        = useState<buildingStats>(
+        {
+            shapiro: {
+                total: 0,
+                lowPrio: 0,
+                medPrio: 0,
+                highPrio: 0,
+                emergPrio: 0,
+                unassigned: 0,
+                assigned: 0,
+                inProgress: 0,
+                completed: 0
+            },
+            tower: {
+                total: 0,
+                lowPrio: 0,
+                medPrio: 0,
+                highPrio: 0,
+                emergPrio: 0,
+                unassigned: 0,
+                assigned: 0,
+                inProgress: 0,
+                completed: 0
+            },
+            Francis45: {
+                total: 0,
+                lowPrio: 0,
+                medPrio: 0,
+                highPrio: 0,
+                emergPrio: 0,
+                unassigned: 0,
+                assigned: 0,
+                inProgress: 0,
+                completed: 0
+            },
+            Francis15: {
+                total: 0,
+                lowPrio: 0,
+                medPrio: 0,
+                highPrio: 0,
+                emergPrio: 0,
+                unassigned: 0,
+                assigned: 0,
+                inProgress: 0,
+                completed: 0
+            },
+            BTM: {
+                total: 0,
+                lowPrio: 0,
+                medPrio: 0,
+                highPrio: 0,
+                emergPrio: 0,
+                unassigned: 0,
+                assigned: 0,
+                inProgress: 0,
+                completed: 0
+            }
+        }
+    );
 
     const [assignedStats , setAssignedStats ]
         = useState<assignedStats>(
@@ -204,23 +267,24 @@ function PieChartStatsServiceRequest({urlToGetStats,urlForBuildingStats}:request
     );
 
     useEffect(() => {
-        getAllStats(urlToGetStats).then( (result)=>{
+        getAllStats(urlToGetStats,urlForBuildingStats,userEmail).then( (result)=>{
             setAssignedStats(result[0] as assignedStats);
             setPrioStats(result[1] as prioStats);
+            setBuildingStats(result[2] as buildingStats);
         });
-    }, [urlToGetStats]);
+    }, [urlToGetStats,urlForBuildingStats,userEmail]);
 
     return (
         <div className="flex flex-row justify-evenly m-auto h-full w-full ">
             <PieChartStatsPriority stats={prioStats}></PieChartStatsPriority>
             <PieChartStatsStatus stats={assignedStats}></PieChartStatsStatus>
-            <StatsBarChart urlForBuildingStats={urlForBuildingStats}></StatsBarChart>
+            <StatsBarChart buildingStats={buildingStats}></StatsBarChart>
         </div>
     );
 }
 
-async function getAllStats(urlToGetStats:string) {
-    const getAllStats = await axios.get<servStats>(urlToGetStats);
+async function getAllStats(urlToGetStats:string,urlForBuildingStats:string,email:string) {
+    const getAllStats = await axios.get<servStats>(urlToGetStats,{params:{email:email}});
 
     const servStats = getAllStats.data;
 
@@ -240,8 +304,12 @@ async function getAllStats(urlToGetStats:string) {
         emergPrio: servStats.emergPrio
     };
 
+    const getAllBuildingStats = await axios.get<buildingStats>
+    (urlForBuildingStats,{params:{email:email}});
 
-    return [assigned,prioStats];
+    console.log(getAllBuildingStats.data);
+
+    return [assigned,prioStats,getAllBuildingStats.data];
 }
 
 export default PieChartStatsServiceRequest;
