@@ -15,8 +15,8 @@ import {Priorities, ServiceRequest} from "common/src/algorithms/Requests/Request
 
 function ProfilePage() {
 
-    const [statsToggle, setStatsToggle]
-        = useState(false);
+    // const [statsToggle, setStatsToggle]
+    //     = useState(false);
 
     const [designation, setDesignation]
         = useState("");
@@ -70,20 +70,12 @@ function ProfilePage() {
             <div className="flex h-screen">
                 <FullSideNavBarComponent/>
                 {/* Left Column - User Information */}
-                <div className="w-1/4 bg-gray-200 p-4">
+                <div className="w-1/3 bg-gray-200 p-4">
                     <div className="flex flex-col items-center justify-center text-center">
                         <h1 className="mb-1 font-bold text-2xl mt-5">Profile Page</h1>
                         {ProfilePicture && <ImageCard img={ProfilePicture} />}
 
                     </div>
-                    <input
-                        type="checkbox"
-                        checked={statsToggle}
-                        className="sr-only peer"
-                        onChange={(event) => {
-                            setStatsToggle(event.target.checked);
-                        }}
-                    />
 
                     <div className="text-center">
 
@@ -114,6 +106,7 @@ function ProfilePage() {
                             </div>
 
                             <div className="mt-10">
+
                                 <button
                                     type="button"
                                     className={`inline-block rounded px-9 pb-5 pt-5 text-xl font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out 
@@ -149,7 +142,7 @@ function ProfilePage() {
                 </div>
 
                 {/* Right Column - Content */}
-                <div className="flex-1 p-4">
+                <div className="flex-1 p-8">
 
                     {/* Content to be populated with each request */}
                     {generateSelectedTable()}
@@ -162,21 +155,19 @@ function ProfilePage() {
     function generateSelectedTable() {
         // For each div/request to overlay
 
-        if (statsToggle) {
+        if (activeButton === "graph") {
             if (username != "") {
                 return ((<PieChartStatsProfile></PieChartStatsProfile>));
             }
 
         }
 
+        if (activeButton == "table") {
+            if (username != "") {
+                return (<ServiceRequest_Table employeeFilter={username!} statusFilter={Status.Any}
+                                              priorityFilter={Priorities.any} locationFilter={"Any"}/>);
 
-        if (username != "") {
-            return (<ServiceRequest_Table employeeFilter={username!} statusFilter={Status.Any} priorityFilter={Priorities.any}  locationFilter={"Any"}/>);
-
-        }
-        {
-            return (<div> bad state</div>);
-
+            }
         }
     }
 
