@@ -39,19 +39,38 @@ function ProfilePage() {
         const username = currUser?.user?.email;
         const ProfilePicture = currUser?.user?.picture;
 
-        useEffect(() => {
-            getEmployees(username!).then((results) => {
 
-                setFirstName(results.firstName);
-                setLastName(results.lastName);
-                setDesignation(results.designation);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const employeeData = await getEmployees(username!);
+                const pendingTaskData = await getServiceRequestSize(username!);
 
-            });
-            getServiceRequestSize(username!).then((results) => {
-                setPendingTask(results);
+                setFirstName(employeeData.firstName);
+                setLastName(employeeData.lastName);
+                setDesignation(employeeData.designation);
+                setPendingTask(pendingTaskData);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
 
-            });
-        }, [username]);
+        fetchData();
+    }, [username]);
+
+        // useEffect(() => {
+        //     getEmployees(username!).then((results) => {
+        //
+        //         setFirstName(results.firstName);
+        //         setLastName(results.lastName);
+        //         setDesignation(results.designation);
+        //
+        //     });
+        //     getServiceRequestSize(username!).then((results) => {
+        //         setPendingTask(results);
+        //
+        //     });
+        // }, [username]);
 
     console.log(getEmployees);
 
