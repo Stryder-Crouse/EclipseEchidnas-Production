@@ -24,9 +24,6 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
                 setReligRequestList(result);
             });
 
-
-
-
     }, [statusFilter, priorityFilter, employeeFilter, locationFilter]);
 
     return (
@@ -135,7 +132,7 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
     );
 
     function renderEmployees(employee: Employee, religID: string) {
-        console.log(employee.userName + ",");
+        //console.log(employee.userName + ",");
         return (
             <option
 
@@ -318,6 +315,7 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
 }
 
 async function getReligRequests(statusFilter:Status, priorityFilter:Priorities, employeeFilter:string, locationFilter:string) {
+    console.log("I should be filtering by "+statusFilter+", "+priorityFilter+", "+employeeFilter+", and "+locationFilter);
     const requests =
         await axios.get<[ReligRequest[], ServiceRequest[], Employee[][]]>("/api/serviceRequests/religiousRequest/filter",
             {params: {  status: statusFilter,
