@@ -101,7 +101,7 @@ export default function Medicine_table({statusFilter, priorityFilter,employeeFil
                                                     onChange={
                                                         (event) => {
                                                             const eventHTML = event.target as HTMLSelectElement;
-                                                            onPriorityChange(eventHTML, requestIndex).then();/////todo RYAN (uncomment when done with function)
+                                                            onPriorityChange(eventHTML, requestIndex).then();
                                                         }
                                                     }
                                                 >

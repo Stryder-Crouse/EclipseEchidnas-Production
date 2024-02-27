@@ -77,19 +77,19 @@ function ProfilePage() {
 
         return (
 
-            <div className="flex h-screen">
+            <div className="flex h-screen overflow-x-hidden overflow-y-hidden">
                 <FullSideNavBarComponent/>
                 {/* Left Column - User Information */}
-                <div className="w-1/3 bg-gray-200 p-4">
-                    <div className="flex flex-col items-center justify-center text-center">
-                        <h1 className="mb-1 font-bold text-2xl mt-5">Profile Page</h1>
+                <div className="w-1/3 max-w-[29%] bg-gray-200 p-4 bg-ivoryWhite rounded-lg">
+                    <div className="flex flex-col items-center  justify-center text-center">
+                        <h1 className="mb-5 font-bold text-2xl mt-5">Welcome, {firstName}</h1>
                         {ProfilePicture && <ImageCard img={ProfilePicture} />}
 
                     </div>
 
-                    <div className="text-center">
+                    <div className="text-center  ">
 
-                        <div className="flex flex-col mt-9">
+                        <div className="flex flex-col mt-9 scale-90">
                             <div className="flex mb-2">
                                 <span className="font-bold text-xl mr-2">Username:</span>
                                 <p className="text-xl">{username}</p>
@@ -123,7 +123,7 @@ function ProfilePage() {
                                     ${
                                         activeButton === "table"
                                             ? "bg-navy text-white hover:bg-navy focus:bg-navy active:bg-navy"
-                                            : "bg-blue-200 text-blue-700 hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"
+                                            : "bg-white  text-black hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"
                                     }`}
                                     onClick={() => handleButtonClick("table")}
                                 >
@@ -135,7 +135,7 @@ function ProfilePage() {
                                     className={`inline-block rounded px-9 pb-5 pt-5 text-xl font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out ${
                                         activeButton === "graph"
                                             ? `bg-navy text-white hover:bg-navy focus:bg-navy active:bg-navy`
-                                            : "bg-blue-200 text-blue-700 hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"
+                                            : "bg-white text-black hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"
                                     }`}
                                     onClick={() => handleButtonClick("graph")}
                                 >
@@ -152,7 +152,7 @@ function ProfilePage() {
                 </div>
 
                 {/* Right Column - Content */}
-                <div className="flex-1 p-8 justify-center items-center mt-6">
+                <div className="flex-1 p-8 justify-center items-center mt-6 ">
 
                     {/* Content to be populated with each request */}
                     {generateSelectedTable()}

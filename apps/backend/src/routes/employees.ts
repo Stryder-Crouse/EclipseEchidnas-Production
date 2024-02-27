@@ -4,9 +4,19 @@ import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 import fs from "fs";
 import {readEmployeeCSV} from "../algorithms/readCSV.ts";
 import multer from "multer";
+import {ManagementClient} from "auth0";
+
 
 const router: Router = express.Router();
 const upload = multer({dest: 'uploadedCSVs/'});
+
+
+const auth0 = new ManagementClient({
+    domain: 'dev-hca27okc2srfyen8.us.auth0.com',
+    clientId: 'sjOBn2g3OxSS11LMuXopKBZ4mao8drry',
+    clientSecret: 'B0rX2U4tbxl9fO_SNNfgOgQxo9lrqGd2ti2CPqNwUxUxcMESdONNeZcK52Ec4g4d',
+});
+
 
 /**
  * import the oh my goodnesses into the badness
@@ -15,14 +25,14 @@ const upload = multer({dest: 'uploadedCSVs/'});
  *
  */
 async function handleCSVImport(req: Request, res: Response): Promise<void> {
-    /* What the FUCK */
+    /* What the HECK */
     console.log("handleCSVImport: Employee CSV import requested");
 
-    /* Deadass */
+
     const employeeFile: Express.Multer.File[] = req.files as Express.Multer.File[];
     if (employeeFile == null) {
-        console.error("handleCSVImport: employee file was FUCKED");
-        res.status(500).send("FUCK");
+        console.error("handleCSVImport: employee file was BAD");
+        res.status(500).send("EMPLOYEE CSV DID NOT PROCESS");
         return;
     }
 
@@ -36,17 +46,68 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
     try {
         /* DROP TABLE * */
         await PrismaClient.$transaction([
-            PrismaClient.edgeDB.deleteMany(),
             PrismaClient.medReq.deleteMany(),
             PrismaClient.sanReq.deleteMany(),
             PrismaClient.religiousReq.deleteMany(),
             PrismaClient.outsideTransport.deleteMany(),
             PrismaClient.flowReq.deleteMany(),
             PrismaClient.serviceRequest.deleteMany(),
-            PrismaClient.nodeDB.deleteMany(),
-            PrismaClient.employee.deleteMany()
+            // PrismaClient.employee.deleteMany()
         ]);
 
+
+        //delete all old users from auth0
+        await PrismaClient.employee.findMany().then(async (allEmps) => {
+            for (const singleEmp of allEmps) {
+                if(singleEmp.userName=="No one"){
+                    continue;
+                }
+                console.log("trying to delete " + singleEmp.userName);
+
+                await new Promise(r => setTimeout(r, 500));
+
+                await auth0.users.delete({id: singleEmp.userID}).then(
+                    (authRes) => {
+                        console.log("deleted " + singleEmp.userName);
+                        console.log(authRes.data);
+                    });
+            }
+        });
+        console.log("ended");
+
+        //now delete all users in the db
+        await PrismaClient.employee.deleteMany();
+
+
+        //add users to auth0
+        for (const emp of employeeArray) {
+            await new Promise(r => setTimeout(r, 500));
+            try {
+                await auth0.users.create({
+                    email: emp.userName,
+                    password: 'EclipseEchidnasDB!',
+                    connection: 'Username-Password-Authentication'
+                }).then((authRes) =>
+                {
+                    console.log(authRes.data);
+                    emp.userID = authRes.data.user_id;
+                });
+            }catch (e){
+                console.log("auth0 errorr");
+                console.log(e);
+            }
+        }
+
+
+        //create the no one employee
+        await PrismaClient.employee.create({data: {
+                userID: "0",
+                userName: "No one",
+                firstName: "N",
+                lastName: "/ A",
+                designation: "N/A",
+                isAdmin: false,
+            }});
         /* shove it into a clean prisma */
         await PrismaClient.employee.createMany({data: employeeArray});
     }
@@ -318,6 +379,37 @@ router.get("/current_employee", async function (req: Request, res: Response) {
         console.error("\nUnable to send employees\n");
     }
 });
+
+router.get("/current_employee/doesExist", async function (req: Request, res: Response) {
+    const email: string = req.query.email as string;
+    console.log("this is checked email " +email);
+    try {
+
+
+        const emp = await PrismaClient.employee.findUnique(
+            {
+                where: {userName: email}
+            }
+        );
+
+        if(emp == null){
+            res.status(200).send(null);
+        }
+        else{
+            res.status(200).send(emp);
+        }
+
+
+
+        console.info("\nSuccessfully checked a employee \n");
+    } catch (err) {
+        console.error("\nUnable to send employees\n");
+    }
+});
+
+
+
+
 export async function religEmployees(religion:string){
     console.log("abstract employees/rel");
     try {

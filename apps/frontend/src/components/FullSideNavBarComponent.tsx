@@ -30,19 +30,19 @@ export default function FullSideNavBarComponent() {
                     <SideBarItem icon={MapIcon} text="Map" link="/" />
                     <SideBarItem icon={ServiceRequestIcon} text="Services" link="ServiceRequest"/>
 
-                    {isAuthenticated && (
-                        <>
-                            <SideBarItem icon={EmployeeIcon} text="Employees" link="/EmployeeTable" />
-                            <SideBarItem icon={CSVIcon} text=".CSV" link="/NodeEdgeTable" />
-                        </>
-                    )}
-
                     <hr className="my-3" />
                     {/* Conditionally render "Login" or "Log Out" based on authentication status */}
                     <SideBarItem icon={ProfileIcon} text="Profile" link="ProfilePage" />
-                    <SideBarItem icon={isAuthenticated ? LogOutIcon : LogIcon} text={isAuthenticated ? "Logout" : "Login"} onClick={handleLoginOrLogout} link={window.location.origin}/>
+                    {isAuthenticated && (
+                        <>
+                            <SideBarItem icon={EmployeeIcon} text="Employees" link="/EmployeeTable" />
+                            <SideBarItem icon={CSVIcon} text="CSV" link="/NodeEdgeTable" />
+                        </>
+                    )}
+
                     <SideBarItem icon={AboutIcon} text={"About"} link={"/AboutPage"}/>
                     <SideBarItem icon={CreditsIcon} text={"Credits"} link={"/Credits"}/>
+                    <SideBarItem icon={isAuthenticated ? LogOutIcon : LogIcon} text={isAuthenticated ? "Logout" : "Login"} onClick={handleLoginOrLogout} link={window.location.origin}/>
                 </SideNavBarComponent>
             </div>
         </div>
