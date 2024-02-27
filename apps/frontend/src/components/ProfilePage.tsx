@@ -8,8 +8,6 @@ import PieChartStatsProfile from "./service-requests/Stats/PieChartStatsProfile.
 import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 import Status from "common/src/algorithms/Requests/Status.ts";
 import {Priorities, ServiceRequest} from "common/src/algorithms/Requests/Request.ts";
-//import PieChartStatsServiceRequest from "./service-requests/Stats/PieChartStatsServiceRequest.tsx";
-
 
 function ProfilePage() {
 
