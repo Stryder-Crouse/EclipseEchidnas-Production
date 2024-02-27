@@ -4,10 +4,7 @@ import SimpleTextInput from "../inputComponents/SimpleTextInput.tsx";
 import {Employee, Roles} from "common/src/algorithms/Employee/Employee.ts";
 
 import axios from "axios";
-// import {useEffect} from "react";
 import {useAuth0} from "@auth0/auth0-react";
-
-//import Employees from "../../../../backend/src/routes/employees.ts";
 
 export default function RegisterForm() {
 
@@ -40,10 +37,6 @@ export default function RegisterForm() {
 
         //thisEmail stores the email which was entered into auth0
         console.log('User found');
-        //setCurrEmail(JSON.stringify(thisEmail));
-
-        // const email =JSON.stringify(thisEmail);
-        // console.log(email);
         console.log(thisEmail);
 
         if(userExistsEmp!=null){
@@ -88,19 +81,16 @@ export default function RegisterForm() {
     return (
         <div>
 
-            <form
-                className={"font-project justify-content-center p-7 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl"}
-            >
-                <div className={"flex justify-center w-full"}>
-                    <h1 className={"font-bold text-xl text-navStart"}>
+            <form className={"font-project justify-content-center p-7 min-w-min max-w-max scale-125"}>
+
+                    <h1 className={"font-bold text-xl text-navStart mb-10 -mt-9"}>
                         New Employee Registration
                     </h1>
-                </div>
 
                 <div>
                     <SimpleTextInput id={"firstName"} labelContent={"First Name: "} inputStorage={firstName}
                                      setInputStorage={setFirstName}
-                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                     inputCSS={"p-1 w-60 h-10 bg-ivoryWhite text-black rounded-l border border-black drop-shadow"}
                                      divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
                                      placeHolderText={"First Name: "}>
                     </SimpleTextInput>
@@ -109,7 +99,7 @@ export default function RegisterForm() {
                 <div>
                     <SimpleTextInput id={"lastName"} labelContent={"Last Name: "} inputStorage={lastName}
                                      setInputStorage={setLastName}
-                                     inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                     inputCSS={"p-1 w-60 h-10 bg-ivoryWhite text-black rounded-l border border-black drop-shadow"}
                                      divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
                                      placeHolderText={"Last Name: "}>
                     </SimpleTextInput>
@@ -119,16 +109,12 @@ export default function RegisterForm() {
 
                 <div className={"flex justify-center w-full mt-5"}>
                     <button
-                        className={"p-2 w-40 text-white bg-navStart hover:bg-navy rounded-3xl border border-black drop-shadow"}
-                        onClick={
-                            handleSubmit}
-                    >
+                        className="p-2 w-40 text-white bg-navStart hover:bg-navy rounded-xl border border-black drop-shadow mt-9"
+                        onClick={handleSubmit}>
                         Register
                     </button>
                 </div>
-
             </form>
-
         </div>
     );
 }
