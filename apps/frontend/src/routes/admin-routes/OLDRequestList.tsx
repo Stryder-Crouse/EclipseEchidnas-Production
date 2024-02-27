@@ -71,7 +71,7 @@ function OLDRequestList() {
                                           onChange={
                                               (event) => {
                                                   const eventHTML = event.target as HTMLSelectElement;
-                                                  onPriorityChange(eventHTML, requestIndex).then();/////todo RYAN (uncomment when done with function)
+                                                  onPriorityChange(eventHTML, requestIndex).then();
                                               }
                                           }
                                       >
