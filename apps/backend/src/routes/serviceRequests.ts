@@ -274,10 +274,9 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
     }
 });
 
-router.get("/serviceReq/filter", async function (req: Request, res: Response) {
+router.get("/serviceReq/filter/assigned_or_in_progress", async function (req: Request, res: Response) {
     try {
         let statusFilter: string = req.query.status as string;
-        let priorityFilter: string = req.query.priority as string;
         let emplFilter: string = req.query.employee as string;
         let locFilter: string = req.query.location as string;
 
@@ -285,9 +284,6 @@ router.get("/serviceReq/filter", async function (req: Request, res: Response) {
             statusFilter="%";
         }
 
-        if(priorityFilter==Priorities.any){
-            priorityFilter="%";
-        }
         if(emplFilter=="Any"){
             emplFilter="%";
         }
@@ -307,10 +303,14 @@ router.get("/serviceReq/filter", async function (req: Request, res: Response) {
                             contains:statusFilter
                         }
                     },
-                    {
-                        reqPriority:{
-                            contains:priorityFilter
-                        }
+                    { OR:[
+                            {reqPriority:{
+                                contains:"Assigned"
+                            }},
+                            {reqPriority:{
+                                contains:"In Progress"
+                            }}
+                        ],
                     },
                     {
                         assignedUName:{

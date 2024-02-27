@@ -9,3 +9,8 @@ export interface requestFilters {
     locationFilter:string;
 }
 
+export interface requestFiltersForProtectedTable {
+    statusFilter:Status;
+    employeeFilter:string;
+    locationFilter:string;
+}

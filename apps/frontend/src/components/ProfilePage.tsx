@@ -7,7 +7,7 @@ import axios from "axios";
 import PieChartStatsProfile from "./service-requests/Stats/PieChartStatsProfile.tsx";
 import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 import Status from "common/src/algorithms/Requests/Status.ts";
-import {Priorities, ServiceRequest} from "common/src/algorithms/Requests/Request.ts";
+import {ServiceRequest} from "common/src/algorithms/Requests/Request.ts";
 
 function ProfilePage() {
 
@@ -154,7 +154,7 @@ function ProfilePage() {
             if (activeButton == "table") {
 
                     return (<ServiceRequest_Table_Protected employeeFilter={username!} statusFilter={Status.Any}
-                                                            priorityFilter={Priorities.any} locationFilter={"Any"}/>);
+                                                            locationFilter={"Any"}/>);
 
 
             }

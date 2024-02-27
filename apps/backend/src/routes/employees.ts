@@ -368,8 +368,7 @@ router.get("/employees/rel", async function (req: Request, res: Response) {
 router.get("/current_employee", async function (req: Request, res: Response) {
     const currentUser: Employee = req.body;
     try {
-        //try to send all the employees to the client
-        //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
+        //try to send the employee to the client
         res.send(await PrismaClient.employee.findUnique(
             {
                 where: {userName: currentUser.userName}
@@ -377,7 +376,27 @@ router.get("/current_employee", async function (req: Request, res: Response) {
         )); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you the employee\n");
     } catch (err) {
-        console.error("\nUnable to send employees\n");
+        console.error("\nUnable to send employee\n");
+        res.send(500);
+    }
+});
+
+//gets the employee with the username of the Auth0 login
+router.get("/employee_by_uname", async function (req: Request, res: Response) {
+    console.log("entered the router.get");
+    const uName: string = req.query.name as string;
+    console.log("uName in the backend is "+uName);
+    try {
+        //try to send the employee to the client
+        res.send(await PrismaClient.employee.findUnique(
+            {
+                where: {userName: uName}
+            }
+        )); //end res.send (this is what will be sent to the client)
+        console.info("\nSuccessfully gave you the employee\n");
+    } catch (err) {
+        console.error("\nUnable to send employee\n");
+        res.send(500);
     }
 });
 
