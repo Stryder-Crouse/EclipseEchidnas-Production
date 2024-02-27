@@ -13,8 +13,8 @@ import Status from "../../../../../packages/common/src/algorithms/Requests/Statu
 import Transportation_table from "./transportation-outside-request/Transportation_table.tsx";
 import Sanitation_table from "./sanitation-request/Sanitation_table.tsx";
 import ServiceRequest_Table from "./service-request/ServiceRequest_Table.tsx";
-import PieChartStatsAll from "./StatsPie/PieChartStatsAll.tsx";
-import PieChartStatsServiceRequest from "./StatsPie/PieChartStatsServiceRequest.tsx";
+import PieChartStatsAll from "./Stats/PieChartStatsAll.tsx";
+import PieChartStatsServiceRequest from "./Stats/PieChartStatsServiceRequest.tsx";
 import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 import axios from "axios";
 
@@ -67,7 +67,7 @@ export default function ServiceRequestOutputTables() {
 
 
     return (
-        <div className="tabs-container">
+        <div className="tabs-container ">
             <ul className="tabs">
                 <li>
                     <a id={"button_" + ReqTypes.flowReq} title="Service Request"
@@ -294,23 +294,23 @@ export default function ServiceRequestOutputTables() {
             switch (curentServiceRequest) {
                 case ReqTypes.flowReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={"/api/serviceRequests/flowReq/statistics"}>
+                        urlToGetStats={"/api/serviceRequests/flowReq/statistics"} urlForBuildingStats={"/api/serviceRequests/flowReq/building-statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.religReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={"/api/serviceRequests/religiousRequest/statistics"}>
+                        urlToGetStats={"/api/serviceRequests/religiousRequest/statistics"} urlForBuildingStats={"/api/serviceRequests/religiousRequest/building-statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.medReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={"/api/serviceRequests/medReq/statistics"}>
+                        urlToGetStats={"/api/serviceRequests/medReq/statistics"} urlForBuildingStats={"/api/serviceRequests/medReq/building-statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.tranReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={"/api/serviceRequests/outsideTransport/statistics"}>
+                        urlToGetStats={"/api/serviceRequests/outsideTransport/statistics"} urlForBuildingStats={"/api/serviceRequests/outsideTransport/building-statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.sanReq:
                     return (<PieChartStatsServiceRequest
-                        urlToGetStats={"/api/serviceRequests/sanReq/statistics"}>
+                        urlToGetStats={"/api/serviceRequests/sanReq/statistics"} urlForBuildingStats={"/api/serviceRequests/sanReq/building-statistics"}>
                     </PieChartStatsServiceRequest>);
                 case ReqTypes.serviceRequest:
                     return (<PieChartStatsAll></PieChartStatsAll>);

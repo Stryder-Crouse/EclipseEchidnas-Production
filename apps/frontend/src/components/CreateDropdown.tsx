@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 export interface DropdownProps{
     dropBtnName:string,
@@ -19,22 +19,24 @@ export interface DropdownProps{
 export function CreateDropdown({dropBtnName, dropdownID, isSearchable, runOnChange, populationArr, setSelected, resetDropdown,
                                    setResetDropdown, inputCSS, resetOnSelect}: DropdownProps) {
 
-    //every time this is reloaded, check to see if we need to reset the value of the dropdown
-    //if so, reset based on the two implementations, one searchable and one not
-    if (resetDropdown) {
-        const dropdownElement = document.getElementById(dropdownID);
-        if (dropdownElement) {
-            if (isSearchable) {
-                // If the dropdown is searchable (<input type="text">), reset its value to an empty string
-                (dropdownElement as HTMLInputElement).value = '';
-            } else {
-                // If the dropdown is not searchable (<select>), reset it to the default/first option
-                (dropdownElement as HTMLSelectElement).selectedIndex = 0;
+    useEffect(() => {
+        //every time this is reloaded, check to see if we need to reset the value of the dropdown
+        //if so, reset based on the two implementations, one searchable and one not
+        if (resetDropdown) {
+            const dropdownElement = document.getElementById(dropdownID);
+            if (dropdownElement) {
+                if (isSearchable) {
+                    // If the dropdown is searchable (<input type="text">), reset its value to an empty string
+                    (dropdownElement as HTMLInputElement).value = '';
+                } else {
+                    // If the dropdown is not searchable (<select>), reset it to the default/first option
+                    (dropdownElement as HTMLSelectElement).selectedIndex = 0;
+                }
             }
+            setSelected(-1); // Reset selected value
+            setResetDropdown(false); // Stop it from continually resetting
         }
-        setSelected(-1); // Reset selected value
-        setResetDropdown(false); // Stop it from continually resetting
-    }
+    }, [dropdownID, isSearchable, resetDropdown, setResetDropdown, setSelected]);
 
     function resetInputBox(){
 

@@ -65,7 +65,7 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter,emplo
         <div className={"h-100 w-[42.5rem] overflow-auto rounded-xl"}>
 
             {/* make your table in here  */}
-            <table className={"medTable"}>
+            <table className={"medTable overflow-y-scroll"}>
                 <thead>
                 <tr className={"tableTRHead"}>
                     <th className={"tableTD"}>ID</th>

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Priorities, ReligRequest, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
-import {Employee} from "../../../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import {Priorities, ReligRequest, ServiceRequest} from "common/src/algorithms/Requests/Request.ts";
+import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 //import AdminPageNavBar from "../../navigation-bar/AdminPageNavBar.tsx";
 import Status from "../../../../../../packages/common/src/algorithms/Requests/Status.ts";
 import {requestFilters} from "../serviceRequestInterface.ts";
@@ -24,9 +24,6 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
                 setReligRequestList(result);
             });
 
-
-
-
     }, [statusFilter, priorityFilter, employeeFilter, locationFilter]);
 
     return (
@@ -44,7 +41,7 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
                                 <th className={"tableTD"}>Location ID</th>
                                 <th className={"tableTD"}>Patient Name</th>
                                 <th className={"tableTD"}>Religion</th>
-                                <th className={"tableTD"}>Service requested</th>
+                                <th className={"tableTD"}>Service Requested</th>
                                 <th className={"tableTD"}>Extra Notes</th>
                             </tr>
                             </thead>
@@ -87,7 +84,7 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
                                                     onChange={
                                                         (event) => {
                                                             const eventHTML = event.target as HTMLSelectElement;
-                                                            onPriorityChange(eventHTML, requestIndex).then();/////todo RYAN (uncomment when done with function)
+                                                            onPriorityChange(eventHTML, requestIndex).then();
                                                         }
                                                     }
                                                 >
@@ -135,7 +132,7 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
     );
 
     function renderEmployees(employee: Employee, religID: string) {
-        console.log(employee.userName + ",");
+        //console.log(employee.userName + ",");
         return (
             <option
 
@@ -318,6 +315,7 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
 }
 
 async function getReligRequests(statusFilter:Status, priorityFilter:Priorities, employeeFilter:string, locationFilter:string) {
+    console.log("I should be filtering by "+statusFilter+", "+priorityFilter+", "+employeeFilter+", and "+locationFilter);
     const requests =
         await axios.get<[ReligRequest[], ServiceRequest[], Employee[][]]>("/api/serviceRequests/religiousRequest/filter",
             {params: {  status: statusFilter,

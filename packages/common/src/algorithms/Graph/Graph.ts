@@ -10,6 +10,9 @@ export class Graph {
     private readonly nodes: Array<Node>;
     /* Stores all edges in the graph */
     private readonly edges: Array<Edge>;
+
+    //to output on nodes to strings
+    private readonly edgesNoBackwords: Array<Edge>;
     /* Stores a map that maps a node obj to at list of node obj adjacent to it in the graph */
     private readonly adjacent: Map<Node, Array<Node>>;
     /* Stores a map that maps a node id (string) to its corresponding node */
@@ -42,6 +45,9 @@ export class Graph {
      *
      */
     constructor(unLinkedNodes: Array<Node>, edges: Array<Edge>) {
+
+        this.edgesNoBackwords=[...edges];
+
         // create map to relate node id strings to their corresponding node obj
         const nodeMap = new Map<string, Node>();
         // create map to relate edge id strings to their corresponding edge obj
@@ -99,6 +105,7 @@ export class Graph {
 
             //add edge to its starting node
             startNode.edges.push(edge);
+
 
             // create reverse edge for other node
             const backEdge: Edge = {
@@ -334,9 +341,9 @@ export class Graph {
         };
 
         //for each edge convert it into a csv representation and add it to the string output
-        for (let i = 0; i < this.getEdges().length; i++) {
-            if (this.getEdges()[i] != null || undefined) {
-                str += edgeToString(this.getEdges()[i] ?? failEdge);
+        for (let i = 0; i < this.edgesNoBackwords.length; i++) {
+            if (this.edgesNoBackwords[i] != null || undefined) {
+                str += edgeToString(this.edgesNoBackwords[i] ?? failEdge);
             }
         }
         return str;

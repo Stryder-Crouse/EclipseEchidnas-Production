@@ -134,7 +134,7 @@ export default function Religious_input({
     }
     return (
         <div
-            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-2 align-self-center"}>
+            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-2 align-self-center scale-90"}>
             <form className={"p-2"}>
                 <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Religious Request</h1> {/* Div Title */}
 
@@ -197,7 +197,7 @@ export default function Religious_input({
                                       id={"service"}
                                       value={service}
                                       required>
-                    </textarea>
+                            </textarea>
                         </div>
                         {/* Urgency */}
 

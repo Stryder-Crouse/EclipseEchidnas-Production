@@ -193,6 +193,7 @@ export default function MapFeatureButtons({
                 >
                     <img src={ZoomInIcon} alt={"Zoom In"} />
                 </button>
+                <hr/>
                 <button className="flex bg-ivoryWhite p-2 drop-shadow-lg rounded-b-md w-10 "
                         onClick={() => {
                             zoomMap(-1);

@@ -489,7 +489,7 @@ router.post("/medReq", async function (req: Request, res: Response) {
             // will be stored in the first spot of array (passed as a json through prisma client)
             data: {
                 //ID is auto created
-                reqType: sentData[0].reqType,
+                reqType: sentData[0].reqType.toLowerCase(),
                 reqPriority: sentData[0].reqPriority,
                 //connect the Node field using the node id as a foreign key
                 reqLocation: {
@@ -534,7 +534,7 @@ router.post("/medReq", async function (req: Request, res: Response) {
                 genReqID: service.reqID,
                 patientName: sentData[1].patientName,
                 patientDOB: sentData[1].patientDOB,
-                patientMedRecNum: sentData[1].patientMedReqNum,
+                patientMedRecNum: sentData[1].patientMedRecNum,
                 medForm: sentData[1].medForm,
                 medSig: sentData[1].medSig,
             }
@@ -933,7 +933,7 @@ router.post("/outsideTransport", async function (req: Request, res: Response) {
         const date = new Date();
         const servReq = await PrismaClient.serviceRequest.create({
             data: {
-                reqType: sentData[0].reqType,
+                reqType: sentData[0].reqType.toLowerCase(),
                 reqPriority: sentData[0].reqPriority,
                 reqLocation: {
                     connect: {
@@ -1356,7 +1356,7 @@ router.post("/sanReq", async function (req: Request, res: Response) {
         const date = new Date();
         const serviceReq = await PrismaClient.serviceRequest.create({
             data: {
-                reqType: sentData[0].reqType,
+                reqType: sentData[0].reqType.toLowerCase(),
                 reqPriority: sentData[0].reqPriority,
                 reqLocation: {
                     connect: {
@@ -1799,7 +1799,7 @@ router.post("/flowReq", async function (req: Request, res: Response) {
             // will be stored in the first spot of array (passed as a json through prisma client)
             data: {
                 //ID is auto created
-                reqType: flowData[0].reqType,
+                reqType: flowData[0].reqType.toLowerCase(),
                 reqPriority: flowData[0].reqPriority,
                 //connect the Node field using the node id as a foreign key
                 reqLocation: {
@@ -2056,10 +2056,9 @@ router.get("/flowReq/statistics", async function (req: Request, res: Response) {
             if (entry.status == "Completed") result.completed++;
         }
 
-        res.send(result);
+        res.status(200).send(result);
         console.info("Successfully gave you all of the statistics");
         //send status unless 6 times bug occurs
-        res.sendStatus(200);
     } catch (err) {
         console.error("Unable to send requests");
         res.sendStatus(400); // Send error
@@ -2195,10 +2194,9 @@ router.get("/flowReq/building-statistics", async function (req: Request, res: Re
             shapiro, tower, Francis45, Francis15, BTM
         };
 
-        res.send(result);
+        res.status(200).send(result);
         console.info("Successfully gave you all of the statistics");
         //send status unless 6 times bug occurs
-        res.sendStatus(200);
 
     } catch (error) {
         console.error("Unable to send requests");
@@ -2214,7 +2212,7 @@ router.post('/religiousRequest', async function (req: Request, res: Response) {
         const sentData: [ServiceRequest, ReligRequest] = req.body;
         const servReq = await PrismaClient.serviceRequest.create({
             data: {
-                reqType: sentData[0].reqType,
+                reqType: sentData[0].reqType.toLowerCase(),
                 reqPriority: sentData[0].reqPriority,
                 reqLocation: {
                     connect: {
@@ -2405,10 +2403,10 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
         if (priorityFilter == Priorities.any) {
             priorityFilter = "%";
         }
-        if (emplFilter == "Any") {
+        if (emplFilter.toLowerCase() == "Any") {
             emplFilter = "%";
         }
-        if (locFilter == "Any") {
+        if (locFilter.toLowerCase() == "Any") {
             locFilter = "%";
         }
 
