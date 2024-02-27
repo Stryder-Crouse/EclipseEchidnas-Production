@@ -9,9 +9,9 @@ import {ManagementClient} from "auth0";
 const router: Router = express.Router();
 
 const auth0 = new ManagementClient({
-    domain: 'dev-hca27okc2srfyen8.us.auth0.com',
-    clientId: 'sjOBn2g3OxSS11LMuXopKBZ4mao8drry',
-    clientSecret: 'B0rX2U4tbxl9fO_SNNfgOgQxo9lrqGd2ti2CPqNwUxUxcMESdONNeZcK52Ec4g4d',
+    domain: 'dev-w3apfgzf8dmf8bgm.us.auth0.com',
+    clientId: 'iGb2hrQNGmRDlIeWtp1su1FyxEESYIaQ',
+    clientSecret: 'X6dJjiFvyKGEpv0Wf32eRZp7wHclLhdDWC_qgt6URftYjvVagJ1fDzLL5foEz9hh',
 });
 
 

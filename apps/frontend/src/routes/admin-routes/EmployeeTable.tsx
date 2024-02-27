@@ -5,7 +5,6 @@ import axios from "axios";
 import {Employee, Roles} from "common/src/algorithms/Employee/Employee.ts";
 import trashIcon from "../../images/Table Functions/trash-2.png";
 import editPen from "../../images/Table Functions/pencil.png";
-import ExportImportButtonEmployee from "../../components/EmployeeTableButtons/ExportImportButtonEmployee.tsx";
 import FullSideNavBarComponent from "../../components/FullSideNavBarComponent.tsx";
 
 
@@ -69,13 +68,13 @@ function EmployeeTable() {
             <div className="z-10">
                 <FullSideNavBarComponent/>
             </div>
+            {/*copy from here*/}
             <div className="flex flex-col w-lvw -ml-10">
                 <div className={"employee-table-container"}>
                     <div className="flex">
                         <span className={"employee-caption-container"}>
                             <span className={"employee-table-title"}>Employee Table</span>
                             <div className={"flex"}>
-                                <ExportImportButtonEmployee/>
                             <button onClick={
                                 () => {
                                     alert("To create a new employee please log out and log in with a new email address." +

@@ -1,8 +1,8 @@
 import React from "react";
 import axios from "axios";
 import {Employee} from "common/src/algorithms/Employee/Employee.ts";
-import ImportIcon from "../../images/Table Functions/import.png";
-import ExportIcon from "../../images/Table Functions/download.png";
+//import ImportIcon from "../../images/Table Functions/import.png";
+//import ExportIcon from "../../images/Table Functions/download.png";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import {HTMLInputElement} from "happy-dom";
@@ -68,18 +68,16 @@ function ExportImportButtonEmployee() {
 
     return (
 
-        <div className={"flex justify-center "}>
+        <div className={"flex justify-center mt-5"}>
             <button
-                title={"Import New Set of Employees"}
-                className={"p-3 hover:bg-navy transition-all  bg-navStart rounded-full h-min  drop-shadow-lg"}
+                className={"transition-all hover:bg-navy w-40 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}
                 onClick={importEmployee}>
-                <img src={ImportIcon} alt={""} className={"invert"}/>
+                Import .csv
             </button>
             <button
-                title={"Export/Download Current Employee Data"}
-                className={"p-3 ml-4 mr-4 hover:bg-navy transition-all bg-navStart rounded-full h-min  drop-shadow-lg"}
+                className={"transition-all hover:bg-navy w-40 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}
                 onClick={exportEmployee}>
-                <img src={ExportIcon} alt={""} className={"invert"}/>
+                Export Current
             </button>
         </div>
     );
