@@ -489,7 +489,7 @@ router.post("/medReq", async function (req: Request, res: Response) {
             // will be stored in the first spot of array (passed as a json through prisma client)
             data: {
                 //ID is auto created
-                reqType: sentData[0].reqType,
+                reqType: sentData[0].reqType.toLowerCase(),
                 reqPriority: sentData[0].reqPriority,
                 //connect the Node field using the node id as a foreign key
                 reqLocation: {
@@ -933,7 +933,7 @@ router.post("/outsideTransport", async function (req: Request, res: Response) {
         const date = new Date();
         const servReq = await PrismaClient.serviceRequest.create({
             data: {
-                reqType: sentData[0].reqType,
+                reqType: sentData[0].reqType.toLowerCase(),
                 reqPriority: sentData[0].reqPriority,
                 reqLocation: {
                     connect: {
@@ -1356,7 +1356,7 @@ router.post("/sanReq", async function (req: Request, res: Response) {
         const date = new Date();
         const serviceReq = await PrismaClient.serviceRequest.create({
             data: {
-                reqType: sentData[0].reqType,
+                reqType: sentData[0].reqType.toLowerCase(),
                 reqPriority: sentData[0].reqPriority,
                 reqLocation: {
                     connect: {
@@ -1804,7 +1804,7 @@ router.post("/flowReq", async function (req: Request, res: Response) {
             // will be stored in the first spot of array (passed as a json through prisma client)
             data: {
                 //ID is auto created
-                reqType: flowData[0].reqType,
+                reqType: flowData[0].reqType.toLowerCase(),
                 reqPriority: flowData[0].reqPriority,
                 //connect the Node field using the node id as a foreign key
                 reqLocation: {
@@ -2217,7 +2217,7 @@ router.post('/religiousRequest', async function (req: Request, res: Response) {
         const sentData: [ServiceRequest, ReligRequest] = req.body;
         const servReq = await PrismaClient.serviceRequest.create({
             data: {
-                reqType: sentData[0].reqType,
+                reqType: sentData[0].reqType.toLowerCase(),
                 reqPriority: sentData[0].reqPriority,
                 reqLocation: {
                     connect: {
@@ -2397,7 +2397,7 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
         let emplFilter: string = req.query.employee as string;
         let locFilter: string = req.query.location as string;
 
-        let relFilter:string = "religious personnel";
+        let relFilter:string;
 
         console.log("raw");
         console.log("statusfilter: \n" + statusFilter);
@@ -2411,10 +2411,10 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
         if(priorityFilter==Priorities.any){
             priorityFilter="%";
         }
-        if(emplFilter=="Any"){
+        if(emplFilter.toLowerCase()=="any"){
             emplFilter="%";
         }
-        if(locFilter=="Any"){
+        if(locFilter.toLowerCase()=="any"){
             locFilter="%";
         }
 
