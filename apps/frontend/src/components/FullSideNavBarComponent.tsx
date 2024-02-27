@@ -9,6 +9,7 @@ import LogOutIcon from "../images/SideBar/log-out.png";
 import AboutIcon from "../images/SideBar/users-round.png";
 import CreditsIcon from "../images/SideBar/copyright.png";
 
+import ProfileIcon from "../images/SideBar/prfile_icon.png";
 export default function FullSideNavBarComponent() {
     const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
@@ -38,6 +39,7 @@ export default function FullSideNavBarComponent() {
 
                     <hr className="my-3" />
                     {/* Conditionally render "Login" or "Log Out" based on authentication status */}
+                    <SideBarItem icon={ProfileIcon} text="Profile" link="ProfilePage" />
                     <SideBarItem icon={isAuthenticated ? LogOutIcon : LogIcon} text={isAuthenticated ? "Logout" : "Login"} onClick={handleLoginOrLogout} link={window.location.origin}/>
                     <SideBarItem icon={AboutIcon} text={"About"} link={"/AboutPage"}/>
                     <SideBarItem icon={CreditsIcon} text={"Credits"} link={"/Credits"}/>

@@ -1,6 +1,6 @@
 import express, {Router, Request, Response} from "express";
 import PrismaClient from "../bin/database-connection.ts";
-import {Employee} from "../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 import fs from "fs";
 import {readEmployeeCSV} from "../algorithms/readCSV.ts";
 import multer from "multer";
@@ -387,16 +387,18 @@ export async function religEmployees(religion:string){
 }
 
 //gets the employee with the username of the Auth0 login
-router.get("/current_employee", async function (req: Request, res: Response) {
-    const currentUser: Employee = req.body;
+router.get("/current_employee/:emp", async function (req: Request, res: Response) {
+    console.log(req.params);
+    const currentUser: string = req.params.emp as string;
+    console.log("CURRENT USER: " + currentUser);
     try {
         //try to send all the employees to the client
         //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
-        res.status(200).send(await PrismaClient.employee.findUnique(
+        const test = await PrismaClient.employee.findUnique(
             {
-                where: {userName: currentUser.userName}
-            }
-        )); //end res.send (this is what will be sent to the client)
+                where: {userName: currentUser}
+            });
+        res.status(200).send(test);
         console.info("\nSuccessfully gave you the employee\n");
     } catch (err) {
         console.error("\nUnable to send employees\n" + err);
