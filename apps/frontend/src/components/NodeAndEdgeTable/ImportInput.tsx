@@ -105,6 +105,7 @@ export default function ImportInput({setIsImportOpen}: closeImportInput) {
             }
         }
 
+        setIsImportOpen(false);
         //Get node file
         // const inputNode = document.createElement("input");
         // inputNode.type = "file";
