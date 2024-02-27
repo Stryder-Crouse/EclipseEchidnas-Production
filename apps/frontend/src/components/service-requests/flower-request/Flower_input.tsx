@@ -147,7 +147,7 @@ export default function Flower_input({
 
     return(
         <div
-            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
+            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center scale-90"}>
             <form className="p-2">
 
 

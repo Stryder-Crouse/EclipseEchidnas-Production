@@ -10,11 +10,12 @@ import {NodeDataBase} from "common/src/algorithms/DataBaseClasses/NodeDataBase.t
 import {closeMedicineCard} from "../../service-request-cards/MedicineRequestCard.tsx";
 //import SimpleTextInput from "../../inputComponents/SimpleTextInput.tsx";
 import RequestSubmitToast from "../../toasts/RequestSubmitToast.tsx";
-let longNames:string[] = [];
+
+let longNames: string[] = [];
 
 export default function Medicine_input({
                                            setIsPopupOpen
-                                       }:closeMedicineCard) {
+                                       }: closeMedicineCard) {
 
     const [medQuant, setMedQuant] = useState("");
     const [medForm, setMedForm] = useState("");
@@ -80,13 +81,12 @@ export default function Medicine_input({
                 reqID: -1
             };
 
-            if(isNaN(parseInt(patientMedRec))){
+            if (isNaN(parseInt(patientMedRec))) {
                 console.error("patientMedRec was supposed to be a number");
+            } else {
+                console.log("patientMedRec, parsed for a number, is " + parseInt(patientMedRec));
             }
-            else{
-                console.log("patientMedRec, parsed for a number, is "+parseInt(patientMedRec));
-            }
-            if(isNaN(parseInt(medQuant))){
+            if (isNaN(parseInt(medQuant))) {
                 console.error("medQuant was supposed to be a number");
             }
             //TODO FNFN Create Inputs for new variables below: patientName, patientDOB, patientMedRecordNum, medForm, medSig
@@ -114,7 +114,7 @@ export default function Medicine_input({
 
             show();
         } catch (err) {
-            console.error("Error with trying to save Service Req in ServiceRequestPage.tsx: "+err);
+            console.error("Error with trying to save Service Req in ServiceRequestPage.tsx: " + err);
         }
 
 
@@ -129,7 +129,7 @@ export default function Medicine_input({
     function fadeEffect() {
         const target = document.getElementById("med-popup") as HTMLElement;
         let opacity = target.style.opacity;
-        if(Number(opacity) >= 0.97) {
+        if (Number(opacity) >= 0.97) {
             opacity = (Number(opacity) - 0.001).toString();
             target.style.opacity = opacity;
         } else if (Number(opacity) > 0) {
@@ -137,7 +137,7 @@ export default function Medicine_input({
             target.style.opacity = opacity;
         }
 
-        if(Number(opacity) < 0) {
+        if (Number(opacity) < 0) {
             clearInterval(interID);
         }
     }
@@ -163,9 +163,10 @@ export default function Medicine_input({
         event.preventDefault();
         setIsPopupOpen(false);
     }
+
     return (
         <div
-            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-4 align-self-center"}>
+            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-4 align-self-center scale-90"}>
             <form className={"p-2"}>
                 <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Medicine Request</h1>
 
@@ -182,7 +183,9 @@ export default function Medicine_input({
                         <div className="grid justify-center items-center my-1.5">
 
                             <label className="label">Location </label>
-                            <CreateDropdown runOnChange={()=>{return -1;}}
+                            <CreateDropdown runOnChange={() => {
+                                return -1;
+                            }}
                                             dropBtnName={"Locations"} dropdownID={"LocationMed"} isSearchable={true}
                                             populationArr={longNames} resetDropdown={resetDropdown}
                                             setSelected={setSelectedLoc}
@@ -195,7 +198,9 @@ export default function Medicine_input({
                         <div className="grid justify-center items-center my-1.5">
                             <label className={"Priority"}>Priority </label>
                             <CreateDropdown
-                                runOnChange={()=>{return -1;}}
+                                runOnChange={() => {
+                                    return -1;
+                                }}
                                 dropBtnName={"Priority"}
                                 dropdownID={"Priority"}
                                 populationArr={priorityArr}
@@ -287,13 +292,14 @@ export default function Medicine_input({
                         </SimpleTextInput>
 
                         <div className={"grid justify-center items-center my-1.5 mb-1"}>
-                    <textarea placeholder={"Extra Info: "}
-                              className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
-                              onChange={(e) => setExtraInfo(e.target.value)}
-                              id={"service"}
-                              value={extraInfo}
-                              required>
-                    </textarea>
+                            <label className="label">Extra Notes </label>
+                            <textarea placeholder={"Extra Info: "}
+                                      className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
+                                      onChange={(e) => setExtraInfo(e.target.value)}
+                                      id={"service"}
+                                      value={extraInfo}
+                                      required>
+                            </textarea>
                         </div>
                     </div>
                 </div>
@@ -303,7 +309,7 @@ export default function Medicine_input({
             </form>
             <div className={"grid justify-center items-center m-auto my-1.5 mb-5"}>
                 <button onClick={(event) => closeMedicineForm(event)} className={
-                    "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-5"}>
+                    "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-3"}>
                     Close
                 </button>
 
