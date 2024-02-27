@@ -44,31 +44,24 @@ export function UniversalPackageCredits({packageName, packageImage, useDescripti
             )}
 
             <div className={`popupForm ${isPopupOpen ? "block" : "hidden"}`} id={"descriptionPopup"}>
-                <a href={link} target={"_blank"}>
-                    <div
-                        className={"grid justify-items-center border border-black rounded-2xl bg-ivoryWhite p-8 font-project w-80"}
-                    >
-                        <div>
-                            <img
-                                src={packageImage}
-                                alt={"Logo"}
-                                className={"bg-white border border-transparent rounded-lg w-48 my-1"}
-                            />
-                        </div>
+                <a href={link} target= "_blank" className="flex items-center justify-center">
+                    <div className="flex items-center justify-center p-8">
+                        <div
+                            className="flex flex-col gap-3 items-center justify-center border border-black rounded-2xl bg-ivoryWhite p-8 font-project w-80">
 
-                        <h1
-                            className={"font-semibold text-navStart text-2xl my-1"}
-                        >
-                            {packageName}
-                        </h1>
+                            <div className="w-48 h-48 flex items-center justify-center">
+                                <img
+                                    src={packageImage}
+                                    alt="Logo"
+                                    className="object-contain w-full h-full bg-white border border-transparent rounded-lg"
+                                />
+                            </div>
 
-                        <div className={"font-project text-center"}>
-                            <p className={"border border-black rounded p-2 my-1"}>
-                                {useDescription}
-                            </p>
-                            <p className={"text-xs my-1"}>
-                                {copyright}
-                            </p>
+
+                            <h1 className="font-semibold text-navStart text-2xl my-1">{packageName}</h1>
+
+                            <p className="border border-black rounded p-2">{useDescription}</p>
+                            <p className="text-[0.625rem]">{copyright}</p>
                         </div>
                     </div>
                 </a>
