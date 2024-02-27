@@ -18,8 +18,6 @@ ChartJS.register(
     Tooltip,
     Legend
 );
-
-
 export type requestStats = {
     buildingStats:buildingStats
 }
@@ -44,38 +42,62 @@ function StatsBarChartProfile({buildingStats}:requestStats){
         ]
     };
     const options = {
-        indexAxis: 'y',
+        elements: {
+            bar: {
+                borderWidth: 2,
+                borderColor: 'white'
+            }
+        },
         plugins: {
             legend: {
                 display: false
             },
         },
-        layout: {
-            padding: {
+        scales: {
+
+            x: {
+                grid:{
+                    color: ['#898180']
+                },
+                ticks: {
+                    color: ['black'],
+                    font: {
+                        size: 20
+                    }
+                }
+            },
+            y: {
+                grid:{
+                    color: ['#898180']
+                },
+                ticks: {
+                    color: ['black'],
+                    font: {
+                        size: 20
+                    }
+                }
             }
         }
     };
    
     
     return (
-        <div className={""} style={
-            {}}>
-            <p className="text-center"><b>Request per Building</b></p>
-            <div className="canvas-container">
-                <canvas width="150" height="230"></canvas>
-            </div>
+        <div className={"mb-4"} style={
+            {
+                position: "relative", height: "50%",
+                width: "100%"
+            }}>
+            <p className="text-center text-2xl"><b>Request per Building</b></p>
 
 
-            <div className={"scale-90"}>
-                {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-                {/* @ts-expect-error */}
+
+            <div className={""}>
                 <Bar data={data} options={options}></Bar>
             </div>
 
         </div>
     );
 }
-
 
 
 export default StatsBarChartProfile;
