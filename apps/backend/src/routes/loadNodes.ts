@@ -24,10 +24,10 @@ router.get("/", async function (req: Request, res: Response) {
 
             }),
         ); //end res.send (this is what will be sent to the client)
-        console.info("\n\n\n\n\n\nSuccessfully gave you the nodes\n\n\n\n\n\n");
+        console.info("Successfully gave you the nodes");
     } catch (err) {
         res.sendStatus(500);
-        console.error("\n\n\n\n\n\nUnable to send Nodes\n\n\n\n\n\n");
+        console.error("Unable to send Nodes");
     }
 });
 
@@ -50,11 +50,11 @@ router.get("/byID", async function (req: Request, res: Response) {
 
             }),
         ); //end res.send (this is what will be sent to the client)
-        console.info("\n\n\n\n\n\nSuccessfully gave you the nodes\n\n\n\n\n\n");
+        console.info("Successfully gave you the nodes");
         res.sendStatus(200);
     } catch (err) {
         res.sendStatus(500);
-        console.error("\n\n\n\n\n\nUnable to send Nodes\n\n\n\n\n\n");
+        console.error("Unable to send Nodes");
     }
 });
 
@@ -73,10 +73,10 @@ router.get("/all", async function (req: Request, res: Response) {
 
             }),
         ); //end res.send (this is what will be sent to the client)
-        console.info("\n\n\n\n\n\nSuccessfully gave you the nodes\n\n\n\n\n\n");
+        console.info("Successfully gave you the nodes");
     } catch (err) {
         res.sendStatus(500);
-        console.error("\n\n\n\n\n\nUnable to send Nodes\n\n\n\n\n\n");
+        console.error("Unable to send Nodes");
     }
 });
 
@@ -103,10 +103,10 @@ router.get("/floor", async function (req: Request, res: Response) {
                 },
             }),
         ); //end res.send (this is what will be sent to the client)
-        console.info("\n\n\n\n\n\nSuccessfully gave you the nodes\n\n\n\n\n\n");
+        console.info("Successfully gave you the nodes");
     } catch (err) {
         res.sendStatus(500);
-        console.error("\n\n\n\n\n\nUnable to send Nodes\n\n\n\n\n\n");
+        console.error("Unable to send Nodes");
     }
 });
 
@@ -128,10 +128,10 @@ router.get("/floorWithHalls", async function (req: Request, res: Response) {
                 },
             }),
         ); //end res.send (this is what will be sent to the client)
-        console.info("\n\n\n\n\n\nSuccessfully gave you the nodes\n\n\n\n\n\n");
+        console.info("Successfully gave you the nodes");
     } catch (err) {
         res.sendStatus(500);
-        console.error("\n\n\n\n\n\nUnable to send Nodes\n\n\n\n\n\n");
+        console.error("Unable to send Nodes");
     }
 });
 
