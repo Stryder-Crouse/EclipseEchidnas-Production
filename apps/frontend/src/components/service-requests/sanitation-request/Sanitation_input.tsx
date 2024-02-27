@@ -115,14 +115,14 @@ export default function Sanitation_input({
     }
     return (
         <div
-            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center scale-90"}>
+            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center "}>
             <form className={"px-1"}>
                 <h1 className={"flex mb-3 justify-center font-bold text-xl"}>Sanitation Request</h1> {/* Div Title */}
 
                 {/* Description */}
                 <SimpleTextInput id={"typeA"} labelContent={"Description"}
                                  inputStorage={typeA} setInputStorage={setTypeA}
-                                 inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                 inputCSS={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"}
                                  divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
                                  placeHolderText={"e.g. Vomit"}>
                 </SimpleTextInput>
@@ -134,7 +134,7 @@ export default function Sanitation_input({
                                     dropBtnName={"Locations"} dropdownID={"LocationSan"} isSearchable={true}
                                     populationArr={longNames} resetDropdown={resetDropdown}
                                     setSelected={setSelected}
-                                    inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow "}
+                                    inputCSS={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"}
                                     selectCSS={""}
                                     resetOnSelect={false} setResetDropdown={setResetDropdown}/>
                 </div>
@@ -153,7 +153,7 @@ export default function Sanitation_input({
                         setResetDropdown={setResetDropdownPriority}
                         setSelected={setPriorityIndex}
                         selectCSS={""}
-                        inputCSS={"p-1 w-60 bg-white text-black rounded-2xl border border-black drop-shadow cursor-pointer"}
+                        inputCSS={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"}
                     />
 
                 </div>
@@ -161,7 +161,7 @@ export default function Sanitation_input({
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
                     <label className="label">Extra Notes </label>
                     <textarea placeholder={"Extra Notes"}
-                              className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
+                              className={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer" /*className may need to be different to have a larger area*/}
                               onChange={(e) => setExtraInfo(e.target.value)}
                               id={"service"}
                               value={extraInfo}

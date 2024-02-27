@@ -19,8 +19,8 @@ export default function SideNavBarComponent({ children }: SideNavBarProps): JSX.
     const [expanded, setExpanded] = useState(true);
 
     return (
-        <aside className="h-screen z-10">
-            <nav className="h-full flex flex-col bg-navStart border-r shadow-sm">
+        <aside className="h-screen z-20">
+            <nav className="h-full flex flex-col bg-navStart border-r shadow-sm z-10">
                 <div className="p-4 pb-2 flex justify-between items-center mt-2 -mb-4">
                     <a href={"/"}>
                         <img src={Logo} alt={"Mass General Brigham Women's Hospital"}
