@@ -67,7 +67,7 @@ export default function ServiceRequestOutputTables() {
 
 
     return (
-        <div className="tabs-container">
+        <div className="tabs-container ">
             <ul className="tabs">
                 <li>
                     <a id={"button_" + ReqTypes.flowReq} title="Service Request"

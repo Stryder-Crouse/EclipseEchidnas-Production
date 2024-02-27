@@ -9,7 +9,7 @@ function NodeEdgeTablePage() {
             <div className="z-10">
                 <FullSideNavBarComponent/>
             </div>
-            <div className="relative justify-center items-center m-auto ">
+            <div className="relative justify-center  items-center m-auto ">
                 <CsvPageTableContainer/>
             </div>
         </div>
