@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import FullSideNavBarComponent from "./FullSideNavBarComponent.tsx";
 import {useAuth0} from "@auth0/auth0-react";
-import ServiceRequest_Table from "./service-requests/service-request/ServiceRequest_Table.tsx";
+import ServiceRequest_Table_Protected from "./service-requests/service-request/ServiceRequest_Table_Protected.tsx";
 
 import axios from "axios";
 import PieChartStatsProfile from "./service-requests/Stats/PieChartStatsProfile.tsx";
@@ -153,8 +153,8 @@ function ProfilePage() {
 
             if (activeButton == "table") {
 
-                    return (<ServiceRequest_Table employeeFilter={username!} statusFilter={Status.Any}
-                                                  priorityFilter={Priorities.any} locationFilter={"Any"}/>);
+                    return (<ServiceRequest_Table_Protected employeeFilter={username!} statusFilter={Status.Any}
+                                                            priorityFilter={Priorities.any} locationFilter={"Any"}/>);
 
 
             }
