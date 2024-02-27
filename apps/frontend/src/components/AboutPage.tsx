@@ -37,7 +37,7 @@ function AboutPage(){
                         </ImageCard>
                         <ImageCard img={MikePic} name={"Mike Conroy"} role={"Documentation Analyst"} quote={"There's no point in being grown up if you can't act childish sometimes"}>
                         </ImageCard>
-                        <ImageCard img={AJPic} name={"Antonio Aguiar"} role={"Frontend Engineer"} quote={"test quote"}>
+                        <ImageCard img={AJPic} name={"Antonio Aguiar"} role={"Frontend Engineer"} quote={"There's no point in being grown up if you can't act childish sometimes"}>
                         </ImageCard>
                         <ImageCard img={SzymPic} name={"Szymon Mamro"} role={"Backend Engineer"} quote={"test quote"}>
                         </ImageCard>
@@ -94,7 +94,7 @@ export function ImageCard({img, name, role, quote}: imageProps) {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}>
 
-            <div className={`bg-gray-800 bg-opacity-50 p-3 rounded-lg absolute bottom-[9rem] left-0 w-full ${isHovered ? 'block' : 'hidden'}`} style={{ marginTop: "calc(100% - 2rem)" }}>
+            <div className={`bg-gray-800 bg-opacity-50 p-2 rounded-lg absolute bottom-[9rem] left-0 w-full mb-1 ${isHovered ? 'block' : 'hidden'}`} >
                 <p className="text-white text-sm">{quote}</p>
             </div>
             <img className="h-fit w-full " src={img} alt="Stryder"/>
