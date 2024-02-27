@@ -1,5 +1,4 @@
-import React, {useEffect} from "react";
-import {useState} from "react";
+import React, {useEffect, useState} from "react";
 import SimpleTextInput from "../inputComponents/SimpleTextInput.tsx";
 import {Employee, Roles} from "common/src/algorithms/Employee/Employee.ts";
 
@@ -11,23 +10,23 @@ export default function RegisterForm() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
 
-    const [userExistsEmp, setUserExistsEmp] = useState<Employee|null>(null);
+    const [userExistsEmp, setUserExistsEmp] = useState<Employee | null>(null);
     //const [currEmail, setCurrEmail] = useState('');
 
     const currUser = useAuth0();
     const thisEmail = currUser?.user?.email;
-    thisEmail!.replace('"','');
+    thisEmail!.replace('"', '');
 
     useEffect(() => {
-            doesUserExist(thisEmail!).then( (res)=>{
+        doesUserExist(thisEmail!).then((res) => {
 
-                if(res!=null){
-                    setFirstName(res.firstName);
-                    setLastName(res.lastName);
-                    setUserExistsEmp(res);
-                }
+            if (res != null && typeof (res) != "string") {
+                setFirstName(res.firstName);
+                setLastName(res.lastName);
+                setUserExistsEmp(res);
+            }
 
-            });
+        });
 
     }, [thisEmail]);
 
@@ -39,17 +38,16 @@ export default function RegisterForm() {
         console.log('User found');
         console.log(thisEmail);
 
-        if(userExistsEmp!=null){
+        if (userExistsEmp != null) {
             userExistsEmp.firstName = firstName;
             userExistsEmp.lastName = lastName;
-            await axios.post("api/employees/updateEmployee",userExistsEmp, {
+            await axios.post("api/employees/updateEmployee", userExistsEmp, {
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
 
-        }
-        else {
+        } else {
 
 
             const employee: Employee = {
@@ -83,9 +81,9 @@ export default function RegisterForm() {
 
             <form className={"font-project justify-content-center p-7 min-w-min max-w-max scale-125"}>
 
-                    <h1 className={"font-bold text-xl text-navStart mb-10 -mt-9"}>
-                        New Employee Registration
-                    </h1>
+                <h1 className={"font-bold text-xl text-navStart mb-10 -mt-9"}>
+                    New Employee Registration
+                </h1>
 
                 <div>
                     <SimpleTextInput id={"firstName"} labelContent={"First Name: "} inputStorage={firstName}
@@ -119,8 +117,12 @@ export default function RegisterForm() {
 
 
 async function doesUserExist(email: string) {
-    const doesEmpExist = await axios.get<Employee|null>(
+    const doesEmpExist = await axios.get<Employee | string>(
         "/api/employees/current_employee/doesExist"
-        ,{params:{email:email}});
+        , {params: {email: email}});
+    /* Stryder got gaslit by Axios */
+    if (doesEmpExist.data == "") {
+        return null;
+    }
     return doesEmpExist.data;
 }

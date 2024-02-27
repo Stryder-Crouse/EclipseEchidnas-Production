@@ -1,5 +1,5 @@
 import {expect, test} from "vitest";
-import {AStar} from "common/src/algorithms/Search/AStar.ts";
+import {DijkstraSearch} from "common/src/algorithms/Search/DijkstraSearch.ts";
 import {Node} from "common/src/algorithms/Graph/Node.ts";
 import {readEdgeCSV, readNodeCSV} from "../src/algorithms/readCSV.ts";
 import {Edge} from "common/src/algorithms/Graph/Edge.ts";
@@ -12,9 +12,9 @@ const edges: Array<Edge> = readEdgeCSV(edgesString);
 const graph: Graph = new Graph(nodes, edges);
 
 /* - - - test definitions - - - */
-function AStar_trivial_path(): void {
+function DijkstraSearch_trivial_path(): void {
     /* make the tested and expected paths */
-    const test_path: Array<Node> | null = AStar(graph.idToNode("1"), graph.idToNode("1"), graph);
+    const test_path: Array<Node> | null = DijkstraSearch(graph.idToNode("1"), graph.idToNode("1"), graph);
     const expected_path: Array<Node> = new Array<Node>();
     expected_path.push(graph.idToNode("1")!);
 
@@ -22,9 +22,9 @@ function AStar_trivial_path(): void {
     expect(test_path).toStrictEqual(expected_path);
 }
 
-function AStar_single_floor(): void {
+function DijkstraSearch_single_floor(): void {
     /* make the tested and expected paths */
-    const test_path: Array<Node> | null = AStar(graph.idToNode("1"), graph.idToNode("10"), graph);
+    const test_path: Array<Node> | null = DijkstraSearch(graph.idToNode("1"), graph.idToNode("10"), graph);
     const expected_path: Array<Node> = new Array<Node>();
     expected_path.push(graph.idToNode("1")!);
     expected_path.push(graph.idToNode("2")!);
@@ -37,9 +37,9 @@ function AStar_single_floor(): void {
     expect(test_path).toStrictEqual(expected_path);
 }
 
-function AStar_multiple_floors(): void {
+function DijkstraSearch_multiple_floors(): void {
     /* make the tested and expected paths */
-    const test_path: Array<Node> | null = AStar(graph.idToNode("2"), graph.idToNode("16"), graph);
+    const test_path: Array<Node> | null = DijkstraSearch(graph.idToNode("2"), graph.idToNode("16"), graph);
     const expected_path: Array<Node> = new Array<Node>();
     expected_path.push(graph.idToNode("2")!);
     expected_path.push(graph.idToNode("1")!);
@@ -54,6 +54,6 @@ function AStar_multiple_floors(): void {
 }
 
 /* - - - test execution - - - */
-test("Test graph from node 1 to 1 (trivial)", AStar_trivial_path);
-test("Test graph from node 1 to 10 (same floor)", AStar_single_floor);
-test("Test graph from node 2 to 16 (multiple floors)", AStar_multiple_floors);
+test("Test graph from node 1 to 1 (trivial)", DijkstraSearch_trivial_path);
+test("Test graph from node 1 to 10 (same floor)", DijkstraSearch_single_floor);
+test("Test graph from node 2 to 16 (multiple floors)", DijkstraSearch_multiple_floors);
