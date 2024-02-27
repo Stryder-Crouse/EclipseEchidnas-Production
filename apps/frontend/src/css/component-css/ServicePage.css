@@ -39,8 +39,10 @@
 .tabs-container {
     transform: scale(110%);
     padding: 16px;
-    margin: 5% auto auto;
-    width: 65%;
+    margin: auto auto auto;
+
+
+    width: 120vh;
     height: 75vh;
 
     display: flex;

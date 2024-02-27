@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import { EdgeDataBase } from "../../../../../packages/common/src/algorithms/DataBaseClasses/EdgeDataBase.ts";
+import { EdgeDataBase } from "common/src/algorithms/DataBaseClasses/EdgeDataBase.ts";
 import axios from "axios";
-import "../../css/route-css/nodeEdgeTablePage.css";
+
 
 
 
@@ -18,8 +18,8 @@ function EdgeTable() {
     },[]);
 
   return (
-    <div className={""}>
-      <div className={"flex justify-center"}>
+    <div className={"overflow-x-scroll overflow-y-scroll rounded-lg"}>
+      <div className={"flex justify-center rounded-lg"}>
         <table className={"requestTable"} >
           <thead>
             <tr className={"tableTRHead"}>

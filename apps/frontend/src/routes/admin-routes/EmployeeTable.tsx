@@ -75,14 +75,15 @@ function EmployeeTable() {
                         <span className={"employee-caption-container"}>
                             <span className={"employee-table-title"}>Employee Table</span>
                             <div className={"flex"}>
-                            <button onClick={
+
+                                <button onClick={
                                 () => {
                                     alert("To create a new employee please log out and log in with a new email address." +
                                         " Once you create your new account the new employee will show up here for you to edit it." +
                                         " We plan at a later date to make this process more seamless");
-                                }
+                                        }
                                 //openForm
-                            }
+                                    }
                                     className="drop-shadow-lg transition-all hover:bg-navy w-48 text-white p-2 bg-navStart rounded-full h-min font-semibold ">Add Employee</button>
                             </div>
                         </span>

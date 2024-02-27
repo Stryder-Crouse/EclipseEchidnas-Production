@@ -33,6 +33,7 @@ export default function Flower_input({
 
     let interID = setInterval(fadeEffect, 100);
     clearInterval(interID);
+    clearInterval(interID);
 
     useEffect(()=>{
         getLocations().then(

@@ -6,12 +6,14 @@ import ServiceRequestPage from "./routes/ServiceRequestPage.tsx";
 import ProtectedRequestList from "./components/protected-pages/ProtectedRequestList.tsx";
 import ProtectedNodeEdgeTable from "./components/protected-pages/ProtectedNodeEdgeTable.tsx";
 import AboutPage from './components/AboutPage.tsx';
+import ProtectedProfilePage from "./components/protected-pages/ProtectedProfilePage.tsx";
 //import GuestMap from "./routes/guest-routes/GuestMap.tsx";
 import ProtectedEmployeeTable from "./components/protected-pages/ProtectedEmployeeTable.tsx";
 import TailwindMapPage from "./routes/TailwindMapPage.tsx";
 import TestServiceReqPage from "./routes/TestServiceReqPage.tsx";
 import ProtectedRegisterPage from "./components/protected-pages/ProtectedRegisterPage.tsx";
 import PackageCredits from "./routes/PackageCredits.tsx";
+
 
 function App() {
     const router = createBrowserRouter([
@@ -71,6 +73,11 @@ function App() {
                 {
                     path: "/Credits",
                     element: <PackageCredits/>,
+                },
+
+                {
+                    path: "/ProfilePage",
+                    element: <ProtectedProfilePage/>,
                 },
             ],
         },
