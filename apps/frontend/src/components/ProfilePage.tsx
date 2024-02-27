@@ -10,7 +10,7 @@ import axios from "axios";
 import PieChartStatsProfile from "./service-requests/Stats/PieChartStatsProfile.tsx";
 import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 import Status from "common/src/algorithms/Requests/Status.ts";
-import {Priorities} from "common/src/algorithms/Requests/Request.ts";
+import {Priorities, ServiceRequest} from "common/src/algorithms/Requests/Request.ts";
 
 
 function ProfilePage() {
@@ -26,6 +26,9 @@ function ProfilePage() {
 
     const [lastName, setLastName]
         = useState("");
+
+    const [PendingTask, setPendingTask]
+        = useState(-1);
 
 
 
@@ -47,8 +50,16 @@ function ProfilePage() {
                 setFirstName(results.firstName);
                 setLastName(results.lastName);
                 setDesignation(results.designation);
+
             });
         }, [username]);
+
+    useEffect(() => {
+        getServiceRequestSize().then((results) => {
+            setPendingTask(results);
+
+        });
+    }, [username]);
 
 
     console.log(getEmployees);
@@ -99,7 +110,7 @@ function ProfilePage() {
 
                             <div className="flex mb-2">
                                 <span className="font-bold text-xl mr-2">Pending Tasks:</span>
-                                <p className="text-xl">{firstName}</p>
+                                <p className="text-xl">{PendingTask}</p>
                             </div>
 
                             <div className="mt-10">
@@ -197,4 +208,17 @@ async function getEmployees(emp: string) {
 );
     return employees.data;
 
+}
+
+async function getServiceRequestSize() {
+    const serviceRequest =
+        await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter/${emp}",{
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+    // console.log("sss");
+    // console.log(serviceRequest.data);
+    return serviceRequest.data.length;
 }
