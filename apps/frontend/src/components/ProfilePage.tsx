@@ -142,7 +142,7 @@ function ProfilePage() {
                 </div>
 
                 {/* Right Column - Content */}
-                <div className="flex-1 p-8">
+                <div className="flex-1 p-8 justify-center items-center mt-6">
 
                     {/* Content to be populated with each request */}
                     {generateSelectedTable()}
