@@ -1,7 +1,5 @@
 import {Coordinate} from "common/src/algorithms/Graph/Coordinate.ts";
-
 import {RenderableObject} from "./RenderableObject.ts";
-
 
 export class Edible extends RenderableObject{
 
