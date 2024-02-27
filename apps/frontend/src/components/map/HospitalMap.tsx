@@ -17,6 +17,7 @@ import {
     generateTextDirections
 } from "common/src/algorithms/Search/TextDirections/GenerateTextDirections.ts";
 import {setViewBoxForLevel} from "./mapLogic.ts";
+import {DijkstraSearchStrategy} from "common/src/algorithms/Search/Strategy/DijkstraSearchStrategy.ts";
 
 /* - - - types - - - */
 /**
@@ -253,6 +254,11 @@ function updatePathEdges(startingNode: Node,
             algo = new SearchContext(new DFSStrategy());
             rawPath = algo.search(graph.idToNode(startingNode.id)!, graph.idToNode(endingNode.id)!, graph);
             break;
+        case "Dijkstra":{
+            algo = new SearchContext(new DijkstraSearchStrategy());
+            rawPath = algo.search(graph.idToNode(startingNode.id)!, graph.idToNode(endingNode.id)!, graph);
+            break;
+        }
 
         default:
             algo = new SearchContext(new AStarStrategy());
