@@ -18,7 +18,7 @@ function EdgeTable() {
     },[]);
 
   return (
-    <div className={"overflow-x-scroll overflow-y-scroll  rounded-lg"}>
+    <div className={"overflow-x-scroll overflow-y-scroll rounded-lg"}>
       <div className={"flex justify-center rounded-lg"}>
         <table className={"requestTable"} >
           <thead>

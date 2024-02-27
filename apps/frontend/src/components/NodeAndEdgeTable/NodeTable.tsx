@@ -14,7 +14,7 @@ function NodeTable() {
     },[]);
 
     return (
-        <div className="overflow-x-scroll overflow-y-scroll max-w-[80%] rounded-lg">
+        <div className="overflow-x-scroll overflow-y-scroll max-w-[95%] rounded-lg">
             <div className={""}>
                 <table className={"requestTable "}>
                     <thead>
