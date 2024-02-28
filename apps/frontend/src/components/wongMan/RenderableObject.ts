@@ -14,4 +14,5 @@ export abstract class RenderableObject{
 
     abstract render(renderer:CanvasRenderingContext2D, renderCount:number):void;
 
+
 }
