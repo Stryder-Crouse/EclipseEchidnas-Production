@@ -199,7 +199,7 @@ function EmployeeTable() {
                             >{formSubmitText()}</button>
                         </div>
                         <div>
-                            <button type={"button"} className={"submitButtonEmployee"} onClick={closeForm}>Close
+                            <button type={"button"} className={"closeButtonEmployee "} onClick={closeForm}>Close
                             </button>
                         </div>
                     </form>
@@ -377,6 +377,7 @@ function EmployeeTable() {
      * close the div add Employee Form
      */
     function closeForm(): void {
+
         const close = document.getElementById("addEmployeeForm");
         if (close != null) {
             close.setAttribute("class", "employeeInputHidden");

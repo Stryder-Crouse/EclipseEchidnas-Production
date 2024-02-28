@@ -1,4 +1,3 @@
-/** importations **/
 import React from "react";
 import MedicineRequestCard from "../components/service-request-cards/MedicineRequestCard.tsx";
 import FlowerRequestCard from "../components/service-request-cards/FlowerRequestCard.tsx";
@@ -16,15 +15,24 @@ function ServiceRequestPage() {
         <div className="flex">
             <FullSideNavBarComponent />
             <div className={"grid justify-center m-auto"}>
-                <div className={"relative flex  justify-center "}>
-                    {isAuthenticated && <FlowerRequestCard/>}
-                    {isAuthenticated && <ReligionRequestCard/>}
-
-                    {isAuthenticated && <MedicineRequestCard />}
+                <div className={"relative flex justify-center "}>
+                    {isAuthenticated ? (
+                        <>
+                            <FlowerRequestCard />
+                            <ReligionRequestCard />
+                            <MedicineRequestCard />
+                        </>
+                    ) : (
+                        <>
+                            <FlowerRequestCard />
+                            <ReligionRequestCard/>
+                            {/* Add other cards for non-authenticated users */}
+                        </>
+                    )}
                 </div>
-                <div className={"relative flex  justify-center mt-12"}>
-                    {isAuthenticated && <TransportationRequestCard/>}
-                    {isAuthenticated && <SanitationRequestCard/>}
+                <div className={"relative flex justify-center mt-12"}>
+                    {isAuthenticated && <TransportationRequestCard />}
+                    {isAuthenticated && <SanitationRequestCard />}
                     {/* Conditionally render RequestListCard based on authentication status */}
                     {isAuthenticated && <RequestListCard />}
                 </div>
