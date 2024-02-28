@@ -18,7 +18,7 @@ import EdibleBlack from "../../images/WongMan/Edible/EdibleBlack.png";
 import WongBot from "../../images/WongMan/Wong/Wong_Bottom.png";
 import WongTop from "../../images/WongMan/Wong/Wong_Top_Eyebrows.png";
 import WongTopLaser from "../../images/WongMan/Wong/Wong_Top_Laser.png";
-
+import GameEndSound from "../../images/WongMan/Distorted_Team_E.mp3";
 // @ts-expect-error happy-dom is based
 import {HTMLImageElement, KeyboardEvent} from "happy-dom";
 import {WongLevel} from "./WongLevel.ts";
@@ -26,6 +26,7 @@ import {multipleNodeDataBaseToNode, NodeDataBase} from "common/src/algorithms/Da
 import axios from "axios";
 import {RenderableObject} from "./RenderableObject.ts";
 import {Wong} from "./Wong.ts";
+import {GameSound} from "./GameSound.ts";
 
 /* structures */
 export type WongManProps = {
@@ -60,6 +61,8 @@ export default function WongManGame({visible, setVisible}: WongManProps) {
 
     const mainThread = useRef< NodeJS.Timeout | null>(null);
 
+    const gameEndSound = useRef<GameSound|null>(null);
+
     /* grabbing rodes */
     useEffect(() => {
         grabSomeNodes().then((myFulfilledPromise: Array<Array<Node>>) => {
@@ -86,6 +89,8 @@ export default function WongManGame({visible, setVisible}: WongManProps) {
                     setVisible(false);
                     clearInterval(mainThread.current!);
                     resetGame();
+                    gameEndSound.current?.stopSound();
+                    location.reload();
                 }}
             >
                 Exit
@@ -98,6 +103,7 @@ export default function WongManGame({visible, setVisible}: WongManProps) {
                             setShowGame(true);
                             setShowStart(false);
                             startGame();
+
                         }}
                 >Start
                 </button>
@@ -128,6 +134,9 @@ export default function WongManGame({visible, setVisible}: WongManProps) {
             handleKeyUp(e);
         });
 
+        //add the sound
+        gameEndSound.current = new GameSound(GameEndSound);
+        document.body.append(gameEndSound.current?.soundElement);
         /* change the level to 0 */
         changeLevel(levels[0]);
         currentLevel.current=0;
@@ -244,10 +253,15 @@ export default function WongManGame({visible, setVisible}: WongManProps) {
         canvasContext.current?.clearRect(0, 0, canvasArea.current!.width, canvasArea.current!.height);
     }
 
-    function changeLevelWhenDone(){
-        if(ediblesLeft.current==0 && currentLevel.current!=5){
+    async function changeLevelWhenDone() {
+        if (ediblesLeft.current == 0 && currentLevel.current != 5) {
             currentLevel.current++;
             changeLevel(levels[currentLevel.current]);
+        }
+
+        if (ediblesLeft.current == 0 && currentLevel.current == 5) {
+            gameEndSound.current?.startSound();
+
         }
     }
 
