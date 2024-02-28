@@ -21,31 +21,31 @@ function AboutPage(){
             </div>
             <div className="mt-5 flex flex-col m-auto">
                 <p className="mb-1 m-auto flex font-bold justify-center p-3 bg-white rounded-lg w-72 shadow ">ABOUT THE DEVELOPERS</p>
-                <div className="flex flex-row scale-95">
+                <div className="flex flex-row scale-95"> {/*about cards*/}
                     <div className="flex grid grid-cols-6 gap-4">
-                        <ImageCard img={StryderPic} name={"Stryder Crouse"} role={"Team Lead"} quote={"test quote"}>
+                        <ImageCard img={StryderPic} name={"Stryder Crouse"} role={"Team Lead"} quote={"I'll help you in a bit"}>
                         </ImageCard>
-                        <ImageCard img={GracePic} name={"Grace Philips"} role={"Assistant Lead"} quote={"Stay mad"}>
+                        <ImageCard img={GracePic} name={"Grace Philips"} role={"Assistant Lead"} quote={"Docker no work"}>
                         </ImageCard>
                         <ImageCard img={ChrisPic} name={"Chris Lam"} role={"Assistant Lead"} quote={"position: absolute?"}>
                         </ImageCard>
-                        <ImageCard img={ShiivekPic} name={"Shiivek Agarwal"} role={"Project Manager"} quote={"test quote"}>
+                        <ImageCard img={ShiivekPic} name={"Shiivek Agarwal"} role={"Project Manager"} quote={"Party at Joe's at 8 PM"}>
                         </ImageCard>
                         <ImageCard img={SameerPic} name={"Sameer Augustine"} role={"Scrum Master"} quote={"This doesn't look like robots"}>
                         </ImageCard>
-                        <ImageCard img={AlanaPic} name={"Alana Reid"} role={"Product Owner"} quote={"test quote"}>
+                        <ImageCard img={AlanaPic} name={"Alana Reid"} role={"Product Owner"} quote={"Docker? I hardly know her!"}>
                         </ImageCard>
                         <ImageCard img={MikePic} name={"Mike Conroy"} role={"Documentation Analyst"} quote={"There's no point in being grown up if you can't act childish sometimes"}>
                         </ImageCard>
-                        <ImageCard img={AJPic} name={"Antonio Aguiar"} role={"Frontend Engineer"} quote={"There's no point in being grown up if you can't act childish sometimes"}>
+                        <ImageCard img={AJPic} name={"Antonio Aguiar"} role={"Frontend Engineer"} quote={"How do I use GitHub?"}>
                         </ImageCard>
-                        <ImageCard img={SzymPic} name={"Szymon Mamro"} role={"Backend Engineer"} quote={"test quote"}>
+                        <ImageCard img={SzymPic} name={"Szymon Mamro"} role={"Backend Engineer"} quote={"Actually I don't like thinking"}>
                         </ImageCard>
-                        <ImageCard img={RyanPic} name={"Ryan Hunter"} role={"Backend Engineer"} quote={"test quote"}>
+                        <ImageCard img={RyanPic} name={"Ryan Hunter"} role={"Backend Engineer"} quote={"Something cool"}>
                         </ImageCard>
-                        <ImageCard img={AlexPic} name={"Alex Ramirez"} role={"Algorithms Engineer"} quote={"test quote"}>
+                        <ImageCard img={AlexPic} name={"Alex Ramirez"} role={"Algorithms Engineer"} quote={"(sample text - dijkstra's)"}>
                         </ImageCard>
-                        <ImageCard img={WongPic} name={"Wilson Wong"} role={"Professor"} quote={"test quote"}>
+                        <ImageCard img={WongPic} name={"Wilson Wong"} role={"Professor"} quote={"Team eeeeee"}>
                         </ImageCard>
                     </div>
                     <div
