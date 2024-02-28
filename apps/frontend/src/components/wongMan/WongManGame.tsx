@@ -17,6 +17,7 @@ import EdibleYellow from "../../images/WongMan/Edible/EdibleYellow.png";
 import EdibleBlack from "../../images/WongMan/Edible/EdibleBlack.png";
 import WongBot from "../../images/WongMan/Wong/Wong_Bottom.png";
 import WongTop from "../../images/WongMan/Wong/Wong_Top_Eyebrows.png";
+import WongTopLaser from "../../images/WongMan/Wong/Wong_Top_Laser.png";
 
 // @ts-expect-error happy-dom is based
 import {HTMLImageElement, KeyboardEvent} from "happy-dom";
@@ -139,8 +140,14 @@ export default function WongManGame({visible, setVisible}: WongManProps) {
     function changeLevel(level: WongLevel): void {
         /* make the new player */
         echidna.current = new Echidna(level.startLocation, 50, 50, Directions_Game.RIGHT);
-        wong.current = new Wong(level.wongStartLocation,0,0,WongTop
-            ,WongBot,level.wongAnger,window.innerHeight,level.wongRightSpeed);
+        if(level.level>=4) {
+            wong.current = new Wong(level.wongStartLocation, 0, 0, WongTopLaser
+                , WongBot, level.wongAnger, window.innerHeight, level.wongRightSpeed);
+        }
+        else{
+            wong.current = new Wong(level.wongStartLocation, 0, 0, WongTop
+                , WongBot, level.wongAnger, window.innerHeight, level.wongRightSpeed);
+        }
         //set context
         canvasContext.current = canvasArea.current!.getContext("2d");
 
@@ -271,7 +278,7 @@ export default function WongManGame({visible, setVisible}: WongManProps) {
      * Read the player input from the keyboard.
      */
     function handlePlayerMovement(): void {
-        const playerMovementThisFrame: Coordinate = {x: 0, y: 0};
+        let playerMovementThisFrame: Coordinate = {x: 0, y: 0};
 
         // left arrow pressed
         if (keysDown.current[0]) {
@@ -289,6 +296,16 @@ export default function WongManGame({visible, setVisible}: WongManProps) {
         if (keysDown.current[3]) {
             playerMovementThisFrame.y = playerSpeed;
         }
+
+        //checkbounds for movement if not on last level
+        if(currentLevel.current!=5) {
+            console.log("before");
+            console.log(playerMovementThisFrame);
+            playerMovementThisFrame = maintainBounds(playerMovementThisFrame);
+            console.log("afther");
+            console.log(playerMovementThisFrame);
+        }
+
         //if player is not moving or not tell it (for animation)
         if (playerMovementThisFrame.x == 0 && playerMovementThisFrame.y == 0) {
             echidna.current?.setIsMoving(false);
@@ -300,11 +317,42 @@ export default function WongManGame({visible, setVisible}: WongManProps) {
         const newCoordinates = echidna.current!.getCoords()!;
         newCoordinates.x = newCoordinates.x + playerMovementThisFrame.x;
         newCoordinates.y = newCoordinates.y + playerMovementThisFrame.y;
+        console.log("newCoordinate");
+        console.log(newCoordinates);
 
         //handle rotation
         handleRotation(playerMovementThisFrame);
 
         echidna.current?.setCoords(newCoordinates);
+    }
+
+    function maintainBounds(playerMovementThisFrame:Coordinate){
+        const newCoordinates:Coordinate = {
+            x: echidna.current!.getCoords()!.x,
+            y:echidna.current!.getCoords()!.y
+        };
+        newCoordinates.x = newCoordinates.x + playerMovementThisFrame.x;
+        newCoordinates.y = newCoordinates.y + playerMovementThisFrame.y;
+
+        const properMovement:Coordinate = {
+            x:playerMovementThisFrame.x, y:playerMovementThisFrame.y
+        };
+
+        if(newCoordinates.x < 0){
+            properMovement.x=0;
+        }
+        if(newCoordinates.x + echidna.current!._width > window.innerWidth){
+            properMovement.x=0;
+        }
+
+        if(newCoordinates.y < 0){
+            properMovement.y=0;
+        }
+        if(newCoordinates.y + echidna.current!._height > window.innerHeight){
+            properMovement.y=0;
+        }
+
+        return properMovement;
     }
 
     function handleRotation(playerMovementThisFrame: Coordinate) {
