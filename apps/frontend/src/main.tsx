@@ -10,7 +10,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         domain={"dev-hca27okc2srfyen8.us.auth0.com"}
         clientId={"BxAg6HyJiboJvAd47Mj40WepvybXVTpY"}
       authorizationParams={{
-        redirect_uri: "http://localhost:3000/RegisterPage",
+        redirect_uri: "https://ec2-3-92-51-142.compute-1.amazonaws.com/RegisterPage",
       }}
     >
       <App />
