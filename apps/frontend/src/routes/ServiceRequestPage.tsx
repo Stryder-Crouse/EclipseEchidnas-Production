@@ -17,8 +17,8 @@ function ServiceRequestPage() {
             <FullSideNavBarComponent />
             <div className={"grid justify-center m-auto"}>
                 <div className={"relative flex  justify-center "}>
-                    <FlowerRequestCard />
-                    <ReligionRequestCard />
+                    {isAuthenticated && <FlowerRequestCard/>}
+                    {isAuthenticated && <ReligionRequestCard/>}
 
                     {isAuthenticated && <MedicineRequestCard />}
                 </div>
