@@ -54,7 +54,7 @@ function TailwindMapPage() {
 
     return (
         <div className="flex">
-            <WongManGame visable={showWongMan} setVisable={setShowWongMan}></WongManGame>
+            <WongManGame visible={showWongMan} setVisible={setShowWongMan}></WongManGame>
             <div className={hideMap()}>
                 <div className="flex absolute w-screen vh-100">
 
