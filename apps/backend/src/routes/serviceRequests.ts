@@ -273,27 +273,27 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
         res.sendStatus(400); // Send error
     }
 });
-
 router.get("/serviceReq/filter", async function (req: Request, res: Response) {
     try {
-        let statusFilter: string = req.query.status as string;
         let priorityFilter: string = req.query.priority as string;
         let emplFilter: string = req.query.employee as string;
         let locFilter: string = req.query.location as string;
+        let statusFilter: string = req.query.status as string;
 
-        if (statusFilter == Status.Any) {
-            statusFilter = "%";
+        if(priorityFilter==Priorities.any){
+            priorityFilter="%";
         }
 
-        if (priorityFilter == Priorities.any) {
-            priorityFilter = "%";
-        }
-        if (emplFilter == "Any") {
-            emplFilter = "%";
+        if(emplFilter=="Any"){
+            emplFilter="%";
         }
 
         if (locFilter == "Any") {
             locFilter = "%";
+        }
+
+        if(statusFilter == Status.Any){
+            statusFilter = "%";
         }
 
         const sreviceRequest = await PrismaClient.serviceRequest.findMany({
@@ -303,14 +303,13 @@ router.get("/serviceReq/filter", async function (req: Request, res: Response) {
             where: {
                 AND: [
                     {
-                        status: {
-                            contains: statusFilter
+                        reqPriority:{
+                            contains:priorityFilter
                         }
                     },
-                    {
-                        reqPriority: {
-                            contains: priorityFilter
-                        }
+                    { status:{
+                                    contains:statusFilter
+                                }
                     },
                     {
                         assignedUName: {
@@ -340,7 +339,141 @@ router.get("/serviceReq/filter", async function (req: Request, res: Response) {
         res.sendStatus(500); // Send error
     }
 });
+router.get("/serviceReq/filter/assigned_or_in_progress", async function (req: Request, res: Response) {
+    try {
+        let priorityFilter: string = req.query.priority as string;
+        let emplFilter: string = req.query.employee as string;
+        let locFilter: string = req.query.location as string;
 
+        if(priorityFilter==Priorities.any){
+            priorityFilter="%";
+        }
+
+        if(emplFilter=="Any"){
+            emplFilter="%";
+        }
+
+        if (locFilter == "Any") {
+            locFilter = "%";
+        }
+
+        const sreviceRequest = await PrismaClient.serviceRequest.findMany({
+            orderBy: {
+                reqID: "desc"
+            },
+            where: {
+                AND: [
+                    {
+                        reqPriority:{
+                            contains:priorityFilter
+                        }
+                    },
+                    { OR:[
+                            {status:{
+                                contains:"Assigned"
+                            }},
+                            {status:{
+                                contains:"In Progress"
+                            }}
+                        ],
+                    },
+                    {
+                        assignedUName: {
+                            contains: emplFilter
+                        }
+                    },
+                    {
+                        reqLocationID: {
+                            contains: locFilter
+                        }
+                    }
+                ]
+            }
+        });
+
+
+        //send the request to the user with the specified conditions
+        res.status(200).send(sreviceRequest);
+
+        console.log("Res: " + res); //debugging info
+
+        console.info("Successfully filtered requests"); //debugging info
+        //send status unless 6 times bug occurs
+
+    } catch (err) {
+        console.error("Unable to send requests" + err);
+        res.sendStatus(500); // Send error
+    }
+});
+router.get("/serviceReq/filter/assigned_in_progress_or_completed", async function (req: Request, res: Response) {
+    try {
+        let priorityFilter: string = req.query.priority as string;
+        let emplFilter: string = req.query.employee as string;
+        let locFilter: string = req.query.location as string;
+
+        if(priorityFilter==Priorities.any){
+            priorityFilter="%";
+        }
+
+        if(emplFilter=="Any"){
+            emplFilter="%";
+        }
+
+        if(locFilter=="Any"){
+            locFilter="%";
+        }
+
+        const sreviceRequest = await PrismaClient.serviceRequest.findMany({
+            orderBy:{
+                reqID: "desc"
+            },
+            where: {
+                AND:[
+                    {
+                        reqPriority:{
+                            contains:priorityFilter
+                        }
+                    },
+                    { OR:[
+                            {status:{
+                                    contains:"Assigned"
+                                }},
+                            {status:{
+                                    contains:"In Progress"
+                                }},
+                            {status:{
+                                    contains:"Completed"
+                                }}
+                        ],
+                    },
+                    {
+                        assignedUName:{
+                            contains:emplFilter
+                        }
+                    },
+                    {
+                        reqLocationID:{
+                            contains:locFilter
+                        }
+                    }
+                ]
+            }
+        });
+
+
+        //send the request to the user with the specified conditions
+        res.status(200).send(sreviceRequest);
+
+        console.log("Res: " + res); //debugging info
+
+        console.info("\nSuccessfully filtered requests\n"); //debugging info
+        //send status unless 6 times bug occurs
+
+    } catch (err) {
+        console.error("\nUnable to send requests\n" + err);
+        res.sendStatus(500); // Send error
+    }
+});
 // ---------------------------------    Changing Service Req Fields    ---------------------------------
 
 

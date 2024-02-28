@@ -37,7 +37,7 @@ import {requestFilters} from "../serviceRequestInterface.ts";
 
 
 
-export default function ServiceRequest_Table({statusFilter, priorityFilter,employeeFilter,locationFilter}:requestFilters) {
+export default function ServiceRequest_Table({statusFilter, priorityFilter, employeeFilter, locationFilter}:requestFilters) {
     console.log(priorityFilter);
 
 
@@ -84,9 +84,9 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter,emplo
                     serviceRequests.map((request, requestIndex) => {
                         return (
                             <tr className={"tableTR"}>
-                                <th className={"tableTD"}>{request.reqID}</th>
-                                <th className={"tableTD"}>{request.reqType}</th>
-                                <th className={"tableTD"}>
+                                <td className={"tableTD"}>{request.reqID}</td>
+                                <td className={"tableTD"}>{request.reqType}</td>
+                                <td className={"tableTD"}>
                                     <select
                                         className={"rounded-lg"}
                                         value={request.status}
@@ -103,8 +103,8 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter,emplo
                                         <option className={"status-dropdown"} value="In Progress">In Progress</option>
                                         <option className={"status-dropdown"} value="Completed">Completed</option>
                                     </select>
-                                </th>
-                                <th className={"tableTD"}>
+                                </td>
+                                <td className={"tableTD"}>
                                     <select
                                         className={"rounded-lg"}
                                         value={request.reqPriority}     //sets dropdown to request's value
@@ -121,8 +121,8 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter,emplo
                                         <option className={"status-dropdown"} value="High">High</option>
                                         <option className={"status-dropdown"} value="Emergency">Emergency</option>
                                     </select>
-                                </th>
-                                <th className={"tableTD"}>
+                                </td>
+                                <td className={"tableTD"}>
                                     <select
                                         className={"rounded-lg"}
                                         value={request.assignedUName}
@@ -139,8 +139,8 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter,emplo
                                                 renderEmployees(employee, request.reqID.toString()))
                                         }
                                     </select>
-                                </th>
-                                <th className={"tableTD"}>{request.reqLocationID}</th>
+                                </td>
+                                <td className={"tableTD"}>{request.reqLocationID}</td>
                                 <td className={"tableTD"}>{request.extraInfo}</td>
                             </tr>
                         );
@@ -355,5 +355,3 @@ async function getEmployees() {
     return employees.data;
 
 }
-
-

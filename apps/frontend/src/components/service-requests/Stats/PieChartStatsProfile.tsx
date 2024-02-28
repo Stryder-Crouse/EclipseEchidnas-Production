@@ -139,7 +139,6 @@ async function getAllStats(urlToGetStats:string,urlForBuildingStats:string,email
     };
 
 
-
     const prioStats:prioStats={
         lowPrio: servStats.lowPrio,
         medPrio: servStats.medPrio,
