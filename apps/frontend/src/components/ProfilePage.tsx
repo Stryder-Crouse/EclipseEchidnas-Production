@@ -129,7 +129,7 @@ function ProfilePage() {
 
                                 <button
                                     type="button"
-                                    className={`inline-block rounded px-9 pb-5 pt-5 text-xl font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out 
+                                    className={`inline-block rounded px-9 pb-5 pt-5 text-l font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out 
                                     ${
                                         activeCompletedButton === "hide"
                                             ? "bg-navy text-white hover:bg-navy focus:bg-navy active:bg-navy"
@@ -141,7 +141,7 @@ function ProfilePage() {
 
                                 <button
                                     type="button"
-                                    className={`inline-block rounded px-9 pb-5 pt-5 text-xl font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out ${
+                                    className={`inline-block rounded px-9 pb-5 pt-5 text-l font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out ${
                                         activeCompletedButton === "show"
                                             ? `bg-navy text-white hover:bg-navy focus:bg-navy active:bg-navy`
                                             : "bg-white text-black hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"

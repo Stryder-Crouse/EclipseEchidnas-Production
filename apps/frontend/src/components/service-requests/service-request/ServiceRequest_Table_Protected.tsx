@@ -174,7 +174,7 @@ async function getServiceRequest(statusFilter:Status, employeeFilter:string, loc
     let serviceRequest;
     if(showCompleted) {
         serviceRequest =
-            await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter/assigned_or_in_progress", {
+            await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter/assigned_in_progress_or_completed", {
                 params: {
                     status: statusFilter,
                     employee: employeeFilter, location: locationFilter
@@ -183,7 +183,7 @@ async function getServiceRequest(statusFilter:Status, employeeFilter:string, loc
     }
     else{
         serviceRequest =
-            await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter/assigned_in_progress_or_completed", {
+            await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter/assigned_or_in_progress", {
                 params: {
                     status: statusFilter,
                     employee: employeeFilter, location: locationFilter
