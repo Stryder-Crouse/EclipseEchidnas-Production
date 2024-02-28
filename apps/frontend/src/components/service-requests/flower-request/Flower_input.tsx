@@ -148,7 +148,7 @@ export default function Flower_input({
 
     return(
         <div
-            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center scale-90"}>
+            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center "}>
             <form className="p-2">
 
 
@@ -158,12 +158,12 @@ export default function Flower_input({
                     <div className={"flex flex-col mr-6"}>
                         <SimpleTextInput id={"senderName"} labelContent={"Name"} inputStorage={sender}
                                          setInputStorage={setSender}
-                                         inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                         inputCSS={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
                                          placeHolderText={"e.g. John Smith"}>
                         </SimpleTextInput>
 
-                        {/* //todo FNFN make this a createDropdown, assure theres a label without a colon and the placeholder is the name of the field (Priority) */}
+
                         <div className="grid justify-center items-center my-1.5">
                             <label id="priorityType">Priority </label>
                             <CreateDropdown dropBtnName={"Priority "} dropdownID={"UrgencyID"} isSearchable={false}
@@ -172,7 +172,7 @@ export default function Flower_input({
                                             resetDropdown={resetDropdownUrg}
                                             resetOnSelect={false}
                                             runOnChange={()=>{return -1;}}
-                                            inputCSS={"n/a"} selectCSS={"dropdown"}
+                                            inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"} selectCSS={"dropdown"}
                                             setResetDropdown={setResetDropdownUrg}/>
                         </div>
 
@@ -192,7 +192,7 @@ export default function Flower_input({
 
                         <SimpleTextInput id={"flowertype"} labelContent={"Flower Name"} inputStorage={flowerType}
                                          setInputStorage={setFlowerType}
-                                         inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                         inputCSS={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
                                          placeHolderText={"e.g. Orchids"}>
                         </SimpleTextInput>
@@ -201,7 +201,7 @@ export default function Flower_input({
                         <SimpleTextInput id={"flowerquantity"} labelContent={"Flower Quantity"}
                                          inputStorage={flowerQuantity}
                                          setInputStorage={(value) => handleFlowerNumericInputChange(value, setFlowerQuantity)}
-                                         inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                         inputCSS={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
                                          placeHolderText={"e.g. 14"}>
                         </SimpleTextInput>
@@ -209,7 +209,7 @@ export default function Flower_input({
                         <SimpleTextInput id={"flowerrecipient"} labelContent={"Flower Recipient"}
                                          inputStorage={flowerRecipient}
                                          setInputStorage={setFlowerRecipient}
-                                         inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                         inputCSS={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
                                          placeHolderText={"e.g. Ren Tanzer"}>
                         </SimpleTextInput>
@@ -217,14 +217,14 @@ export default function Flower_input({
 
                         <SimpleTextInput id={"message"} labelContent={"Message"} inputStorage={message}
                                          setInputStorage={setMessage}
-                                         inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                         inputCSS={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={"label"}
                                          placeHolderText={"e.g. Get well soon, Gramma!"}>
                         </SimpleTextInput>
                         <div className={"grid justify-center items-center my-1.5 mb-1"}>
                             <label className="label">Extra Notes </label>
                             <textarea placeholder={"Extra Notes"}
-                                      className={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow" /*className may need to be different to have a larger area*/}
+                                      className={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer overflow-y-hidden h-11" /*className may need to be different to have a larger area*/}
                                       onChange={(e) => setExtraInfo(e.target.value)}
                                       id={"service"}
                                       value={extraInfo}

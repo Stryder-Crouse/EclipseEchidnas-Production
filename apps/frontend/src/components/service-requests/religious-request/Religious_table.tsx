@@ -27,7 +27,7 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
     }, [statusFilter, priorityFilter, employeeFilter, locationFilter]);
 
     return (
-        <div className={"h-100 w-[42.5rem] overflow-auto rounded-xl"}>
+        <div className={"h-100 w-[43rem] overflow-auto rounded-xl"}>
 
 
                         <table className={"requestTable"} id={"request-table"}>
@@ -56,6 +56,7 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
                                             <td className={"tableTD"}>{request[1].reqType}</td>
                                             <td className={"tableTD"}>
                                                 <select
+                                                    className={"rounded-lg"}
                                                     value={request[1].status}
                                                     id={"religStatusDropdown" + request[1].reqID}
                                                     onChange={
@@ -79,6 +80,7 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
                                             </td>
                                             <td className={"tableTD"}>
                                                 <select
+                                                    className={"rounded-lg"}
                                                     value={request[1].reqPriority}
                                                     id={"priorityDropdown" + request[1].reqID}
                                                     onChange={
@@ -98,6 +100,7 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
                                             </td>
                                             <td className={"tableTD"}>
                                                 <select
+                                                    className={"rounded-lg"}
                                                     value={request[1].assignedUName}
                                                     onChange={
                                                         (event) => {

@@ -7,7 +7,11 @@ function RequestList() {
 
     return (
         <div className="flex h-lvh">
-            <FullSideNavBarComponent/>
+            <div className={"z-40"}>
+                <FullSideNavBarComponent/>
+            </div>
+
+
             <ServiceRequestOutputTables></ServiceRequestOutputTables>
         </div>
     );

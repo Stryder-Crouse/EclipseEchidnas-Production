@@ -1,11 +1,23 @@
 import axios from "axios";
-import {FloorToIndex, floorToNumber, Node, NodeType, NULLNODE} from "../../../../../packages/common/src/algorithms/Graph/Node.ts";
+import {
+    FloorToIndex,
+    floorToNumber,
+    Node,
+    NodeType,
+    NULLNODE
+} from "../../../../../packages/common/src/algorithms/Graph/Node.ts";
 import "../../css/component-css/Map.css";
 import {Edge, NULLEDGE} from "../../../../../packages/common/src/algorithms/Graph/Edge.ts";
 import {Graph} from "../../../../../packages/common/src/algorithms/Graph/Graph.ts";
 import {onNodeHover, onNodeLeave, onNodeRightClick,} from "../../event-logic/circleNodeEventHandlers.ts";
-import {NodeDataBase, nodeDataBaseToNode,} from "../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
-import {EdgeDataBase, edgeDataBasetoEdge,} from "../../../../../packages/common/src/algorithms/DataBaseClasses/EdgeDataBase.ts";
+import {
+    NodeDataBase,
+    nodeDataBaseToNode,
+} from "../../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
+import {
+    EdgeDataBase,
+    edgeDataBasetoEdge,
+} from "../../../../../packages/common/src/algorithms/DataBaseClasses/EdgeDataBase.ts";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {Coordinate} from "../../../../../packages/common/src/algorithms/Graph/Coordinate.ts";
 import {SearchContext} from "../../../../../packages/common/src/algorithms/Search/Strategy/SearchContext.ts";
@@ -16,6 +28,18 @@ import {ServiceRequest} from "../../../../../packages/common/src/algorithms/Requ
 import {
     generateTextDirections
 } from "common/src/algorithms/Search/TextDirections/GenerateTextDirections.ts";
+import {setViewBoxForLevel} from "./mapLogic.ts";
+import LowerLevel2Image from "/src/images/maps/00_thelowerlevel2.png";
+import LowerLevel1Image from "/src/images/maps/00_thelowerlevel1.png";
+import GroundFloorImage from "/src/images/maps/00_thegroundfloor.png";
+import FirstFloorImage from "/src/images/maps/01_thefirstfloor.png";
+import SecondFloorImage from "/src/images/maps/02_thesecondfloor.png";
+import ThirdFloorImage from "/src/images/maps/03_thethirdfloor.png";
+import StarterPin from "/src/images/MapFunctions/mapPinGreen.png";
+import EndingPin from "/src/images/MapFunctions/mapPinRed.png";
+import wongMan from "../../images/WongMan/Peeking WongMan.png";
+
+import {DijkstraSearchStrategy} from "common/src/algorithms/Search/Strategy/DijkstraSearchStrategy.ts";
 
 /* - - - types - - - */
 /**
@@ -38,6 +62,7 @@ export type MapState = {
     setZoomScale: Dispatch<SetStateAction<number>>
     drawEntirePathOptions:boolean[]
     setTextDirections:Dispatch<SetStateAction<string[][]>>
+    setShowWongMan:Dispatch<SetStateAction<boolean>>
 }
 
 /**
@@ -174,21 +199,114 @@ function createZoomEvent(viewbox: Viewbox, setViewbox: Dispatch<Viewbox>, setSca
         // keep mouse in the center of the zoom and get new x and y
         const newX = viewbox.x + (changeInWidth * mouseX) / svgSize.width;
         const newY = viewbox.y + (changeInHeight * mouseY) / svgSize.height;
+        //console.log(svgSize.width / viewbox.width);
 
         // set scale for proper panning
         setScale(svgSize.width / viewbox.width);
 
         // set new viewbox
-        setViewbox({
+        setViewbox(keepWithinZoom({
             x: newX,
             y: newY,
             width: viewbox.width - changeInWidth,
             height: viewbox.height - changeInHeight
-        });
+        }));
+
     });
 }
 
 
+function keepWithinZoom(viewbox:{
+    x: number,
+    y: number,
+    width: number,
+    height:number,
+}){
+    //console.log(newViewbox);
+
+    const newViewbox = viewbox;
+    let diffrence=0;
+    if(newViewbox.x < 950 ){
+        diffrence = 950 - newViewbox.x;
+        newViewbox.x = 950;
+
+        newViewbox.width +=diffrence;
+
+    }
+    if(newViewbox.y < 0 ){
+        diffrence = 0 - newViewbox.y;
+        newViewbox.y = 0;
+
+        newViewbox.height +=diffrence;
+
+    }
+    if( newViewbox.x + newViewbox.width > 4500){
+        diffrence = newViewbox.x + newViewbox.width - 4500;
+        newViewbox.width -=diffrence;
+
+    }
+    if(newViewbox.y+newViewbox.height > 2500){
+        diffrence = newViewbox.y + newViewbox.height - 2500;
+        newViewbox.height -=diffrence;
+
+    }
+
+
+
+
+
+    return newViewbox;
+
+}
+
+function keepWithinPan(viewbox:{
+    x: number,
+    y: number,
+    width: number,
+    height:number,
+}){
+    //console.log(newViewbox);
+
+    const newViewbox = viewbox;
+    let diffrence=0;
+    if(newViewbox.x < 950 ){
+        diffrence = 950 - newViewbox.x;
+        newViewbox.x = 950;
+
+
+    }
+    if(newViewbox.y < 0 ){
+        diffrence = 0 - newViewbox.y;
+        newViewbox.y = 0;
+
+    }
+    if( newViewbox.x + newViewbox.width > 4500){
+        diffrence = newViewbox.x + newViewbox.width - 4500;
+        //keep aspectratio if possable
+        if(newViewbox.x >= diffrence){
+            newViewbox.x-=diffrence;
+        }
+        else{
+            newViewbox.x = 950;
+            newViewbox.width = 4500-950;
+        }
+    }
+    if(newViewbox.y+newViewbox.height > 3400){
+        diffrence = newViewbox.y + newViewbox.height - 3400;
+        //keep aspectratio if possable
+        if(newViewbox.y >= diffrence){
+            newViewbox.y-=diffrence;
+        }
+        else{
+            newViewbox.y = 0;
+            newViewbox.height = 3400;
+        }
+    }
+
+
+    return newViewbox;
+
+}
 
 /**
  * sets the path to the path to be displayed on the page
@@ -252,6 +370,11 @@ function updatePathEdges(startingNode: Node,
             algo = new SearchContext(new DFSStrategy());
             rawPath = algo.search(graph.idToNode(startingNode.id)!, graph.idToNode(endingNode.id)!, graph);
             break;
+        case "Dijkstra":{
+            algo = new SearchContext(new DijkstraSearchStrategy());
+            rawPath = algo.search(graph.idToNode(startingNode.id)!, graph.idToNode(endingNode.id)!, graph);
+            break;
+        }
 
         default:
             algo = new SearchContext(new AStarStrategy());
@@ -423,7 +546,7 @@ export function HospitalMap({
                         pathFindingType:pathFindingType,
                         viewbox: viewbox, setViewbox: setViewbox,
                         zoomScale: zoomScale, setZoomScale: setZoomScale
-                        ,drawEntirePathOptions,setTextDirections
+                        ,drawEntirePathOptions,setTextDirections,setShowWongMan
                     }: MapState) {
 
 
@@ -445,9 +568,11 @@ export function HospitalMap({
         useState<Coordinate>({x: 0, y: 0});
 
 
+
+
     //set map to zoom level for each level. Only do this when a diffrent floor is selected
     if(previousSelectedLevel!=selectedFloorIndex){
-        setViewBoxForLevel();
+        setViewBoxForLevel(selectedFloorIndex,setViewbox);
         previousSelectedLevel=selectedFloorIndex;
     }
 
@@ -477,6 +602,7 @@ export function HospitalMap({
                  stopPan(e);
              }}
         >
+
             {/* entire everything */}
             <svg
                 id="map"
@@ -491,8 +617,12 @@ export function HospitalMap({
                 <image
                     width="5000"
                     height="3400"
+
                     href={setMapImage()}
                 ></image>
+                {
+                    drawWongMan()
+                }
                 {   /* draw the edges on the map */
                     pathDrawnEdges.map((edge) => {
                         return drawEdge(edge);
@@ -527,12 +657,25 @@ export function HospitalMap({
         </div>
     );
 
+    function drawWongMan(){
+        if(selectedFloorIndex == FloorToIndex.LowerLevel2){
+            return (
+                <a onClick={() => {
+                    setShowWongMan(true);
+                }} className={"cursor-pointer"}>
+                    <image width={100} height={100} x={1205} y={2787} href={wongMan}>
+                    </image>
+                </a>
+            );
+        }
+        return;
+    }
+
     /**
      * Graphically draw an edge.
      * @param edge the edge to draw
      */
     function drawEdge(edge: Edge) {
-
 
 
         /* draw the solid edge for everything */
@@ -639,7 +782,7 @@ export function HospitalMap({
                         y={node.coordinate.y - 50}
                         width="50"
                         height="50"
-                        href={"/src/images/MapFunctions/mapPinGreen.png"}
+                        href={StarterPin}
                     ></image>
 
                 </a>
@@ -662,7 +805,7 @@ export function HospitalMap({
                         y={node.coordinate.y - 50}
                         width="50"
                         height="50"
-                        href={"/src/images/MapFunctions/mapPinRed.png"}
+                        href={EndingPin}
                     ></image>
 
                 </a>
@@ -938,50 +1081,26 @@ export function HospitalMap({
     function setMapImage(): string {
         switch (selectedFloorIndex) {
             case FloorToIndex.LowerLevel2:
-                return "/src/images/maps/00_thelowerlevel2.png";
+                return LowerLevel2Image;
             case FloorToIndex.LowerLevel1:
-                return "/src/images/maps/00_thelowerlevel1.png";
+                return LowerLevel1Image;
             case FloorToIndex.Ground:
-                return "/src/images/maps/00_thegroundfloor.png";
+                return GroundFloorImage;
             case FloorToIndex.Level1:
-                return "/src/images/maps/01_thefirstfloor.png";
+                return FirstFloorImage;
             case FloorToIndex.Level2:
-                return "/src/images/maps/02_thesecondfloor.png";
+                return SecondFloorImage;
             case FloorToIndex.Level3:
-                return "/src/images/maps/03_thethirdfloor.png";
+                return ThirdFloorImage;
             default:
-                return "/src/images/maps/00_thelowerlevel1.png";
+                return LowerLevel1Image;
         }
     }
 
     /**
      * Set the specific view box based on the specified floor index.
      */
-    function setViewBoxForLevel(){
-        switch (selectedFloorIndex) {
-            case FloorToIndex.LowerLevel2:
-                setViewbox({x:730, y:518,width:2719,height:2392});
-                break;
-            case FloorToIndex.LowerLevel1:
-                setViewbox({x:704, y:348,width:2236,height:1967});
-                break;
-            case FloorToIndex.Ground:
-                setViewbox({x:579, y:412,width:3161,height:2780});
-                break;
-            case FloorToIndex.Level1:
-                setViewbox({x:579, y:412,width:3161,height:2780});
-                break;
-            case FloorToIndex.Level2:
-                setViewbox({x:613, y:219,width:3129,height:2753});
-                break;
-            case FloorToIndex.Level3:
-                setViewbox({x:474, y:493,width:2946,height:2591});
-                break;
-            default:
-                setViewbox({x:474, y:493,width:2946,height:2591});
-                break;
-        }
-    }
+
 
     /**
      * Initiate map viewbox panning.
@@ -998,13 +1117,17 @@ export function HospitalMap({
      */
     function whilePanning(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
         if (currentlyPanning) {
+
             setEndOfClick({x: event.movementX, y: event.movementY});
             const movementX = ((startOfClick.x - endOfClick.x) / zoomScale) * panSpeed;
             const movementY = ((startOfClick.y - endOfClick.y) / zoomScale) * panSpeed;
-            setViewbox({
+
+
+
+            setViewbox(keepWithinPan({
                 x: viewbox.x + movementX, y: viewbox.y + movementY,
                 width: viewbox.width, height: viewbox.height
-            });
+            }));
         }
     }
 
@@ -1074,3 +1197,4 @@ export function HospitalMap({
 createGraph().then(() => {
     getNodeServiceRequests().then();
 });
+

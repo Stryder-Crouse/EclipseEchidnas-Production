@@ -17,7 +17,7 @@ export interface levelStates{
     textDirections:string[][]
 }
 
-const searchOptions:string[] = ["A*","BFS","DFS"];
+const searchOptions:string[] = ["A*","BFS","DFS","Dijkstra"];
 
 export default function MapSearchBar({startNode:startNode,
                                          setStartNode:setStartNode,
@@ -153,8 +153,8 @@ export default function MapSearchBar({startNode:startNode,
                         resetOnSelect={false} resetDropdown={resetDropdown}
                         setResetDropdown={setResetDropdown} setSelected={setSelectedAlgoIndex}
                         runOnChange={()=>{return -1;}}
-                        inputCSS={"text-gray focus:outline-none p-2"}
-                        selectCSS={"transition-all hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}></CreateDropdown>
+                        inputCSS={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"}
+                        selectCSS={""}></CreateDropdown>
                 </div>
 
                 <div className={" mt-1"}>

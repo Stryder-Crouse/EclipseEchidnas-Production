@@ -13,11 +13,7 @@ import {
 } from "common/src/algorithms/Requests/Request.ts";
 import Status from "../../../../packages/common/src/algorithms/Requests/Status.ts";
 import {religEmployees} from "./employees.ts";
-//import {Employee} from "../algorithms/Employee/Employee.ts";
-// import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
-
-//import path from "path";
-//import fs from "fs";
+import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 
 const router: Router = express.Router();
 
@@ -30,10 +26,10 @@ router.get("/serviceReq", async function (req: Request, res: Response) {
         //try to send all the nodes to the client
         //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
         res.status(200).send(await PrismaClient.serviceRequest.findMany()); //end res.send (this is what will be sent to the client)
-        console.info("\nSuccessfully gave you all of the requests\n");
+        console.info("Successfully gave you all of the requests");
         //send status unless 6 times bug occurs
     } catch (err) {
-        console.error("\nUnable to send requests\n" + err);
+        console.error("Unable to send requests" + err);
         res.sendStatus(500); // Send error
     }
 });
@@ -77,11 +73,11 @@ router.get("/serviceReq/statistics", async function (req: Request, res: Response
         }
 
         res.send(result);
-        console.info("\nSuccessfully gave you all of the statistics\n");
+        console.info("Successfully gave you all of the statistics");
         //send status unless 6 times bug occurs
         res.sendStatus(200);
     } catch (err) {
-        console.error("\nUnable to send requests\n");
+        console.error("Unable to send requests");
         res.sendStatus(400); // Send error
     }
 });
@@ -264,62 +260,209 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
         };
 
         res.send(result);
-        console.info("\nSuccessfully gave you all of the statistics\n");
+        console.info("Successfully gave you all of the statistics");
         //send status unless 6 times bug occurs
         res.sendStatus(200);
 
     } catch (error) {
-        console.error("\nUnable to send requests\n");
+        console.error("Unable to send requests");
         res.sendStatus(400); // Send error
     }
 });
-
 router.get("/serviceReq/filter", async function (req: Request, res: Response) {
     try {
+        let priorityFilter: string = req.query.priority as string;
+        let emplFilter: string = req.query.employee as string;
+        let locFilter: string = req.query.location as string;
         let statusFilter: string = req.query.status as string;
+
+        if (priorityFilter == Priorities.any) {
+            priorityFilter = "%";
+        }
+
+        if (emplFilter == "Any") {
+            emplFilter = "%";
+        }
+
+        if (locFilter == "Any") {
+            locFilter = "%";
+        }
+
+        if (statusFilter == Status.Any) {
+            statusFilter = "%";
+        }
+
+        const sreviceRequest = await PrismaClient.serviceRequest.findMany({
+            orderBy: {
+                reqID: "desc"
+            },
+            where: {
+                AND: [
+                    {
+                        reqPriority: {
+                            contains: priorityFilter
+                        }
+                    },
+                    {
+                        status: {
+                            contains: statusFilter
+                        }
+                    },
+                    {
+                        assignedUName: {
+                            contains: emplFilter
+                        }
+                    },
+                    {
+                        reqLocationID: {
+                            contains: locFilter
+                        }
+                    }
+                ]
+            }
+        });
+
+
+        //send the request to the user with the specified conditions
+        res.status(200).send(sreviceRequest);
+
+        console.log("Res: " + res); //debugging info
+
+        console.info("Successfully filtered requests"); //debugging info
+        //send status unless 6 times bug occurs
+
+    } catch (err) {
+        console.error("Unable to send requests" + err);
+        res.sendStatus(500); // Send error
+    }
+});
+router.get("/serviceReq/filter/assigned_or_in_progress", async function (req: Request, res: Response) {
+    try {
         let priorityFilter: string = req.query.priority as string;
         let emplFilter: string = req.query.employee as string;
         let locFilter: string = req.query.location as string;
 
-        if(statusFilter==Status.Any){
-            statusFilter="%";
+        if (priorityFilter == Priorities.any) {
+            priorityFilter = "%";
         }
 
-        if(priorityFilter==Priorities.any){
-            priorityFilter="%";
-        }
-        if(emplFilter=="Any"){
-            emplFilter="%";
+        if (emplFilter == "Any") {
+            emplFilter = "%";
         }
 
-        if(locFilter=="Any"){
-            locFilter="%";
+        if (locFilter == "Any") {
+            locFilter = "%";
         }
 
         const sreviceRequest = await PrismaClient.serviceRequest.findMany({
-            orderBy:{
+            orderBy: {
                 reqID: "desc"
             },
             where: {
-                AND:[
+                AND: [
                     {
-                        status:{
-                            contains:statusFilter
+                        reqPriority: {
+                            contains: priorityFilter
                         }
                     },
                     {
-                        reqPriority:{
-                            contains:priorityFilter
+                        OR: [
+                            {
+                                status: {
+                                    contains: "Assigned"
+                                }
+                            },
+                            {
+                                status: {
+                                    contains: "In Progress"
+                                }
+                            }
+                        ],
+                    },
+                    {
+                        assignedUName: {
+                            contains: emplFilter
                         }
                     },
                     {
-                        assignedUName:{
-                            contains:emplFilter
+                        reqLocationID: {
+                            contains: locFilter
+                        }
+                    }
+                ]
+            }
+        });
+
+
+        //send the request to the user with the specified conditions
+        res.status(200).send(sreviceRequest);
+
+        console.log("Res: " + res); //debugging info
+
+        console.info("Successfully filtered requests"); //debugging info
+        //send status unless 6 times bug occurs
+
+    } catch (err) {
+        console.error("Unable to send requests" + err);
+        res.sendStatus(500); // Send error
+    }
+});
+router.get("/serviceReq/filter/assigned_in_progress_or_completed", async function (req: Request, res: Response) {
+    try {
+        let priorityFilter: string = req.query.priority as string;
+        let emplFilter: string = req.query.employee as string;
+        let locFilter: string = req.query.location as string;
+
+        if (priorityFilter == Priorities.any) {
+            priorityFilter = "%";
+        }
+
+        if (emplFilter == "Any") {
+            emplFilter = "%";
+        }
+
+        if (locFilter == "Any") {
+            locFilter = "%";
+        }
+
+        const sreviceRequest = await PrismaClient.serviceRequest.findMany({
+            orderBy: {
+                reqID: "desc"
+            },
+            where: {
+                AND: [
+                    {
+                        reqPriority: {
+                            contains: priorityFilter
                         }
                     },
                     {
-                        reqLocationID:{
-                            contains:locFilter
+                        OR: [
+                            {
+                                status: {
+                                    contains: "Assigned"
+                                }
+                            },
+                            {
+                                status: {
+                                    contains: "In Progress"
+                                }
+                            },
+                            {
+                                status: {
+                                    contains: "Completed"
+                                }
+                            }
+                        ],
+                    },
+                    {
+                        assignedUName: {
+                            contains: emplFilter
+                        }
+                    },
+                    {
+                        reqLocationID: {
+                            contains: locFilter
                         }
                     }
                 ]
@@ -340,7 +483,6 @@ router.get("/serviceReq/filter", async function (req: Request, res: Response) {
         res.sendStatus(500); // Send error
     }
 });
-
 // ---------------------------------    Changing Service Req Fields    ---------------------------------
 
 
@@ -447,7 +589,7 @@ router.post("/changePriority", async function (req: Request, res: Response) {
         res.sendStatus(200);
 
     } catch (err) {
-        console.error("\nUnable to send requests\n");
+        console.error("Unable to send requests");
         res.sendStatus(400); // Send error
     }
 });
@@ -580,9 +722,9 @@ router.get("/medReq", async function (req: Request, res: Response) {
 
 
             res.status(200).send([medReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
-            console.info("\nSuccessfully gave you all of the medical requests\n");
+            console.info("Successfully gave you all of the medical requests");
         } catch (err) {
-            console.error("\nUnable to send requests\n" + err);
+            console.error("Unable to send requests" + err);
             res.sendStatus(500);
         }
 
@@ -614,9 +756,9 @@ router.get("/medReq", async function (req: Request, res: Response) {
 
 
             res.status(200).send([medReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
-            console.info("\nSuccessfully gave you all of the medical requests\n");
+            console.info("Successfully gave you all of the medical requests");
         } catch (err) {
-            console.error("\nUnable to send requests\n" + err);
+            console.error("Unable to send requests" + err);
             res.sendStatus(500);
         }
     }
@@ -633,55 +775,55 @@ router.get("/medReq/filter", async function (req: Request, res: Response) {
         let locFilter: string = req.query.location as string;
 
         console.log("raw");
-        console.log("statusfilter: \n" + statusFilter);
-        console.log("priorityFilter: \n" + priorityFilter);
-        console.log("emplFilter: \n" + emplFilter);
-        console.log("locFilter: \n" + locFilter);
+        console.log("statusfilter: " + statusFilter);
+        console.log("priorityFilter: " + priorityFilter);
+        console.log("emplFilter: " + emplFilter);
+        console.log("locFilter: " + locFilter);
 
-        if(statusFilter==Status.Any){
-            statusFilter="%";
+        if (statusFilter == Status.Any) {
+            statusFilter = "%";
         }
 
-        if(priorityFilter==Priorities.any){
-            priorityFilter="%";
+        if (priorityFilter == Priorities.any) {
+            priorityFilter = "%";
         }
-        if(emplFilter=="Any"){
-            emplFilter="%";
+        if (emplFilter == "Any") {
+            emplFilter = "%";
         }
 
-        if(locFilter=="Any"){
-            locFilter="%";
+        if (locFilter == "Any") {
+            locFilter = "%";
         }
 
 
         const sreviceRequest = await PrismaClient.serviceRequest.findMany({
-            orderBy:{
+            orderBy: {
                 reqID: "desc"
             },
             where: {
-                AND:[
+                AND: [
                     {
-                        status:{
-                            contains:statusFilter
+                        status: {
+                            contains: statusFilter
                         }
                     },
                     {
-                        reqPriority:{
-                            contains:priorityFilter
+                        reqPriority: {
+                            contains: priorityFilter
                         }
                     },
                     {
-                        assignedUName:{
-                            contains:emplFilter
+                        assignedUName: {
+                            contains: emplFilter
                         }
                     },
                     {
-                        reqLocationID:{
-                            contains:locFilter
+                        reqLocationID: {
+                            contains: locFilter
                         }
                     },
                     {
-                        reqType:"medication"
+                        reqType: "medication"
                     }
                 ]
             }
@@ -689,34 +831,34 @@ router.get("/medReq/filter", async function (req: Request, res: Response) {
 
         const medReq = await PrismaClient.medReq.findMany(
             {
-                orderBy:{
+                orderBy: {
                     genReqID: "desc"
                 },
                 where: {
-                    genReq:{
-                        AND:[
+                    genReq: {
+                        AND: [
                             {
-                                status:{
-                                    contains:statusFilter
+                                status: {
+                                    contains: statusFilter
                                 }
                             },
                             {
-                                reqPriority:{
-                                    contains:priorityFilter
+                                reqPriority: {
+                                    contains: priorityFilter
                                 }
                             },
                             {
-                                assignedUName:{
-                                    contains:emplFilter
+                                assignedUName: {
+                                    contains: emplFilter
                                 }
                             },
                             {
-                                reqLocationID:{
-                                    contains:locFilter
+                                reqLocationID: {
+                                    contains: locFilter
                                 }
                             },
                             {
-                                reqType:"medication"
+                                reqType: "medication"
                             }
                         ]
                     }
@@ -725,15 +867,15 @@ router.get("/medReq/filter", async function (req: Request, res: Response) {
         );
 
         //send the request to the user with the specified conditions
-        res.status(200).send([medReq,sreviceRequest]);
+        res.status(200).send([medReq, sreviceRequest]);
 
         console.log("Res: " + res); //debugging info
 
-        console.info("\nSuccessfully filtered requests\n"); //debugging info
+        console.info("Successfully filtered requests"); //debugging info
         //send status unless 6 times bug occurs
 
     } catch (err) {
-        console.error("\nUnable to send requests\n" + err);
+        console.error("Unable to send requests" + err);
         res.sendStatus(500); // Send error
     }
 });
@@ -771,11 +913,11 @@ router.get("/medReq/statistics", async function (req: Request, res: Response) {
         }
 
         res.send(result);
-        console.info("\nSuccessfully gave you all of the statistics\n");
+        console.info("Successfully gave you all of the statistics");
         //send status unless 6 times bug occurs
         res.sendStatus(200);
     } catch (err) {
-        console.error("\nUnable to send requests\n");
+        console.error("Unable to send requests");
         res.sendStatus(400); // Send error
     }
 });
@@ -910,12 +1052,12 @@ router.get("/medReq/building-statistics", async function (req: Request, res: Res
         };
 
         res.send(result);
-        console.info("\nSuccessfully gave you all of the statistics\n");
+        console.info("Successfully gave you all of the statistics");
         //send status unless 6 times bug occurs
         res.sendStatus(200);
 
     } catch (error) {
-        console.error("\nUnable to send requests\n");
+        console.error("Unable to send requests");
         res.sendStatus(400); // Send error
     }
 });
@@ -1010,9 +1152,9 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects
             res.status(200).send([transportReq, serviceReqs]);
             //send status unless 6 times bug occurs
-            console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
+            console.info("Successfully gave you all of the Outside Transportation Requests");
         } catch (err) {
-            console.error("\nUnable to send Requests\n" + err);
+            console.error("Unable to send Requests" + err);
             res.sendStatus(500);
         }
 
@@ -1045,10 +1187,10 @@ router.get("/outsideTransport", async function (req: Request, res: Response) {
             //send status unless 6 times bug occurs
             res.status(200).send([transportReq, serviceReqs]);
 
-            console.info("\nSuccessfully gave you all of the Outside Transportation Requests\n");
+            console.info("Successfully gave you all of the Outside Transportation Requests");
         } catch (err) {
             res.sendStatus(500);
-            console.error("\nUnable to send Requests\n" + err);
+            console.error("Unable to send Requests" + err);
         }
 
     }
@@ -1064,50 +1206,50 @@ router.get("/outsideTransport/filter", async function (req: Request, res: Respon
         let locFilter: string = req.query.location as string;
 
 
-        if(statusFilter==Status.Any){
-            statusFilter="%";
+        if (statusFilter == Status.Any) {
+            statusFilter = "%";
         }
 
-        if(priorityFilter==Priorities.any){
-            priorityFilter="%";
+        if (priorityFilter == Priorities.any) {
+            priorityFilter = "%";
         }
-        if(emplFilter=="Any"){
-            emplFilter="%";
+        if (emplFilter == "Any") {
+            emplFilter = "%";
         }
 
-        if(locFilter=="Any"){
-            locFilter="%";
+        if (locFilter == "Any") {
+            locFilter = "%";
         }
 
 
         const sreviceRequest = await PrismaClient.serviceRequest.findMany({
-            orderBy:{
+            orderBy: {
                 reqID: "desc"
             },
             where: {
-                AND:[
+                AND: [
                     {
-                        status:{
-                            contains:statusFilter
+                        status: {
+                            contains: statusFilter
                         }
                     },
                     {
-                        reqPriority:{
-                            contains:priorityFilter
+                        reqPriority: {
+                            contains: priorityFilter
                         }
                     },
                     {
-                        assignedUName:{
-                            contains:emplFilter
+                        assignedUName: {
+                            contains: emplFilter
                         }
                     },
                     {
-                        reqLocationID:{
-                            contains:locFilter
+                        reqLocationID: {
+                            contains: locFilter
                         }
                     },
                     {
-                        reqType:"transportation"
+                        reqType: "transportation"
                     }
                 ]
             }
@@ -1115,34 +1257,34 @@ router.get("/outsideTransport/filter", async function (req: Request, res: Respon
 
         const transportReq = await PrismaClient.outsideTransport.findMany(
             {
-                orderBy:{
+                orderBy: {
                     serviceReqID: "desc"
                 },
                 where: {
-                    serviceReq:{
-                        AND:[
+                    serviceReq: {
+                        AND: [
                             {
-                                status:{
-                                    contains:statusFilter
+                                status: {
+                                    contains: statusFilter
                                 }
                             },
                             {
-                                reqPriority:{
-                                    contains:priorityFilter
+                                reqPriority: {
+                                    contains: priorityFilter
                                 }
                             },
                             {
-                                assignedUName:{
-                                    contains:emplFilter
+                                assignedUName: {
+                                    contains: emplFilter
                                 }
                             },
                             {
-                                reqLocationID:{
-                                    contains:locFilter
+                                reqLocationID: {
+                                    contains: locFilter
                                 }
                             },
                             {
-                                reqType:"transportation"
+                                reqType: "transportation"
                             }
                         ]
                     }
@@ -1151,15 +1293,15 @@ router.get("/outsideTransport/filter", async function (req: Request, res: Respon
         );
 
         //send the request to the user with the specified conditions
-        res.status(200).send([transportReq,sreviceRequest]);
+        res.status(200).send([transportReq, sreviceRequest]);
 
         console.log("Res: " + res); //debugging info
 
-        console.info("\nSuccessfully filtered requests\n"); //debugging info
+        console.info("Successfully filtered requests"); //debugging info
         //send status unless 6 times bug occurs
 
     } catch (err) {
-        console.error("\nUnable to send requests\n" + err);
+        console.error("Unable to send requests" + err);
         res.sendStatus(500); // Send error
     }
 });
@@ -1197,7 +1339,7 @@ router.get("/outsideTransport/statistics", async function (req: Request, res: Re
         }
 
         res.send(result);
-        console.info("\nSuccessfully gave you all of the statistics\n");
+        console.info("Successfully gave you all of the statistics");
         //send status unless 6 times bug occurs
         res.sendStatus(200);
     } catch (err) {
@@ -1336,12 +1478,12 @@ router.get("/outsideTransport/building-statistics", async function (req: Request
         };
 
         res.send(result);
-        console.info("\nSuccessfully gave you all of the statistics\n");
+        console.info("Successfully gave you all of the statistics");
         //send status unless 6 times bug occurs
         res.sendStatus(200);
 
     } catch (error) {
-        console.error("\nUnable to send requests\n");
+        console.error("Unable to send requests");
         res.sendStatus(400); // Send error
     }
 });
@@ -1431,10 +1573,10 @@ router.get("/sanReq", async function (req: Request, res: Response) {
             //we display info from both the service req and the sanitation req, so we send the person both DB objects
             //send status unless 6 times bug occurs
             res.status(200).send([sanReq, serviceReqs]);
-            console.info("\nSuccessfully gave you all of the Sanitation Requests\n");
+            console.info("Successfully gave you all of the Sanitation Requests");
         } catch (err) {
             res.sendStatus(500);
-            console.error("\nUnable to send Requests\n" + err);
+            console.error("Unable to send Requests" + err);
         }
     } else {
         try {
@@ -1464,9 +1606,9 @@ router.get("/sanReq", async function (req: Request, res: Response) {
             //we display info from both the service req and the sanitation req, so we send the person both DB objects
             //send status unless 6 times bug occurs
             res.status(200).send([sanReq, serviceReqs]);
-            console.info("\nSuccessfully gave you all of the Sanitation Requests\n");
+            console.info("Successfully gave you all of the Sanitation Requests");
         } catch (err) {
-            console.error("\nUnable to send Requests\n" + err);
+            console.error("Unable to send Requests" + err);
             res.sendStatus(500);
         }
     }
@@ -1480,124 +1622,119 @@ router.get("/sanReq/filter", async function (req: Request, res: Response) {
         let locFilter: string = req.query.location as string;
 
         // console.log("raw");
-        // console.log("statusfilter: \n" + statusFilter);
-        // console.log("priorityFilter: \n" + priorityFilter);
-        // console.log("emplFilter: \n" + emplFilter);
-        // console.log("locFilter: \n" + locFilter);
+        // console.log("statusfilter: " + statusFilter);
+        // console.log("priorityFilter: " + priorityFilter);
+        // console.log("emplFilter: " + emplFilter);
+        // console.log("locFilter: " + locFilter);
 
 
-            if(statusFilter==Status.Any){
-                statusFilter="%";
-            }
-
-            if(priorityFilter==Priorities.any){
-                priorityFilter="%";
-            }
-        if(emplFilter=="Any"){
-            emplFilter="%";
+        if (statusFilter == Status.Any) {
+            statusFilter = "%";
         }
 
-        if(locFilter=="Any"){
-            locFilter="%";
+        if (priorityFilter == Priorities.any) {
+            priorityFilter = "%";
+        }
+        if (emplFilter == "Any") {
+            emplFilter = "%";
+        }
+
+        if (locFilter == "Any") {
+            locFilter = "%";
         }
 
 
-
-
-        // console.log("statusfilter: \n" + statusFilter);
-        // console.log("priorityFilter: \n" + priorityFilter);
-        // console.log("emplFilter: \n" + emplFilter);
-        // console.log("locFilter: \n" + locFilter);
-
-
-
+        // console.log("statusfilter: " + statusFilter);
+        // console.log("priorityFilter: " + priorityFilter);
+        // console.log("emplFilter: " + emplFilter);
+        // console.log("locFilter: " + locFilter);
 
 
         const sreviceRequest = await PrismaClient.serviceRequest.findMany({
-                orderBy:{
-                    reqID: "desc"
+            orderBy: {
+                reqID: "desc"
+            },
+            where: {
+                AND: [
+                    {
+                        status: {
+                            contains: statusFilter
+                        }
+                    },
+                    {
+                        reqPriority: {
+                            contains: priorityFilter
+                        }
+                    },
+                    {
+                        assignedUName: {
+                            contains: emplFilter
+                        }
+                    },
+                    {
+                        reqLocationID: {
+                            contains: locFilter
+                        }
+                    },
+                    {
+                        reqType: "sanitation"
+                    }
+                ]
+            }
+        });
+
+        const sanRequest = await PrismaClient.sanReq.findMany(
+            {
+                orderBy: {
+                    serviceReqID: "desc"
                 },
                 where: {
-                    AND:[
-                        {
-                            status:{
-                                contains:statusFilter
-                            }
-                        },
-                        {
-                            reqPriority:{
-                                contains:priorityFilter
-                            }
-                        },
-                        {
-                            assignedUName:{
-                                contains:emplFilter
-                            }
-                        },
-                        {
-                            reqLocationID:{
-                                contains:locFilter
-                            }
-                        },
-                        {
-                            reqType:"sanitation"
-                        }
-                    ]
-                }
-            });
-
-            const sanRequest = await PrismaClient.sanReq.findMany(
-                {
-                    orderBy:{
-                        serviceReqID: "desc"
-                    },
-                    where: {
-                        serviceReq:{
-                            AND:[
-                                {
-                                    status:{
-                                        contains:statusFilter
-                                    }
-                                },
-                                {
-                                    reqPriority:{
-                                        contains:priorityFilter
-                                    }
-                                },
-                                {
-                                    assignedUName:{
-                                        contains:emplFilter
-                                    }
-                                },
-                                {
-                                    reqLocationID:{
-                                        contains:locFilter
-                                    }
-                                },
-                                {
-                                    reqType:"sanitation"
+                    serviceReq: {
+                        AND: [
+                            {
+                                status: {
+                                    contains: statusFilter
                                 }
-                            ]
-                    }
+                            },
+                            {
+                                reqPriority: {
+                                    contains: priorityFilter
+                                }
+                            },
+                            {
+                                assignedUName: {
+                                    contains: emplFilter
+                                }
+                            },
+                            {
+                                reqLocationID: {
+                                    contains: locFilter
+                                }
+                            },
+                            {
+                                reqType: "sanitation"
+                            }
+                        ]
                     }
                 }
-            );
+            }
+        );
 
 
-            // console.log("hi");
-            // console.log(sanRequest);
-            // console.log(sreviceRequest);
+        // console.log("hi");
+        // console.log(sanRequest);
+        // console.log(sreviceRequest);
 
         //send the request to the user with the specified conditions
-        res.status(200).send([sanRequest,sreviceRequest]);
+        res.status(200).send([sanRequest, sreviceRequest]);
 
         console.log("Res: " + res); //debugging info
 
-        console.info("\nSuccessfully filtered requests\n"); //debugging info
+        console.info("Successfully filtered requests"); //debugging info
         //send status unless 6 times bug occurs
 
     } catch (err) {
-        console.error("\nUnable to send requests\n" + err);
+        console.error("Unable to send requests" + err);
         res.sendStatus(500); // Send error
     }
 });
@@ -1635,11 +1772,11 @@ router.get("/sanReq/statistics", async function (req: Request, res: Response) {
         }
 
         res.send(result);
-        console.info("\nSuccessfully gave you all of the statistics\n");
+        console.info("Successfully gave you all of the statistics");
         //send status unless 6 times bug occurs
         res.sendStatus(200);
     } catch (err) {
-        console.error("\nUnable to send requests\n");
+        console.error("Unable to send requests");
         res.sendStatus(400); // Send error
     }
 });
@@ -1774,12 +1911,12 @@ router.get("/sanReq/building-statistics", async function (req: Request, res: Res
         };
 
         res.send(result);
-        console.info("\nSuccessfully gave you all of the statistics\n");
+        console.info("Successfully gave you all of the statistics");
         //send status unless 6 times bug occurs
         res.sendStatus(200);
 
     } catch (error) {
-        console.error("\nUnable to send requests\n");
+        console.error("Unable to send requests");
         res.sendStatus(400); // Send error
     }
 });
@@ -1884,7 +2021,7 @@ router.get("/flowReq", async function (req: Request, res: Response) {
                 }
             });
             res.status(200).send([flowReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
-            console.info("\nSuccessfully gave you all of the flower requests\n");
+            console.info("Successfully gave you all of the flower requests");
         } else {
             //try to send all the nodes to the client
             const flowReqs = await PrismaClient.flowReq.findMany({
@@ -1907,11 +2044,11 @@ router.get("/flowReq", async function (req: Request, res: Response) {
                 }
             });
             res.status(200).send([flowReqs, serviceReqs]); //end res.send (this is what will be sent to the client)
-            console.info("\nSuccessfully gave you all of the flower requests\n");
+            console.info("Successfully gave you all of the flower requests");
         }
     } catch (err) {
         res.sendStatus(500);
-        console.error("\nUnable to send requests\n" + err);
+        console.error("Unable to send requests" + err);
     }
 });
 
@@ -1924,55 +2061,55 @@ router.get("/flowReq/filter", async function (req: Request, res: Response) {
         let locFilter: string = req.query.location as string;
 
         console.log("raw");
-        console.log("statusfilter: \n" + statusFilter);
-        console.log("priorityFilter: \n" + priorityFilter);
-        console.log("emplFilter: \n" + emplFilter);
-        console.log("locFilter: \n" + locFilter);
+        console.log("statusfilter: " + statusFilter);
+        console.log("priorityFilter: " + priorityFilter);
+        console.log("emplFilter: " + emplFilter);
+        console.log("locFilter: " + locFilter);
 
-        if(statusFilter==Status.Any){
-            statusFilter="%";
+        if (statusFilter == Status.Any) {
+            statusFilter = "%";
         }
 
-        if(priorityFilter==Priorities.any){
-            priorityFilter="%";
+        if (priorityFilter == Priorities.any) {
+            priorityFilter = "%";
         }
-        if(emplFilter=="Any"){
-            emplFilter="%";
+        if (emplFilter == "Any") {
+            emplFilter = "%";
         }
 
-        if(locFilter=="Any"){
-            locFilter="%";
+        if (locFilter == "Any") {
+            locFilter = "%";
         }
 
 
         const sreviceRequest = await PrismaClient.serviceRequest.findMany({
-            orderBy:{
+            orderBy: {
                 reqID: "desc"
             },
             where: {
-                AND:[
+                AND: [
                     {
-                        status:{
-                            contains:statusFilter
+                        status: {
+                            contains: statusFilter
                         }
                     },
                     {
-                        reqPriority:{
-                            contains:priorityFilter
+                        reqPriority: {
+                            contains: priorityFilter
                         }
                     },
                     {
-                        assignedUName:{
-                            contains:emplFilter
+                        assignedUName: {
+                            contains: emplFilter
                         }
                     },
                     {
-                        reqLocationID:{
-                            contains:locFilter
+                        reqLocationID: {
+                            contains: locFilter
                         }
                     },
                     {
-                        reqType:"flower delivery"
+                        reqType: "flower delivery"
                     }
                 ]
             }
@@ -1980,34 +2117,34 @@ router.get("/flowReq/filter", async function (req: Request, res: Response) {
 
         const flowReq = await PrismaClient.flowReq.findMany(
             {
-                orderBy:{
+                orderBy: {
                     genReqID: "desc"
                 },
                 where: {
-                    genReq:{
-                        AND:[
+                    genReq: {
+                        AND: [
                             {
-                                status:{
-                                    contains:statusFilter
+                                status: {
+                                    contains: statusFilter
                                 }
                             },
                             {
-                                reqPriority:{
-                                    contains:priorityFilter
+                                reqPriority: {
+                                    contains: priorityFilter
                                 }
                             },
                             {
-                                assignedUName:{
-                                    contains:emplFilter
+                                assignedUName: {
+                                    contains: emplFilter
                                 }
                             },
                             {
-                                reqLocationID:{
-                                    contains:locFilter
+                                reqLocationID: {
+                                    contains: locFilter
                                 }
                             },
                             {
-                                reqType:"flower delivery"
+                                reqType: "flower delivery"
                             }
                         ]
                     }
@@ -2016,15 +2153,15 @@ router.get("/flowReq/filter", async function (req: Request, res: Response) {
         );
 
         //send the request to the user with the specified conditions
-        res.status(200).send([flowReq,sreviceRequest]);
+        res.status(200).send([flowReq, sreviceRequest]);
 
         console.log("Res: " + res); //debugging info
 
-        console.info("\nSuccessfully filtered requests\n"); //debugging info
+        console.info("Successfully filtered requests"); //debugging info
         //send status unless 6 times bug occurs
 
     } catch (err) {
-        console.error("\nUnable to send requests\n" + err);
+        console.error("Unable to send requests" + err);
         res.sendStatus(500); // Send error
     }
 });
@@ -2062,10 +2199,10 @@ router.get("/flowReq/statistics", async function (req: Request, res: Response) {
         }
 
         res.status(200).send(result);
-        console.info("\nSuccessfully gave you all of the statistics\n");
+        console.info("Successfully gave you all of the statistics");
         //send status unless 6 times bug occurs
     } catch (err) {
-        console.error("\nUnable to send requests\n");
+        console.error("Unable to send requests");
         res.sendStatus(400); // Send error
     }
 });
@@ -2200,11 +2337,11 @@ router.get("/flowReq/building-statistics", async function (req: Request, res: Re
         };
 
         res.status(200).send(result);
-        console.info("\nSuccessfully gave you all of the statistics\n");
+        console.info("Successfully gave you all of the statistics");
         //send status unless 6 times bug occurs
 
     } catch (error) {
-        console.error("\nUnable to send requests\n");
+        console.error("Unable to send requests");
         res.sendStatus(400); // Send error
     }
 });
@@ -2269,16 +2406,11 @@ router.post('/religiousRequest', async function (req: Request, res: Response) {
     }
 });
 
-
-
 router.get("/religiousRequest", async function (req: Request, res: Response) {
-
     const statusFilter: Status = req.query.status as Status;
-
     if (statusFilter == Status.Any) {
         try {
-
-            const religReq = await PrismaClient.religiousReq.findMany({
+            const religReq: Array<ReligRequest> = await PrismaClient.religiousReq.findMany({
                 orderBy: {
                     genReqID: "desc", //order by service request id so the two arrays are parallel
                 }
@@ -2302,7 +2434,7 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
                     },
                     update: {},
                     create: {
-                        userID:"0",
+                        userID: "0",
                         userName: "No one",
                         firstName: "N/A",
                         lastName: "N/A",
@@ -2312,17 +2444,16 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
                 })]];
 
             //get all the data out of the database using religReqs' religion fields
-            for(let i = 0; i<religReq.length; i++){
+            for (let i = 0; i < religReq.length; i++) {
                 const nextEmployeeArr = await religEmployees(religReq[i].religion);
-                if(i == 0 && nextEmployeeArr != undefined){ //remove the "No one" array from the first slot
+
+                if (i == 0 && nextEmployeeArr != undefined) { //remove the "No one" array from the first slot
                     employeeReq[0] = nextEmployeeArr;
-                }
-                else if(nextEmployeeArr != undefined) {
+                } else if (nextEmployeeArr != undefined) {
                     employeeReq.push(nextEmployeeArr);
-                }
-                else{
-                    console.error("nextEmployeeArr at index "+i+" of the religious requests list" +
-                        " was undefined!\n");
+                } else {
+                    console.error("nextEmployeeArr at index " + i + " of the religious requests list" +
+                        " was undefined!");
                     employeeReq.push([await PrismaClient.employee.upsert({
                         //upsert without update is essentially "find or create"
                         where: {
@@ -2330,7 +2461,7 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
                         },
                         update: {},
                         create: {
-                            userID:"0",
+                            userID: "0",
                             userName: "No one",
                             firstName: "N/A",
                             lastName: "N/A",
@@ -2340,16 +2471,13 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
                     })]);
                 }
             }
-
-            console.log(employeeReq);
-
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects
             res.status(200).send([religReq, serviceReqs, employeeReq]);
-            console.info("\nSuccessfully gave you all of the Religious Requests\n");
+            console.info("Successfully gave you all of the Religious Requests");
             //send status unless 6 times bug occurs
         } catch (err) {
             res.sendStatus(500);
-            console.error("\nUnable to send Requests\n" + err);
+            console.error("Unable to send Religious Requests: " + err);
         }
     } else {
         try {
@@ -2378,10 +2506,10 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
 
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects
             res.status(200).send([religReq, serviceReqs]);
-            console.info("\nSuccessfully gave you all of the Religious Requests\n");
+            console.info("Successfully gave you all of the Religious Requests");
             //send status unless 6 times bug occurs
         } catch (err) {
-            console.error("\nUnable to send Requests\n" + err);
+            console.error("Unable to send Religious Requests: " + err);
             res.sendStatus(500);
         }
     }
@@ -2391,61 +2519,78 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
 
 
 router.get("/religiousRequest/filter", async function (req: Request, res: Response) {
+    /* symbols */
+    const religionMap: Map<string, string> = new Map<string, string>();
+    let statusFilter: string = req.query.status as string;
+    let priorityFilter: string = req.query.priority as string;
+    let emplFilter: string = req.query.employee as string;
+    let locFilter: string = req.query.location as string;
+    let relFilter: string;
+
+    /* pointless prints */
+    console.log("raw, filter");
+    console.log("statusfilter: " + statusFilter);
+    console.log("priorityFilter: " + priorityFilter);
+    console.log("emplFilter: " + emplFilter);
+    console.log("locFilter: " + locFilter);
+
+    /* goonies conditionals */
+    if (statusFilter == Status.Any) {
+        statusFilter = "%";
+    }
+    if (priorityFilter == Priorities.any) {
+        priorityFilter = "%";
+    }
+    if (emplFilter.toLowerCase() == "any") {
+        emplFilter = "%";
+    }
+    if (locFilter.toLowerCase() == "any") {
+        locFilter = "%";
+    }
+
+    /* religion map setup */
+    religionMap.set("Buddhism", "Buddhist personnel");
+    religionMap.set("Christianity (Catholicism)", "Catholic personnel");
+    religionMap.set("Christianity (Mormonism)", "Mormon personnel");
+    religionMap.set("Christianity (Non-Denominational", "Christian (non-denominational) personnel");
+    religionMap.set("Christianity (Protestantism)", "Protestant personnel");
+    religionMap.set("Hinduism", "Hindu personnel");
+    religionMap.set("Islam", "Muslim personnel");
+    religionMap.set("Jainism", "Jain personnel");
+    religionMap.set("Judaism", "Jewish personnel");
+    religionMap.set("Sikhism", "Sikh personnel");
+    religionMap.set("Shinto", "Shinto personnel");
+
+    /* seriously, why would you put the WHOLE THING in a try */
     try {
-        let statusFilter: string = req.query.status as string;
-        let priorityFilter: string = req.query.priority as string;
-        let emplFilter: string = req.query.employee as string;
-        let locFilter: string = req.query.location as string;
-
-        let relFilter:string;
-
-        console.log("raw");
-        console.log("statusfilter: \n" + statusFilter);
-        console.log("priorityFilter: \n" + priorityFilter);
-        console.log("emplFilter: \n" + emplFilter);
-        console.log("locFilter: \n" + locFilter);
-
-        if(statusFilter==Status.Any){
-            statusFilter="%";
-        }
-        if(priorityFilter==Priorities.any){
-            priorityFilter="%";
-        }
-        if(emplFilter.toLowerCase()=="any"){
-            emplFilter="%";
-        }
-        if(locFilter.toLowerCase()=="any"){
-            locFilter="%";
-        }
-
         const serviceRequest = await PrismaClient.serviceRequest.findMany({
-            orderBy:{
+            orderBy: {
                 reqID: "desc"
             },
             where: {
-                AND:[
+                AND: [
                     {
-                        status:{
-                            contains:statusFilter
+                        status: {
+                            contains: statusFilter
                         }
                     },
                     {
-                        reqPriority:{
-                            contains:priorityFilter
+                        reqPriority: {
+                            contains: priorityFilter
                         }
                     },
                     {
-                        assignedUName:{
-                            contains:emplFilter
+                        assignedUName: {
+                            contains: emplFilter
                         }
                     },
                     {
-                        reqLocationID:{
-                            contains:locFilter
+                        reqLocationID: {
+                            contains: locFilter
                         }
                     },
                     {
-                        reqType:"religious"
+                        reqType: "religious"
                     }
                 ]
             }
@@ -2453,34 +2598,34 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
 
         const relReq = await PrismaClient.religiousReq.findMany(
             {
-                orderBy:{
+                orderBy: {
                     genReqID: "desc"
                 },
                 where: {
-                    genReq:{
-                        AND:[
+                    genReq: {
+                        AND: [
                             {
-                                status:{
-                                    contains:statusFilter
+                                status: {
+                                    contains: statusFilter
                                 }
                             },
                             {
-                                reqPriority:{
-                                    contains:priorityFilter
+                                reqPriority: {
+                                    contains: priorityFilter
                                 }
                             },
                             {
-                                assignedUName:{
-                                    contains:emplFilter
+                                assignedUName: {
+                                    contains: emplFilter
                                 }
                             },
                             {
-                                reqLocationID:{
-                                    contains:locFilter
+                                reqLocationID: {
+                                    contains: locFilter
                                 }
                             },
                             {
-                                reqType:"religious"
+                                reqType: "religious"
                             }
                         ]
                     }
@@ -2488,124 +2633,15 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
             }
         );
 
-        //monster of a duplicate functionality section to properly define emplRequestArr with the right type
-        //because if I didn't, there would be no way to access the type "Employee" from the db
-
-        //set relFilter appropriately
-        if (relReq[0].religion == "Other") {
-            relFilter = "religious personnel";
-
-        } else {
-            switch (relReq[0].religion) {
-                case "Buddhism":
-                    relFilter = "Buddhist personnel";
-                    break;
-                case "Christianity (Catholicism)":
-                    relFilter = "Catholic personnel";
-                    break;
-                case "Christianity (Mormonism)":
-                    relFilter = "Mormon personnel";
-                    break;
-                case "Christianity (Non-Denominational)":
-                    relFilter = "Christian (non-denominational) personnel";
-                    break;
-                case "Christianity (Protestantism)":
-                    relFilter = "Protestant personnel";
-                    break;
-                case "Hinduism":
-                    relFilter = "Hindu personnel";
-                    break;
-                case "Islam":
-                    relFilter = "Muslim personnel";
-                    break;
-                case "Jainism":
-                    relFilter = "Jain personnel";
-                    break;
-                case "Judaism":
-                    relFilter = "Jewish personnel";
-                    break;
-                case "Sikhism":
-                    relFilter = "Sikh personnel";
-                    break;
-                case "Shinto":
-                    relFilter = "Shinto personnel";
-                    break;
-                default:
-                    relFilter = "religious personnel";
-                    break;
-            }
-        }
-        //proper definition of emplRequestArr and end of monster
-        const emplRequestArr = [await PrismaClient.employee.findMany(
-            {
-                where: {
-                    OR: [
-                        {
-                            designation: relFilter
-                        },
-                        { //always pull "religious personnel", no matter the religion
-                            designation: "religious personnel"
-                        },
-                        {
-                            userName: "No one"
-                        }
-                    ]
-
-                }
-
-            }
-        )
-        ];
+        /* dank */
+        const emplRequestArr: Array<Array<Employee>> = new Array<Array<Employee>>();
 
         //oh, wait, here's where the monster was *supposed* to be
-        for(let i = 1; i<relReq.length; i++) {
-            //set relFilter appropriately
-            if (relReq[i].religion == "Other") {
-                relFilter = "religious personnel";
+        for (let i = 0; i < relReq.length; i++) {
+            const religionBuffer: string | undefined = religionMap.get(relReq[i].religion);
+            relFilter = (religionBuffer != undefined) ? religionBuffer : "religious personnel";
 
-            } else {
-                switch (relReq[i].religion) {
-                    case "Buddhism":
-                        relFilter = "Buddhist personnel";
-                        break;
-                    case "Christianity (Catholicism)":
-                        relFilter = "Catholic personnel";
-                        break;
-                    case "Christianity (Mormonism)":
-                        relFilter = "Mormon personnel";
-                        break;
-                    case "Christianity (Non-Denominational)":
-                        relFilter = "Christian (non-denominational) personnel";
-                        break;
-                    case "Christianity (Protestantism)":
-                        relFilter = "Protestant personnel";
-                        break;
-                    case "Hinduism":
-                        relFilter = "Hindu personnel";
-                        break;
-                    case "Islam":
-                        relFilter = "Muslim personnel";
-                        break;
-                    case "Jainism":
-                        relFilter = "Jain personnel";
-                        break;
-                    case "Judaism":
-                        relFilter = "Jewish personnel";
-                        break;
-                    case "Sikhism":
-                        relFilter = "Sikh personnel";
-                        break;
-                    case "Shinto":
-                        relFilter = "Shinto personnel";
-                        break;
-                    default:
-                        relFilter = "religious personnel";
-                        break;
-                }
-            }
-
-            emplRequestArr.push(
-                await PrismaClient.employee.findMany(
+            emplRequestArr.push((await PrismaClient.employee.findMany(
                     {
                         where: {
                             OR: [
@@ -2619,27 +2655,22 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
                                     userName: "No one"
                                 }
                             ]
-
                         }
-
                     }
                 )
-            );
+            ) as Array<Employee>);
         }
 
-
-
-
         //send the request to the user with the specified conditions
-        res.status(200).send([relReq,serviceRequest, emplRequestArr]);
+        res.status(200).send([relReq, serviceRequest, emplRequestArr]);
 
         console.log("Res: " + res); //debugging info
 
-        console.info("\nSuccessfully filtered requests\n"); //debugging info
+        console.info("Successfully filtered requests"); //debugging info
         //send status unless 6 times bug occurs
 
     } catch (err) {
-        console.error("\nUnable to send requests\n" + err);
+        console.error("Unable to send filtered religious requests: " + err);
         res.sendStatus(500); // Send error
     }
 });
@@ -2679,9 +2710,9 @@ router.get("/religiousRequest/statistics", async function (req: Request, res: Re
         console.log('rel stats');
         console.log(result);
         res.status(200).send(result);
-        console.info("\nSuccessfully gave you all of the statistics\n");
+        console.info("Successfully gave you all of the statistics");
     } catch (err) {
-        console.error("\nUnable to send requests\n" + err);
+        console.error("Unable to send requests" + err);
         res.sendStatus(500); // Send error
     }
 });
@@ -2808,7 +2839,6 @@ router.get("/religiousRequest/building-statistics", async function (req: Request
                 if (entry.status == "In Progress") BTM.inProgress++;
                 if (entry.status == "Completed") BTM.completed++;
             }
-
         }
 
         const result = {
@@ -2816,12 +2846,12 @@ router.get("/religiousRequest/building-statistics", async function (req: Request
         };
 
         res.send(result);
-        console.info("\nSuccessfully gave you all of the statistics\n");
+        console.info("Successfully gave you all of the statistics");
         //send status unless 6 times bug occurs
         res.sendStatus(200);
 
     } catch (error) {
-        console.error("\nUnable to send requests\n");
+        console.error("Unable to send requests");
         res.sendStatus(400); // Send error
     }
 });

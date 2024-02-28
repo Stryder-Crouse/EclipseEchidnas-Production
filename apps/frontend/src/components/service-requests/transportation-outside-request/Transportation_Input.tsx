@@ -144,7 +144,7 @@ export default function Transportation_Input({
     return (
 
         <div
-            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center scale-90"}>
+            className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center "}>
 
             <form className={"p-2"}>
                 <h1 className={"flex mb-3 justify-center font-bold text-xl"}>External Patient
@@ -155,7 +155,7 @@ export default function Transportation_Input({
                         {/*patient name*/}
                         <SimpleTextInput id={"patientName"} labelContent={"Patient Name "} inputStorage={patientName}
                                          setInputStorage={setPatientName}
-                                         inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                         inputCSS={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
                                          placeHolderText={"e.g. Jane Smith"}>
                         </SimpleTextInput>
@@ -179,7 +179,7 @@ export default function Transportation_Input({
                         {/*destination*/}
                         <SimpleTextInput id={"destination"} labelContent={"Destination "} inputStorage={destination}
                                          setInputStorage={setDestination}
-                                         inputCSS={"p-1 w-60 bg-white text-black rounded-xl border border-black drop-shadow"}
+                                         inputCSS={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"}
                                          divCSS={"grid justify-center items-center my-1.5"} labelCSS={"mb-1"}
                                          placeHolderText={"e.g. Mercy-Grey Hospital"}>
                         </SimpleTextInput>
@@ -225,7 +225,7 @@ export default function Transportation_Input({
                             className={"grid justify-center items-center my-1.5 mb-2"}> {/* Additional notes textbox */}
                             <label className="label">Extra Notes </label>
                             <textarea
-                                className={"p-1 min-h-full h-20 w-60 bg-white text-black rounded-xl border border-black drop-shadow align-text-top"}
+                                className={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer overflow-y-hidden h-11"}
                                 id={"additional"}
                                 placeholder={"Extra Notes"}
                                 value={additional}

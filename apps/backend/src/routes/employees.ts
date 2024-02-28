@@ -1,4 +1,4 @@
-import express, {Router, Request, Response} from "express";
+import express, {Request, Response, Router} from "express";
 import PrismaClient from "../bin/database-connection.ts";
 import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 import fs from "fs";
@@ -113,8 +113,7 @@ async function handleCSVImport(req: Request, res: Response): Promise<void> {
         await PrismaClient.employee.createMany({data: employeeArray});
     }
 
-    /* yikes case */
-    catch (error) {
+        /* yikes case */ catch (error) {
         console.error("handleCSVImport: failed to put CSV into prisma: " + error);
         res.sendStatus(500); // and send 204
         return;
@@ -197,8 +196,6 @@ router.post("/deleteEmployee", async function (req: Request, res: Response) {
     console.log(data[0]);
 
 
-
-
     try {
 
         //query the database to delete the employee
@@ -225,15 +222,14 @@ router.get("/employees", async function (req: Request, res: Response) {
         //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
         res.status(200).send(await PrismaClient.employee.findMany(
             {
-                orderBy:{
+                orderBy: {
                     firstName: "asc"
                 }
             }
-
         )); //end res.send (this is what will be sent to the client)
-        console.info("\nSuccessfully gave you the the employees\n");
+        console.info("Successfully gave you the the employees");
     } catch (err) {
-        console.error("\nUnable to send employees\n" + err);
+        console.error("Unable to send employees" + err);
         res.sendStatus(500);
     }
 });
@@ -264,9 +260,9 @@ router.get("/employees/med", async function (req: Request, res: Response) {
 
             }
         )); //end res.send (this is what will be sent to the client)
-        console.info("\nSuccessfully gave you the the employees\n");
+        console.info("Successfully gave you the the employees");
     } catch (err) {
-        console.error("\nUnable to send employees\n" + err);
+        console.error("Unable to send employees" + err);
         res.sendStatus(500);
     }
 });
@@ -291,9 +287,9 @@ router.get("/employees/san", async function (req: Request, res: Response) {
 
             }
         )); //end res.send (this is what will be sent to the client)
-        console.info("\nSuccessfully gave you the the employees\n");
+        console.info("Successfully gave you the the employees");
     } catch (err) {
-        console.error("\nUnable to send employees\n" + err);
+        console.error("Unable to send employees" + err);
         res.sendStatus(500);
     }
 });
@@ -323,9 +319,9 @@ router.get("/employees/transport", async function (req: Request, res: Response) 
 
             }
         )); //end res.send (this is what will be sent to the client)
-        console.info("\nSuccessfully gave you the the employees\n");
+        console.info("Successfully gave you the the employees");
     } catch (err) {
-        console.error("\nUnable to send employees\n" + err);
+        console.error("Unable to send employees" + err);
         res.sendStatus(500);
     }
 });
@@ -350,9 +346,9 @@ router.get("/employees/flow", async function (req: Request, res: Response) {
 
             }
         )); //end res.send (this is what will be sent to the client)
-        console.info("\nSuccessfully gave you the the employees\n");
+        console.info("Successfully gave you the the employees");
     } catch (err) {
-        console.error("\nUnable to send employees\n" + err);
+        console.error("Unable to send employees" + err);
         res.sendStatus(500);
     }
 });
@@ -368,16 +364,35 @@ router.get("/employees/rel", async function (req: Request, res: Response) {
 router.get("/current_employee", async function (req: Request, res: Response) {
     const currentUser: Employee = req.body;
     try {
-        //try to send all the employees to the client
-        //order the nodes by their longName (alphabetical ordering) (1 -> a -> ' ' is the order of Prisma's alphabet)
+        //try to send the employee to the client
         res.send(await PrismaClient.employee.findUnique(
             {
                 where: {userName: currentUser.userName}
             }
         )); //end res.send (this is what will be sent to the client)
+        console.info("Successfully gave you the employee");
+    } catch (err) {
+        console.error("\nUnable to send employee\n");
+        res.send(500);
+    }
+});
+
+//gets the employee with the username of the Auth0 login
+router.get("/employee_by_uname", async function (req: Request, res: Response) {
+    console.log("entered the router.get");
+    const uName: string = req.query.name as string;
+    console.log("uName in the backend is "+uName);
+    try {
+        //try to send the employee to the client
+        res.send(await PrismaClient.employee.findUnique(
+            {
+                where: {userName: uName}
+            }
+        )); //end res.send (this is what will be sent to the client)
         console.info("\nSuccessfully gave you the employee\n");
     } catch (err) {
-        console.error("\nUnable to send employees\n");
+        console.error("\nUnable to send employee\n");
+        res.send(500);
     }
 });
 
@@ -588,25 +603,25 @@ router.get("/current_employee/buildingStats", async function (req: Request, res:
         };
 
         res.status(200).send(result);
-        console.info("\nSuccessfully gave you all of the statistics\n");
+        console.info("Successfully gave you all of the statistics");
 
 
 
 
 
-        console.info("\nSuccessfully checked a employee \n");
+        console.info("Successfully checked a employee");
     } catch (err) {
-        console.error("\nUnable to send employees\n");
+        console.error("Unable to send employees");
     }
 });
 
 
 
 
-export async function religEmployees(religion:string){
+export async function religEmployees(religion: string){
     console.log("abstract employees/rel");
     try {
-        console.log("religion is "+religion+"\n");
+        console.log("religion is " + religion);
         let typeOfReligiousPersonnel = "religious personnel";
         switch (religion) {
             case "Buddhism":
@@ -646,7 +661,7 @@ export async function religEmployees(religion:string){
                 typeOfReligiousPersonnel = "religious personnel";
                 break;*/ //already covered by the definition of the var
         }
-        console.info("\nSuccessfully gave you the the employees\n");
+        console.info("Successfully gave you the the employees");
         return await PrismaClient.employee.findMany(
             {
                 where: {
@@ -667,7 +682,7 @@ export async function religEmployees(religion:string){
             }
         ); //end res.send (this is what will be sent to the client)
     } catch (err) {
-        console.error("\nUnable to send employees\n" + err);
+        console.error("Unable to send employees" + err);
     }
 }
 
@@ -684,30 +699,29 @@ router.get("/current_employee/:emp", async function (req: Request, res: Response
                 where: {userName: currentUser}
             });
         res.status(200).send(test);
-        console.info("\nSuccessfully gave you the employee\n");
+        console.info("Successfully gave you the employee");
     } catch (err) {
-        console.error("\nUnable to send employees\n" + err);
+        console.error("Unable to send employees" + err);
         res.sendStatus(500);
     }
 });
 
-router.post("/onLogin", async function (req: Request, res: Response)  {
+router.post("/onLogin", async function (req: Request, res: Response) {
     //param is specified in frontend to have an attribute of "email", which is what req.query is referencing
-    const employeeData:Employee = req.body as Employee;
+    const employeeData: Employee = req.body as Employee;
 
     console.log("this is employee");
     console.log(employeeData);
 
-    // console.log("\n\n\n\nEmail String: " + emailStr + "\n\n\n");
+    // console.log("Email String: " + emailStr);
 
     try {
         const answer = await PrismaClient.employee.findUnique(
-            {where:{userID:employeeData.userName}});
+            {where: {userID: employeeData.userName}});
         console.log("Prisma Response: " + answer);
         console.log(answer);
 
-        if(answer == null)
-        {
+        if (answer == null) {
             //create
             await PrismaClient.employee.create({
                 data: {
@@ -740,7 +754,7 @@ router.post("/onLogin", async function (req: Request, res: Response)  {
         });
 
         res.sendStatus(200);
-    } catch(err) {
+    } catch (err) {
         console.log("could not update or add user on login");
         console.log(err);
         res.sendStatus(400);

@@ -1,10 +1,11 @@
 .employeeInputVisible{
 
-    height: 45vh;
+    height: 70vh;
 
     position: absolute;
     left: 50%;
-    top:25%;
+    top:50%;
+    transform: translate(-50%, -50%);
     z-index: 20;
     background-color: #F1F1F1;
     padding: 10px;
@@ -20,8 +21,6 @@
     height: 0;
     visibility: hidden;
 }
-
-
 
 .formNewEmployee{
     padding-top: 16px;
@@ -56,17 +55,28 @@
 
 .submitButtonEmployee{
     margin-top: 16px;
-    padding: 4px;
+    padding: 8px;
     font-size: 16px;
 
     align-self: center;
-    background-color: white;
-    color:black;
+    background-color: #0A4189;
+    color: white;
+
     font-weight: 500;
     border: 2px solid #D1D1D1;
     border-radius: 10px;
 
 }
-.submitButtonEmployee:hover{
-    background-color: #E1E1E1;
+
+.closeButtonEmployee{
+    margin-top: 16px;
+    padding: 8px;
+    font-size: 16px;
+    align-self: center;
+    background-color: #9a9a9a;
+    color: black;
+    font-weight: 500;
+    border: 2px solid #D1D1D1;
+    border-radius: 10px;
 }
+
