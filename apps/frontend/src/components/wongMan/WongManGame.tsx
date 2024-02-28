@@ -2,7 +2,7 @@ import {Dispatch, SetStateAction, useRef, useState} from "react";
 import {Directions_Game, Echidna} from "./Echidna.ts";
 import {Coordinate} from "common/src/algorithms/Graph/Coordinate.ts";
 import {Edible} from "./Edible.ts";
-import {Level1} from "./LevelNodesLocationList.ts";
+import {Level0} from "./LevelNodesLocationList.ts";
 import LowerLevel1Game from "../../images/WongMan/Maps/LowerLevel1.png";
 import EdibleBlue from "../../images/WongMan/Edible/EdibleBlue.png";
 // @ts-expect-error happy-dom is based
@@ -83,8 +83,8 @@ export default function WongManGame({visible, setVisible}: WongManProps) {
             handleKeyUp(e);
         });
 
-        /* change the level to 1 */
-        changeLevel(Level1);
+        /* change the level to 0 */
+        changeLevel(Level0);
 
         /* start the main loop */
         setInterval(mainLoop, 20);
