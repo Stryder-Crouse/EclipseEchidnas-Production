@@ -64,6 +64,36 @@ export function UniversalPackageCredits({packageName, packageImage, useDescripti
                             <p className="text-[0.625rem]">{copyright}</p>
                         </div>
                     </div>
+
+
+                    {/*<div className="flex items-center justify-center h-screen">*/}
+                    {/*    <div*/}
+                    {/*        className={"grid justify-items-center border border-black rounded-2xl bg-ivoryWhite p-8 font-project w-80 "}*/}
+                    {/*    >*/}
+                    {/*        <div>*/}
+                    {/*            <img*/}
+                    {/*                src={packageImage}*/}
+                    {/*                alt={"Logo"}*/}
+                    {/*                className={"bg-white border border-transparent rounded-lg w-48 my-1"}*/}
+                    {/*            />*/}
+                    {/*        </div>*/}
+
+                    {/*        <h1*/}
+                    {/*            className={"font-semibold text-navStart text-2xl my-1"}*/}
+                    {/*        >*/}
+                    {/*            {packageName}*/}
+                    {/*        </h1>*/}
+
+                    {/*        <div className={"font-project text-center"}>*/}
+                    {/*            <p className={"border border-black rounded p-2 my-1"}>*/}
+                    {/*                {useDescription}*/}
+                    {/*            </p>*/}
+                    {/*            <p className={"text-xs my-1"}>*/}
+                    {/*                {copyright}*/}
+                    {/*            </p>*/}
+                    {/*        </div>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                 </a>
             </div>
         </div>
