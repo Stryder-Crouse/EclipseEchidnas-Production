@@ -17,7 +17,7 @@ export interface levelStates{
     textDirections:string[][]
 }
 
-const searchOptions:string[] = ["A*","BFS","DFS"];
+const searchOptions:string[] = ["A*","BFS","DFS","Dijkstra"];
 
 export default function MapSearchBar({startNode:startNode,
                                          setStartNode:setStartNode,
