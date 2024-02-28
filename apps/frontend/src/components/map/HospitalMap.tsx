@@ -107,6 +107,7 @@ export type Viewbox = {
 let graph: Graph | null = null;
 const panSpeed: number = 2;
 const zoomSpeed: number = 0.1;
+const maxZoom =4.2;
 
 let previousSelectedLevel = FloorToIndex.LowerLevel1;
 
@@ -201,16 +202,22 @@ function createZoomEvent(viewbox: Viewbox, setViewbox: Dispatch<Viewbox>, setSca
         const newY = viewbox.y + (changeInHeight * mouseY) / svgSize.height;
         //console.log(svgSize.width / viewbox.width);
 
+        if((svgSize.width / viewbox.width)>maxZoom){
+            return;
+        }
+
         // set scale for proper panning
         setScale(svgSize.width / viewbox.width);
 
         // set new viewbox
-        setViewbox(keepWithinZoom({
+        setViewbox(keepWithinZoom(
+            {
             x: newX,
             y: newY,
             width: viewbox.width - changeInWidth,
             height: viewbox.height - changeInHeight
-        }));
+        }
+        ));
 
     });
 }
@@ -223,6 +230,7 @@ function keepWithinZoom(viewbox:{
     height:number,
 }){
     //console.log(newViewbox);
+
 
     const newViewbox = viewbox;
     let diffrence=0;

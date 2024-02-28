@@ -7,6 +7,8 @@ import {Node} from "common/src/algorithms/Graph/Node.ts";
 import { Viewbox} from "./map/HospitalMap.tsx";
 import {setViewBoxForLevel} from "./map/mapLogic.ts";
 
+const maxZoom =4.2;
+
 /**
  * Type to hold all applicable states on the Tailwind map page wrapper.
  */
@@ -83,16 +85,68 @@ export default function MapFeatureButtons({
         const newX = viewbox.x + (changeInWidth * (svgSize.width / 2)) / svgSize.width;
         const newY = viewbox.y + (changeInHeight * (svgSize.height / 2)) / svgSize.height;
 
+        if((svgSize.width / viewbox.width)>maxZoom){
+            return;
+        }
+
         /* update the scale */
         setZoomScale(svgSize.width / viewbox.width);
 
         /* update the viewbox*/
-        setViewbox({
-            x: newX, y: newY,
-            width: viewbox.width - changeInWidth, height: viewbox.height - changeInHeight
-        });
+        setViewbox(keepWithinZoom(
+            {
+                x: newX,
+                y: newY,
+                width: viewbox.width - changeInWidth,
+                height: viewbox.height - changeInHeight
+            }
+        ));
     }
 
+
+    function keepWithinZoom(viewbox:{
+        x: number,
+        y: number,
+        width: number,
+        height:number,
+    }){
+        //console.log(newViewbox);
+
+
+        const newViewbox = viewbox;
+        let diffrence=0;
+        if(newViewbox.x < 950 ){
+            diffrence = 950 - newViewbox.x;
+            newViewbox.x = 950;
+
+            newViewbox.width +=diffrence;
+
+        }
+        if(newViewbox.y < 0 ){
+            diffrence = 0 - newViewbox.y;
+            newViewbox.y = 0;
+
+            newViewbox.height +=diffrence;
+
+        }
+        if( newViewbox.x + newViewbox.width > 4500){
+            diffrence = newViewbox.x + newViewbox.width - 4500;
+            newViewbox.width -=diffrence;
+
+        }
+        if(newViewbox.y+newViewbox.height > 2500){
+            diffrence = newViewbox.y + newViewbox.height - 2500;
+            newViewbox.height -=diffrence;
+
+        }
+
+
+
+
+
+        return newViewbox;
+
+    }
     /*
     function openOptionsDiv() {
         const openSesame = document.getElementById("optionTime");
