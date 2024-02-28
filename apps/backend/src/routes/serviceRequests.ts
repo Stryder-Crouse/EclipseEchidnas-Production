@@ -13,6 +13,7 @@ import {
 } from "common/src/algorithms/Requests/Request.ts";
 import Status from "../../../../packages/common/src/algorithms/Requests/Status.ts";
 import {religEmployees} from "./employees.ts";
+import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 
 const router: Router = express.Router();
 
@@ -2632,42 +2633,15 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
             }
         );
 
-        //monster of a duplicate functionality section to properly define emplRequestArr with the right type
-        //because if I didn't, there would be no way to access the type "Employee" from the db
-        const religionBuffer: string | undefined = religionMap.get(relReq[0].religion);
-        relFilter = (religionBuffer != undefined) ? religionBuffer : "religious personnel";
-
-        //  const emplRequestArr: Array<Array<Employee>> = new Array<Array<Employee>>();
-
-        //proper definition of emplRequestArr and end of monster
-        const emplRequestArr = [(await PrismaClient.employee.findMany(
-                {
-                    where: {
-                        OR: [
-                            {
-                                designation: relFilter
-                            },
-                            { //always pull "religious personnel", no matter the religion
-                                designation: "religious personnel"
-                            },
-                            {
-                                userName: "No one"
-                            }
-                        ]
-
-                    }
-
-                }
-            )
-        )];
+        /* dank */
+        const emplRequestArr: Array<Array<Employee>> = new Array<Array<Employee>>();
 
         //oh, wait, here's where the monster was *supposed* to be
-        for (let i = 1; i < relReq.length; i++) {
+        for (let i = 0; i < relReq.length; i++) {
             const religionBuffer: string | undefined = religionMap.get(relReq[i].religion);
             relFilter = (religionBuffer != undefined) ? religionBuffer : "religious personnel";
 
-            emplRequestArr.push(
-                await PrismaClient.employee.findMany(
+            emplRequestArr.push((await PrismaClient.employee.findMany(
                     {
                         where: {
                             OR: [
@@ -2684,7 +2658,7 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
                         }
                     }
                 )
-            );
+            ) as Array<Employee>);
         }
 
         //send the request to the user with the specified conditions
