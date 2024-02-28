@@ -2,11 +2,12 @@ import {Dispatch, SetStateAction, useRef, useState} from "react";
 import {Directions_Game, Echidna} from "./Echidna.ts";
 import {Coordinate} from "common/src/algorithms/Graph/Coordinate.ts";
 import {Edible} from "./Edible.ts";
-import {lowerLevel1EdibleCoordinates} from "./LevelNodesLocationList.ts";
+import {Level1} from "./LevelNodesLocationList.ts";
 import LowerLevel1Game from "../../images/WongMan/Maps/LowerLevel1.png";
 import EdibleBlue from "../../images/WongMan/Edible/EdibleBlue.png";
 // @ts-expect-error happy-dom is based
 import {HTMLImageElement, KeyboardEvent} from "happy-dom";
+import {WongLevel} from "./WongLevel.ts";
 
 /* structures */
 export type WongManProps = {
@@ -70,25 +71,11 @@ export default function WongManGame({visible, setVisible}: WongManProps) {
         </div>
     );
 
-
-    function startGame() {
-        //create peaces
-        echidna.current = new Echidna({
-            x: scaleWidth(280),
-            y: scaleHeight(244),
-        }, 50, 50, Directions_Game.RIGHT);
-
-        //set context
-        canvasContext.current = canvasArea.current!.getContext("2d");
-
-
-        //set how large the rendering area is
-        canvasContext.current!.canvas.width = window.innerWidth;
-        canvasContext.current!.canvas.height = window.innerHeight;
-
-        //disable AA for better look
-        //canvasContext.current!.imageSmoothingEnabled=false;
-        //add event listeners
+    /**
+     * Initialise the game engine.
+     */
+    function startGame(): void {
+        /* handle user input */
         window.addEventListener("keydown", (e) => {
             handleKeyDown(e);
         });
@@ -96,13 +83,26 @@ export default function WongManGame({visible, setVisible}: WongManProps) {
             handleKeyUp(e);
         });
 
+        /* change the level to 1 */
+        changeLevel(Level1);
+
+        /* start the main loop */
+        setInterval(mainLoop, 20);
+    }
+
+    function changeLevel(level: WongLevel): void {
+        /* make the new player */
+        echidna.current = new Echidna(level.startLocation, 50, 50, Directions_Game.RIGHT);
+
+        //set context
+        canvasContext.current = canvasArea.current!.getContext("2d");
+
+        //set how large the rendering area is
+        canvasContext.current!.canvas.width = window.innerWidth;
+        canvasContext.current!.canvas.height = window.innerHeight;
 
         //setup first levels nodes
-        currentLevelEdibles.current = setLevelNodes(currentLevel.current, lowerLevel1EdibleCoordinates);
-
-
-        setInterval(mainLoop, 16);
-        //console.log("exited");
+        currentLevelEdibles.current = setLevelNodes(level.level, level.edibleLocations);
     }
 
     function handleKeyDown(event: KeyboardEvent) {
