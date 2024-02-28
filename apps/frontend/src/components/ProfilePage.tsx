@@ -45,7 +45,7 @@ function ProfilePage() {
             try {
                 const employeeData = await getEmployees(username!);
                 console.log(employeeData.firstName + " " + employeeData.lastName);
-                const pendingTaskData = await getServiceRequestSize(username!);
+                const pendingTaskData = await getServiceRequestSize(username!, activeCompletedButton);
                 console.log("We failed");
                 console.log(pendingTaskData.toString());
                 setFirstName(employeeData.firstName);
@@ -58,7 +58,7 @@ function ProfilePage() {
         };
 
         fetchData().then();
-    }, [username]);
+    }, [activeCompletedButton, username]);
 
     console.log(getEmployees);
 
@@ -236,11 +236,26 @@ async function getEmployees(emp: string) {
 
 }
 
-async function getServiceRequestSize(emp : string) {
-    const serviceRequest =
-        await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter", {params: {status: "Any", priority: "Any",
-                employee:emp, location:"Any"
-            } });
+async function getServiceRequestSize(emp : string, getCompleted :string) {
+    let serviceRequest;
+    if(getCompleted == "") {
+        serviceRequest =
+            await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter", {
+                params: {
+                    status: "Any", priority: "Any",
+                    employee: emp, location: "Any"
+                }
+            });
+    }
+    else{
+        serviceRequest =
+            await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter/assigned_or_in_progress", {
+                params: {
+                    priority: "Any",
+                    employee: emp, location: "Any"
+                }
+            });
+    }
 
     return serviceRequest.data.length;
 }
