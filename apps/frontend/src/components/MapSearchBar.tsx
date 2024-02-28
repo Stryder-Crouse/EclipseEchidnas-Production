@@ -40,12 +40,12 @@ export default function MapSearchBar({startNode:startNode,
     const longNames:string[] = locations.map((node)=>{return node.longName; });
 
     let selectedNode=NULLNODE;
-        //todo change later
-        //find the node by the long name
-        if (selected != -1) {
-            selectedNode = locations.at(selected)!;
-            setSelected(-1);
-        };
+    //todo change later
+    //find the node by the long name
+    if (selected != -1) {
+        selectedNode = locations.at(selected)!;
+        setSelected(-1);
+    };
 
     if(selectedNode != NULLNODE){
         onLocationSelect(selectedNode,startNode,endNode,setStartNode,

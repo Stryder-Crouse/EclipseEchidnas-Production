@@ -41,9 +41,9 @@ function TailwindMapPage() {
     //useEffect for start up
     useEffect(() => {
 
-            getNodes(selectedFloorIndex).then(result => {
-                setLocations(result);
-            });
+        getNodes(selectedFloorIndex).then(result => {
+            setLocations(result);
+        });
         getNodesWithHallways(selectedFloorIndex).then(result=>{
             setLocationsWithHalls(result);
         });
@@ -72,7 +72,7 @@ function TailwindMapPage() {
                         startNode={startNode}
                         setPathFindingType={setPathFindingType}
                         textDirections={textDirections}
-                     selectedFloorIndex={selectedFloorIndex}/>
+                        selectedFloorIndex={selectedFloorIndex}/>
 
                     <MapFeatureButtons viewbox={viewbox} setViewbox={setViewbox}
                                        setDrawEntirePath={setDrawEntirePath} drawEntirePath={drawEntirePath}

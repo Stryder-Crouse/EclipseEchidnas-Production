@@ -127,25 +127,14 @@ async function createGraph() {
     const nodes: Array<Node> = [];
 
     /* populate edges */
-
-    for(const edgeDB of edgesDB.data){
+    edgesDB.data.forEach((edgeDB) => {
         edges.push(edgeDataBasetoEdge(edgeDB));
-    }
-    //todo remove
-    // edgesDB.data.forEach((edgeDB) => {
-    //     edges.push(edgeDataBasetoEdge(edgeDB));
-    // });
+    });
 
     /* populate nodes */
-
-    for(const nodeDB of nodesDB.data){
+    nodesDB.data.forEach((nodeDB) => {
         nodes.push(nodeDataBaseToNode(nodeDB));
-    }
-    //todo remove
-    // nodesDB.data.forEach((nodeDB) => {
-    //     nodes.push(nodeDataBaseToNode(nodeDB));
-    // });
-
+    });
 
     /* construct a graph from the data */
     graph = new Graph(nodes, edges);
@@ -157,14 +146,9 @@ async function getNodeServiceRequests(){
 
     //setup map with empty strings for every node
 
-
-    for (const node of graph!.getNodes()){
+    graph?.getNodes().forEach((node)=>{
         nodeIDtoServiceRequest.set(node.id,[]);
-    }
-    //todo remove
-    // graph?.getNodes().forEach((node)=>{
-    //     nodeIDtoServiceRequest.set(node.id,[]);
-    // });
+    });
 
 
     //get all service requests
@@ -173,18 +157,11 @@ async function getNodeServiceRequests(){
     const serviceRequests =serviceRequestsRes.data;
 
     //add service requests to graph
-
-    for (const request of serviceRequests){
+    serviceRequests.forEach((request)=>{
         if(nodeIDtoServiceRequest.get(request.reqLocationID)!=undefined){
             nodeIDtoServiceRequest.get(request.reqLocationID)?.push(request);
         }
-    }
-    //todo remove
-    // serviceRequests.forEach((request)=>{
-    //     if(nodeIDtoServiceRequest.get(request.reqLocationID)!=undefined){
-    //         nodeIDtoServiceRequest.get(request.reqLocationID)?.push(request);
-    //     }
-    // });
+    });
 
 
 
@@ -197,7 +174,7 @@ async function getNodeServiceRequests(){
  * @param setScale a Dispatch that sets the map scale
  */
 function createZoomEvent(viewbox: Viewbox, setViewbox: Dispatch<Viewbox>, setScale: Dispatch<number>
-                         ) {
+) {
     /* grab the map and its current size */
     const svgElement = document.getElementById("map")!;
     const svgSize: { width: number, height: number } = {width: svgElement.clientWidth, height: svgElement.clientHeight};
@@ -235,11 +212,11 @@ function createZoomEvent(viewbox: Viewbox, setViewbox: Dispatch<Viewbox>, setSca
         // set new viewbox
         setViewbox(keepWithinZoom(
             {
-            x: newX,
-            y: newY,
-            width: viewbox.width - changeInWidth,
-            height: viewbox.height - changeInHeight
-        }
+                x: newX,
+                y: newY,
+                width: viewbox.width - changeInWidth,
+                height: viewbox.height - changeInHeight
+            }
         ));
 
     });
@@ -351,6 +328,8 @@ function updatePathEdges(startingNode: Node,
                          pathFindingType:string,
                          setTextDirections: Dispatch<SetStateAction<string[][]>>) {
 
+    setPathEdges([]);
+
     /* actually first: check if the graph is ready */
     if (graph == null) {
         // console.error("Graph has not been created yet, but updatePathEdges was called");
@@ -363,19 +342,11 @@ function updatePathEdges(startingNode: Node,
         const thisFloorEdges: Array<Edge> = [];
 
         /* get the edges on this floor */
-
-        for (const edge of graph!.getEdges()){
+        graph?.getEdges().forEach((edge) => {
             if (floorToNumber(edge.startNode.floor) == floorIndex && floorToNumber(edge.endNode.floor) == floorIndex) {
                 thisFloorEdges.push(edge);
             }
-        }
-
-        //todo remove
-        // graph?.getEdges().forEach((edge) => {
-        //     if (floorToNumber(edge.startNode.floor) == floorIndex && floorToNumber(edge.endNode.floor) == floorIndex) {
-        //         thisFloorEdges.push(edge);
-        //     }
-        // });
+        });
 
         /* draw them */
         setPathEdges(thisFloorEdges);
@@ -428,7 +399,7 @@ function updatePathEdges(startingNode: Node,
         console.error("no path could be found between " + startingNode?.id + " and " + endingNode?.id);
         return;
     }
-    
+
     //get and set text directions
     setTextDirections(generateTextDirections(rawPath,graph)!);
 
@@ -466,19 +437,11 @@ function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndT
         /* if both nodes are on this floor */
         if (floorToNumber(start!.floor) == floorIndex && floorToNumber(end!.floor) == floorIndex) {
             /* find the edge that connects start to end and add it to pathEdges */
-
-            for (const edge of  start!.edges){
+            start!.edges.forEach((edge) => {
                 if (edge.endNode == end) {
                     pathEdges.push(edge);
                 }
-            }
-
-            //todo remove
-            // start!.edges.forEach((edge) => {
-            //     if (edge.endNode == end) {
-            //         pathEdges.push(edge);
-            //     }
-            // });
+            });
         }
 
         /* if start is on this floor, but end is on a different floor */
@@ -494,19 +457,11 @@ function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndT
 
                 /* find edge between transition floors */
                 let connectingEdge: Edge = NULLEDGE;
-
-
-                for (const edge of currentNode!.edges){
+                currentNode!.edges.forEach((edge) => {
                     if (edge.endNode == nextNode) {
                         connectingEdge = edge;
                     }
-                }
-                //todo remove
-                // currentNode!.edges.forEach((edge) => {
-                //     if (edge.endNode == nextNode) {
-                //         connectingEdge = edge;
-                //     }
-                // });
+                });
 
                 /* if we didn't find it */
                 if (connectingEdge == NULLEDGE) {
@@ -543,19 +498,11 @@ function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndT
 
                 /* find edge between transition floors */
                 let connectingEdge: Edge = NULLEDGE;
-
-
-                for(const edge of  currentNode!.edges){
+                currentNode!.edges.forEach((edge) => {
                     if (edge.endNode == prevNode) {
                         connectingEdge = edge;
                     }
-                }
-                //todo remove
-                // currentNode!.edges.forEach((edge) => {
-                //     if (edge.endNode == prevNode) {
-                //         connectingEdge = edge;
-                //     }
-                // });
+                });
 
                 /* if we didn't find it */
                 if (connectingEdge == NULLEDGE) {
@@ -602,15 +549,15 @@ function calculateFloorPath(rawPath: Array<Node>, floorIndex: number): edgesAndT
  * @param setZoomScale part of a MapState
  */
 export function HospitalMap({
-                        startNode: startNode, setStartNode: setStartNode,
-                        endNode: endNode, setEndNode: setEndNode,
-                        selectedFloorIndex: selectedFloorIndex,
-                        drawEntirePath: drawEntirePath, locationsWithHalls: locationsWithHalls,
-                        pathFindingType:pathFindingType,
-                        viewbox: viewbox, setViewbox: setViewbox,
-                        zoomScale: zoomScale, setZoomScale: setZoomScale
-                        ,drawEntirePathOptions,setTextDirections,setShowWongMan
-                    }: MapState) {
+                                startNode: startNode, setStartNode: setStartNode,
+                                endNode: endNode, setEndNode: setEndNode,
+                                selectedFloorIndex: selectedFloorIndex,
+                                drawEntirePath: drawEntirePath, locationsWithHalls: locationsWithHalls,
+                                pathFindingType:pathFindingType,
+                                viewbox: viewbox, setViewbox: setViewbox,
+                                zoomScale: zoomScale, setZoomScale: setZoomScale
+                                ,drawEntirePathOptions,setTextDirections,setShowWongMan
+                            }: MapState) {
 
 
 
@@ -911,15 +858,9 @@ export function HospitalMap({
 
         /* generate the edges for this node */
         let edgeConnections: string = " ";
-
-        for(const edge of connectedNode!.edges){
+        connectedNode!.edges.forEach((edge) => {
             edgeConnections += edge.endNode.id + ", ";
-        }
-
-        //todo remove
-        // connectedNode!.edges.forEach((edge) => {
-        //     edgeConnections += edge.endNode.id + ", ";
-        // });
+        });
         edgeConnections = edgeConnections.substring(0, edgeConnections.length - 2);
 
         /* draw the floating div */

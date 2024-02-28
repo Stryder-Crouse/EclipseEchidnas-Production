@@ -19,7 +19,7 @@ export interface levelStates{
 export default function TopMapButtons({setSelectedFloorIndex:setFloor,
                                           startNode:startNode,
                                           setStartNode:setStartNode,
-                                      endNode:endNode,
+                                          endNode:endNode,
                                           setEndNode:setEndNode,
                                           locations:locations,
                                           setPathFindingType:setPathFindingType,
@@ -45,7 +45,7 @@ export default function TopMapButtons({setSelectedFloorIndex:setFloor,
             </div>
 
             <button className={`bg-ivoryWhite ml-3 flex self-end rounded-full p-2 w-10 drop-shadow-lg`}
-                title={"Refresh Selected Locations"}
+                    title={"Refresh Selected Locations"}
                     onClick={() => {
                         setStartNode(NULLNODE);
 
