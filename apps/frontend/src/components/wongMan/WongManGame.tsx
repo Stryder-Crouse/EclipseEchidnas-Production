@@ -23,6 +23,8 @@ const playerSpeed: number = 3;
 export default function WongManGame({visible, setVisible}: WongManProps) {
     const [showGame, setShowGame] = useState(false);
     const [showStart, setShowStart] = useState(true);
+    // const [nodesPerLevel, setNodesPerLevel] =
+    //     useState<Array<Array<Node>>>([[], [], [], [], []]);
 
     const canvasArea = useRef<HTMLCanvasElement>(null);
     const canvasContext = useRef<CanvasRenderingContext2D | null>(null);
@@ -106,22 +108,20 @@ export default function WongManGame({visible, setVisible}: WongManProps) {
     }
 
     function handleKeyDown(event: KeyboardEvent) {
-        console.log(event.code);
         switch (event.code) {
-            //left arrow
+            // left arrow
             case "ArrowLeft":
                 keysDown.current[0] = 1;
                 break;
-            //right arrow
+            // right arrow
             case "ArrowRight":
                 keysDown.current[1] = 1;
                 break;
-
-            //up arrow
+            // up arrow
             case "ArrowUp":
                 keysDown.current[2] = 1;
                 break;
-            //down arrow
+            // down arrow
             case "ArrowDown":
                 keysDown.current[3] = 1;
                 break;
@@ -130,19 +130,19 @@ export default function WongManGame({visible, setVisible}: WongManProps) {
 
     function handleKeyUp(event: KeyboardEvent) {
         switch (event.code) {
-            //left arrow
+            // left arrow
             case "ArrowLeft":
                 keysDown.current[0] = 0;
                 break;
-            //right arrow
+            // right arrow
             case "ArrowRight":
                 keysDown.current[1] = 0;
                 break;
-            //up arrow
+            // up arrow
             case "ArrowUp":
                 keysDown.current[2] = 0;
                 break;
-            //down arrow
+            // down arrow
             case "ArrowDown":
                 keysDown.current[3] = 0;
                 break;
@@ -352,3 +352,11 @@ function scaleWidth(desired: number): number {
 function scaleHeight(desired: number): number {
     return desired * (window.innerHeight / IMG_HEIGHT);
 }
+
+// /**
+//  * Grab some nodes from the backend
+//  * @return some nodes from the backend
+//  */
+//  function grabSomeNodes(): Array<Array<Node>> {
+//
+// }
