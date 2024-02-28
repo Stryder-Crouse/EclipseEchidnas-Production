@@ -128,7 +128,7 @@ export default function PackageCredits() {
                     </div>
                 </div>
 
-                <footer className="flex m-auto scale-90 w-[90%] justify-center bg-white rounded-lg shadow drop-shadow-xl">
+                <footer className="flex m-auto scale-90 w-[68.5rem] justify-center bg-white rounded-lg shadow drop-shadow-xl">
                     <div className="text-center p-4 md:flex md:items-center md:justify-between">
                         <span className="text-sm text-gray-500 dark:text-gray-400">
                             For more details on what each package is and how we utilized it, click on the package you'd like to know more about. Order of cards determined by alphabetical order, not with regard to it's significance to our team's use of the packages.

@@ -167,24 +167,31 @@ export default function ImportInput({setIsImportOpen}: closeImportInput) {
     return (
         <div
             className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 align-self-center"}>
-            <form className={"p-2"}>
-                <h1 className={"grid mb-3 justify-center font-bold text-xl"}>Import Form</h1>
-                <h3>Node</h3>
-                <div className="grid justify-center items-center my-1.5">
-                    <input type={"file"} accept={"text/csv"} onChange={onChangeNode}/>
+            <form className={"p-2 "}>
+                <div className="text-center flex-col justify-center">
+                    <h1 className="mb-3 font-bold text-xl">Import Form</h1>
+
+                    <div className="flex-col justify-center items-center my-1.5">
+                        <h3>Node</h3>
+                        <input type="file" accept="text/csv" onChange={onChangeNode} />
+                    </div>
+
+                    <div className="m-auto flex-col justify-center items-center my-1.5">
+                        <h3>Edge</h3>
+                        <input type="file" accept="text/csv" onChange={onChangeEdge}/>
+                    </div>
+
+                    <div className="m-auto flex-col justify-center items-center my-1.5">
+                        <h3>Employee</h3>
+                        <input type="file" accept="text/csv" onChange={onChangeEmployee}/>
+                    </div>
                 </div>
-                <h3>Edge</h3>
-                <div className="grid justify-center items-center my-1.5">
-                    <input type={"file"} accept={"text/csv"} onChange={onChangeEdge}/>
-                </div>
-                <h3>Employee</h3>
-                <div className="grid justify-center items-center my-1.5">
-                    <input type={"file"} accept={"text/csv"} onChange={onChangeEmployee}/>
-                </div>
+
+
             </form>
-            <div className={"grid justify-center items-center m-auto my-1.5 mb-5"}>
+            <div className={"grid justify-center items-center m-auto my-1.5 "}>
                 <button onClick={inputFiles} className={
-                    "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-5"}>
+                    "bg-navy text-white p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-5"}>
                     Submit
                 </button>
             </div>

@@ -78,27 +78,31 @@ export default function ExportOutput({setIsExportOpen}: closeExportOutput) {
     }
 
     return (
-        <div className={"mt-3 min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 pl-14 pr-14 align-self-center"}>
+        <div className={"mt-3 flex-col justify-center min-w-min max-w-max bg-ivoryWhite border-2 border-black rounded-2xl p-1 pl-14 pr-14 align-self-center"}>
             <form>
-                <h1 className={"grid mb-3 justify-center font-bold text-xl"}>Export Form</h1>
-                <h3>Node</h3>
-                <div>
-                    <input type={"checkbox"} id={"node"}/>
+                <h1 className={"grid mb-3 justify-center items-center font-bold text-xl"}>Export Form</h1>
+
+                <div className={"flex-col text-center justify-center"}>
+                    <h3>Node</h3>
+                    <div>
+                        <input type={"checkbox"} id={"node"}/>
+                    </div>
+                    <h3>Edge</h3>
+                    <div>
+                        <input type={"checkbox"} id={"edge"}/>
+                    </div>
+                    <h3>Employee</h3>
+                    <div>
+                        <input type={"checkbox"} id={"employee"}/>
+                    </div>
                 </div>
-                <h3>Edge</h3>
-                <div>
-                    <input type={"checkbox"} id={"edge"}/>
-                </div>
-                <h3>Employee</h3>
-                <div>
-                    <input type={"checkbox"} id={"employee"}/>
-                </div>
+
             </form>
 
 
-            <div className={"grid justify-center items-center m-auto my-1.5 mb-5"}>
+            <div className={"grid justify-center items-center m-auto my-1.5 mb-1"}>
                 <button onClick={exportDataBase} className={
-                    "bg-tableText p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-5"}>
+                    "bg-navy text-white p-1 rounded-xl w-24 font-bold cursor-pointer flex justify-center m-auto mb-2 mt-5"}>
                     Submit
                 </button>
             </div>

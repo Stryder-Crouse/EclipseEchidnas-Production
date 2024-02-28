@@ -1,16 +1,15 @@
 import React, {useEffect, useState} from "react";
 import FullSideNavBarComponent from "./FullSideNavBarComponent.tsx";
 import {useAuth0} from "@auth0/auth0-react";
-import ServiceRequest_Table from "./service-requests/service-request/ServiceRequest_Table.tsx";
+import ServiceRequest_Table_Protected from "./service-requests/service-request/ServiceRequest_Table_Protected.tsx";
 
 import axios from "axios";
 import PieChartStatsProfile from "./service-requests/Stats/PieChartStatsProfile.tsx";
 import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 import Status from "common/src/algorithms/Requests/Status.ts";
-import {Priorities, ServiceRequest} from "common/src/algorithms/Requests/Request.ts";
+import {ServiceRequest} from "common/src/algorithms/Requests/Request.ts";
 
 function ProfilePage() {
-
 
     const [designation, setDesignation]
         = useState("");
@@ -26,10 +25,14 @@ function ProfilePage() {
 
 
     const [activeButton, setActiveButton] = useState("table");
+    const [activeCompletedButton, setActiveCompletedButton] = useState("table");
 
-        const handleButtonClick = (button: React.SetStateAction<string>) => {
-            setActiveButton(button);
-        };
+    const handleGTButtonClick = (button: React.SetStateAction<string>) => {
+        setActiveButton(button);
+    };
+    const handleCompletedButtonClick = (button: React.SetStateAction<string>) => {
+        setActiveCompletedButton(button);
+    };
 
 
         const currUser = useAuth0();
@@ -41,8 +44,10 @@ function ProfilePage() {
         const fetchData = async () => {
             try {
                 const employeeData = await getEmployees(username!);
-                const pendingTaskData = await getServiceRequestSize(username!);
-
+                console.log(employeeData.firstName + " " + employeeData.lastName);
+                const pendingTaskData = await getServiceRequestSize(username!, activeCompletedButton);
+                console.log("We failed");
+                console.log(pendingTaskData.toString());
                 setFirstName(employeeData.firstName);
                 setLastName(employeeData.lastName);
                 setDesignation(employeeData.designation);
@@ -53,7 +58,7 @@ function ProfilePage() {
         };
 
         fetchData().then();
-    }, [username]);
+    }, [activeCompletedButton, username]);
 
     console.log(getEmployees);
 
@@ -62,7 +67,7 @@ function ProfilePage() {
             <div className="flex h-screen overflow-x-hidden overflow-y-hidden">
                 <FullSideNavBarComponent/>
                 {/* Left Column - User Information */}
-                <div className="w-1/3 max-w-[29%] bg-gray-200 p-4 bg-ivoryWhite rounded-lg">
+                <div className="w-1/3  bg-gray-200 p-4 bg-ivoryWhite rounded-lg">
                     <div className="flex flex-col items-center  justify-center text-center">
                         <h1 className="mb-5 font-bold text-2xl mt-5">Welcome, {firstName}</h1>
                         {ProfilePicture && <ImageCard img={ProfilePicture} />}
@@ -107,7 +112,7 @@ function ProfilePage() {
                                             ? "bg-navy text-white hover:bg-navy focus:bg-navy active:bg-navy"
                                             : "bg-white  text-black hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"
                                     }`}
-                                    onClick={() => handleButtonClick("table")}>
+                                    onClick={() => handleGTButtonClick("table")}>
                                     Table
                                 </button>
 
@@ -118,8 +123,33 @@ function ProfilePage() {
                                             ? `bg-navy text-white hover:bg-navy focus:bg-navy active:bg-navy`
                                             : "bg-white text-black hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"
                                     }`}
-                                    onClick={() => handleButtonClick("graph")}>
+                                    onClick={() => handleGTButtonClick("graph")}>
                                     Graph
+                                </button>
+                            </div>
+                            <div className="mt-10">
+
+                                <button
+                                    type="button"
+                                    className={`inline-block rounded px-9 pb-5 pt-5 text-l font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out 
+                                    ${
+                                        activeCompletedButton === "hide"
+                                            ? "bg-navy text-white hover:bg-navy focus:bg-navy active:bg-navy"
+                                            : "bg-white  text-black hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"
+                                    }`}
+                                    onClick={() => handleCompletedButtonClick("hide")}>
+                                    Hide Completed Tasks
+                                </button>
+
+                                <button
+                                    type="button"
+                                    className={`inline-block rounded px-9 pb-5 pt-5 text-l font-medium uppercase leading-normal shadow-md transition duration-150 ease-in-out ${
+                                        activeCompletedButton === "show"
+                                            ? `bg-navy text-white hover:bg-navy focus:bg-navy active:bg-navy`
+                                            : "bg-white text-black hover:bg-blue-100 focus:bg-blue-100 active:bg-blue-200"
+                                    }`}
+                                    onClick={() => handleCompletedButtonClick("show")}>
+                                    Show Completed Tasks
                                 </button>
                             </div>
                         </div>
@@ -127,7 +157,7 @@ function ProfilePage() {
                 </div>
 
                 {/* Right Column - Content */}
-                <div className="flex-1 p-8 justify-center items-center mt-6 ">
+                <div className="flex-1 p-8 justify-center items-center ">
 
                     {/* Content to be populated with each request */}
                     {generateSelectedTable()}
@@ -142,7 +172,8 @@ function ProfilePage() {
         if (username != "") {
             if (activeButton === "graph") {
 
-                    return (<PieChartStatsProfile
+                    return (
+                        <PieChartStatsProfile
                         urlToGetStats={"/api/employees/current_employee/stats"}
                         userEmail={username!}
                         urlForBuildingStats={"/api/employees/current_employee/buildingStats"}>
@@ -152,18 +183,25 @@ function ProfilePage() {
             }
 
             if (activeButton == "table") {
+                if(activeCompletedButton === "hide") {
 
-                    return (<ServiceRequest_Table employeeFilter={username!} statusFilter={Status.Any}
-                                                  priorityFilter={Priorities.any} locationFilter={"Any"}/>);
+                    return (<ServiceRequest_Table_Protected employeeFilter={username!} statusFilter={Status.Any}
+                                                            locationFilter={"Any"} showCompleted={false}/>);
+                }
+                else{
+
+                    return (<ServiceRequest_Table_Protected employeeFilter={username!} statusFilter={Status.Any}
+                                                            locationFilter={"Any"} showCompleted={true} />);
+                }
 
 
             }
         }
     }
 
-    }
+}
 
-export function ImageCard({ img }: { img: string }){
+export function ImageCard({img}: { img: string }) {
 
     return (
         <div
@@ -191,11 +229,26 @@ async function getEmployees(emp: string) {
 
 }
 
-async function getServiceRequestSize(emp : string) {
-    const serviceRequest =
-        await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter", {params: {status: "Any", priority: "Any",
-                employee:emp, location:"Any"
-            } });
+async function getServiceRequestSize(emp : string, getCompleted :string) {
+    let serviceRequest;
+    if(getCompleted == "") {
+        serviceRequest =
+            await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter", {
+                params: {
+                    status: "Any", priority: "Any",
+                    employee: emp, location: "Any"
+                }
+            });
+    }
+    else{
+        serviceRequest =
+            await axios.get<ServiceRequest[]>("/api/serviceRequests/serviceReq/filter/assigned_or_in_progress", {
+                params: {
+                    priority: "Any",
+                    employee: emp, location: "Any"
+                }
+            });
+    }
 
     return serviceRequest.data.length;
 }
