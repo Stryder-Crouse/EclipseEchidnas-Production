@@ -117,7 +117,7 @@ function PieChartStatsServiceRequest({urlToGetStats,urlForBuildingStats,userEmai
 
     return (
         <div className="flex flex-col justify-evenly m-auto h-full w-full ">
-            <div className="flex flex-row h-[50%]">
+            <div className="flex flex-row h-[50%] mb-4">
                 <PieChartStatsPriorityProfile stats={prioStats}></PieChartStatsPriorityProfile>
                 <PieChartStatsStatusProfile stats={assignedStats}></PieChartStatsStatusProfile>
             </div>
