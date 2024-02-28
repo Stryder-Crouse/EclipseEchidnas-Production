@@ -16,17 +16,11 @@ function ServiceRequestPage() {
             <FullSideNavBarComponent />
             <div className={"grid justify-center m-auto"}>
                 <div className={"relative flex justify-center "}>
-                    {isAuthenticated ? (
+                    {isAuthenticated && (
                         <>
                             <FlowerRequestCard />
                             <ReligionRequestCard />
                             <MedicineRequestCard />
-                        </>
-                    ) : (
-                        <>
-                            <FlowerRequestCard />
-                            <ReligionRequestCard/>
-                            {/* Add other cards for non-authenticated users */}
                         </>
                     )}
                 </div>
