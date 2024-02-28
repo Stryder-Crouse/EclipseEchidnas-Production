@@ -65,7 +65,7 @@ function TailwindMapPage() {
                         startNode={startNode}
                         setPathFindingType={setPathFindingType}
                         textDirections={textDirections}
-                    />
+                     selectedFloorIndex={selectedFloorIndex}/>
 
                     <MapFeatureButtons viewbox={viewbox} setViewbox={setViewbox}
                                        setDrawEntirePath={setDrawEntirePath} drawEntirePath={drawEntirePath}
