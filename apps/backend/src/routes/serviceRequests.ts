@@ -13,11 +13,7 @@ import {
 } from "common/src/algorithms/Requests/Request.ts";
 import Status from "../../../../packages/common/src/algorithms/Requests/Status.ts";
 import {religEmployees} from "./employees.ts";
-//import {Employee} from "../algorithms/Employee/Employee.ts";
-// import {MedReq} from "../algorithms/Requests/Request.ts"; //may also be wrong
-
-//import path from "path";
-//import fs from "fs";
+import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 
 const router: Router = express.Router();
 
@@ -280,19 +276,19 @@ router.get("/serviceReq/filter", async function (req: Request, res: Response) {
         let locFilter: string = req.query.location as string;
         let statusFilter: string = req.query.status as string;
 
-        if(priorityFilter==Priorities.any){
-            priorityFilter="%";
+        if (priorityFilter == Priorities.any) {
+            priorityFilter = "%";
         }
 
-        if(emplFilter=="Any"){
-            emplFilter="%";
+        if (emplFilter == "Any") {
+            emplFilter = "%";
         }
 
         if (locFilter == "Any") {
             locFilter = "%";
         }
 
-        if(statusFilter == Status.Any){
+        if (statusFilter == Status.Any) {
             statusFilter = "%";
         }
 
@@ -303,13 +299,14 @@ router.get("/serviceReq/filter", async function (req: Request, res: Response) {
             where: {
                 AND: [
                     {
-                        reqPriority:{
-                            contains:priorityFilter
+                        reqPriority: {
+                            contains: priorityFilter
                         }
                     },
-                    { status:{
-                                    contains:statusFilter
-                                }
+                    {
+                        status: {
+                            contains: statusFilter
+                        }
                     },
                     {
                         assignedUName: {
@@ -345,12 +342,12 @@ router.get("/serviceReq/filter/assigned_or_in_progress", async function (req: Re
         let emplFilter: string = req.query.employee as string;
         let locFilter: string = req.query.location as string;
 
-        if(priorityFilter==Priorities.any){
-            priorityFilter="%";
+        if (priorityFilter == Priorities.any) {
+            priorityFilter = "%";
         }
 
-        if(emplFilter=="Any"){
-            emplFilter="%";
+        if (emplFilter == "Any") {
+            emplFilter = "%";
         }
 
         if (locFilter == "Any") {
@@ -364,17 +361,22 @@ router.get("/serviceReq/filter/assigned_or_in_progress", async function (req: Re
             where: {
                 AND: [
                     {
-                        reqPriority:{
-                            contains:priorityFilter
+                        reqPriority: {
+                            contains: priorityFilter
                         }
                     },
-                    { OR:[
-                            {status:{
-                                contains:"Assigned"
-                            }},
-                            {status:{
-                                contains:"In Progress"
-                            }}
+                    {
+                        OR: [
+                            {
+                                status: {
+                                    contains: "Assigned"
+                                }
+                            },
+                            {
+                                status: {
+                                    contains: "In Progress"
+                                }
+                            }
                         ],
                     },
                     {
@@ -411,49 +413,56 @@ router.get("/serviceReq/filter/assigned_in_progress_or_completed", async functio
         let emplFilter: string = req.query.employee as string;
         let locFilter: string = req.query.location as string;
 
-        if(priorityFilter==Priorities.any){
-            priorityFilter="%";
+        if (priorityFilter == Priorities.any) {
+            priorityFilter = "%";
         }
 
-        if(emplFilter=="Any"){
-            emplFilter="%";
+        if (emplFilter == "Any") {
+            emplFilter = "%";
         }
 
-        if(locFilter=="Any"){
-            locFilter="%";
+        if (locFilter == "Any") {
+            locFilter = "%";
         }
 
         const sreviceRequest = await PrismaClient.serviceRequest.findMany({
-            orderBy:{
+            orderBy: {
                 reqID: "desc"
             },
             where: {
-                AND:[
+                AND: [
                     {
-                        reqPriority:{
-                            contains:priorityFilter
+                        reqPriority: {
+                            contains: priorityFilter
                         }
                     },
-                    { OR:[
-                            {status:{
-                                    contains:"Assigned"
-                                }},
-                            {status:{
-                                    contains:"In Progress"
-                                }},
-                            {status:{
-                                    contains:"Completed"
-                                }}
+                    {
+                        OR: [
+                            {
+                                status: {
+                                    contains: "Assigned"
+                                }
+                            },
+                            {
+                                status: {
+                                    contains: "In Progress"
+                                }
+                            },
+                            {
+                                status: {
+                                    contains: "Completed"
+                                }
+                            }
                         ],
                     },
                     {
-                        assignedUName:{
-                            contains:emplFilter
+                        assignedUName: {
+                            contains: emplFilter
                         }
                     },
                     {
-                        reqLocationID:{
-                            contains:locFilter
+                        reqLocationID: {
+                            contains: locFilter
                         }
                     }
                 ]
@@ -2397,15 +2406,11 @@ router.post('/religiousRequest', async function (req: Request, res: Response) {
     }
 });
 
-
 router.get("/religiousRequest", async function (req: Request, res: Response) {
-
     const statusFilter: Status = req.query.status as Status;
-
     if (statusFilter == Status.Any) {
         try {
-
-            const religReq = await PrismaClient.religiousReq.findMany({
+            const religReq: Array<ReligRequest> = await PrismaClient.religiousReq.findMany({
                 orderBy: {
                     genReqID: "desc", //order by service request id so the two arrays are parallel
                 }
@@ -2441,6 +2446,7 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
             //get all the data out of the database using religReqs' religion fields
             for (let i = 0; i < religReq.length; i++) {
                 const nextEmployeeArr = await religEmployees(religReq[i].religion);
+
                 if (i == 0 && nextEmployeeArr != undefined) { //remove the "No one" array from the first slot
                     employeeReq[0] = nextEmployeeArr;
                 } else if (nextEmployeeArr != undefined) {
@@ -2465,16 +2471,13 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
                     })]);
                 }
             }
-
-            console.log(employeeReq);
-
             //we display info from both the service req and the outside transportation req, so we send the person both DB objects
             res.status(200).send([religReq, serviceReqs, employeeReq]);
             console.info("Successfully gave you all of the Religious Requests");
             //send status unless 6 times bug occurs
         } catch (err) {
             res.sendStatus(500);
-            console.error("Unable to send Requests" + err);
+            console.error("Unable to send Religious Requests: " + err);
         }
     } else {
         try {
@@ -2506,7 +2509,7 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
             console.info("Successfully gave you all of the Religious Requests");
             //send status unless 6 times bug occurs
         } catch (err) {
-            console.error("Unable to send Requests" + err);
+            console.error("Unable to send Religious Requests: " + err);
             res.sendStatus(500);
         }
     }
@@ -2516,33 +2519,50 @@ router.get("/religiousRequest", async function (req: Request, res: Response) {
 
 
 router.get("/religiousRequest/filter", async function (req: Request, res: Response) {
+    /* symbols */
+    const religionMap: Map<string, string> = new Map<string, string>();
+    let statusFilter: string = req.query.status as string;
+    let priorityFilter: string = req.query.priority as string;
+    let emplFilter: string = req.query.employee as string;
+    let locFilter: string = req.query.location as string;
+    let relFilter: string;
+
+    /* pointless prints */
+    console.log("raw, filter");
+    console.log("statusfilter: " + statusFilter);
+    console.log("priorityFilter: " + priorityFilter);
+    console.log("emplFilter: " + emplFilter);
+    console.log("locFilter: " + locFilter);
+
+    /* goonies conditionals */
+    if (statusFilter == Status.Any) {
+        statusFilter = "%";
+    }
+    if (priorityFilter == Priorities.any) {
+        priorityFilter = "%";
+    }
+    if (emplFilter.toLowerCase() == "any") {
+        emplFilter = "%";
+    }
+    if (locFilter.toLowerCase() == "any") {
+        locFilter = "%";
+    }
+
+    /* religion map setup */
+    religionMap.set("Buddhism", "Buddhist personnel");
+    religionMap.set("Christianity (Catholicism)", "Catholic personnel");
+    religionMap.set("Christianity (Mormonism)", "Mormon personnel");
+    religionMap.set("Christianity (Non-Denominational", "Christian (non-denominational) personnel");
+    religionMap.set("Christianity (Protestantism)", "Protestant personnel");
+    religionMap.set("Hinduism", "Hindu personnel");
+    religionMap.set("Islam", "Muslim personnel");
+    religionMap.set("Jainism", "Jain personnel");
+    religionMap.set("Judaism", "Jewish personnel");
+    religionMap.set("Sikhism", "Sikh personnel");
+    religionMap.set("Shinto", "Shinto personnel");
+
+    /* seriously, why would you put the WHOLE THING in a try */
     try {
-        let statusFilter: string = req.query.status as string;
-        let priorityFilter: string = req.query.priority as string;
-        let emplFilter: string = req.query.employee as string;
-        let locFilter: string = req.query.location as string;
-
-        let relFilter: string;
-
-        console.log("raw");
-        console.log("statusfilter: " + statusFilter);
-        console.log("priorityFilter: " + priorityFilter);
-        console.log("emplFilter: " + emplFilter);
-        console.log("locFilter: " + locFilter);
-
-        if (statusFilter == Status.Any) {
-            statusFilter = "%";
-        }
-        if (priorityFilter == Priorities.any) {
-            priorityFilter = "%";
-        }
-        if (emplFilter.toLowerCase() == "Any") {
-            emplFilter = "%";
-        }
-        if (locFilter.toLowerCase() == "Any") {
-            locFilter = "%";
-        }
-
         const serviceRequest = await PrismaClient.serviceRequest.findMany({
             orderBy: {
                 reqID: "desc"
@@ -2613,124 +2633,15 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
             }
         );
 
-        //monster of a duplicate functionality section to properly define emplRequestArr with the right type
-        //because if I didn't, there would be no way to access the type "Employee" from the db
-
-        //set relFilter appropriately
-        if (relReq[0].religion == "Other") {
-            relFilter = "religious personnel";
-
-        } else {
-            switch (relReq[0].religion) {
-                case "Buddhism":
-                    relFilter = "Buddhist personnel";
-                    break;
-                case "Christianity (Catholicism)":
-                    relFilter = "Catholic personnel";
-                    break;
-                case "Christianity (Mormonism)":
-                    relFilter = "Mormon personnel";
-                    break;
-                case "Christianity (Non-Denominational)":
-                    relFilter = "Christian (non-denominational) personnel";
-                    break;
-                case "Christianity (Protestantism)":
-                    relFilter = "Protestant personnel";
-                    break;
-                case "Hinduism":
-                    relFilter = "Hindu personnel";
-                    break;
-                case "Islam":
-                    relFilter = "Muslim personnel";
-                    break;
-                case "Jainism":
-                    relFilter = "Jain personnel";
-                    break;
-                case "Judaism":
-                    relFilter = "Jewish personnel";
-                    break;
-                case "Sikhism":
-                    relFilter = "Sikh personnel";
-                    break;
-                case "Shinto":
-                    relFilter = "Shinto personnel";
-                    break;
-                default:
-                    relFilter = "religious personnel";
-                    break;
-            }
-        }
-        //proper definition of emplRequestArr and end of monster
-        const emplRequestArr = [await PrismaClient.employee.findMany(
-            {
-                where: {
-                    OR: [
-                        {
-                            designation: relFilter
-                        },
-                        { //always pull "religious personnel", no matter the religion
-                            designation: "religious personnel"
-                        },
-                        {
-                            userName: "No one"
-                        }
-                    ]
-
-                }
-
-            }
-        )
-        ];
+        /* dank */
+        const emplRequestArr: Array<Array<Employee>> = new Array<Array<Employee>>();
 
         //oh, wait, here's where the monster was *supposed* to be
-        for (let i = 1; i < relReq.length; i++) {
-            //set relFilter appropriately
-            if (relReq[i].religion == "Other") {
-                relFilter = "religious personnel";
+        for (let i = 0; i < relReq.length; i++) {
+            const religionBuffer: string | undefined = religionMap.get(relReq[i].religion);
+            relFilter = (religionBuffer != undefined) ? religionBuffer : "religious personnel";
 
-            } else {
-                switch (relReq[i].religion) {
-                    case "Buddhism":
-                        relFilter = "Buddhist personnel";
-                        break;
-                    case "Christianity (Catholicism)":
-                        relFilter = "Catholic personnel";
-                        break;
-                    case "Christianity (Mormonism)":
-                        relFilter = "Mormon personnel";
-                        break;
-                    case "Christianity (Non-Denominational)":
-                        relFilter = "Christian (non-denominational) personnel";
-                        break;
-                    case "Christianity (Protestantism)":
-                        relFilter = "Protestant personnel";
-                        break;
-                    case "Hinduism":
-                        relFilter = "Hindu personnel";
-                        break;
-                    case "Islam":
-                        relFilter = "Muslim personnel";
-                        break;
-                    case "Jainism":
-                        relFilter = "Jain personnel";
-                        break;
-                    case "Judaism":
-                        relFilter = "Jewish personnel";
-                        break;
-                    case "Sikhism":
-                        relFilter = "Sikh personnel";
-                        break;
-                    case "Shinto":
-                        relFilter = "Shinto personnel";
-                        break;
-                    default:
-                        relFilter = "religious personnel";
-                        break;
-                }
-            }
-
-            emplRequestArr.push(
-                await PrismaClient.employee.findMany(
+            emplRequestArr.push((await PrismaClient.employee.findMany(
                     {
                         where: {
                             OR: [
@@ -2744,14 +2655,11 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
                                     userName: "No one"
                                 }
                             ]
-
                         }
-
                     }
                 )
-            );
+            ) as Array<Employee>);
         }
-
 
         //send the request to the user with the specified conditions
         res.status(200).send([relReq, serviceRequest, emplRequestArr]);
@@ -2762,7 +2670,7 @@ router.get("/religiousRequest/filter", async function (req: Request, res: Respon
         //send status unless 6 times bug occurs
 
     } catch (err) {
-        console.error("Unable to send requests" + err);
+        console.error("Unable to send filtered religious requests: " + err);
         res.sendStatus(500); // Send error
     }
 });
