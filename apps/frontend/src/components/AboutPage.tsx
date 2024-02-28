@@ -43,7 +43,7 @@ function AboutPage(){
                         </ImageCard>
                         <ImageCard img={RyanPic} name={"Ryan Hunter"} role={"Backend Engineer"} quote={"Something cool"}>
                         </ImageCard>
-                        <ImageCard img={AlexPic} name={"Alex Ramirez"} role={"Algorithms Engineer"} quote={"Stay mad"}>
+                        <ImageCard img={AlexPic} name={"Alex Ramirez"} role={"Algorithms Engineer"} quote={"(sample text - dijkstra's)"}>
                         </ImageCard>
                         <ImageCard img={WongPic} name={"Wilson Wong"} role={"Professor"} quote={"Team eeeeee"}>
                         </ImageCard>
