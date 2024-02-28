@@ -157,7 +157,7 @@ function ProfilePage() {
                 </div>
 
                 {/* Right Column - Content */}
-                <div className="flex-1 p-8 justify-center items-center mt-6 ">
+                <div className="flex-1 p-8 justify-center items-center ">
 
                     {/* Content to be populated with each request */}
                     {generateSelectedTable()}
@@ -171,22 +171,15 @@ function ProfilePage() {
         // For each div/request to overlay
         if (username != "") {
             if (activeButton === "graph") {
-                    if(activeCompletedButton === "hide") {
-                        //todo make this actually differ from the other branch
-                        return (<PieChartStatsProfile
-                            urlToGetStats={"/api/employees/current_employee/stats"}
-                            userEmail={username!}
-                            urlForBuildingStats={"/api/employees/current_employee/buildingStats"}>
-                        </PieChartStatsProfile>);
-                    }
-                    else{
-                        return (
-                            <PieChartStatsProfile
-                            urlToGetStats={"/api/employees/current_employee/stats"}
-                            userEmail={username!}
-                            urlForBuildingStats={"/api/employees/current_employee/buildingStats"}>
-                        </PieChartStatsProfile>);
-                    }
+
+                    return (
+                        <PieChartStatsProfile
+                        urlToGetStats={"/api/employees/current_employee/stats"}
+                        userEmail={username!}
+                        urlForBuildingStats={"/api/employees/current_employee/buildingStats"}>
+                    </PieChartStatsProfile>);
+
+
             }
 
             if (activeButton == "table") {
