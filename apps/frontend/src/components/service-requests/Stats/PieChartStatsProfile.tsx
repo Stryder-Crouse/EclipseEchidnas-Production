@@ -117,7 +117,7 @@ function PieChartStatsServiceRequest({urlToGetStats,urlForBuildingStats,userEmai
 
     return (
         <div className="flex flex-col justify-evenly m-auto h-full w-full ">
-            <div className="flex flex-row h-[50%]">
+            <div className="flex flex-row h-[50%] mb-4">
                 <PieChartStatsPriorityProfile stats={prioStats}></PieChartStatsPriorityProfile>
                 <PieChartStatsStatusProfile stats={assignedStats}></PieChartStatsStatusProfile>
             </div>
@@ -137,7 +137,6 @@ async function getAllStats(urlToGetStats:string,urlForBuildingStats:string,email
         inProgress: servStats.inProgress,
         completed: servStats.completed
     };
-
 
 
     const prioStats:prioStats={
