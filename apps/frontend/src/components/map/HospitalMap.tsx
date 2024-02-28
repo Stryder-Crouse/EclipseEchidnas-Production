@@ -37,6 +37,7 @@ import SecondFloorImage from "/src/images/maps/02_thesecondfloor.png";
 import ThirdFloorImage from "/src/images/maps/03_thethirdfloor.png";
 import StarterPin from "/src/images/MapFunctions/mapPinGreen.png";
 import EndingPin from "/src/images/MapFunctions/mapPinRed.png";
+import wongMan from "../../images/WongMan/Peeking WongMan.png";
 
 import {DijkstraSearchStrategy} from "common/src/algorithms/Search/Strategy/DijkstraSearchStrategy.ts";
 
@@ -662,8 +663,8 @@ export function HospitalMap({
                 <a onClick={() => {
                     setShowWongMan(true);
                 }} className={"cursor-pointer"}>
-                    <rect width={50} height={50} x={1250} y={2800}>
-                    </rect>
+                    <image width={100} height={100} x={1205} y={2787} href={wongMan}>
+                    </image>
                 </a>
             );
         }
