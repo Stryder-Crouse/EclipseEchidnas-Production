@@ -2,6 +2,7 @@ import {Coordinate} from "common/src/algorithms/Graph/Coordinate.ts";
 import EchidnaImg from "../../images/WongMan/echidna.png";
 import EchidnaImgHalf from "../../images/WongMan/echidnaHalf.png";
 import EchidnaImgOpen from "../../images/WongMan/echidnaOpen.png";
+import EchidnaClosed from "../../images/WongMan/echidnaClosed.png";
 import {RenderableObject} from "./RenderableObject.ts";
 
 export class Echidna extends RenderableObject{
@@ -9,8 +10,8 @@ export class Echidna extends RenderableObject{
 
     private _direction:Directions_Game;
     private _currentIcon:number;
-    private static readonly FRAMES_BETWEEN_ANIMATION_CHANGE = 10;
-    private static readonly ANTIMATION_FRAMES = [EchidnaImg,EchidnaImgHalf,EchidnaImgOpen,EchidnaImgHalf];
+    private static readonly FRAMES_BETWEEN_ANIMATION_CHANGE = 8;
+    private static readonly ANTIMATION_FRAMES = [EchidnaClosed,EchidnaImg,EchidnaImgHalf,EchidnaImgOpen,EchidnaImgHalf,EchidnaImg];
 
     private isMoving = false;
 
