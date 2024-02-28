@@ -62,7 +62,7 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter,emplo
 
     //make table of Service Requests
     return (
-        <div className={"h-100 w-[42.5rem] overflow-auto rounded-xl"}>
+        <div className={"h-100 w-[43rem] overflow-auto rounded-xl"}>
 
             {/* make your table in here  */}
             <table className={"medTable overflow-y-scroll"}>
@@ -88,7 +88,7 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter,emplo
                                 <th className={"tableTD"}>{request.reqType}</th>
                                 <th className={"tableTD"}>
                                     <select
-                                        className={""}
+                                        className={"rounded-lg"}
                                         value={request.status}
                                         id={"medStatusDropdown" + request.reqID}
                                         onChange={
@@ -106,7 +106,7 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter,emplo
                                 </th>
                                 <th className={"tableTD"}>
                                     <select
-                                        className={""}
+                                        className={"rounded-lg"}
                                         value={request.reqPriority}     //sets dropdown to request's value
                                         id={"medStatusDropdown" + request.reqID}
                                         onChange={
@@ -124,7 +124,7 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter,emplo
                                 </th>
                                 <th className={"tableTD"}>
                                     <select
-                                        className={""}
+                                        className={"rounded-lg"}
                                         value={request.assignedUName}
                                         onChange={
                                             (event) => {

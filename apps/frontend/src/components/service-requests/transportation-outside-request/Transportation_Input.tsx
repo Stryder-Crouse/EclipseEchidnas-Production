@@ -225,7 +225,7 @@ export default function Transportation_Input({
                             className={"grid justify-center items-center my-1.5 mb-2"}> {/* Additional notes textbox */}
                             <label className="label">Extra Notes </label>
                             <textarea
-                                className={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer overflow-y-hidden h-12"}
+                                className={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer overflow-y-hidden h-11"}
                                 id={"additional"}
                                 placeholder={"Extra Notes"}
                                 value={additional}

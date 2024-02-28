@@ -108,7 +108,7 @@ export function CreateDropdown({dropBtnName, dropdownID, isSearchable, runOnChan
                     <option disabled={true}
                             selected={true}
                             key={dropdownID+"_unselectable"}
-                            className={"dropdown-content unselectable"}>{dropBtnName}</option>
+                            className={"dropdown-content unselectable "}>{dropBtnName}</option>
                     {
                         //make the rest of the options from the populationArr, and give them all unique keys
                         populationArr.map((option: string, index) => <option
