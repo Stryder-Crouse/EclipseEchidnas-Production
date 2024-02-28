@@ -62,22 +62,24 @@ function TailwindMapPage() {
                         <FullSideNavBarComponent/>
                     </div>
 
-                        <TopMapButtons
-                            setSelectedFloorIndex={setSelectedFloorIndex}
-                            endNode={endNode}
-                            locations={locations}
-                            setEndNode={setEndNode}
-                            setStartNode={setStartNode}
-                            startNode={startNode}
-                            setPathFindingType={setPathFindingType}
-                            textDirections={textDirections}
-                        />
 
-                        <MapFeatureButtons viewbox={viewbox} setViewbox={setViewbox}
-                                           setDrawEntirePath={setDrawEntirePath} drawEntirePath={drawEntirePath}
-                                           setZoomScale={setZoomScale} setEndNode={setEndNode}
-                                           setStartNode={setStartNode} drawEntirePathOptions={drawEntirePathOptions}
-                                           setDrawEntirePathOptions={setDrawEntirePathOptions}/>
+                    <TopMapButtons
+                        setSelectedFloorIndex={setSelectedFloorIndex}
+                        endNode={endNode}
+                        locations={locations}
+                        setEndNode={setEndNode}
+                        setStartNode={setStartNode}
+                        startNode={startNode}
+                        setPathFindingType={setPathFindingType}
+                        textDirections={textDirections}
+                     selectedFloorIndex={selectedFloorIndex}/>
+
+                    <MapFeatureButtons viewbox={viewbox} setViewbox={setViewbox}
+                                       setDrawEntirePath={setDrawEntirePath} drawEntirePath={drawEntirePath}
+                                       setZoomScale={setZoomScale} setEndNode={setEndNode}
+                                       setStartNode={setStartNode} drawEntirePathOptions={drawEntirePathOptions}
+                                       setDrawEntirePathOptions={setDrawEntirePathOptions}
+                                       selectedFloorIndex={selectedFloorIndex}/>
 
 
                 </div>

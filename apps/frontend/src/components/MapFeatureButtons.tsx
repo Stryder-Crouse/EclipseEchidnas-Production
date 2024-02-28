@@ -3,8 +3,9 @@ import RefreshIcon from "../images/MapFunctions/refresh-cw.png";
 import ZoomInIcon from "../images/MapFunctions/plus.png";
 import ZoomOutIcon from "../images/MapFunctions/minus.png";
 import {Dispatch, SetStateAction, useState} from "react";
-import {Node, NULLNODE} from "common/src/algorithms/Graph/Node.ts";
-import {Viewbox} from "./map/HospitalMap.tsx";
+import {Node} from "common/src/algorithms/Graph/Node.ts";
+import { Viewbox} from "./map/HospitalMap.tsx";
+import {setViewBoxForLevel} from "./map/mapLogic.ts";
 
 /**
  * Type to hold all applicable states on the Tailwind map page wrapper.
@@ -19,13 +20,14 @@ export type zoomAndMapStates = {
     setEndNode: Dispatch<SetStateAction<Node>>
     drawEntirePathOptions:boolean[]
     setDrawEntirePathOptions:Dispatch<SetStateAction<boolean[]>>
+    selectedFloorIndex:number
 }
 export default function MapFeatureButtons({
                                               drawEntirePath: drawEntirePath,
                                               setDrawEntirePath: setDrawEntirePath,
                                               viewbox: viewbox,
                                               setViewbox: setViewbox,
-                                              setZoomScale: setZoomScale, setStartNode, setEndNode,
+                                              setZoomScale: setZoomScale,selectedFloorIndex,
                                               drawEntirePathOptions,
                                               setDrawEntirePathOptions
                                           }: zoomAndMapStates) {
@@ -169,14 +171,7 @@ export default function MapFeatureButtons({
             <button className="flex self-end bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10 "
                     title={"Refresh Zoom"}
                     onClick={() => {
-                        setStartNode(NULLNODE);
-
-                        setEndNode(NULLNODE);
-                        //close the drop down
-                        const openLocationInput = document.getElementById("locationDropdown");
-                        if (openLocationInput != null) {
-                            openLocationInput.style.display = "none";
-                        }
+                        setViewBoxForLevel(selectedFloorIndex,setViewbox);
                     }}>
                 <img src={RefreshIcon} alt={"Refresh"} />
             </button>
