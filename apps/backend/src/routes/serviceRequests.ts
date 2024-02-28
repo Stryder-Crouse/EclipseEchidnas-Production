@@ -273,7 +273,72 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
         res.sendStatus(400); // Send error
     }
 });
+router.get("/serviceReq/filter", async function (req: Request, res: Response) {
+    try {
+        let priorityFilter: string = req.query.priority as string;
+        let emplFilter: string = req.query.employee as string;
+        let locFilter: string = req.query.location as string;
+        let statusFilter: string = req.query.status as string;
 
+        if(priorityFilter==Priorities.any){
+            priorityFilter="%";
+        }
+
+        if(emplFilter=="Any"){
+            emplFilter="%";
+        }
+
+        if (locFilter == "Any") {
+            locFilter = "%";
+        }
+
+        if(statusFilter == Status.Any){
+            statusFilter = "%";
+        }
+
+        const sreviceRequest = await PrismaClient.serviceRequest.findMany({
+            orderBy: {
+                reqID: "desc"
+            },
+            where: {
+                AND: [
+                    {
+                        reqPriority:{
+                            contains:priorityFilter
+                        }
+                    },
+                    { status:{
+                                    contains:statusFilter
+                                }
+                    },
+                    {
+                        assignedUName: {
+                            contains: emplFilter
+                        }
+                    },
+                    {
+                        reqLocationID: {
+                            contains: locFilter
+                        }
+                    }
+                ]
+            }
+        });
+
+
+        //send the request to the user with the specified conditions
+        res.status(200).send(sreviceRequest);
+
+        console.log("Res: " + res); //debugging info
+
+        console.info("Successfully filtered requests"); //debugging info
+        //send status unless 6 times bug occurs
+
+    } catch (err) {
+        console.error("Unable to send requests" + err);
+        res.sendStatus(500); // Send error
+    }
+});
 router.get("/serviceReq/filter/assigned_or_in_progress", async function (req: Request, res: Response) {
     try {
         let priorityFilter: string = req.query.priority as string;

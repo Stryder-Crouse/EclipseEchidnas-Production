@@ -44,8 +44,10 @@ function ProfilePage() {
         const fetchData = async () => {
             try {
                 const employeeData = await getEmployees(username!);
+                console.log(employeeData.firstName + " " + employeeData.lastName);
                 const pendingTaskData = await getServiceRequestSize(username!);
-
+                console.log("We failed");
+                console.log(pendingTaskData.toString());
                 setFirstName(employeeData.firstName);
                 setLastName(employeeData.lastName);
                 setDesignation(employeeData.designation);
