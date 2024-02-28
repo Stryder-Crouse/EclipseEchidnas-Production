@@ -1,10 +1,13 @@
-import EyeIcon from "../images/MapFunctions/eye.png";
+import LayersIcon from "../images/MapFunctions/layers-3.png";
 import RefreshIcon from "../images/MapFunctions/refresh-cw.png";
 import ZoomInIcon from "../images/MapFunctions/plus.png";
 import ZoomOutIcon from "../images/MapFunctions/minus.png";
-import {Dispatch, SetStateAction} from "react";
-import {Node, NULLNODE} from "common/src/algorithms/Graph/Node.ts";
-import {Viewbox} from "./map/HospitalMap.tsx";
+import {Dispatch, SetStateAction, useState} from "react";
+import {Node} from "common/src/algorithms/Graph/Node.ts";
+import { Viewbox} from "./map/HospitalMap.tsx";
+import {setViewBoxForLevel} from "./map/mapLogic.ts";
+
+const maxZoom =4.2;
 
 /**
  * Type to hold all applicable states on the Tailwind map page wrapper.
@@ -19,19 +22,21 @@ export type zoomAndMapStates = {
     setEndNode: Dispatch<SetStateAction<Node>>
     drawEntirePathOptions:boolean[]
     setDrawEntirePathOptions:Dispatch<SetStateAction<boolean[]>>
+    selectedFloorIndex:number
 }
 export default function MapFeatureButtons({
                                               drawEntirePath: drawEntirePath,
                                               setDrawEntirePath: setDrawEntirePath,
                                               viewbox: viewbox,
                                               setViewbox: setViewbox,
-                                              setZoomScale: setZoomScale, setStartNode, setEndNode,
+                                              setZoomScale: setZoomScale,selectedFloorIndex,
                                               drawEntirePathOptions,
                                               setDrawEntirePathOptions
                                           }: zoomAndMapStates) {
     /**
      * Handle when the all edges toggle is pressed.
      */
+    const [isButtonActive, setIsButtonActive] = useState(false);
     function handleAllEdgesToggle() {
         if (!drawEntirePath) {
             setDrawEntirePath(true);
@@ -40,6 +45,9 @@ export default function MapFeatureButtons({
             setDrawEntirePath(false);
             closeForm();
         }
+
+        // Toggle button active state
+        setIsButtonActive(!isButtonActive);
     }
 
 
@@ -77,16 +85,68 @@ export default function MapFeatureButtons({
         const newX = viewbox.x + (changeInWidth * (svgSize.width / 2)) / svgSize.width;
         const newY = viewbox.y + (changeInHeight * (svgSize.height / 2)) / svgSize.height;
 
+        if((svgSize.width / viewbox.width)>maxZoom){
+            return;
+        }
+
         /* update the scale */
         setZoomScale(svgSize.width / viewbox.width);
 
         /* update the viewbox*/
-        setViewbox({
-            x: newX, y: newY,
-            width: viewbox.width - changeInWidth, height: viewbox.height - changeInHeight
-        });
+        setViewbox(keepWithinZoom(
+            {
+                x: newX,
+                y: newY,
+                width: viewbox.width - changeInWidth,
+                height: viewbox.height - changeInHeight
+            }
+        ));
     }
 
+
+    function keepWithinZoom(viewbox:{
+        x: number,
+        y: number,
+        width: number,
+        height:number,
+    }){
+        //console.log(newViewbox);
+
+
+        const newViewbox = viewbox;
+        let diffrence=0;
+        if(newViewbox.x < 950 ){
+            diffrence = 950 - newViewbox.x;
+            newViewbox.x = 950;
+
+            newViewbox.width +=diffrence;
+
+        }
+        if(newViewbox.y < 0 ){
+            diffrence = 0 - newViewbox.y;
+            newViewbox.y = 0;
+
+            newViewbox.height +=diffrence;
+
+        }
+        if( newViewbox.x + newViewbox.width > 4500){
+            diffrence = newViewbox.x + newViewbox.width - 4500;
+            newViewbox.width -=diffrence;
+
+        }
+        if(newViewbox.y+newViewbox.height > 2500){
+            diffrence = newViewbox.y + newViewbox.height - 2500;
+            newViewbox.height -=diffrence;
+
+        }
+
+
+
+
+
+        return newViewbox;
+
+    }
     /*
     function openOptionsDiv() {
         const openSesame = document.getElementById("optionTime");
@@ -146,41 +206,50 @@ export default function MapFeatureButtons({
 
             </div>
 
-            <button id={"optionTime"} className="flex self-end bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10"
-                    onClick={handleAllEdgesToggle}>
-                <img src={EyeIcon} alt={"See All Locations and Paths"}/>
+            <button
+                id={"optionTime"}
+                title={"Options"}
+                className={`bg-ivoryWhite flex self-end rounded-md p-2 mb-4 w-10 ${
+                    isButtonActive ? "bg-navStart" : "bg-ivoryWhite"
+                } drop-shadow-lg`}
+                onClick={handleAllEdgesToggle}
+            >
+                <img
+                    src={LayersIcon}
+                    alt={"See All Locations and Paths"}
+                    style={{filter: isButtonActive ? "invert(1)" : "invert(0)"}}
+                    className={"hover:invert"}
+                />
             </button>
-            <button className="flex self-end bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10"
-                    onClick={() => {
-                        setStartNode(NULLNODE);
 
-                        setEndNode(NULLNODE);
-                        //close the drop down
-                        const openLocationInput = document.getElementById("locationDropdown");
-                        if (openLocationInput != null) {
-                            openLocationInput.style.display = "none";
-                        }
+            <button className="flex self-end bg-ivoryWhite rounded-md p-2 mb-4 drop-shadow-lg w-10 "
+                    title={"Refresh Zoom"}
+                    onClick={() => {
+                        setViewBoxForLevel(selectedFloorIndex,setViewbox);
                     }}>
-                <img src={RefreshIcon} alt={"Refresh"}/>
+                <img src={RefreshIcon} alt={"Refresh"} />
             </button>
 
             {/*PLACE HOLDER*/}
 
 
             <div className="flex flex-col self-end ">
-                <button className="flex bg-ivoryWhite p-2 drop-shadow-lg rounded-t-md w-10"
+                <button className="flex bg-ivoryWhite p-2 drop-shadow-lg rounded-t-md w-10 "
                         onClick={() => {
                             zoomMap(1);
                         }}
+                        title={"Zoom In"}
                 >
-                    <img src={ZoomInIcon} alt={"Zoom In"}/>
+                    <img src={ZoomInIcon} alt={"Zoom In"} />
                 </button>
-                <button className="flex bg-ivoryWhite p-2 drop-shadow-lg rounded-b-md w-10"
+                <hr/>
+                <button className="flex bg-ivoryWhite p-2 drop-shadow-lg rounded-b-md w-10 "
                         onClick={() => {
                             zoomMap(-1);
                         }}
+                        title={"Zoom Out"}
                 >
-                    <img src={ZoomOutIcon} alt={"Zoom Out"}/>
+                    <img src={ZoomOutIcon} alt={"Zoom Out"} />
                 </button>
             </div>
         </div>

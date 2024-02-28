@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import "../../../css/component-css/ServiceRequestTable.css";
 import Status from "../../../../../../packages/common/src/algorithms/Requests/Status.ts";
-import {Priorities, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
+import {Priorities, ServiceRequest} from "common/src/algorithms/Requests/Request.ts";
 import axios from "axios";
-import {Employee} from "../../../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 import {requestFilters} from "../serviceRequestInterface.ts";
 
 
@@ -37,7 +37,7 @@ import {requestFilters} from "../serviceRequestInterface.ts";
 
 
 
-export default function ServiceRequest_Table({statusFilter, priorityFilter,employeeFilter,locationFilter}:requestFilters) {
+export default function ServiceRequest_Table({statusFilter, priorityFilter, employeeFilter, locationFilter}:requestFilters) {
     console.log(priorityFilter);
 
 
@@ -58,11 +58,14 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter,emplo
         getEmployees().then((result)=>{setEmployees(result);});
     }, [employeeFilter, locationFilter, priorityFilter, statusFilter]);
 
+
+
     //make table of Service Requests
     return (
-        <div>
+        <div className={"h-100 w-[43rem] overflow-auto rounded-xl"}>
+
             {/* make your table in here  */}
-            <table className={"medTable"}>
+            <table className={"medTable overflow-y-scroll"}>
                 <thead>
                 <tr className={"tableTRHead"}>
                     <th className={"tableTD"}>ID</th>
@@ -78,14 +81,14 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter,emplo
                 {/*populate the table with records in the medRequests useState*/}
                 {
                     //make a new array where all the service request values are on the table (array of html to be rendered)
-                    serviceRequests.map((request,requestIndex)=>{
+                    serviceRequests.map((request, requestIndex) => {
                         return (
                             <tr className={"tableTR"}>
-                                <th className={"tableTD"}>{request.reqID}</th>
-                                <th className={"tableTD"}>{request.reqType}</th>
-                                <th className={"tableTD"}>
+                                <td className={"tableTD"}>{request.reqID}</td>
+                                <td className={"tableTD"}>{request.reqType}</td>
+                                <td className={"tableTD"}>
                                     <select
-                                        className={"bg-transparent"}
+                                        className={"rounded-lg"}
                                         value={request.status}
                                         id={"medStatusDropdown" + request.reqID}
                                         onChange={
@@ -100,10 +103,10 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter,emplo
                                         <option className={"status-dropdown"} value="In Progress">In Progress</option>
                                         <option className={"status-dropdown"} value="Completed">Completed</option>
                                     </select>
-                                </th>
-                                <th className={"tableTD"}>
+                                </td>
+                                <td className={"tableTD"}>
                                     <select
-                                        className={"bg-transparent"}
+                                        className={"rounded-lg"}
                                         value={request.reqPriority}     //sets dropdown to request's value
                                         id={"medStatusDropdown" + request.reqID}
                                         onChange={
@@ -118,10 +121,10 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter,emplo
                                         <option className={"status-dropdown"} value="High">High</option>
                                         <option className={"status-dropdown"} value="Emergency">Emergency</option>
                                     </select>
-                                </th>
-                                <th className={"tableTD"}>
+                                </td>
+                                <td className={"tableTD"}>
                                     <select
-                                        className={"bg-transparent"}
+                                        className={"rounded-lg"}
                                         value={request.assignedUName}
                                         onChange={
                                             (event) => {
@@ -136,8 +139,8 @@ export default function ServiceRequest_Table({statusFilter, priorityFilter,emplo
                                                 renderEmployees(employee, request.reqID.toString()))
                                         }
                                     </select>
-                                </th>
-                                <th className={"tableTD"}>{request.reqLocationID}</th>
+                                </td>
+                                <td className={"tableTD"}>{request.reqLocationID}</td>
                                 <td className={"tableTD"}>{request.extraInfo}</td>
                             </tr>
                         );
@@ -352,5 +355,3 @@ async function getEmployees() {
     return employees.data;
 
 }
-
-

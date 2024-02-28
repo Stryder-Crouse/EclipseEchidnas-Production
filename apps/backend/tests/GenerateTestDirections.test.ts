@@ -1,10 +1,9 @@
 import {expect, test} from "vitest";
 import {Node} from "common/src/algorithms/Graph/Node.ts";
 import {
-    Directions,
     findDeviation,
     generateTextDirections, removeExtraTransitions
-} from "../../../packages/common/src/algorithms/Search/TextDirections/GenerateTextDirections.ts";
+} from "common/src/algorithms/Search/TextDirections/GenerateTextDirections.ts";
 import {Coordinate} from "../../../packages/common/src/algorithms/Graph/Coordinate.ts";
 import {readEdgeCSV, readNodeCSV} from "../src/algorithms/readCSV.ts";
 import {Edge} from "../../../packages/common/src/algorithms/Graph/Edge.ts";
@@ -136,15 +135,20 @@ function findDeviation_rotated_right_angle(): void {
 function generateTextDirections_two_right_turns(): void {
     /* make the tested and expected paths */
     const test_path: Array<Node> | null = AStar(graph.idToNode("1"), graph.idToNode("7"), graph);
-    const test_directions: Array<string> | null = generateTextDirections(test_path, graph);
-    const expected_directions: Array<string> = new Array<string>();
-
-    //right is left and left is right as the graph uses a regular coordinate system y+ up y- down
-    //compared to the one used on the map page y+ down, y- up
-    expected_directions.push("Starting at Anesthesia Conf Floor L1");
-    expected_directions.push(Directions.BEAR_LEFT + " near Medical Records Conference Room Floor L1");
-    expected_directions.push(Directions.BEAR_LEFT + " near Day Surgery Family Waiting Exit Floor L1");
-    expected_directions.push("You have arrived");
+    const test_directions: string [][] | null = generateTextDirections(test_path, graph);
+    const expected_directions: string[][] =
+        //right is left and left is right as the graph uses a regular coordinate system y+ up y- down
+        //compared to the one used on the map page y+ down, y- up
+        [
+            [],[],[],
+            [
+                "1: Starting at Anesthesia Conf Floor L1",
+                "2: ↖️Bear left near Medical Records Conference Room Floor L1",
+                "3: ↖️Bear left near Day Surgery Family Waiting Exit Floor L1",
+                "4: You have arrived"
+            ],
+            [],[]
+        ];
 
     /* it better match */
     expect(test_directions).toStrictEqual(expected_directions);
@@ -153,17 +157,26 @@ function generateTextDirections_two_right_turns(): void {
 function generateTextDirections_long_path(): void {
     /* make the tested and expected paths */
     const test_path: Array<Node> | null = AStar(graph.idToNode("7"), graph.idToNode("16"), graph);
-    const test_directions: Array<string> | null = generateTextDirections(test_path, graph);
-    const expected_directions: Array<string> = new Array<string>();
+    const test_directions: string[][] | null = generateTextDirections(test_path, graph);
+    const expected_directions: string[][] =
+        //right is left and left is right as the graph uses a regular coordinate system y+ up y- down
+        //compared to the one used on the map page y+ down, y- up
+        [
+            [],[],[],
+            [
+                "1: Starting at Hallway 1 Floor L1",
+                "2: ↖️Bear left near  Elevator node 10",
+                "3: 🔺Take elevator to floor 2"
+            ],
+            [
+                "4: ↖️Bear left near Elevator node 13",
+                "5: 🔺Take elevator to floor 3"
+            ],
+            [
+                "6: You have arrived"
+            ]
+        ];
 
-    //right is left and left is right as the graph uses a regular coordinate system y+ up y- down
-    //compared to the one used on the map page y+ down, y- up
-    expected_directions.push("Starting at Hallway 1 Floor L1");
-    expected_directions.push(Directions.BEAR_LEFT + " near  Elevator node 10");
-    expected_directions.push(Directions.TAKE_ELEV + " to floor 2");
-    expected_directions.push(Directions.BEAR_LEFT + " near Elevator node 13");
-    expected_directions.push(Directions.TAKE_ELEV + " to floor 3");
-    expected_directions.push("You have arrived");
 
     /* it better match */
     expect(test_directions).toStrictEqual(expected_directions);
