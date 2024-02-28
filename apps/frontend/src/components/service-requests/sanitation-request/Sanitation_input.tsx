@@ -161,7 +161,7 @@ export default function Sanitation_input({
                 <div className={"grid justify-center items-center my-1.5 mb-1"}>
                     <label className="label">Extra Notes </label>
                     <textarea placeholder={"Extra Notes"}
-                              className={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer" /*className may need to be different to have a larger area*/}
+                              className={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer h-11" /*className may need to be different to have a larger area*/}
                               onChange={(e) => setExtraInfo(e.target.value)}
                               id={"service"}
                               value={extraInfo}

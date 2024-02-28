@@ -126,7 +126,7 @@ function ProfilePage() {
                 </div>
 
                 {/* Right Column - Content */}
-                <div className="flex-1 p-8 justify-center items-center mt-6 ">
+                <div className="flex-1 p-8 justify-center items-center ">
 
                     {/* Content to be populated with each request */}
                     {generateSelectedTable()}
@@ -141,7 +141,8 @@ function ProfilePage() {
         if (username != "") {
             if (activeButton === "graph") {
 
-                    return (<PieChartStatsProfile
+                    return (
+                        <PieChartStatsProfile
                         urlToGetStats={"/api/employees/current_employee/stats"}
                         userEmail={username!}
                         urlForBuildingStats={"/api/employees/current_employee/buildingStats"}>
