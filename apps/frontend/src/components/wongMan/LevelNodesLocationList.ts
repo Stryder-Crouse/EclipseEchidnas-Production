@@ -12,7 +12,7 @@ export const lowerLevel1EdibleCoordinates: Array<Coordinate> = [
     {x: 800, y: 200}
 ];
 
-export const Level1: WongLevel = {
+export const Level0: WongLevel = {
     edibleLocations: lowerLevel1EdibleCoordinates,
     startLocation: {
         x: 280,
@@ -23,7 +23,7 @@ export const Level1: WongLevel = {
         y: 174
     },
     wongAnger: 0,
-    level: 1,
+    level: 0,
     width: 2560,
     height: 1279
 };
