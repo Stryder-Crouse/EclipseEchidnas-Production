@@ -1,6 +1,7 @@
-import {Dispatch, SetStateAction, useRef, useState} from "react";
+import {Dispatch, SetStateAction, useEffect, useRef, useState} from "react";
 import {Directions_Game, Echidna} from "./Echidna.ts";
 import {Coordinate} from "common/src/algorithms/Graph/Coordinate.ts";
+import {Node} from "common/src/algorithms/Graph/Node.ts";
 import {Edible} from "./Edible.ts";
 import {Level0} from "./LevelNodesLocationList.ts";
 import LowerLevel1Game from "../../images/WongMan/Maps/LowerLevel1.png";
@@ -8,6 +9,8 @@ import EdibleBlue from "../../images/WongMan/Edible/EdibleBlue.png";
 // @ts-expect-error happy-dom is based
 import {HTMLImageElement, KeyboardEvent} from "happy-dom";
 import {WongLevel} from "./WongLevel.ts";
+import {multipleNodeDataBaseToNode, NodeDataBase} from "common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
+import axios from "axios";
 
 /* structures */
 export type WongManProps = {
@@ -23,8 +26,8 @@ const playerSpeed: number = 3;
 export default function WongManGame({visible, setVisible}: WongManProps) {
     const [showGame, setShowGame] = useState(false);
     const [showStart, setShowStart] = useState(true);
-    // const [nodesPerLevel, setNodesPerLevel] =
-    //     useState<Array<Array<Node>>>([[], [], [], [], []]);
+    const [nodesPerLevel, setNodesPerLevel] =
+        useState<Array<Array<Node>>>([[], [], [], [], [], []]);
 
     const canvasArea = useRef<HTMLCanvasElement>(null);
     const canvasContext = useRef<CanvasRenderingContext2D | null>(null);
@@ -36,6 +39,13 @@ export default function WongManGame({visible, setVisible}: WongManProps) {
     const currentLevel = useRef(0);
     const finishedLevel = useRef(false);
     const currentLevelEdibles = useRef([] as Edible[]);
+
+    /* grabbing rodes */
+    useEffect(() => {
+        grabSomeNodes().then((myFulfilledPromise: Array<Array<Node>>) => {
+            setNodesPerLevel(myFulfilledPromise);
+        });
+    }, []);
 
     return (
         <div
@@ -77,6 +87,9 @@ export default function WongManGame({visible, setVisible}: WongManProps) {
      * Initialise the game engine.
      */
     function startGame(): void {
+        // TODO DELETE THIS PRINT
+        console.log(nodesPerLevel);
+
         /* handle user input */
         window.addEventListener("keydown", (e) => {
             handleKeyDown(e);
@@ -353,10 +366,15 @@ function scaleHeight(desired: number): number {
     return desired * (window.innerHeight / IMG_HEIGHT);
 }
 
-// /**
-//  * Grab some nodes from the backend
-//  * @return some nodes from the backend
-//  */
-//  function grabSomeNodes(): Array<Array<Node>> {
-//
-// }
+/**
+ * Grab some nodes from the backend
+ * @return ALL nodes from the backend
+ */
+async function grabSomeNodes(): Promise<Array<Array<Node>>> {
+    const theNodes: Array<Array<Node>> = new Array<Array<Node>>;
+    for (let i: number = 0; i < 6; i++) {
+        theNodes[i] = multipleNodeDataBaseToNode((await axios.get<NodeDataBase[]>
+        ("/api/load-nodes/floorWithHalls", {params: {floor: i}})).data);
+    }
+    return theNodes;
+}
