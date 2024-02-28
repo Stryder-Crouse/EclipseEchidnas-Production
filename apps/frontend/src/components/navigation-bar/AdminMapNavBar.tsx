@@ -2,7 +2,7 @@ import React from "react";
 import "../../css/component-css/NavBar.css";
 import {useAuth0} from "@auth0/auth0-react";
 
-import {FloorToIndex} from "common/src/algorithms/Graph/NodeForGraph.ts";
+import {FloorToIndex} from "common/src/algorithms/Graph/Node.ts";
 import {NavBarStates} from "./GuestNavBar.tsx";
 // import LocationsDropDown from "./LocationsDropDown.tsx";
 

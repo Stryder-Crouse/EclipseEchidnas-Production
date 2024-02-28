@@ -1,9 +1,9 @@
-import { NodeForGraph, NULLNODE} from "./NodeForGraph.ts";
+import { Node, NULLNODE} from "./Node.ts";
 /** TS struct to hold an edge between nodes */
 export type Edge = {
   id: string;
-  startNode: NodeForGraph;
-  endNode: NodeForGraph;
+  startNode: Node;
+  endNode: Node;
   weight:number;
 
 };

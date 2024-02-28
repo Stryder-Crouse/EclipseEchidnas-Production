@@ -1,4 +1,4 @@
-import {Buildings, NodeForGraph, NodeType, stringToBuilding, stringToNodeType,} from "common/src/algorithms/Graph/NodeForGraph.ts";
+import {Buildings, Node, NodeType, stringToBuilding, stringToNodeType,} from "common/src/algorithms/Graph/Node.ts";
 import {Edge} from "../../../../packages/common/src/algorithms/Graph/Edge.ts";
 import {Coordinate} from "../../../../packages/common/src/algorithms/Graph/Coordinate.ts";
 import {Employee, stringToRoles} from "../../../../packages/common/src/algorithms/Employee/Employee.ts";
@@ -20,8 +20,8 @@ const EMPLOYEE_FIELD_LEN: number = 6;
  * @returns a list of UNLINKED nodes based on the contents of fileContent, or [] if fileContent is invalid
  *
  */
-export function readNodeCSV(fileContent: string): Array<NodeForGraph> {
-    const nodes: Array<NodeForGraph> = [];
+export function readNodeCSV(fileContent: string): Array<Node> {
+    const nodes: Array<Node> = [];
     const allNodesString = fileContent;
     if (fileContent == null) {
         console.log("no file content found for readNodeCSV. Terminating.");
@@ -45,7 +45,7 @@ export function readNodeCSV(fileContent: string): Array<NodeForGraph> {
                 y: parseInt(nodeValues.at(2) ?? "", 10),
             };
             //create new node
-            const newNode: NodeForGraph = {
+            const newNode: Node = {
                 id: nodeValues.at(0) ?? ERROR_STRING,
                 coordinate: nodeCoordinate,
                 floor: nodeValues.at(3) ?? ERROR_STRING,
@@ -101,7 +101,7 @@ export function readEdgeCSV(fileContent: string): Array<Edge> {
                 y: -1.23456789,
             };
 
-            const start: NodeForGraph = {
+            const start: Node = {
                 id: edgeValues[1],
                 coordinate: emptyCoordinate,
                 floor: "",
@@ -113,7 +113,7 @@ export function readEdgeCSV(fileContent: string): Array<Edge> {
                 heuristic: -1,
             };
 
-            const end: NodeForGraph = {
+            const end: Node = {
                 id: edgeValues[2],
                 coordinate: emptyCoordinate,
                 floor: "",

@@ -1,4 +1,4 @@
-import {NodeForGraph, NodeType} from "../../Graph/NodeForGraph.ts";
+import {Node, NodeType} from "../../Graph/Node.ts";
 import {Coordinate, euclideanDistance} from "../../Graph/Coordinate.ts";
 import {Graph} from "../../Graph/Graph.ts";
 
@@ -22,7 +22,7 @@ export enum Directions {
  * @param path the path of nodes
  * @param graph the graph that contains the nodes
  */
-export function generateTextDirections(path: Array<NodeForGraph> | null, graph: Graph): Array<string> | null {
+export function generateTextDirections(path: Array<Node> | null, graph: Graph): Array<string> | null {
     /* Cool */
     const directions: Array<string> = new Array<string>();
     directions.push("Starting at " + path![0].longName);
@@ -111,7 +111,7 @@ export function generateTextDirections(path: Array<NodeForGraph> | null, graph: 
  * @param next the next node (the end of the next vector)
  * @return the angle deviation at the current node in degrees
  */
-export function findDeviation(previous: NodeForGraph, current: NodeForGraph, next: NodeForGraph) {
+export function findDeviation(previous: Node, current: Node, next: Node) {
     /* find the two vectors described by these points */
     const currentVector: Coordinate = {
         x: current.coordinate.x - previous.coordinate.x,
@@ -147,7 +147,7 @@ export function findDeviation(previous: NodeForGraph, current: NodeForGraph, nex
  * @param next take a wild guess
  * @return a "Directions" describing the direction
  */
-function determineTurn(previous: NodeForGraph, current: NodeForGraph, next: NodeForGraph): Directions {
+function determineTurn(previous: Node, current: Node, next: Node): Directions {
     /* swap the sign of y because y increases going down in CGI */
     const prevToNextVector: Coordinate = {
         x: next.coordinate.x - previous.coordinate.x,
@@ -178,9 +178,9 @@ function determineTurn(previous: NodeForGraph, current: NodeForGraph, next: Node
 }
 
 //used for text directions
-export function removeExtraTransitions(rawPath: Array<NodeForGraph>): Array<NodeForGraph> {
+export function removeExtraTransitions(rawPath: Array<Node>): Array<Node> {
     /* find the subset of edges from that path on this floor */
-    const newPath: Array<NodeForGraph> = [];
+    const newPath: Array<Node> = [];
 
     /* for every node in the path */
     for (let i = 0; i < rawPath.length; i++) {

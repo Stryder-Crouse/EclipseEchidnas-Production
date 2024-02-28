@@ -1,4 +1,4 @@
-import {NodeForGraph} from "../Graph/NodeForGraph.ts";
+import {Node} from "../Graph/Node.ts";
 import {Graph} from "../Graph/Graph.ts";
 import {IQueue} from "../Queue/IQueue.ts";
 
@@ -16,11 +16,11 @@ import {IQueue} from "../Queue/IQueue.ts";
  *
  */
 export function SimpleSearch(
-    source: NodeForGraph | null,
-    target: NodeForGraph | null,
+    source: Node | null,
+    target: Node | null,
     graph: Graph,
-    frontier: IQueue<NodeForGraph>
-): Array<NodeForGraph> | null {
+    frontier: IQueue<Node>
+): Array<Node> | null {
     /* garbage */
     if (source == null) {
         console.error("source in SimpleSearch was null");
@@ -33,8 +33,8 @@ export function SimpleSearch(
 
     /* symbols */
     let path_found: boolean = false; // flag to construct a path
-    const predecessor: Map<NodeForGraph, NodeForGraph | null> = new Map<NodeForGraph, NodeForGraph | null>(); // visited nodes to prevent cycles
-    const path: Array<NodeForGraph> = new Array<NodeForGraph>();
+    const predecessor: Map<Node, Node | null> = new Map<Node, Node | null>(); // visited nodes to prevent cycles
+    const path: Array<Node> = new Array<Node>();
 
     /* add the source to the frontier initially */
     frontier.push(source);
@@ -43,7 +43,7 @@ export function SimpleSearch(
     /* while the frontier is not empty */
     while (frontier.hasItems()) {
         /* pop the current node */
-        const current_node: NodeForGraph | undefined = frontier.pop();
+        const current_node: Node | undefined = frontier.pop();
         if (current_node == undefined) {
             console.error("dude how did you mess up the frontier in SimpleSearch");
             break; // idk
@@ -57,7 +57,7 @@ export function SimpleSearch(
         }
 
         /* find the adjacent nodes to currentNode */
-        const adjacent_nodes: Array<NodeForGraph> | null = graph.adjacentTo(current_node);
+        const adjacent_nodes: Array<Node> | null = graph.adjacentTo(current_node);
         if (adjacent_nodes != null) {
             /* for each node adjacent to current_node */
             for (let i: number = 0; i < adjacent_nodes.length ?? 0; i++) {
@@ -75,7 +75,7 @@ export function SimpleSearch(
     /* if we found the way to the end */
     if (path_found) {
         /* construct the path from the predecessor map from the target-back */
-        let current_predecessor: NodeForGraph | null | undefined = target;
+        let current_predecessor: Node | null | undefined = target;
 
         /* the predecessor to the source node is null */
         while (current_predecessor != null) {

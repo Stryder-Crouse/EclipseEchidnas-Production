@@ -1,4 +1,4 @@
-import {NodeForGraph} from "../Graph/NodeForGraph.ts";
+import {Node} from "../Graph/Node.ts";
 import {Graph} from "../Graph/Graph.ts";
 import {SimpleStack} from "../Queue/SimpleStack.ts";
 import {IQueue} from "../Queue/IQueue.ts";
@@ -17,11 +17,11 @@ import {SimpleSearch} from "./SimpleSearch.ts";
  *
  */
 export function DFS(
-    source: NodeForGraph | null,
-    target: NodeForGraph | null,
+    source: Node | null,
+    target: Node | null,
     graph: Graph,
-): Array<NodeForGraph> | null {
+): Array<Node> | null {
     /* garbage */
-    const stack: IQueue<NodeForGraph> = new SimpleStack<NodeForGraph>();
+    const stack: IQueue<Node> = new SimpleStack<Node>();
     return SimpleSearch(source, target, graph, stack);
 }

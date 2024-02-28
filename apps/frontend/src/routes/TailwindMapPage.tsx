@@ -3,7 +3,7 @@ import MapFeatureButtons from "../components/MapFeatureButtons.tsx";
 import {HospitalMap} from "../components/map/HospitalMap.tsx";
 import {multipleNodeDataBaseToNode, NodeDataBase} from "../../../../packages/common/src/algorithms/DataBaseClasses/NodeDataBase.ts";
 import axios from "axios";
-import {FloorToIndex, NodeForGraph, NULLNODE} from "common/src/algorithms/Graph/NodeForGraph.ts";
+import {FloorToIndex, Node, NULLNODE} from "common/src/algorithms/Graph/Node.ts";
 import {useEffect, useState} from "react";
 import FullSideNavBarComponent from "../components/FullSideNavBarComponent.tsx";
 
@@ -24,8 +24,8 @@ function TailwindMapPage() {
     const [drawEntirePathOptions, setDrawEntirePathOptions] =
         useState([true,true,false]);
 
-    const [locations, setLocations] = useState([] as Array<NodeForGraph>);
-    const [locationsWithHalls, setLocationsWithHalls] = useState([] as Array<NodeForGraph>);
+    const [locations, setLocations] = useState([] as Array<Node>);
+    const [locationsWithHalls, setLocationsWithHalls] = useState([] as Array<Node>);
     const [pathFindingType, setPathFindingType] = useState("A*");
     const [textDirections, setTextDirections] = useState([] as string[]);
 

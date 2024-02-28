@@ -1,5 +1,5 @@
 import {expect, test} from "vitest";
-import {NodeForGraph} from "common/src/algorithms/Graph/NodeForGraph.ts";
+import {Node} from "common/src/algorithms/Graph/Node.ts";
 import {Edge} from "../../../packages/common/src/algorithms/Graph/Edge.ts";
 import {Graph} from "../../../packages/common/src/algorithms/Graph/Graph.ts";
 import {readEdgeCSV, readNodeCSV} from "../src/algorithms/readCSV.ts";
@@ -48,7 +48,7 @@ const transitionWeight = 5000;
 
 
 test("edge weight creation", () => {
-    const nodes: Array<NodeForGraph> = readNodeCSV(nodesString);
+    const nodes: Array<Node> = readNodeCSV(nodesString);
     const edges: Array<Edge> = readEdgeCSV(edgesString);
 
     const graph: Graph = new Graph(nodes, edges);
@@ -67,7 +67,7 @@ test("edge weight creation", () => {
 });
 
 test("heuristic creation", () => {
-    const nodes: Array<NodeForGraph> = readNodeCSV(nodesString);
+    const nodes: Array<Node> = readNodeCSV(nodesString);
     const edges: Array<Edge> = readEdgeCSV(edgesString);
 
     const graph: Graph = new Graph(nodes, edges);

@@ -3,7 +3,7 @@ import RefreshIcon from "../images/MapFunctions/refresh-cw.png";
 import ZoomInIcon from "../images/MapFunctions/plus.png";
 import ZoomOutIcon from "../images/MapFunctions/minus.png";
 import {Dispatch, SetStateAction} from "react";
-import {NodeForGraph, NULLNODE} from "common/src/algorithms/Graph/NodeForGraph.ts";
+import {Node, NULLNODE} from "common/src/algorithms/Graph/Node.ts";
 import {Viewbox} from "./map/HospitalMap.tsx";
 
 /**
@@ -15,8 +15,8 @@ export type zoomAndMapStates = {
     viewbox: Viewbox,
     setViewbox: Dispatch<SetStateAction<Viewbox>>
     setZoomScale: Dispatch<SetStateAction<number>>,
-    setStartNode: Dispatch<SetStateAction<NodeForGraph>>
-    setEndNode: Dispatch<SetStateAction<NodeForGraph>>
+    setStartNode: Dispatch<SetStateAction<Node>>
+    setEndNode: Dispatch<SetStateAction<Node>>
     drawEntirePathOptions:boolean[]
     setDrawEntirePathOptions:Dispatch<SetStateAction<boolean[]>>
 }

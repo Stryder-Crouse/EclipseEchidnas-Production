@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import "../../css/component-css/NavBar.css";
 import "../../css/component-css/Map.css";
 import axios from "axios";
-import { NodeForGraph } from "common/src/algorithms/Graph/NodeForGraph.ts";
+import { Node } from "common/src/algorithms/Graph/Node.ts";
 import {
   onNodeHover,
   onNodeLeave,
@@ -67,7 +67,7 @@ async function populateLocationDropdown() {
   //load edges and node from database
   const nodesDB = await axios.get<NodeDataBase[]>("/api/load-nodes");
 
-  const nodes: Array<NodeForGraph> = [];
+  const nodes: Array<Node> = [];
 
   nodesDB.data.forEach((nodeDB) => {
     nodes.push(nodeDataBaseToNode(nodeDB));
@@ -80,7 +80,7 @@ async function populateLocationDropdown() {
   //console.log("myDropdown");
   //console.log(myDropdown);
   //for each node
-  nodes.forEach(function (newNode: NodeForGraph) {
+  nodes.forEach(function (newNode: Node) {
     //create a element
     const row = document.createElement("a");
 

@@ -1,4 +1,4 @@
-import {NodeForGraph} from "../Graph/NodeForGraph.ts";
+import {Node} from "../Graph/Node.ts";
 import {Edge} from "../Graph/Edge.ts";
 import {Graph} from "../Graph/Graph.ts";
 import {IPriorityQueue} from "../Queue/IPriorityQueue.ts";
@@ -18,7 +18,7 @@ import {MapMinPriorityQueue} from "../Queue/MapMinPriorityQueue.ts";
  *  @see {https://en.wikipedia.org/wiki/A*_search_algorithm}
  *
  */
-export function AStar(source: NodeForGraph | null, target: NodeForGraph | null, graph: Graph): Array<NodeForGraph> | null {
+export function AStar(source: Node | null, target: Node | null, graph: Graph): Array<Node> | null {
     /* garbage */
     if (source == null) {
         console.error("source in A* was null");
@@ -31,11 +31,11 @@ export function AStar(source: NodeForGraph | null, target: NodeForGraph | null, 
 
     /* symBOls 😍 */
     let path_found: boolean = false;
-    const open_set: IPriorityQueue<NodeForGraph> = new MapMinPriorityQueue<NodeForGraph>(); // nodes that still need to be expanded
-    const predecessor: Map<NodeForGraph, NodeForGraph | null> = new Map<NodeForGraph, NodeForGraph | null>(); // cameFrom on wikipedia
-    const g_score: Map<NodeForGraph, number> = new Map<NodeForGraph, number>(); // cost of cheapest from source to node
-    const f_score: Map<NodeForGraph, number> = new Map<NodeForGraph, number>(); // best guess of cost from source to target through node
-    const path: Array<NodeForGraph> = new Array<NodeForGraph>();
+    const open_set: IPriorityQueue<Node> = new MapMinPriorityQueue<Node>(); // nodes that still need to be expanded
+    const predecessor: Map<Node, Node | null> = new Map<Node, Node | null>(); // cameFrom on wikipedia
+    const g_score: Map<Node, number> = new Map<Node, number>(); // cost of cheapest from source to node
+    const f_score: Map<Node, number> = new Map<Node, number>(); // best guess of cost from source to target through node
+    const path: Array<Node> = new Array<Node>();
 
     /* generate the heuristic */
     graph.generateNodeHeuristic(target);
@@ -51,7 +51,7 @@ export function AStar(source: NodeForGraph | null, target: NodeForGraph | null, 
     /* while the destination node has not been reached */
     while (!open_set.isEmpty()) {
         /* find the current node */
-        const current_node: NodeForGraph | null = open_set.pop();
+        const current_node: Node | null = open_set.pop();
         if (current_node == null) {
             console.error("A*: queue broke");
             return null;
@@ -64,7 +64,7 @@ export function AStar(source: NodeForGraph | null, target: NodeForGraph | null, 
         }
 
         /* find the neighbors of current */
-        const neighbors: Array<NodeForGraph> | null = graph.adjacentTo(current_node);
+        const neighbors: Array<Node> | null = graph.adjacentTo(current_node);
         if (neighbors == null) {
             console.error("A*: " + current_node.id + " has no neighbors");
             return null;
@@ -73,7 +73,7 @@ export function AStar(source: NodeForGraph | null, target: NodeForGraph | null, 
         /* for each neighbor */
         for (let i: number = 0; i < neighbors.length; i++) {
             /* symbol */
-            const neighbor: NodeForGraph = neighbors[i];
+            const neighbor: Node = neighbors[i];
 
             /* cool init */
             if (g_score.get(neighbor) == undefined) {
@@ -126,7 +126,7 @@ export function AStar(source: NodeForGraph | null, target: NodeForGraph | null, 
     /* if we found the way to the end */
     if (path_found) {
         /* construct the path from the predecessor map from the target-back */
-        let current_predecessor: NodeForGraph | null | undefined = target;
+        let current_predecessor: Node | null | undefined = target;
 
         /* the predecessor to the source node is null */
         while (current_predecessor != null) {
