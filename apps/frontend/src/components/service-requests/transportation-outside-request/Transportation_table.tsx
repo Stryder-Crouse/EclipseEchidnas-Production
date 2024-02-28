@@ -217,7 +217,7 @@ export default function Transportation_table({statusFilter, priorityFilter,emplo
     }
 
     return (
-        <div className={"h-100 w-[42.5rem] overflow-auto rounded-xl" }>
+        <div className={"h-100 w-[43rem] overflow-auto rounded-xl" }>
             <table>
                 <thead>
                 <tr className={"tableTRHead"}>
@@ -241,6 +241,7 @@ export default function Transportation_table({statusFilter, priorityFilter,emplo
                             <td className={"tableTD"}>{request[1].reqType}</td>
                             <td className={"tableTD"}>
                                 <select
+                                    className={"rounded-lg"}
                                     value={request[1].status}
                                     id={"transportRequestDropdown" + request[1].reqID}
                                     onChange={
@@ -257,6 +258,7 @@ export default function Transportation_table({statusFilter, priorityFilter,emplo
                             </td>
                             <td className={"tableTD"}>
                                 <select
+                                    className={"rounded-lg"}
                                     value={request[1].reqPriority}
                                     id={"priorityDropdown" + request[1].reqID}
                                     onChange={
@@ -276,6 +278,7 @@ export default function Transportation_table({statusFilter, priorityFilter,emplo
                             </td>
                             <td className={"tableTD"}>
                                 <select
+                                    className={"rounded-lg"}
                                     value={request[1].assignedUName}
                                     onChange={
                                         (event) => {

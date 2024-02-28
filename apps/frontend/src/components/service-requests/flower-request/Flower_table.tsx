@@ -30,7 +30,7 @@ export default function Flower_table({statusFilter, priorityFilter,employeeFilte
 
 
     return (
-        <div className={"h-100 w-[42.5rem] overflow-auto rounded-xl"}>
+        <div className={"h-100 w-[43rem] overflow-auto rounded-xl"}>
 
             <table className={"requestTable"} id={"request-table"}>
                 <thead>
@@ -63,6 +63,7 @@ export default function Flower_table({statusFilter, priorityFilter,employeeFilte
                                 {/*type*/}
                                 <td className={"tableTD"}> {/*status*/}
                                     <select
+                                        className={"rounded-lg"}
                                         value={request[1].status}
                                         id={"sanStatusDropdown" + request[1].reqID}
                                         onChange={
@@ -100,6 +101,7 @@ export default function Flower_table({statusFilter, priorityFilter,employeeFilte
                                 </td>
                                 <td className={"tableTD"}> {/*priority*/}
                                     <select
+                                        className={"rounded-lg"}
                                         value={request[1].reqPriority}
                                         id={"priorityDropdown" + request[1].reqID}
                                         onChange={
@@ -137,6 +139,7 @@ export default function Flower_table({statusFilter, priorityFilter,employeeFilte
                                 </td>
                                 <td className={"tableTD"}> {/*employee*/}
                                     <select
+                                        className={"rounded-lg"}
                                         value={request[1].assignedUName}
                                         onChange={
                                             (event) => {
