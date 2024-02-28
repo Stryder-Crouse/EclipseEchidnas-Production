@@ -19,6 +19,7 @@ import WongBot from "../../images/WongMan/Wong/Wong_Bottom.png";
 import WongTop from "../../images/WongMan/Wong/Wong_Top_Eyebrows.png";
 import WongTopLaser from "../../images/WongMan/Wong/Wong_Top_Laser.png";
 import GameEndSound from "../../images/WongMan/Distorted_Team_E.mp3";
+import GameStartSound from "../../images/WongMan/Tight_Team_E.mp3";
 // @ts-expect-error happy-dom is based
 import {HTMLImageElement, KeyboardEvent} from "happy-dom";
 import {WongLevel} from "./WongLevel.ts";
@@ -62,6 +63,7 @@ export default function WongManGame({visible, setVisible}: WongManProps) {
     const mainThread = useRef< NodeJS.Timeout | null>(null);
 
     const gameEndSound = useRef<GameSound|null>(null);
+    const gameStartSound = useRef<GameSound|null>(null);
 
     /* grabbing rodes */
     useEffect(() => {
@@ -99,9 +101,16 @@ export default function WongManGame({visible, setVisible}: WongManProps) {
             <div
                 className={"flex m-auto w-32"}>
                 <button className={styleStartButton(showStart)}
-                        onClick={() => {
+                        onClick={async () => {
+                            gameStartSound.current = new GameSound(GameStartSound);
+                            document.body.append(gameStartSound.current?.soundElement);
+                            gameStartSound.current?.startSound();
+                            await new Promise(r => setTimeout(r, 2000));
+                            gameStartSound.current?.stopSound();
                             setShowGame(true);
                             setShowStart(false);
+
+
                             startGame();
 
                         }}
