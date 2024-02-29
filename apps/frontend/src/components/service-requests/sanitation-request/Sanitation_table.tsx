@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Priorities, sanReq, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import {Priorities, sanReq, ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
 import { requestFilters} from "../serviceRequestInterface.ts";
-import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
-import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
+import {Employee} from "../../../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import Status from "../../../../../../packages/common/src/algorithms/Requests/Status.ts";
 
 
 export default function Sanitation_table({statusFilter, priorityFilter,employeeFilter,locationFilter}:requestFilters) {
@@ -34,7 +34,7 @@ export default function Sanitation_table({statusFilter, priorityFilter,employeeF
     },[statusFilter, priorityFilter, employeeFilter, locationFilter]);
 
     return (
-        <div>
+        <div className={"h-100 w-[43rem] overflow-auto rounded-xl"}>
 
             <table className={"requestTable"} id={"request-table"}>
                 <thead>
@@ -60,6 +60,7 @@ export default function Sanitation_table({statusFilter, priorityFilter,employeeF
                                 <td className={"tableTD"}>{request[1].reqType}</td>
                                 <td className={"tableTD"}>
                                     <select
+                                        className={"rounded-lg"}
                                         value={request[1].status}
                                         id={"sanStatusDropdown" + request[1].reqID}
                                         onChange={
@@ -83,6 +84,7 @@ export default function Sanitation_table({statusFilter, priorityFilter,employeeF
                                 </td>
                                 <td className={"tableTD"}>
                                     <select
+                                        className={"rounded-lg"}
                                         value={request[1].reqPriority}
                                         id={"priorityDropdown" + request[1].reqID}
                                         onChange={
@@ -102,6 +104,7 @@ export default function Sanitation_table({statusFilter, priorityFilter,employeeF
                                 </td>
                                 <td className={"tableTD"}>
                                     <select
+                                        className={"rounded-lg"}
                                         value={request[1].assignedUName}
                                         onChange={
                                             (event) => {

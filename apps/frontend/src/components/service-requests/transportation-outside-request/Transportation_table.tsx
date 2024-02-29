@@ -1,11 +1,11 @@
 import React from "react";
 import {requestFilters} from "../serviceRequestInterface.ts";
 import {useState, useEffect} from "react";
-import {OutsideTransport, Priorities} from "../../../../../backend/src/algorithms/Requests/Request.ts";
-import {ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
+import {OutsideTransport, Priorities} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
+import {ServiceRequest} from "../../../../../../packages/common/src/algorithms/Requests/Request.ts";
 import axios from "axios";
-import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
-import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
+import {Employee} from "../../../../../../packages/common/src/algorithms/Employee/Employee.ts";
+import Status from "../../../../../../packages/common/src/algorithms/Requests/Status.ts";
 
 async function getReqs(statusFilter: Status, priorityFilter:Priorities, employeeFilter:string, locationFilter:string) {
     const res =
@@ -128,6 +128,42 @@ export default function Transportation_table({statusFilter, priorityFilter,emplo
         console.log("EE " + select.value);
     }
 
+    async function onPriorityChange(select: HTMLSelectElement, requestIndex: number) {
+        const transReq = [...reqList]; //make a copy of the array to update
+        const thisRequest = transReq?.at(requestIndex);//use the copy to make changes
+
+        console.log("transRequests: " + transReq);
+        console.log("thisRequest" + thisRequest);
+
+        if (thisRequest == undefined) {
+            console.error("request not found from request index ");
+            return;
+        }
+
+        if (select == null) {
+            console.error("could not find request dropdown for request " + thisRequest[1].reqID);
+            return;
+        }
+
+        //assign new status
+        thisRequest[1].reqPriority = select.value;
+        console.log("New Status: " + select.value);
+
+        setReqList(transReq);
+
+        //update data in the DB
+        try {
+            await axios.post("/api/serviceRequests/changePriority",
+                {reqID: thisRequest[1].reqID, newPriority: select.value as string}, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+        } catch {
+            console.error("Failed to Change the Priority");
+        }
+    }
+
     async function onStatusChange(select: HTMLSelectElement, requestIndex: number) {
 
         const requests = [...reqList]; //make a copy of the array to update
@@ -169,7 +205,7 @@ export default function Transportation_table({statusFilter, priorityFilter,emplo
                         },
                     });
             } catch (e) {
-                console.error("faild to change state");
+                console.error("failed to change state");
             }
 
         } else {
@@ -181,7 +217,7 @@ export default function Transportation_table({statusFilter, priorityFilter,emplo
     }
 
     return (
-        <div>
+        <div className={"h-100 w-[43rem] overflow-auto rounded-xl" }>
             <table>
                 <thead>
                 <tr className={"tableTRHead"}>
@@ -205,6 +241,7 @@ export default function Transportation_table({statusFilter, priorityFilter,emplo
                             <td className={"tableTD"}>{request[1].reqType}</td>
                             <td className={"tableTD"}>
                                 <select
+                                    className={"rounded-lg"}
                                     value={request[1].status}
                                     id={"transportRequestDropdown" + request[1].reqID}
                                     onChange={
@@ -219,9 +256,29 @@ export default function Transportation_table({statusFilter, priorityFilter,emplo
                                     <option value={"Completed"}>Completed</option>
                                 </select>
                             </td>
-                            <td className={"tableTD"}>{request[1].reqPriority}</td>
                             <td className={"tableTD"}>
                                 <select
+                                    className={"rounded-lg"}
+                                    value={request[1].reqPriority}
+                                    id={"priorityDropdown" + request[1].reqID}
+                                    onChange={
+                                        (event) => {
+                                            const eventHTML = event.target as HTMLSelectElement;
+                                            onPriorityChange(eventHTML, requestIndex).then();
+                                        }
+                                    }
+                                >
+                                    <option className={"priorityDropdown"} value="Low">Low</option>
+                                    <option className={"priorityDropdown"} value="Medium">Medium
+                                    </option>
+                                    <option className={"priorityDropdown"} value="High">High</option>
+                                    <option className={"priorityDropdown"} value="Emergency">Emergency
+                                    </option>
+                                </select>
+                            </td>
+                            <td className={"tableTD"}>
+                                <select
+                                    className={"rounded-lg"}
                                     value={request[1].assignedUName}
                                     onChange={
                                         (event) => {

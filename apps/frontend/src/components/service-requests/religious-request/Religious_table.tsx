@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Priorities, ReligRequest, ServiceRequest} from "../../../../../backend/src/algorithms/Requests/Request.ts";
-import {Employee} from "../../../../../backend/src/algorithms/Employee/Employee.ts";
+import {Priorities, ReligRequest, ServiceRequest} from "common/src/algorithms/Requests/Request.ts";
+import {Employee} from "common/src/algorithms/Employee/Employee.ts";
 //import AdminPageNavBar from "../../navigation-bar/AdminPageNavBar.tsx";
-import Status from "../../../../../backend/src/algorithms/Requests/Status.ts";
+import Status from "../../../../../../packages/common/src/algorithms/Requests/Status.ts";
 import {requestFilters} from "../serviceRequestInterface.ts";
 
 
@@ -13,28 +13,21 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
     console.log(statusFilter,priorityFilter);
 
     const [religRequestList, setReligRequestList] =
-        useState<Array<[ReligRequest, ServiceRequest]>>([]);
-    const [religEmployees, setReligEmployees] =
-        useState<Employee[]>([]);
+        useState<Array<[ReligRequest, ServiceRequest, Employee[]]>>([]);
+
 
 
     //todo FNFN fix with proper population code
     useEffect(() => {
 
-            getEmployees().then(result => {
-                setReligEmployees(result);
-            });
             getReligRequests(statusFilter, priorityFilter,employeeFilter,locationFilter).then(result => {
                 setReligRequestList(result);
             });
 
-
-
-
     }, [statusFilter, priorityFilter, employeeFilter, locationFilter]);
 
     return (
-        <div>
+        <div className={"h-100 w-[43rem] overflow-auto rounded-xl"}>
 
 
                         <table className={"requestTable"} id={"request-table"}>
@@ -48,7 +41,7 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
                                 <th className={"tableTD"}>Location ID</th>
                                 <th className={"tableTD"}>Patient Name</th>
                                 <th className={"tableTD"}>Religion</th>
-                                <th className={"tableTD"}>Service requested</th>
+                                <th className={"tableTD"}>Service Requested</th>
                                 <th className={"tableTD"}>Extra Notes</th>
                             </tr>
                             </thead>
@@ -61,8 +54,9 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
                                         <tr className={"tableTR"} key={"Relig_" + request[0].genReqID}>
                                             <td className={"tableTD"}>{request[1].reqID}</td>
                                             <td className={"tableTD"}>{request[1].reqType}</td>
-                                            <td className={"tableTD"}> {/*status*/}
+                                            <td className={"tableTD"}>
                                                 <select
+                                                    className={"rounded-lg"}
                                                     value={request[1].status}
                                                     id={"religStatusDropdown" + request[1].reqID}
                                                     onChange={
@@ -84,14 +78,15 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
                                                     </option>
                                                 </select>
                                             </td>
-                                            <td className={"tableTD"}> {/*priority*/}
+                                            <td className={"tableTD"}>
                                                 <select
+                                                    className={"rounded-lg"}
                                                     value={request[1].reqPriority}
                                                     id={"priorityDropdown" + request[1].reqID}
                                                     onChange={
                                                         (event) => {
                                                             const eventHTML = event.target as HTMLSelectElement;
-                                                            onPriorityChange(eventHTML, requestIndex).then();/////todo RYAN (uncomment when done with function)
+                                                            onPriorityChange(eventHTML, requestIndex).then();
                                                         }
                                                     }
                                                 >
@@ -105,6 +100,7 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
                                             </td>
                                             <td className={"tableTD"}>
                                                 <select
+                                                    className={"rounded-lg"}
                                                     value={request[1].assignedUName}
                                                     onChange={
                                                         (event) => {
@@ -115,13 +111,14 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
                                                     }
                                                 >
                                                     {
-                                                        religEmployees?.map((employee) =>
-                                                            renderEmployees(employee, request[0].genReqID.toString()))
+                                                        request[2].map((employee) => {
+                                                            console.log("\n\n");
+                                                            return renderEmployees(employee, request[0].genReqID.toString());
+                                                        })
                                                     }
                                                 </select>
                                             </td>
                                             <td className={"tableTD"}>{request[1].reqLocationID}</td>
-                                            {/*location*/}
                                             <td className={"tableTD"}>{request[0].patientName}</td>
                                             <td className={"tableTD"}>{request[0].religion}</td>
                                             <td className={"tableTD"}>{request[0].reqDescription}</td>
@@ -138,6 +135,7 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
     );
 
     function renderEmployees(employee: Employee, religID: string) {
+        //console.log(employee.userName + ",");
         return (
             <option
 
@@ -320,25 +318,21 @@ export default function Religious_table({statusFilter, priorityFilter,employeeFi
 }
 
 async function getReligRequests(statusFilter:Status, priorityFilter:Priorities, employeeFilter:string, locationFilter:string) {
+    console.log("I should be filtering by "+statusFilter+", "+priorityFilter+", "+employeeFilter+", and "+locationFilter);
     const requests =
-        await axios.get<[ReligRequest[], ServiceRequest[]]>("/api/serviceRequests/religiousRequest/filter",{params: {status: statusFilter, priority: priorityFilter,
-                employee:employeeFilter, location:locationFilter
+        await axios.get<[ReligRequest[], ServiceRequest[], Employee[][]]>("/api/serviceRequests/religiousRequest/filter",
+            {params: {  status: statusFilter,
+                        priority: priorityFilter,
+                        employee:employeeFilter,
+                        location:locationFilter,
             } });
 
-    const religRequests: Array<[ReligRequest, ServiceRequest]> = [];
+    const religRequests: Array<[ReligRequest, ServiceRequest, Employee[]]> = [];
     for (let i = 0; i < requests.data[0].length; i++) {
-        religRequests.push([requests.data[0][i], requests.data[1][i]]);
-
+        religRequests.push([requests.data[0][i], requests.data[1][i], requests.data[2][i]]);
     }
     console.log(religRequests);
 
     return religRequests;
-
-}
-
-async function getEmployees() {
-    const employees = await axios.get<Employee[]>("/api/employees/employees/rel");
-    return employees.data;
-
 
 }

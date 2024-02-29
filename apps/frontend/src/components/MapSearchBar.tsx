@@ -1,6 +1,8 @@
 import {CreateDropdown} from "./CreateDropdown.tsx";
-import {FloorToIndex, Node, NULLNODE} from "../../../backend/src/algorithms/Graph/Node.ts";
+import {FloorToIndex, Node, NULLNODE} from "common/src/algorithms/Graph/Node.ts";
 import {Dispatch, SetStateAction, useState} from "react";
+import {TextDirectionsDropDown} from "./map/TextDirectionsDropDown.tsx";
+import {QuickRouteButtons} from "./map/QuickRouteButtons.tsx";
 
 
 
@@ -12,10 +14,10 @@ export interface levelStates{
     setEndNode: Dispatch<SetStateAction<Node>>;
     locations:Node[];
     setPathFindingType:Dispatch<SetStateAction<string>>;
-    textDirections:string[]
+    textDirections:string[][]
 }
 
-const searchOptions:string[] = ["A*","BFS","DFS"];
+const searchOptions:string[] = ["A*","BFS","DFS","Dijkstra"];
 
 export default function MapSearchBar({startNode:startNode,
                                          setStartNode:setStartNode,
@@ -31,6 +33,8 @@ export default function MapSearchBar({startNode:startNode,
     const [selected, setSelected] = useState(-1);
 
     const [selectedText, setSelectedText] = useState("Start Location");
+
+    const [errorNoStartLocation, setErrorNoStartLocation] = useState(false);
 
     //create an array of longNames to pass to CreateDropDown
     const longNames:string[] = locations.map((node)=>{return node.longName; });
@@ -73,6 +77,9 @@ export default function MapSearchBar({startNode:startNode,
         setSelectedAlgoIndex(-1);
     }
 
+
+
+
     return (
         <div className="ml-5 relative flex flex-col">
             {/*<input*/}
@@ -84,20 +91,60 @@ export default function MapSearchBar({startNode:startNode,
                 <CreateDropdown dropBtnName={selectedText} dropdownID={"Location"} isSearchable={true}
                                 populationArr={longNames} resetDropdown={resetDropdown}
                                 setSelected={setSelected}
-                                inputCSS={"w-60 p-2 rounded-full border-gray-500 border-2 pr-10 drop-shadow-lg "}
+                                inputCSS={"w-60 p-2 border-gray-500 text-black rounded-full border-2 pr-10 drop-shadow-lg "}
                                 selectCSS={""}
+                                runOnChange={()=>{return -1;}}
                                 resetOnSelect={true} setResetDropdown={setResetDropdown}>
                 </CreateDropdown>
             </div>
 
 
             <div className={"hidden"} id={"locationDropdown"}>
-                <div className={"w-60 p-2 rounded-3xl border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white"}>
+                <div
+                    className={"w-60 p-2 rounded-3xl border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white overflow-hidden"}
+                    style={{
+                        width: "15rem", // Initial width set to match the same width as all other divs
+                        maxHeight: "50px",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        transition: "max-height 0.5s, width 0.5s",
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.maxHeight = "none";
+                        e.currentTarget.style.width = "15rem";  // Set the width to initial value
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.maxHeight = "50px";
+                        e.currentTarget.style.width = "15rem";  // Set the initial width here
+                    }}
+                    title={startNode.longName}
+                >
+
                     <b>Start: </b>{startNode.longName}
                 </div>
-                <div className={"w-60 p-2 rounded-3xl border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white"}>
+
+
+                <div
+                    className={"w-60 p-2 rounded-3xl border-gray-500 border-2 pr-10 drop-shadow-lg mt-1 bg-white overflow-hidden"}
+                    style={{
+                        maxHeight: "50px",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        transition: "max-height 0.5s",
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.maxHeight = "none";
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.maxHeight = "50px";
+                    }}
+                    title={endNode.longName}
+                >
                     <b>End: </b>{endNode.longName}
                 </div>
+
 
                 <div className={" mt-1"}>
                     <CreateDropdown
@@ -105,28 +152,20 @@ export default function MapSearchBar({startNode:startNode,
                         isSearchable={false}
                         resetOnSelect={false} resetDropdown={resetDropdown}
                         setResetDropdown={setResetDropdown} setSelected={setSelectedAlgoIndex}
-                        inputCSS={""}
-                        selectCSS={"transition-all hover:bg-navy w-32 text-white p-3 ml-8 bg-navStart rounded-full h-min font-semibold drop-shadow-lg"}></CreateDropdown>
+                        runOnChange={()=>{return -1;}}
+                        inputCSS={"p-2 w-60 bg-white text-black rounded-full border-2 border-gray-500 drop-shadow cursor-pointer"}
+                        selectCSS={""}></CreateDropdown>
                 </div>
 
-
-                <div className="flex flex-col border-gray-500 border-2 w-60 max-h-[70vh] mt-1 bg-white rounded-3xl p-2">
-                    {/*<p className={"bg-[#024c96] p-1 rounded-xl w-full text-white font-semibold cursor-pointer flex justify-center m-auto "}>*/}
-                    {/*    Text Directions*/}
-                    {/*</p>*/}
-                    <div className="overflow-y-auto overflow-x-hidden">
-                        {textDirections.map((direction, index) => (
-                            <div key={index} className="flex w-[90%] rounded-3xl pl-2 pr-2 pt-1 pb-1 bg-gray-200 m-2">
-                                <b>{(index + 1).toString() + ":"}</b>{" " + direction}
-
-                            </div>
-                        ))}
-                    </div>
-                    <button
-                        className={"bg-[#024c96] p-1 rounded-xl w-full text-white font-semibold cursor-pointer flex justify-center m-auto "}
-                        onClick={closeLocations}>Close
-                    </button>
+                <div className={" mt-1"}>
+                    <QuickRouteButtons setEndNode={setEndNode} startNode={startNode}
+                                       setErrorNoStartLocation={setErrorNoStartLocation}></QuickRouteButtons>
+                    {
+                        drawNoStartLocationError()
+                    }
                 </div>
+                <TextDirectionsDropDown closeLocations={closeLocations}
+                                        textDirections={textDirections}></TextDirectionsDropDown>
 
 
             </div>
@@ -135,6 +174,26 @@ export default function MapSearchBar({startNode:startNode,
             {/*populate div for locations*/}
         </div>
     );
+
+    function drawNoStartLocationError() {
+
+
+        if (startNode != NULLNODE) {
+            if (errorNoStartLocation) {
+                setErrorNoStartLocation(false);
+            }
+            return;
+        }
+        if (errorNoStartLocation) {
+            return (
+                <div className="w-60 p-2 rounded-3xl border-red-950
+                drop-shadow-lg mt-1 bg-[#8A0E11] overflow-hidden text-white font-semibold text-center">
+                    Error: Please Select a Starting location first</div>
+            );
+        }
+
+    }
+
 
 
 }

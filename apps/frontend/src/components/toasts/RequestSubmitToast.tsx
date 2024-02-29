@@ -12,7 +12,7 @@ export default function RequestSubmitToast() {
                     </svg>
                 </div>
                 <div className="ms-3">
-                    <p className="text-sm text-gray-700 dark:text-gray-400">
+                    <p className="text-sm text-green-500">
                         Request successfully submitted!
                     </p>
                 </div>
