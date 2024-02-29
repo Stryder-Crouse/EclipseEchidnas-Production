@@ -106,62 +106,7 @@ export default function ImportInput({setIsImportOpen}: closeImportInput) {
         }
 
         setIsImportOpen(false);
-        //Get node file
-        // const inputNode = document.createElement("input");
-        // inputNode.type = "file";
-        // inputNode.accept = "text/csv"; //only take csv files
-        // let nodeFile: File;
-        //
-        // inputNode.onchange = (e) => {
-        //     nodeFile = importFileNode;
-        //
-        //     console.log("file type");
-        //     console.log(nodeFile.name);
-        //     console.log(nodeFile.type);
-        //
-        // };
-        //
-        //
-        // //click input for the user
-        // inputNode.click();
-        //
-        // // get edgefile
-        // //now get edge file
-        // const inputEdge = document.createElement("input");
-        // inputEdge.type = "file";
-        // inputEdge.accept = "text/csv"; //only take csv files
-        // let edgeFile: File;
-        //
-        // inputEdge.onchange = async (e) => {
-        //     edgeFile = (e.target as HTMLInputElement).files[0];
-        //     console.log("file type edge");
-        //     console.log(edgeFile.name);
-        //     console.log(edgeFile.type);
-        //     console.log(edgeFile);
-        //
-        //
-        //     const fileData = new FormData();
-        //     fileData.append("csv", nodeFile);
-        //     fileData.append("csv", edgeFile);
-        //     //send edge and node file to back end
-        //
-        //     try {
-        //         await axios.post("/api/loadCSVFile", fileData, {
-        //             headers: {
-        //                 "Content-Type": "multipart/form-data",
-        //             },
-        //         });
-        //     } catch (err) {
-        //         throw new Error("Error with loading Nodes");
-        //     }
-        //
-        //
-        // };
-        //
-        //
-        //
-        // //click input for the user
-        // inputEdge.click();
+
     }
 
     return (

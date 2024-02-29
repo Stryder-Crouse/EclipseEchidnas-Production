@@ -13,7 +13,7 @@ export default function RegisterPage() {
                     <RegisterForm/>
                 </div>
             </div>
-</div>
+        </div>
 
 
     );
