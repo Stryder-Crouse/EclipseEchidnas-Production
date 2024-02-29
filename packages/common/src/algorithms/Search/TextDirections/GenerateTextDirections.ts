@@ -28,7 +28,8 @@ export function generateTextDirections(path: Array<Node> | null, graph: Graph): 
     let currentfloor= floorToNumber(path![0].floor);
 
     if(path![0].nodeType == NodeType.ELEV || path![0].nodeType == NodeType.STAI ){
-        if (path![1].floor != path![0].floor) {
+        //AWSFIX
+        if (path!.length>1&& path![1].floor != path![0].floor) {
             directions[currentfloor].push("1: Starting at " + path![0].longName +" go to floor "+ path![1].floor);
         }
         else{
@@ -49,6 +50,8 @@ export function generateTextDirections(path: Array<Node> | null, graph: Graph): 
 
     /* stryder did this to prevent stairs from chaining */
     path = removeExtraTransitions(path);
+
+
 
     /* iterate through the path, skipping first and last */
     for (let i: number = 1; i < path.length - 1; i++) {

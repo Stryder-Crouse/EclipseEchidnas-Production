@@ -328,7 +328,6 @@ function updatePathEdges(startingNode: Node,
                          pathFindingType:string,
                          setTextDirections: Dispatch<SetStateAction<string[][]>>) {
 
-    setPathEdges([]);
 
     /* actually first: check if the graph is ready */
     if (graph == null) {
@@ -561,11 +560,7 @@ export function HospitalMap({
 
 
 
-    /* when the page updates, update the edges */
-    useEffect(() => {
-        updatePathEdges(startNode, endNode, setPathDrawnEdges, selectedFloorIndex, drawEntirePath,
-            setPathFloorTransitions, pathFindingType,setTextDirections);
-    }, [drawEntirePath, endNode, selectedFloorIndex, startNode, pathFindingType, setTextDirections]);
+
 
     const [pathDrawnEdges, setPathDrawnEdges] = useState<Array<Edge>>([]);
     const [pathFloorTransitions, setPathFloorTransitions] =
@@ -585,6 +580,16 @@ export function HospitalMap({
         setViewBoxForLevel(selectedFloorIndex,setViewbox);
         previousSelectedLevel=selectedFloorIndex;
     }
+
+    /* when the page updates, update the edges */
+    useEffect(() => {
+        // console.log("before");
+        // console.log(pathDrawnEdges);
+        updatePathEdges(startNode, endNode, setPathDrawnEdges, selectedFloorIndex, drawEntirePath,
+            setPathFloorTransitions, pathFindingType,setTextDirections);
+        // console.log("afther");
+        // console.log(pathDrawnEdges);
+    }, [drawEntirePath, endNode, selectedFloorIndex, startNode, pathFindingType, setTextDirections]);
 
     /*
      * Create the event listener in raw JavaScript for zooming in and out,
@@ -635,6 +640,9 @@ export function HospitalMap({
                 }
                 {   /* draw the edges on the map */
                     pathDrawnEdges.map((edge) => {
+                        console.log(pathDrawnEdges);
+                        console.log("drawing");
+                        console.log(edge);
                         return drawEdge(edge);
                     })
                 }
@@ -693,7 +701,12 @@ export function HospitalMap({
 
             //if user has elected not to draw the edges
             if(!drawEntirePathOptions[1]){
-                return;
+                //AWSFIX draw a fake line so aws renders it properly
+                return (<line key={"line_" + edge.id}
+                              x1={0}
+                              y1={0}
+                              x2={0}
+                              y2={0}></line>);
             }
 
             return drawEdgeHTML(edge, "pathLineAll");

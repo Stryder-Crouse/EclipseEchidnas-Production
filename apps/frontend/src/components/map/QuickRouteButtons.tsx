@@ -70,12 +70,12 @@ export function QuickRouteButtons({startNode,setEndNode,setErrorNoStartLocation}
                 return;
             }
 
-            //todo replace with dystra algo
-            const closest = await getClosest(type as NodeType);
+
+            const closest = await getClosest(type as NodeType,startNode.id);
 
             console.log(closest);
 
-            if(closest == null){
+            if(closest == NULLNODE){
                 console.error("closest node does not exist");
                 return;
             }
@@ -92,24 +92,17 @@ export function QuickRouteButtons({startNode,setEndNode,setErrorNoStartLocation}
     }
 
 
-    async function getClosest(type: NodeType) {
-
-        const result = await axios.get<Node|null>("/api/Graph/ClosestType",
-            {params: {startNodeID: startNode.id, targetType:type}});
-
-        return result.data;
-
-
-    }
 
 
 
 
+}
+async function getClosest(type: NodeType,startNodeID:string) {
 
+    const result = await axios.get<Node>("/api/Graph/ClosestType",
+        {params: {startNodeID: startNodeID, targetType:type}});
 
-
-
-
+    return result.data;
 
 
 }

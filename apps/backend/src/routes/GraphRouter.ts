@@ -4,7 +4,7 @@ import {EdgeDataBase, edgeDataBasetoEdge} from "common/src/algorithms/DataBaseCl
 import PrismaClient from "../bin/database-connection.ts";
 import {Edge} from "common/src/algorithms/Graph/Edge.ts";
 import {Graph} from "common/src/algorithms/Graph/Graph.ts";
-import {Node, NodeType} from "common/src/algorithms/Graph/Node.ts";
+import {Node, NodeType, NULLNODE} from "common/src/algorithms/Graph/Node.ts";
 import {dijkstraFindClosestType} from "common/src/algorithms/Search/DijkstraFindClosestType.ts";
 
 
@@ -36,10 +36,14 @@ router.get("/ClosestType", async function (req: Request, res: Response) {
 
     const startNode = graph.idToNode(startNodeID);
     //perfrom the Dystra search
-    const result = dijkstraFindClosestType(startNode,targetType,graph);
+    let result = dijkstraFindClosestType(startNode,targetType,graph);
+
+    if(result==null){
+        result=NULLNODE;
+    }
 
     //get rid of result edges as it causes a circular return in json
-    if(result!=null){
+    if(result!=NULLNODE){
         result.edges=[];
     }
 
