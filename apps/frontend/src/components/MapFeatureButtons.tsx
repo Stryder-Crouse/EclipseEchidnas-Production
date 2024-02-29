@@ -85,7 +85,7 @@ export default function MapFeatureButtons({
         const newX = viewbox.x + (changeInWidth * (svgSize.width / 2)) / svgSize.width;
         const newY = viewbox.y + (changeInHeight * (svgSize.height / 2)) / svgSize.height;
 
-        if((svgSize.width / viewbox.width)>maxZoom){
+        if((svgSize.width / viewbox.width)>maxZoom && direction==1){
             return;
         }
 

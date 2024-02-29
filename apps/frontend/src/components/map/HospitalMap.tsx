@@ -234,9 +234,9 @@ function keepWithinZoom(viewbox:{
 
     const newViewbox = viewbox;
     let diffrence=0;
-    if(newViewbox.x < 950 ){
-        diffrence = 950 - newViewbox.x;
-        newViewbox.x = 950;
+    if(newViewbox.x < 550 ){
+        diffrence = 550 - newViewbox.x;
+        newViewbox.x = 550;
 
         newViewbox.width +=diffrence;
 
@@ -277,9 +277,9 @@ function keepWithinPan(viewbox:{
 
     const newViewbox = viewbox;
     let diffrence=0;
-    if(newViewbox.x < 950 ){
-        diffrence = 950 - newViewbox.x;
-        newViewbox.x = 950;
+    if(newViewbox.x < 550 ){
+        diffrence = 550 - newViewbox.x;
+        newViewbox.x = 550;
 
 
     }
@@ -295,8 +295,8 @@ function keepWithinPan(viewbox:{
             newViewbox.x-=diffrence;
         }
         else{
-            newViewbox.x = 950;
-            newViewbox.width = 4500-950;
+            newViewbox.x = 550;
+            newViewbox.width = 4500-550;
         }
     }
     if(newViewbox.y+newViewbox.height > 3400){
