@@ -50,7 +50,7 @@ export default function Flower_input({
         async function submitForm() {
             // console.log("\n\n\n\n\n\n\nGOT HERE\n\n\n\n\n\n\n\n");
             const serviceRequest: ServiceRequest = {
-                reqType: ReqTypes.flowReq,
+                reqType: ReqTypes.flowReq.toLowerCase(),
                 reqLocationID: locations[selected].nodeID,
                 extraInfo: extraInfo,
                 status: Status.Unassigned,

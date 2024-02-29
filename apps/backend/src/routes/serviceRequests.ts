@@ -2109,7 +2109,7 @@ router.get("/flowReq/filter", async function (req: Request, res: Response) {
                         }
                     },
                     {
-                        reqType: "flower delivery"
+                        reqType: "flower request"
                     }
                 ]
             }
@@ -2144,7 +2144,7 @@ router.get("/flowReq/filter", async function (req: Request, res: Response) {
                                 }
                             },
                             {
-                                reqType: "flower delivery"
+                                reqType: "flower request"
                             }
                         ]
                     }
@@ -2156,6 +2156,7 @@ router.get("/flowReq/filter", async function (req: Request, res: Response) {
         res.status(200).send([flowReq, sreviceRequest]);
 
         console.log("Res: " + res); //debugging info
+        console.log([flowReq, sreviceRequest]);
 
         console.info("Successfully filtered requests"); //debugging info
         //send status unless 6 times bug occurs
