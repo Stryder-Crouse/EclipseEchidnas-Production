@@ -59,7 +59,7 @@ router.get("/serviceReq/statistics", async function (req: Request, res: Response
             result.total++;
             if (entry.reqType == "medication") result.medReq++;
             if (entry.reqType == "religious") result.religReq++;
-            if (entry.reqType == "flower delivery") result.flowReq++;
+            if (entry.reqType == "flower request") result.flowReq++;
             if (entry.reqType == "sanitation") result.sanReq++;
             if (entry.reqType == "transportation") result.tranReq++;
             if (entry.reqPriority == "Low") result.lowPrio++;
@@ -176,7 +176,7 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
                 shapiro.total++;
                 if (entry.reqType == "medication") shapiro.medReq++;
                 if (entry.reqType == "religious") shapiro.religReq++;
-                if (entry.reqType == "flower delivery") shapiro.flowReq++;
+                if (entry.reqType == "flower request") shapiro.flowReq++;
                 if (entry.reqType == "sanitation") shapiro.sanReq++;
                 if (entry.reqType == "transportation") shapiro.tranReq++;
                 if (entry.reqPriority == "Low") shapiro.lowPrio++;
@@ -192,7 +192,7 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
                 tower.total++;
                 if (entry.reqType == "medication") tower.medReq++;
                 if (entry.reqType == "religious") tower.religReq++;
-                if (entry.reqType == "flower delivery") tower.flowReq++;
+                if (entry.reqType == "flower request") tower.flowReq++;
                 if (entry.reqType == "sanitation") tower.sanReq++;
                 if (entry.reqType == "transportation") tower.tranReq++;
                 if (entry.reqPriority == "Low") tower.lowPrio++;
@@ -208,7 +208,7 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
                 Francis45.total++;
                 if (entry.reqType == "medication") Francis45.medReq++;
                 if (entry.reqType == "religious") Francis45.religReq++;
-                if (entry.reqType == "flower delivery") Francis45.flowReq++;
+                if (entry.reqType == "flower request") Francis45.flowReq++;
                 if (entry.reqType == "sanitation") Francis45.sanReq++;
                 if (entry.reqType == "transportation") Francis45.tranReq++;
                 if (entry.reqPriority == "Low") Francis45.lowPrio++;
@@ -224,7 +224,7 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
                 Francis15.total++;
                 if (entry.reqType == "medication") Francis15.medReq++;
                 if (entry.reqType == "religious") Francis15.religReq++;
-                if (entry.reqType == "flower delivery") Francis15.flowReq++;
+                if (entry.reqType == "flower request") Francis15.flowReq++;
                 if (entry.reqType == "sanitation") Francis15.sanReq++;
                 if (entry.reqType == "transportation") Francis15.tranReq++;
                 if (entry.reqPriority == "Low") Francis15.lowPrio++;
@@ -240,7 +240,7 @@ router.get("/serviceReq/building-statistics", async function (req: Request, res:
                 BTM.total++;
                 if (entry.reqType == "medication") BTM.medReq++;
                 if (entry.reqType == "religious") BTM.religReq++;
-                if (entry.reqType == "flower delivery") BTM.flowReq++;
+                if (entry.reqType == "flower request") BTM.flowReq++;
                 if (entry.reqType == "sanitation") BTM.sanReq++;
                 if (entry.reqType == "transportation") BTM.tranReq++;
                 if (entry.reqPriority == "Low") BTM.lowPrio++;
@@ -2172,7 +2172,7 @@ router.get("/flowReq/statistics", async function (req: Request, res: Response) {
     try {
         const statistics = await PrismaClient.serviceRequest.findMany({
             where: {
-                reqType: "flower delivery"
+                reqType: "flower request"
             }
         });
         const result = {
@@ -2213,7 +2213,7 @@ router.get("/flowReq/building-statistics", async function (req: Request, res: Re
     try {
         const serviceRequest = await PrismaClient.serviceRequest.findMany({
             where: {
-                reqType: "flower delivery"
+                reqType: "flower request"
             },
             include: {
                 reqLocation: true
