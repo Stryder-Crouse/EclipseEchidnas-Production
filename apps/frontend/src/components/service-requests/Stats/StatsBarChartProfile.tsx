@@ -82,7 +82,7 @@ function StatsBarChartProfile({buildingStats}:requestStats){
    
     
     return (
-        <div className={"mb-4"} style={
+        <div className={"mb-[10%]"} style={
             {
                 position: "relative", height: "50%",
                 width: "100%"
