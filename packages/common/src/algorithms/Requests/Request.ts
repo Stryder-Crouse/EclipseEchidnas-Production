@@ -59,7 +59,7 @@ export type sanReq = {
 export enum ReqTypes {
     medReq = "Medication" ,
     religReq = "Religious",
-    flowReq = "Flower Request ",
+    flowReq = "Flower Request",
     sanReq = "Sanitation",
     tranReq = "Transportation",
     //outTransReq = "outside transportation",

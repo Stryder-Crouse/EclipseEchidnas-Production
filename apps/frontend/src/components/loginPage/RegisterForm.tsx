@@ -20,6 +20,7 @@ export default function RegisterForm() {
     useEffect(() => {
         doesUserExist(thisEmail!).then((res) => {
 
+
             if (res != null && typeof (res) != "string") {
                 setFirstName(res.firstName);
                 setLastName(res.lastName);
